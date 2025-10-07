@@ -1,0 +1,21 @@
+# Go
+*.db
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+server
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
