@@ -13,11 +13,28 @@
   transition: transform 0.3s, box-shadow 0.3s;
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.2);
+  position: relative;
 }
 
 .avatar-card-new:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.rank-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .card-thumbnail {
@@ -62,11 +79,19 @@
   font-weight: 600;
 }
 
-.coins-badge {
+.stats-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.coins-badge,
+.warriors-badge {
   padding: 0.4rem 0.8rem;
   border-radius: 15px;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   white-space: nowrap;

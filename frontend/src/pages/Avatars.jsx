@@ -30,12 +30,12 @@ function Avatars() {
   const getElementColor = (element) => {
     if (element.includes("Metal")) return "#2c2c2c";
     if (element.includes("Electricity")) return "#ffd700";
-    if (element.includes("Wind")) return "#f0f0f0";
+    if (element.includes("Wind")) return "#9b59b6";
     if (element.includes("Water")) return "#4a90e2";
     if (element.includes("Fire")) return "#e74c3c";
     if (element.includes("Earth")) return "#27ae60";
     if (element.includes("Time")) return "#ff8c42";
-    if (element.includes("Light")) return "#9b59b6";
+    if (element.includes("Light")) return "#f0f0f0";
     return "#667eea";
   };
 
@@ -44,8 +44,7 @@ function Avatars() {
     if (
       element.includes("Metal") ||
       element.includes("Earth") ||
-      element.includes("Water") ||
-      element.includes("Light")
+      element.includes("Water")
     ) {
       return "#ffffff";
     }
@@ -85,6 +84,14 @@ function Avatars() {
                   color: textColor,
                 }}
               >
+                {/* Rank Badge */}
+                <div className='rank-badge'>
+                  {avatar.rank === 1 && "🥇"}
+                  {avatar.rank === 2 && "🥈"}
+                  {avatar.rank === 3 && "🥉"}
+                  {avatar.rank > 3 && `#${avatar.rank}`}
+                </div>
+
                 <div className='card-thumbnail'>
                   <img
                     src={avatar.thumbnail}
@@ -104,17 +111,31 @@ function Avatars() {
                         {avatar.avatarName}
                       </p>
                     </div>
-                    <div
-                      className='coins-badge'
-                      style={{
-                        background:
-                          textColor === "#ffffff"
-                            ? "rgba(255,255,255,0.2)"
-                            : "rgba(0,0,0,0.1)",
-                        color: textColor,
-                      }}
-                    >
-                      💰 {avatar.coins}
+                    <div className='stats-badges'>
+                      <div
+                        className='coins-badge'
+                        style={{
+                          background:
+                            textColor === "#ffffff"
+                              ? "rgba(255,255,255,0.2)"
+                              : "rgba(0,0,0,0.1)",
+                          color: textColor,
+                        }}
+                      >
+                        💰 {avatar.coins}
+                      </div>
+                      <div
+                        className='warriors-badge'
+                        style={{
+                          background:
+                            textColor === "#ffffff"
+                              ? "rgba(255,255,255,0.2)"
+                              : "rgba(0,0,0,0.1)",
+                          color: textColor,
+                        }}
+                      >
+                        ⚔️ {avatar.assetCount}
+                      </div>
                     </div>
                   </div>
 
