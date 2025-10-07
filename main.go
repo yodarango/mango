@@ -157,7 +157,7 @@ func initDB() {
 		rand.Seed(time.Now().UnixNano())
 		for i, data := range avatarData {
 			imageFile := elementToImage[data.Element]
-			thumbnail := fmt.Sprintf("src/assets/avatars/%s", imageFile)
+			thumbnail := fmt.Sprintf("/src/assets/avatars/%s", imageFile)
 			level := rand.Intn(10) + 1
 
 			// Generate mascot thumbnail (using placeholder for now)

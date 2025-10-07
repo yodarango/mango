@@ -218,12 +218,6 @@ function AvatarProfile() {
                     <span>{mascot.power}</span>
                   </div>
                 </div>
-
-                <div className='warrior-footer'>
-                  <span className='warrior-cost'>
-                    <i className='fa-solid fa-coins'></i> {mascot.cost} coins
-                  </span>
-                </div>
               </div>
             </div>
           </div>

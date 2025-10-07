@@ -137,12 +137,12 @@
   border: 3px solid #f39c12;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 300px 1fr;
   gap: 0;
 }
 
 .mascot-image-container {
-  width: 100%;
+  width: 300px;
   height: 100%;
   overflow: hidden;
 }
