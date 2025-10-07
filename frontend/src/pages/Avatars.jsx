@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Avatars.css";
 
 function Avatars() {
   const [avatars, setAvatars] = useState([]);
@@ -84,65 +85,75 @@ function Avatars() {
                   color: textColor,
                 }}
               >
-                <div className='card-header-new'>
-                  <div className='student-info'>
-                    <h3 style={{ color: textColor }}>{avatar.name}</h3>
-                    <p
-                      className='avatar-name-card'
-                      style={{ color: textColor }}
-                    >
-                      {avatar.avatarName}
-                    </p>
-                  </div>
-                  <div
-                    className='coins-badge'
-                    style={{
-                      background:
-                        textColor === "#ffffff"
-                          ? "rgba(255,255,255,0.2)"
-                          : "rgba(0,0,0,0.1)",
-                      color: textColor,
-                    }}
-                  >
-                    💰 {avatar.coins}
-                  </div>
+                <div className='card-thumbnail'>
+                  <img
+                    src={avatar.thumbnail}
+                    alt={avatar.avatarName}
+                    className='avatar-image'
+                  />
                 </div>
 
-                <div className='card-body-new'>
-                  <div className='stat-row-new'>
-                    <span className='icon'>⚡</span>
-                    <span className='stat-label-new'>Element</span>
-                    <span className='stat-value-new'>{avatar.element}</span>
+                <div className='card-content'>
+                  <div className='card-header-new'>
+                    <div className='student-info'>
+                      <h3 style={{ color: textColor }}>{avatar.name}</h3>
+                      <p
+                        className='avatar-name-card'
+                        style={{ color: textColor }}
+                      >
+                        {avatar.avatarName}
+                      </p>
+                    </div>
+                    <div
+                      className='coins-badge'
+                      style={{
+                        background:
+                          textColor === "#ffffff"
+                            ? "rgba(255,255,255,0.2)"
+                            : "rgba(0,0,0,0.1)",
+                        color: textColor,
+                      }}
+                    >
+                      💰 {avatar.coins}
+                    </div>
                   </div>
 
-                  <div className='stat-row-new'>
-                    <span className='icon'>✨</span>
-                    <span className='stat-label-new'>Power</span>
-                    <span className='stat-value-new'>{avatar.superPower}</span>
-                  </div>
+                  <div className='card-body-new'>
+                    <div className='stat-text'>
+                      <span className='icon'>⚡</span>
+                      <span className='label'>Element:</span>
+                      <span className='value'>{avatar.element}</span>
+                    </div>
 
-                  <div className='stat-row-new'>
-                    <span className='icon'>🎭</span>
-                    <span className='stat-label-new'>Type</span>
-                    <span className='stat-value-new'>{avatar.personality}</span>
-                  </div>
+                    <div className='stat-text'>
+                      <span className='icon'>✨</span>
+                      <span className='label'>Power:</span>
+                      <span className='value'>{avatar.superPower}</span>
+                    </div>
 
-                  <div className='stat-row-new'>
-                    <span className='icon'>⚠️</span>
-                    <span className='stat-label-new'>Weakness</span>
-                    <span className='stat-value-new'>{avatar.weakness}</span>
-                  </div>
+                    <div className='stat-text'>
+                      <span className='icon'>🎭</span>
+                      <span className='label'>Type:</span>
+                      <span className='value'>{avatar.personality}</span>
+                    </div>
 
-                  <div className='stat-row-new'>
-                    <span className='icon'>🦁</span>
-                    <span className='stat-label-new'>Allies</span>
-                    <span className='stat-value-new'>{avatar.animalAlly}</span>
-                  </div>
+                    <div className='stat-text'>
+                      <span className='icon'>⚠️</span>
+                      <span className='label'>Weakness:</span>
+                      <span className='value'>{avatar.weakness}</span>
+                    </div>
 
-                  <div className='stat-row-new mascot-row'>
-                    <span className='icon'>⭐</span>
-                    <span className='stat-label-new'>Mascot</span>
-                    <span className='stat-value-new'>{avatar.mascot}</span>
+                    <div className='stat-text'>
+                      <span className='icon'>🦁</span>
+                      <span className='label'>Allies:</span>
+                      <span className='value'>{avatar.animalAlly}</span>
+                    </div>
+
+                    <div className='stat-text mascot-text'>
+                      <span className='icon'>⭐</span>
+                      <span className='label'>Mascot:</span>
+                      <span className='value'>{avatar.mascot}</span>
+                    </div>
                   </div>
                 </div>
               </div>
