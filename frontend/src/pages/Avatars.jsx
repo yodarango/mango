@@ -44,7 +44,8 @@ function Avatars() {
     if (
       element.includes("Metal") ||
       element.includes("Earth") ||
-      element.includes("Water")
+      element.includes("Water") ||
+      element.includes("Wind")
     ) {
       return "#ffffff";
     }
@@ -124,7 +125,7 @@ function Avatars() {
                           color: textColor,
                         }}
                       >
-                        💰 {avatar.coins}
+                        <i className='fa-solid fa-coins'></i> {avatar.coins}
                       </div>
                       <div
                         className='warriors-badge'
@@ -136,44 +137,45 @@ function Avatars() {
                           color: textColor,
                         }}
                       >
-                        ⚔️ {avatar.assetCount}
+                        <i className='fa-solid fa-khanda'></i>{" "}
+                        {avatar.assetCount}
                       </div>
                     </div>
                   </div>
 
                   <div className='card-body-new'>
                     <div className='stat-text'>
-                      <span className='icon'>⚡</span>
+                      <i className='icon fa-solid fa-bolt'></i>
                       <span className='label'>Element:</span>
                       <span className='value'>{avatar.element}</span>
                     </div>
 
                     <div className='stat-text'>
-                      <span className='icon'>✨</span>
+                      <i className='icon fa-solid fa-wand-magic-sparkles'></i>
                       <span className='label'>Power:</span>
                       <span className='value'>{avatar.superPower}</span>
                     </div>
 
                     <div className='stat-text'>
-                      <span className='icon'>🎭</span>
+                      <i className='icon fa-solid fa-masks-theater'></i>
                       <span className='label'>Type:</span>
                       <span className='value'>{avatar.personality}</span>
                     </div>
 
                     <div className='stat-text'>
-                      <span className='icon'>⚠️</span>
+                      <i className='icon fa-solid fa-triangle-exclamation'></i>
                       <span className='label'>Weakness:</span>
                       <span className='value'>{avatar.weakness}</span>
                     </div>
 
                     <div className='stat-text'>
-                      <span className='icon'>🦁</span>
+                      <i className='icon fa-solid fa-paw'></i>
                       <span className='label'>Allies:</span>
                       <span className='value'>{avatar.animalAlly}</span>
                     </div>
 
                     <div className='stat-text mascot-text'>
-                      <span className='icon'>⭐</span>
+                      <i className='icon fa-solid fa-star'></i>
                       <span className='label'>Mascot:</span>
                       <span className='value'>{avatar.mascot}</span>
                     </div>

@@ -80,7 +80,9 @@ function AvatarProfile() {
         <div className='profile-info'>
           <h1>{avatar.name}</h1>
           <p className='avatar-name-display'>{avatar.avatarName}</p>
-          <div className='coins-display'>💰 {avatar.coins} coins</div>
+          <div className='coins-display'>
+            <i className='fa-solid fa-coins'></i> {avatar.coins} coins
+          </div>
         </div>
       </div>
 
@@ -118,7 +120,9 @@ function AvatarProfile() {
         {/* Mascot Section */}
         {mascot && (
           <div className='mascot-section'>
-            <h2>🌟 Mascot Companion</h2>
+            <h2>
+              <i className='fa-solid fa-star'></i> Mascot Companion
+            </h2>
             <p className='section-subtitle'>Your loyal mascot ally</p>
 
             <div className='mascot-card'>
@@ -141,7 +145,9 @@ function AvatarProfile() {
 
                 <div className='warrior-stats'>
                   <div className='stat-bar'>
-                    <span className='stat-name'>⚔️ Attack</span>
+                    <span className='stat-name'>
+                      <i className='fa-solid fa-sword'></i> Attack
+                    </span>
                     <div className='bar-container'>
                       <div
                         className='bar-fill attack'
@@ -152,7 +158,9 @@ function AvatarProfile() {
                   </div>
 
                   <div className='stat-bar'>
-                    <span className='stat-name'>🛡️ Defense</span>
+                    <span className='stat-name'>
+                      <i className='fa-solid fa-shield'></i> Defense
+                    </span>
                     <div className='bar-container'>
                       <div
                         className='bar-fill defense'
@@ -163,7 +171,9 @@ function AvatarProfile() {
                   </div>
 
                   <div className='stat-bar'>
-                    <span className='stat-name'>💚 Healing</span>
+                    <span className='stat-name'>
+                      <i className='fa-solid fa-heart'></i> Healing
+                    </span>
                     <div className='bar-container'>
                       <div
                         className='bar-fill healing'
@@ -174,7 +184,9 @@ function AvatarProfile() {
                   </div>
 
                   <div className='stat-bar'>
-                    <span className='stat-name'>⚡ Endurance</span>
+                    <span className='stat-name'>
+                      <i className='fa-solid fa-bolt'></i> Endurance
+                    </span>
                     <div className='bar-container'>
                       <div
                         className='bar-fill endurance'
@@ -201,7 +213,9 @@ function AvatarProfile() {
                 </div>
 
                 <div className='warrior-footer'>
-                  <span className='warrior-cost'>💰 {mascot.cost} coins</span>
+                  <span className='warrior-cost'>
+                    <i className='fa-solid fa-coins'></i> {mascot.cost} coins
+                  </span>
                 </div>
               </div>
             </div>
@@ -209,7 +223,9 @@ function AvatarProfile() {
         )}
 
         <div className='warriors-section'>
-          <h2>⚔️ Warriors</h2>
+          <h2>
+            <i className='fa-solid fa-khanda'></i> Warriors
+          </h2>
           <p className='section-subtitle'>
             Your collection of warriors ready for battle
           </p>
@@ -239,7 +255,9 @@ function AvatarProfile() {
 
                   <div className='warrior-stats'>
                     <div className='stat-bar'>
-                      <span className='stat-name'>⚔️ Attack</span>
+                      <span className='stat-name'>
+                        <i className='fa-solid fa-sword'></i> Attack
+                      </span>
                       <div className='bar-container'>
                         <div
                           className='bar-fill attack'
@@ -250,7 +268,9 @@ function AvatarProfile() {
                     </div>
 
                     <div className='stat-bar'>
-                      <span className='stat-name'>🛡️ Defense</span>
+                      <span className='stat-name'>
+                        <i className='fa-solid fa-shield'></i> Defense
+                      </span>
                       <div className='bar-container'>
                         <div
                           className='bar-fill defense'
@@ -261,7 +281,9 @@ function AvatarProfile() {
                     </div>
 
                     <div className='stat-bar'>
-                      <span className='stat-name'>💚 Healing</span>
+                      <span className='stat-name'>
+                        <i className='fa-solid fa-heart'></i> Healing
+                      </span>
                       <div className='bar-container'>
                         <div
                           className='bar-fill healing'
@@ -272,7 +294,9 @@ function AvatarProfile() {
                     </div>
 
                     <div className='stat-bar'>
-                      <span className='stat-name'>💪 Endurance</span>
+                      <span className='stat-name'>
+                        <i className='fa-solid fa-dumbbell'></i> Endurance
+                      </span>
                       <div className='bar-container'>
                         <div
                           className='bar-fill endurance'
@@ -285,21 +309,29 @@ function AvatarProfile() {
 
                   <div className='warrior-status'>
                     <div className='status-item'>
-                      <span>❤️ Health:</span>
+                      <span>
+                        <i className='fa-solid fa-heart'></i> Health:
+                      </span>
                       <span>{asset.health}/100</span>
                     </div>
                     <div className='status-item'>
-                      <span>⚡ Stamina:</span>
+                      <span>
+                        <i className='fa-solid fa-bolt'></i> Stamina:
+                      </span>
                       <span>{asset.stamina}/100</span>
                     </div>
                     <div className='status-item'>
-                      <span>⚡ Power:</span>
+                      <span>
+                        <i className='fa-solid fa-fire'></i> Power:
+                      </span>
                       <span>{asset.power}</span>
                     </div>
                   </div>
 
                   <div className='warrior-footer'>
-                    <span className='warrior-cost'>💰 {asset.cost} coins</span>
+                    <span className='warrior-cost'>
+                      <i className='fa-solid fa-coins'></i> {asset.cost} coins
+                    </span>
                   </div>
                 </div>
               ))
