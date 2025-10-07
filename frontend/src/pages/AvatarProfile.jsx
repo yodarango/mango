@@ -125,7 +125,7 @@ function AvatarProfile() {
 
       <div className='profile-content'>
         {/* Mascot Section */}
-        {mascot && (
+        {mascot && avatar.mascotThumbnail && (
           <div className='mascot-section'>
             <h2>
               <i className='fa-solid fa-star'></i> Mascot Companion
@@ -135,8 +135,8 @@ function AvatarProfile() {
             <div className='mascot-card'>
               <div className='mascot-image-container'>
                 <img
-                  src={mascot.thumbnail}
-                  alt={mascot.name}
+                  src={avatar.mascotThumbnail}
+                  alt={avatar.mascot}
                   className='mascot-image'
                 />
               </div>
