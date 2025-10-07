@@ -84,13 +84,15 @@ function Avatars() {
                   color: textColor,
                 }}
               >
-                {/* Rank Badge */}
-                <div className='rank-badge'>
-                  {avatar.rank === 1 && "🥇"}
-                  {avatar.rank === 2 && "🥈"}
-                  {avatar.rank === 3 && "🥉"}
-                  {avatar.rank > 3 && `#${avatar.rank}`}
-                </div>
+                {/* Rank Badge - only show if rank is assigned */}
+                {avatar.rank > 0 && (
+                  <div className='rank-badge'>
+                    {avatar.rank === 1 && "🥇"}
+                    {avatar.rank === 2 && "🥈"}
+                    {avatar.rank === 3 && "🥉"}
+                    {avatar.rank > 3 && `#${avatar.rank}`}
+                  </div>
+                )}
 
                 <div className='card-thumbnail'>
                   <img

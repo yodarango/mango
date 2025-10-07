@@ -7,6 +7,8 @@ function AvatarProfile() {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(null);
   const [assets, setAssets] = useState([]);
+  const [warriors, setWarriors] = useState([]);
+  const [mascot, setMascot] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +27,18 @@ function AvatarProfile() {
 
       setAvatar(avatarData);
       setAssets(assetsData || []);
+
+      // Separate warriors and mascot
+      const warriorsList = (assetsData || []).filter(
+        (asset) => asset.assetType === "warrior"
+      );
+      const mascotData = (assetsData || []).find(
+        (asset) => asset.assetType === "mascot"
+      );
+
+      setWarriors(warriorsList);
+      setMascot(mascotData || null);
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching avatar data:", error);
@@ -56,6 +70,13 @@ function AvatarProfile() {
       </button>
 
       <div className='profile-header'>
+        <div className='avatar-image-container'>
+          <img
+            src={avatar.thumbnail}
+            alt={avatar.avatarName}
+            className='profile-avatar-image'
+          />
+        </div>
         <div className='profile-info'>
           <h1>{avatar.name}</h1>
           <p className='avatar-name-display'>{avatar.avatarName}</p>
@@ -94,18 +115,119 @@ function AvatarProfile() {
           </div>
         </div>
 
+        {/* Mascot Section */}
+        {mascot && (
+          <div className='mascot-section'>
+            <h2>🌟 Mascot Companion</h2>
+            <p className='section-subtitle'>Your loyal mascot ally</p>
+
+            <div className='mascot-card'>
+              <div className='mascot-image-container'>
+                <img
+                  src={mascot.thumbnail}
+                  alt={mascot.name}
+                  className='mascot-image'
+                />
+              </div>
+              <div className='mascot-details'>
+                <div className='warrior-header'>
+                  <h3>{mascot.name}</h3>
+                  <span className='warrior-level'>Level {mascot.level}</span>
+                </div>
+
+                <div className='warrior-ability'>
+                  <strong>Ability:</strong> {mascot.ability}
+                </div>
+
+                <div className='warrior-stats'>
+                  <div className='stat-bar'>
+                    <span className='stat-name'>⚔️ Attack</span>
+                    <div className='bar-container'>
+                      <div
+                        className='bar-fill attack'
+                        style={{ width: `${mascot.attack}%` }}
+                      ></div>
+                    </div>
+                    <span className='stat-number'>{mascot.attack}</span>
+                  </div>
+
+                  <div className='stat-bar'>
+                    <span className='stat-name'>🛡️ Defense</span>
+                    <div className='bar-container'>
+                      <div
+                        className='bar-fill defense'
+                        style={{ width: `${mascot.defense}%` }}
+                      ></div>
+                    </div>
+                    <span className='stat-number'>{mascot.defense}</span>
+                  </div>
+
+                  <div className='stat-bar'>
+                    <span className='stat-name'>💚 Healing</span>
+                    <div className='bar-container'>
+                      <div
+                        className='bar-fill healing'
+                        style={{ width: `${mascot.healing}%` }}
+                      ></div>
+                    </div>
+                    <span className='stat-number'>{mascot.healing}</span>
+                  </div>
+
+                  <div className='stat-bar'>
+                    <span className='stat-name'>⚡ Endurance</span>
+                    <div className='bar-container'>
+                      <div
+                        className='bar-fill endurance'
+                        style={{ width: `${mascot.endurance}%` }}
+                      ></div>
+                    </div>
+                    <span className='stat-number'>{mascot.endurance}</span>
+                  </div>
+                </div>
+
+                <div className='warrior-status'>
+                  <div className='status-item'>
+                    <span>Health</span>
+                    <span>{mascot.health}</span>
+                  </div>
+                  <div className='status-item'>
+                    <span>Stamina</span>
+                    <span>{mascot.stamina}</span>
+                  </div>
+                  <div className='status-item'>
+                    <span>Power</span>
+                    <span>{mascot.power}</span>
+                  </div>
+                </div>
+
+                <div className='warrior-footer'>
+                  <span className='warrior-cost'>💰 {mascot.cost} coins</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className='warriors-section'>
-          <h2>Warriors & Assets</h2>
+          <h2>⚔️ Warriors</h2>
           <p className='section-subtitle'>
             Your collection of warriors ready for battle
           </p>
 
           <div className='warriors-grid'>
-            {assets.length === 0 ? (
+            {warriors.length === 0 ? (
               <p>No warriors yet. Purchase some with your coins!</p>
             ) : (
-              assets.map((asset) => (
+              warriors.map((asset) => (
                 <div key={asset.id} className='warrior-card'>
+                  <div className='warrior-image-container'>
+                    <img
+                      src={asset.thumbnail}
+                      alt={asset.name}
+                      className='warrior-image'
+                    />
+                  </div>
+
                   <div className='warrior-header'>
                     <h3>{asset.name}</h3>
                     <span className='warrior-level'>Level {asset.level}</span>
