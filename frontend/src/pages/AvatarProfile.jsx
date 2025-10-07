@@ -84,39 +84,46 @@ function AvatarProfile() {
             <i className='fa-solid fa-coins'></i> {avatar.coins} coins
           </div>
         </div>
+        <div className='avatar-stats-compact'>
+          <div className='stat-text'>
+            <i className='icon fa-solid fa-bolt'></i>
+            <span className='label'>Element:</span>
+            <span className='value'>{avatar.element}</span>
+          </div>
+
+          <div className='stat-text'>
+            <i className='icon fa-solid fa-wand-magic-sparkles'></i>
+            <span className='label'>Power:</span>
+            <span className='value'>{avatar.superPower}</span>
+          </div>
+
+          <div className='stat-text'>
+            <i className='icon fa-solid fa-masks-theater'></i>
+            <span className='label'>Type:</span>
+            <span className='value'>{avatar.personality}</span>
+          </div>
+
+          <div className='stat-text'>
+            <i className='icon fa-solid fa-triangle-exclamation'></i>
+            <span className='label'>Weakness:</span>
+            <span className='value'>{avatar.weakness}</span>
+          </div>
+
+          <div className='stat-text'>
+            <i className='icon fa-solid fa-paw'></i>
+            <span className='label'>Allies:</span>
+            <span className='value'>{avatar.animalAlly}</span>
+          </div>
+
+          <div className='stat-text mascot-text'>
+            <i className='icon fa-solid fa-star'></i>
+            <span className='label'>Mascot:</span>
+            <span className='value'>{avatar.mascot}</span>
+          </div>
+        </div>
       </div>
 
       <div className='profile-content'>
-        <div className='avatar-stats'>
-          <h2>Avatar Stats</h2>
-          <div className='stats-grid'>
-            <div className='stat-item'>
-              <span className='stat-label'>Element:</span>
-              <span className='stat-value'>{avatar.element}</span>
-            </div>
-            <div className='stat-item'>
-              <span className='stat-label'>Super Power:</span>
-              <span className='stat-value'>{avatar.superPower}</span>
-            </div>
-            <div className='stat-item'>
-              <span className='stat-label'>Personality:</span>
-              <span className='stat-value'>{avatar.personality}</span>
-            </div>
-            <div className='stat-item'>
-              <span className='stat-label'>Weakness:</span>
-              <span className='stat-value'>{avatar.weakness}</span>
-            </div>
-            <div className='stat-item'>
-              <span className='stat-label'>Animal Ally:</span>
-              <span className='stat-value'>{avatar.animalAlly}</span>
-            </div>
-            <div className='stat-item mascot-stat'>
-              <span className='stat-label'>Mascot:</span>
-              <span className='stat-value'>{avatar.mascot}</span>
-            </div>
-          </div>
-        </div>
-
         {/* Mascot Section */}
         {mascot && (
           <div className='mascot-section'>
