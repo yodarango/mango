@@ -57,6 +57,7 @@ function AvatarProfile() {
       <div className='profile-header'>
         <div className='profile-info'>
           <h1>{avatar.name}</h1>
+          <p className='avatar-name-display'>{avatar.avatarName}</p>
           <div className='coins-display'>💰 {avatar.coins} coins</div>
         </div>
       </div>
@@ -66,8 +67,8 @@ function AvatarProfile() {
           <h2>Avatar Stats</h2>
           <div className='stats-grid'>
             <div className='stat-item'>
-              <span className='stat-label'>Main Power:</span>
-              <span className='stat-value'>{avatar.mainPower}</span>
+              <span className='stat-label'>Element:</span>
+              <span className='stat-value'>{avatar.element}</span>
             </div>
             <div className='stat-item'>
               <span className='stat-label'>Super Power:</span>
@@ -188,4 +189,3 @@ function AvatarProfile() {
 }
 
 export default AvatarProfile;
-
