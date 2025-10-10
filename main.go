@@ -15,22 +15,21 @@ import (
 )
 
 type Avatar struct {
-	ID              int    `json:"id"`
-	Name            string `json:"name"`
-	AvatarName      string `json:"avatarName"`
-	Thumbnail       string `json:"thumbnail"`
-	Coins           int    `json:"coins"`
-	Level           int    `json:"level"`
-	Element         string `json:"element"`
-	SuperPower      string `json:"superPower"`
-	Personality     string `json:"personality"`
-	Weakness        string `json:"weakness"`
-	AnimalAlly      string `json:"animalAlly"`
-	Mascot          string `json:"mascot"`
-	MascotThumbnail string `json:"mascotThumbnail"`
-	AssetCount      int    `json:"assetCount,omitempty"`
-	TotalPower      int    `json:"totalPower,omitempty"`
-	Rank            int    `json:"rank,omitempty"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	AvatarName  string `json:"avatarName"`
+	Thumbnail   string `json:"thumbnail"`
+	Coins       int    `json:"coins"`
+	Level       int    `json:"level"`
+	Element     string `json:"element"`
+	SuperPower  string `json:"superPower"`
+	Personality string `json:"personality"`
+	Weakness    string `json:"weakness"`
+	AnimalAlly  string `json:"animalAlly"`
+	Mascot      string `json:"mascot"`
+	AssetCount  int    `json:"assetCount,omitempty"`
+	TotalPower  int    `json:"totalPower,omitempty"`
+	Rank        int    `json:"rank,omitempty"`
 }
 
 type Asset struct {
@@ -84,8 +83,7 @@ func initDB() {
 		personality TEXT NOT NULL,
 		weakness TEXT NOT NULL,
 		animal_ally TEXT NOT NULL,
-		mascot TEXT NOT NULL,
-		mascot_thumbnail TEXT NOT NULL
+		mascot TEXT NOT NULL
 	);`
 
 	_, err = db.Exec(createAvatarsTableSQL)
@@ -160,13 +158,10 @@ func initDB() {
 			thumbnail := fmt.Sprintf("/src/assets/avatars/%s", imageFile)
 			level := rand.Intn(10) + 1
 
-			// Generate mascot thumbnail (using placeholder for now)
-			mascotThumbnail := fmt.Sprintf("https://i.pravatar.cc/300?img=%d", (i+1)*10)
-
-			result, err := db.Exec(`INSERT INTO avatars (name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, mascot_thumbnail)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			result, err := db.Exec(`INSERT INTO avatars (name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 				data.Name, data.MascotName, thumbnail, 0, level, data.Element, data.SuperPower,
-				data.Personality, data.Weakness, data.AnimalAlly, data.Mascot, mascotThumbnail)
+				data.Personality, data.Weakness, data.AnimalAlly, data.Mascot)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -259,7 +254,7 @@ func generateRandomAsset(avatarID int, assetType string) Asset {
 }
 
 func getAvatars(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, mascot_thumbnail
+	rows, err := db.Query(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
 		FROM avatars ORDER BY id`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -272,7 +267,7 @@ func getAvatars(w http.ResponseWriter, r *http.Request) {
 		var avatar Avatar
 		if err := rows.Scan(&avatar.ID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
 			&avatar.SuperPower, &avatar.Personality, &avatar.Weakness,
-			&avatar.AnimalAlly, &avatar.Mascot, &avatar.MascotThumbnail); err != nil {
+			&avatar.AnimalAlly, &avatar.Mascot); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -327,9 +322,9 @@ func getAvatar(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	var avatar Avatar
-	err := db.QueryRow(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, mascot_thumbnail
+	err := db.QueryRow(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
 		FROM avatars WHERE id = ?`, id).Scan(&avatar.ID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
-		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot, &avatar.MascotThumbnail)
+		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
