@@ -23,6 +23,37 @@
 .store-subtitle {
   color: #7f8c8d;
   font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.user-coins-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.user-coins-display i {
+  font-size: 1.5rem;
+}
+
+.coins-amount {
+  font-size: 1.8rem;
+}
+
+.coins-label {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-weight: 500;
 }
 
 .store-grid {
@@ -44,6 +75,19 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   border-color: #f39c12;
+}
+
+.store-item-card.unaffordable {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.store-item-card.unaffordable:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #e0e0e0;
 }
 
 .store-item-image {
@@ -204,6 +248,17 @@
 
 .purchase-btn:active {
   transform: scale(0.98);
+}
+
+.purchase-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.purchase-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .loading-container {

@@ -4,10 +4,30 @@ import "./Store.css";
 function Store() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userCoins, setUserCoins] = useState(0);
+  const [purchasing, setPurchasing] = useState(null);
 
   useEffect(() => {
     fetchStoreItems();
+    fetchUserCoins();
   }, []);
+
+  const fetchUserCoins = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) return;
+
+      // Get user's avatar to find coins
+      const response = await fetch("/api/avatars");
+      const avatars = await response.json();
+      const userAvatar = avatars.find((a) => a.userId === user.id);
+      if (userAvatar) {
+        setUserCoins(userAvatar.coins);
+      }
+    } catch (error) {
+      console.error("Error fetching user coins:", error);
+    }
+  };
 
   const fetchStoreItems = async () => {
     try {
@@ -18,6 +38,43 @@ function Store() {
     } catch (error) {
       console.error("Error fetching store items:", error);
       setLoading(false);
+    }
+  };
+
+  const handlePurchase = async (itemId, itemCost) => {
+    if (userCoins < itemCost) {
+      alert("Not enough coins!");
+      return;
+    }
+
+    setPurchasing(itemId);
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/store/purchase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ assetId: itemId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert(data.message);
+        setUserCoins(data.coins);
+        // Remove purchased item from store
+        setItems(items.filter((item) => item.id !== itemId));
+      } else {
+        alert(data.message || "Purchase failed");
+      }
+    } catch (error) {
+      console.error("Error purchasing item:", error);
+      alert("Error purchasing item");
+    } finally {
+      setPurchasing(null);
     }
   };
 
@@ -48,87 +105,111 @@ function Store() {
         <p className='store-subtitle'>
           Purchase powerful items for your avatar
         </p>
+        <div className='user-coins-display'>
+          <i className='fa-solid fa-coins'></i>
+          <span className='coins-amount'>{userCoins}</span>
+          <span className='coins-label'>coins available</span>
+        </div>
       </div>
 
       <div className='store-grid'>
-        {items.map((item) => (
-          <div key={item.id} className='store-item-card'>
-            {item.thumbnail && (
-              <div className='store-item-image'>
-                <img src={item.thumbnail} alt={item.name} />
-              </div>
-            )}
-
-            <div className='store-item-details'>
-              <h3>{item.name}</h3>
-
-              <div className='store-item-stats'>
-                <div className='stat-row'>
-                  <i className='fa-solid fa-sword'></i>
-                  <span className='stat-label'>Attack:</span>
-                  <span className='stat-value'>{item.attack}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-shield'></i>
-                  <span className='stat-label'>Defense:</span>
-                  <span className='stat-value'>{item.defense}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-heart'></i>
-                  <span className='stat-label'>Healing:</span>
-                  <span className='stat-value'>{item.healing}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-fire'></i>
-                  <span className='stat-label'>Power:</span>
-                  <span className='stat-value'>{item.power}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-dumbbell'></i>
-                  <span className='stat-label'>Endurance:</span>
-                  <span className='stat-value'>{item.endurance}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-star'></i>
-                  <span className='stat-label'>Level:</span>
-                  <span className='stat-value'>{item.level}</span>
-                </div>
-
-                <div className='stat-row total-power'>
-                  <i className='fa-solid fa-bolt'></i>
-                  <span className='stat-label'>Overall Power:</span>
-                  <span className='stat-value'>
-                    {item.attack + item.defense + item.healing}
-                  </span>
-                </div>
-              </div>
-
-              {item.ability && (
-                <div className='store-item-ability'>
-                  <i className='fa-solid fa-wand-magic-sparkles'></i>
-                  <span className='ability-label'>Ability:</span>
-                  <span className='ability-name'>{item.ability}</span>
+        {items.map((item) => {
+          const canAfford = userCoins >= item.cost;
+          return (
+            <div
+              key={item.id}
+              className={`store-item-card ${!canAfford ? "unaffordable" : ""}`}
+            >
+              {item.thumbnail && (
+                <div className='store-item-image'>
+                  <img src={item.thumbnail} alt={item.name} />
                 </div>
               )}
 
-              <div className='store-item-footer'>
-                <div className='item-price'>
-                  <i className='fa-solid fa-coins'></i>
-                  <span className='price-amount'>{item.cost}</span>
-                  <span className='price-label'>coins</span>
+              <div className='store-item-details'>
+                <h3>{item.name}</h3>
+
+                <div className='store-item-stats'>
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-sword'></i>
+                    <span className='stat-label'>Attack:</span>
+                    <span className='stat-value'>{item.attack}</span>
+                  </div>
+
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-shield'></i>
+                    <span className='stat-label'>Defense:</span>
+                    <span className='stat-value'>{item.defense}</span>
+                  </div>
+
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-heart'></i>
+                    <span className='stat-label'>Healing:</span>
+                    <span className='stat-value'>{item.healing}</span>
+                  </div>
+
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-fire'></i>
+                    <span className='stat-label'>Power:</span>
+                    <span className='stat-value'>{item.power}</span>
+                  </div>
+
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-dumbbell'></i>
+                    <span className='stat-label'>Endurance:</span>
+                    <span className='stat-value'>{item.endurance}</span>
+                  </div>
+
+                  <div className='stat-row'>
+                    <i className='fa-solid fa-star'></i>
+                    <span className='stat-label'>Level:</span>
+                    <span className='stat-value'>{item.level}</span>
+                  </div>
+
+                  <div className='stat-row total-power'>
+                    <i className='fa-solid fa-bolt'></i>
+                    <span className='stat-label'>Overall Power:</span>
+                    <span className='stat-value'>
+                      {item.attack + item.defense + item.healing}
+                    </span>
+                  </div>
                 </div>
-                <button className='purchase-btn'>
-                  <i className='fa-solid fa-cart-shopping'></i> Purchase
-                </button>
+
+                {item.ability && (
+                  <div className='store-item-ability'>
+                    <i className='fa-solid fa-wand-magic-sparkles'></i>
+                    <span className='ability-label'>Ability:</span>
+                    <span className='ability-name'>{item.ability}</span>
+                  </div>
+                )}
+
+                <div className='store-item-footer'>
+                  <div className='item-price'>
+                    <i className='fa-solid fa-coins'></i>
+                    <span className='price-amount'>{item.cost}</span>
+                    <span className='price-label'>coins</span>
+                  </div>
+                  <button
+                    className='purchase-btn'
+                    onClick={() => handlePurchase(item.id, item.cost)}
+                    disabled={!canAfford || purchasing === item.id}
+                  >
+                    {purchasing === item.id ? (
+                      <>
+                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                        Purchasing...
+                      </>
+                    ) : (
+                      <>
+                        <i className='fa-solid fa-cart-shopping'></i> Purchase
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

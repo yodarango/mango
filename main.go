@@ -20,6 +20,7 @@ type User struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
 	Password string `json:"-"` // Never send password in JSON
+	Role     string `json:"role"`
 }
 
 type Avatar struct {
@@ -75,6 +76,16 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+type PurchaseRequest struct {
+	AssetID int `json:"assetId"`
+}
+
+type PurchaseResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+	Coins   int    `json:"coins"`
+}
+
 var db *sql.DB
 var jwtSecret = []byte("your-secret-key-change-this-in-production")
 
@@ -101,7 +112,8 @@ func initDB() {
 	createUsersTableSQL := `CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL UNIQUE,
-		password TEXT NOT NULL
+		password TEXT NOT NULL,
+		role TEXT NOT NULL
 	);`
 
 	_, err = db.Exec(createUsersTableSQL)
@@ -425,7 +437,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := db.Exec("INSERT INTO users (name, password) VALUES (?, ?)", req.Name, req.Password)
+	result, err := db.Exec("INSERT INTO users (name, password, role) VALUES (?, ?, ?)", req.Name, req.Password, "student")
 	if err != nil {
 		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 			http.Error(w, "User already exists", http.StatusConflict)
@@ -448,6 +460,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		User: User{
 			ID:   int(userID),
 			Name: req.Name,
+			Role: "student",
 		},
 	}
 
@@ -463,7 +476,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user User
-	err := db.QueryRow("SELECT id, name FROM users WHERE name = ? AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name)
+	err := db.QueryRow("SELECT id, name, role FROM users WHERE name = ? AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
@@ -500,6 +513,119 @@ func generateToken(userID int, name string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtSecret)
+}
+
+func getUserFromToken(r *http.Request) (*Claims, error) {
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return nil, fmt.Errorf("no authorization header")
+	}
+
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
+		return claims, nil
+	}
+
+	return nil, fmt.Errorf("invalid token")
+}
+
+func purchaseAsset(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req PurchaseRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Get user's avatar and coins
+	var avatarID int
+	var coins int
+	err = tx.QueryRow("SELECT id, coins FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID, &coins)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "No avatar found for user", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Get asset details
+	var assetCost int
+	var assetName string
+	err = tx.QueryRow("SELECT cost, name FROM assets WHERE id = ? AND avatar_id IS NULL AND asset_type = 'store'", req.AssetID).Scan(&assetCost, &assetName)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Asset not found or not available for purchase", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Check if user has enough coins
+	if coins < assetCost {
+		response := PurchaseResponse{
+			Success: false,
+			Message: "Not enough coins",
+			Coins:   coins,
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	// Deduct coins
+	newCoins := coins - assetCost
+	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Assign asset to user's avatar
+	_, err = tx.Exec("UPDATE assets SET avatar_id = ? WHERE id = ?", avatarID, req.AssetID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Commit transaction
+	if err = tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := PurchaseResponse{
+		Success: true,
+		Message: fmt.Sprintf("Successfully purchased %s", assetName),
+		Coins:   newCoins,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 func getStoreItems(w http.ResponseWriter, r *http.Request) {
@@ -540,6 +666,7 @@ func main() {
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
 	api.HandleFunc("/store", getStoreItems).Methods("GET")
+	api.HandleFunc("/store/purchase", purchaseAsset).Methods("POST")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}
