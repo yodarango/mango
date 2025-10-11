@@ -1,24 +1,45 @@
+:root {
+  --charcoal-dark: #1a1a1a;
+  --charcoal-medium: #2d2d2d;
+  --charcoal-light: #3a3a3a;
+  --accent-green: #00ff41;
+  --accent-orange: #ff6b35;
+  --accent-yellow: #ffd700;
+  --text-light: #e0e0e0;
+}
+
+* {
+  font-family: "Cinzel", serif;
+}
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    135deg,
+    var(--charcoal-dark) 0%,
+    var(--charcoal-medium) 100%
+  );
 }
 
 .navbar {
-  background-color: rgba(44, 62, 80, 0.95);
-  color: white;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  background-color: var(--charcoal-dark);
+  color: var(--text-light);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  border-bottom: 3px solid var(--accent-green);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .navbar h1 {
+  font-family: "MedievalSharp", cursive;
   font-size: 2.2rem;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--accent-yellow);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
 .navbar-user {
@@ -29,34 +50,37 @@
 
 .user-name {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  color: var(--accent-green);
 }
 
 .user-name i {
-  color: #f39c12;
+  color: var(--accent-orange);
 }
 
 .logout-btn {
-  background: rgba(231, 76, 60, 0.9);
-  color: white;
-  border: none;
+  background: var(--charcoal-light);
+  color: var(--accent-orange);
+  border: 2px solid var(--accent-orange);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .logout-btn:hover {
-  background: rgba(192, 57, 43, 1);
+  background: var(--accent-orange);
+  color: var(--charcoal-dark);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
 }
 
 .logout-btn:active {
@@ -72,22 +96,25 @@
 }
 
 .page {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--charcoal-medium);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--charcoal-light);
 }
 
 .page h2 {
-  color: #2c3e50;
+  font-family: "MedievalSharp", cursive;
+  color: var(--accent-yellow);
   margin-bottom: 0.5rem;
   font-size: 2.5rem;
   text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .subtitle {
   text-align: center;
-  color: #666;
+  color: var(--text-light);
   font-size: 1.2rem;
   margin-bottom: 2rem;
   font-style: italic;

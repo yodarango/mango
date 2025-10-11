@@ -21,10 +21,12 @@ function Store() {
       // Get user's avatar to find coins and level
       const response = await fetch("/api/avatars");
       const avatars = await response.json();
+
       const userAvatar = avatars.find((a) => a.userId === user.id);
+
       if (userAvatar) {
-        setUserCoins(userAvatar.coins);
-        setUserLevel(userAvatar.level);
+        setUserCoins(userAvatar.coins || 0);
+        setUserLevel(userAvatar.level || 1);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);

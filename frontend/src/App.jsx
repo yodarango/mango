@@ -21,7 +21,7 @@ function App() {
   return (
     <div className='app'>
       <nav className='navbar'>
-        <h1>Spanish Quest - Avatar Gallery</h1>
+        <h1>Spanish Quest </h1>
         {!isLoginPage && user && (
           <div className='navbar-user'>
             <span className='user-name'>

@@ -9,16 +9,18 @@
 .avatar-card-new {
   border-radius: 12px;
   padding: 0;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid var(--charcoal-light);
   position: relative;
+  background: var(--charcoal-medium);
 }
 
 .avatar-card-new:hover {
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 24px rgba(0, 255, 65, 0.4);
+  border-color: var(--accent-green);
 }
 
 .rank-badge {
@@ -65,10 +67,12 @@
 }
 
 .student-info h3 {
+  font-family: "MedievalSharp", cursive;
   font-size: 1.4rem;
   margin: 0 0 0.25rem 0;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  color: var(--accent-yellow);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .avatar-name-card {
@@ -77,6 +81,7 @@
   margin: 0;
   opacity: 0.9;
   font-weight: 600;
+  color: var(--accent-green);
 }
 
 .stats-badges {

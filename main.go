@@ -310,7 +310,7 @@ func generateRandomAsset(avatarID int, assetType string) Asset {
 }
 
 func getAvatars(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
+	rows, err := db.Query(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
 		FROM avatars ORDER BY id`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -321,7 +321,7 @@ func getAvatars(w http.ResponseWriter, r *http.Request) {
 	var avatars []Avatar
 	for rows.Next() {
 		var avatar Avatar
-		if err := rows.Scan(&avatar.ID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
+		if err := rows.Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
 			&avatar.SuperPower, &avatar.Personality, &avatar.Weakness,
 			&avatar.AnimalAlly, &avatar.Mascot); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -378,8 +378,8 @@ func getAvatar(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	var avatar Avatar
-	err := db.QueryRow(`SELECT id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
-		FROM avatars WHERE id = ?`, id).Scan(&avatar.ID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
+	err := db.QueryRow(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
+		FROM avatars WHERE id = ?`, id).Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
 		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot)
 
 	if err != nil {
