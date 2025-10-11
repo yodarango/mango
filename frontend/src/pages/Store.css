@@ -1,0 +1,255 @@
+.store-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.store-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.store-header h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.store-header h1 i {
+  margin-right: 0.5rem;
+  color: #f39c12;
+}
+
+.store-subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.store-item-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #e0e0e0;
+}
+
+.store-item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #f39c12;
+}
+
+.store-item-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.store-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.store-item-details {
+  padding: 1.5rem;
+}
+
+.store-item-details h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.store-item-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.stat-row i {
+  width: 20px;
+  text-align: center;
+  color: #f39c12;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 90px;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.stat-row.total-power {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 2px solid #667eea;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.stat-row.total-power i {
+  color: #667eea;
+}
+
+.stat-row.total-power .stat-value {
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.store-item-ability {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.store-item-ability i {
+  color: #f39c12;
+}
+
+.ability-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.ability-name {
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.store-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 2px solid #e0e0e0;
+}
+
+.item-price {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.item-price i {
+  color: #f39c12;
+  font-size: 1.5rem;
+}
+
+.price-amount {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.price-label {
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.purchase-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.purchase-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.purchase-btn:active {
+  transform: scale(0.98);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.empty-store {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-store h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.empty-store p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}

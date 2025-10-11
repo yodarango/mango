@@ -93,7 +93,7 @@ func initDB() {
 
 	createAssetsTableSQL := `CREATE TABLE IF NOT EXISTS assets (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		avatar_id INTEGER NOT NULL,
+		avatar_id INTEGER,
 		asset_type TEXT NOT NULL,
 		name TEXT NOT NULL,
 		thumbnail TEXT NOT NULL,
@@ -378,6 +378,30 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(assets)
 }
 
+func getStoreItems(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, asset_type
+		FROM assets WHERE asset_type = 'store' AND avatar_id IS NULL ORDER BY cost`)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var items []Asset
+	for rows.Next() {
+		var item Asset
+		if err := rows.Scan(&item.ID, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
+			&item.Power, &item.Endurance, &item.Level, &item.Cost, &item.Ability, &item.Health, &item.Stamina, &item.AssetType); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		items = append(items, item)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -389,6 +413,7 @@ func main() {
 	api.HandleFunc("/avatars", getAvatars).Methods("GET")
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
+	api.HandleFunc("/store", getStoreItems).Methods("GET")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}
@@ -396,7 +421,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8010"
 	}
 
 	log.Printf("Server starting on port %s", port)

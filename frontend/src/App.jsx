@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Avatars from "./pages/Avatars";
 import AvatarProfile from "./pages/AvatarProfile";
+import Store from "./pages/Store";
 import "./App.css";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Avatars />} />
           <Route path='/avatar/:id' element={<AvatarProfile />} />
+          <Route path='/store' element={<Store />} />
         </Routes>
       </main>
     </div>
