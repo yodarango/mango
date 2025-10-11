@@ -5,27 +5,29 @@ function Store() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userCoins, setUserCoins] = useState(0);
+  const [userLevel, setUserLevel] = useState(0);
   const [purchasing, setPurchasing] = useState(null);
 
   useEffect(() => {
     fetchStoreItems();
-    fetchUserCoins();
+    fetchUserData();
   }, []);
 
-  const fetchUserCoins = async () => {
+  const fetchUserData = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) return;
 
-      // Get user's avatar to find coins
+      // Get user's avatar to find coins and level
       const response = await fetch("/api/avatars");
       const avatars = await response.json();
       const userAvatar = avatars.find((a) => a.userId === user.id);
       if (userAvatar) {
         setUserCoins(userAvatar.coins);
+        setUserLevel(userAvatar.level);
       }
     } catch (error) {
-      console.error("Error fetching user coins:", error);
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -41,7 +43,12 @@ function Store() {
     }
   };
 
-  const handlePurchase = async (itemId, itemCost) => {
+  const handlePurchase = async (itemId, itemCost, requiredLevel) => {
+    if (userLevel < requiredLevel) {
+      alert(`You need to be level ${requiredLevel} to purchase this item!`);
+      return;
+    }
+
     if (userCoins < itemCost) {
       alert("Not enough coins!");
       return;
@@ -115,14 +122,25 @@ function Store() {
       <div className='store-grid'>
         {items.map((item) => {
           const canAfford = userCoins >= item.cost;
+          const meetsLevelRequirement = userLevel >= item.requiredLevel;
+          const isLocked = !meetsLevelRequirement;
+          const isUnaffordable = !canAfford && meetsLevelRequirement;
+
           return (
             <div
               key={item.id}
-              className={`store-item-card ${!canAfford ? "unaffordable" : ""}`}
+              className={`store-item-card ${
+                isLocked || isUnaffordable ? "unaffordable" : ""
+              }`}
             >
               {item.thumbnail && (
                 <div className='store-item-image'>
                   <img src={item.thumbnail} alt={item.name} />
+                  {isLocked && (
+                    <div className='lock-overlay'>
+                      <i className='fa-solid fa-lock'></i>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -189,15 +207,27 @@ function Store() {
                     <span className='price-amount'>{item.cost}</span>
                     <span className='price-label'>coins</span>
                   </div>
+                  {isLocked && (
+                    <div className='level-requirement'>
+                      <i className='fa-solid fa-lock'></i>
+                      <span>Requires Level {item.requiredLevel}</span>
+                    </div>
+                  )}
                   <button
                     className='purchase-btn'
-                    onClick={() => handlePurchase(item.id, item.cost)}
-                    disabled={!canAfford || purchasing === item.id}
+                    onClick={() =>
+                      handlePurchase(item.id, item.cost, item.requiredLevel)
+                    }
+                    disabled={isLocked || !canAfford || purchasing === item.id}
                   >
                     {purchasing === item.id ? (
                       <>
                         <i className='fa-solid fa-spinner fa-spin'></i>{" "}
                         Purchasing...
+                      </>
+                    ) : isLocked ? (
+                      <>
+                        <i className='fa-solid fa-lock'></i> Locked
                       </>
                     ) : (
                       <>

@@ -24,40 +24,42 @@ type User struct {
 }
 
 type Avatar struct {
-	ID          int    `json:"id"`
-	UserID      *int   `json:"userId,omitempty"`
-	Name        string `json:"name"`
-	AvatarName  string `json:"avatarName"`
-	Thumbnail   string `json:"thumbnail"`
-	Coins       int    `json:"coins"`
-	Level       int    `json:"level"`
-	Element     string `json:"element"`
-	SuperPower  string `json:"superPower"`
-	Personality string `json:"personality"`
-	Weakness    string `json:"weakness"`
-	AnimalAlly  string `json:"animalAlly"`
-	Mascot      string `json:"mascot"`
-	AssetCount  int    `json:"assetCount,omitempty"`
-	TotalPower  int    `json:"totalPower,omitempty"`
-	Rank        int    `json:"rank,omitempty"`
+	ID            int    `json:"id"`
+	UserID        *int   `json:"userId,omitempty"`
+	Name          string `json:"name"`
+	AvatarName    string `json:"avatarName"`
+	Thumbnail     string `json:"thumbnail"`
+	Coins         int    `json:"coins"`
+	Level         int    `json:"level"`
+	RequiredLevel int    `json:"requiredLevel"`
+	Element       string `json:"element"`
+	SuperPower    string `json:"superPower"`
+	Personality   string `json:"personality"`
+	Weakness      string `json:"weakness"`
+	AnimalAlly    string `json:"animalAlly"`
+	Mascot        string `json:"mascot"`
+	AssetCount    int    `json:"assetCount,omitempty"`
+	TotalPower    int    `json:"totalPower,omitempty"`
+	Rank          int    `json:"rank,omitempty"`
 }
 
 type Asset struct {
-	ID        int    `json:"id"`
-	AvatarID  int    `json:"avatarId"`
-	AssetType string `json:"assetType"`
-	Name      string `json:"name"`
-	Thumbnail string `json:"thumbnail"`
-	Attack    int    `json:"attack"`
-	Defense   int    `json:"defense"`
-	Healing   int    `json:"healing"`
-	Power     int    `json:"power"`
-	Endurance int    `json:"endurance"`
-	Level     int    `json:"level"`
-	Cost      int    `json:"cost"`
-	Ability   string `json:"ability"`
-	Health    int    `json:"health"`
-	Stamina   int    `json:"stamina"`
+	ID            int    `json:"id"`
+	AvatarID      int    `json:"avatarId"`
+	AssetType     string `json:"assetType"`
+	Name          string `json:"name"`
+	Thumbnail     string `json:"thumbnail"`
+	Attack        int    `json:"attack"`
+	Defense       int    `json:"defense"`
+	Healing       int    `json:"healing"`
+	Power         int    `json:"power"`
+	Endurance     int    `json:"endurance"`
+	Level         int    `json:"level"`
+	RequiredLevel int    `json:"requiredLevel"`
+	Cost          int    `json:"cost"`
+	Ability       string `json:"ability"`
+	Health        int    `json:"health"`
+	Stamina       int    `json:"stamina"`
 }
 
 type LoginRequest struct {
@@ -129,6 +131,7 @@ func initDB() {
 		thumbnail TEXT NOT NULL,
 		coins INTEGER DEFAULT 0,
 		level INTEGER DEFAULT 1,
+		required_level INTEGER DEFAULT 0,
 		element TEXT NOT NULL,
 		super_power TEXT NOT NULL,
 		personality TEXT NOT NULL,
@@ -155,6 +158,7 @@ func initDB() {
 		power INTEGER NOT NULL,
 		endurance INTEGER NOT NULL CHECK(endurance <= 100),
 		level INTEGER NOT NULL CHECK(level <= 100),
+		required_level INTEGER DEFAULT 0,
 		cost INTEGER NOT NULL,
 		ability TEXT NOT NULL,
 		health INTEGER NOT NULL,
@@ -405,7 +409,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
 
-	rows, err := db.Query(`SELECT id, avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina
+	rows, err := db.Query(`SELECT id, avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina
 		FROM assets WHERE avatar_id = ? ORDER BY asset_type, level DESC`, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -418,7 +422,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 		var asset Asset
 		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.AssetType, &asset.Name, &asset.Thumbnail,
 			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
-			&asset.Endurance, &asset.Level, &asset.Cost, &asset.Ability,
+			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
 			&asset.Health, &asset.Stamina); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -629,7 +633,7 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStoreItems(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, asset_type
+	rows, err := db.Query(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, asset_type
 		FROM assets WHERE asset_type = 'store' AND avatar_id IS NULL ORDER BY cost`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -641,7 +645,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var item Asset
 		if err := rows.Scan(&item.ID, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
-			&item.Power, &item.Endurance, &item.Level, &item.Cost, &item.Ability, &item.Health, &item.Stamina, &item.AssetType); err != nil {
+			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability, &item.Health, &item.Stamina, &item.AssetType); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
