@@ -112,10 +112,16 @@ function Store() {
         <p className='store-subtitle'>
           Purchase powerful items for your avatar
         </p>
-        <div className='user-coins-display'>
-          <i className='fa-solid fa-coins'></i>
-          <span className='coins-amount'>{userCoins}</span>
-          <span className='coins-label'>coins available</span>
+        <div className='user-stats-display'>
+          <div className='user-coins-display'>
+            <i className='fa-solid fa-coins'></i>
+            <span className='coins-amount'>{userCoins}</span>
+            <span className='coins-label'>coins</span>
+          </div>
+          <div className='user-level-display'>
+            <i className='fa-solid fa-star'></i>
+            <span className='level-amount'>Level {userLevel}</span>
+          </div>
         </div>
       </div>
 
@@ -124,15 +130,11 @@ function Store() {
           const canAfford = userCoins >= item.cost;
           const meetsLevelRequirement = userLevel >= item.requiredLevel;
           const isLocked = !meetsLevelRequirement;
-          const isUnaffordable = !canAfford && meetsLevelRequirement;
-          const isLockedButAffordable = isLocked && canAfford;
 
           return (
             <div
               key={item.id}
-              className={`store-item-card ${
-                isUnaffordable ? "unaffordable" : ""
-              } ${isLockedButAffordable ? "locked-affordable" : ""}`}
+              className={`store-item-card ${!canAfford ? "unaffordable" : ""}`}
             >
               {item.thumbnail && (
                 <div className='store-item-image'>
@@ -212,18 +214,10 @@ function Store() {
                     <span className='price-amount'>{item.cost}</span>
                     <span className='price-label'>coins</span>
                   </div>
-                  {isLocked && (
-                    <div
-                      className={`level-requirement ${
-                        canAfford ? "level-requirement-yellow" : ""
-                      }`}
-                    >
-                      <i className='fa-solid fa-lock'></i>
-                      <span>Requires Level {item.requiredLevel}</span>
-                    </div>
-                  )}
                   <button
-                    className='purchase-btn'
+                    className={`purchase-btn ${
+                      isLocked && canAfford ? "btn-locked-yellow" : ""
+                    }`}
                     onClick={() =>
                       handlePurchase(item.id, item.cost, item.requiredLevel)
                     }
@@ -236,7 +230,8 @@ function Store() {
                       </>
                     ) : isLocked ? (
                       <>
-                        <i className='fa-solid fa-lock'></i> Locked
+                        <i className='fa-solid fa-lock'></i> Locked until level{" "}
+                        {item.requiredLevel}
                       </>
                     ) : (
                       <>

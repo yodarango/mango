@@ -26,6 +26,14 @@
   margin-bottom: 1rem;
 }
 
+.user-stats-display {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .user-coins-display {
   display: flex;
   align-items: center;
@@ -38,8 +46,6 @@
   font-size: 1.3rem;
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .user-coins-display i {
@@ -54,6 +60,28 @@
   font-size: 1rem;
   opacity: 0.9;
   font-weight: 500;
+}
+
+.user-level-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.user-level-display i {
+  font-size: 1.5rem;
+}
+
+.level-amount {
+  font-size: 1.3rem;
 }
 
 .store-grid {
@@ -80,27 +108,12 @@
 .store-item-card.unaffordable {
   filter: grayscale(100%);
   opacity: 0.6;
-  pointer-events: none;
-  cursor: not-allowed;
 }
 
 .store-item-card.unaffordable:hover {
   transform: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: #e0e0e0;
-}
-
-.store-item-card.locked-affordable {
-  filter: none;
-  opacity: 1;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-.store-item-card.locked-affordable:hover {
-  transform: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #f1c40f;
 }
 
 .store-item-image {
@@ -240,29 +253,6 @@
   border-top: 2px solid #e0e0e0;
 }
 
-.level-requirement {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(231, 76, 60, 0.1);
-  color: #e74c3c;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: 2px solid #e74c3c;
-}
-
-.level-requirement.level-requirement-yellow {
-  background: rgba(241, 196, 15, 0.15);
-  color: #f39c12;
-  border: 2px solid #f1c40f;
-}
-
-.level-requirement i {
-  font-size: 1rem;
-}
-
 .item-price {
   display: flex;
   align-items: center;
@@ -321,6 +311,18 @@
 .purchase-btn:disabled:hover {
   transform: none;
   box-shadow: none;
+}
+
+.purchase-btn.btn-locked-yellow {
+  background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+  color: #2c3e50;
+  opacity: 1;
+  font-weight: 700;
+}
+
+.purchase-btn.btn-locked-yellow:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
 }
 
 .loading-container {
