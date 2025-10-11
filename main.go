@@ -8,14 +8,23 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type User struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Password string `json:"-"` // Never send password in JSON
+}
+
 type Avatar struct {
 	ID          int    `json:"id"`
+	UserID      *int   `json:"userId,omitempty"`
 	Name        string `json:"name"`
 	AvatarName  string `json:"avatarName"`
 	Thumbnail   string `json:"thumbnail"`
@@ -50,7 +59,24 @@ type Asset struct {
 	Stamina   int    `json:"stamina"`
 }
 
+type LoginRequest struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+type LoginResponse struct {
+	Token string `json:"token"`
+	User  User   `json:"user"`
+}
+
+type Claims struct {
+	UserID int    `json:"userId"`
+	Name   string `json:"name"`
+	jwt.RegisteredClaims
+}
+
 var db *sql.DB
+var jwtSecret = []byte("your-secret-key-change-this-in-production")
 
 var (
 	mainPowers    = []string{"Fire 🔥", "Water 💧", "Electricity ⚡️", "Earth 🌱", "Wind 🌬️", "Time 🕥", "Light 🌞", "Metal 🪨"}
@@ -71,8 +97,21 @@ func initDB() {
 		log.Fatal(err)
 	}
 
+	// Create users table
+	createUsersTableSQL := `CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL UNIQUE,
+		password TEXT NOT NULL
+	);`
+
+	_, err = db.Exec(createUsersTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	createAvatarsTableSQL := `CREATE TABLE IF NOT EXISTS avatars (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER,
 		name TEXT NOT NULL,
 		avatar_name TEXT NOT NULL,
 		thumbnail TEXT NOT NULL,
@@ -83,7 +122,8 @@ func initDB() {
 		personality TEXT NOT NULL,
 		weakness TEXT NOT NULL,
 		animal_ally TEXT NOT NULL,
-		mascot TEXT NOT NULL
+		mascot TEXT NOT NULL,
+		FOREIGN KEY (user_id) REFERENCES users(id)
 	);`
 
 	_, err = db.Exec(createAvatarsTableSQL)
@@ -378,6 +418,90 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(assets)
 }
 
+func register(w http.ResponseWriter, r *http.Request) {
+	var req LoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	result, err := db.Exec("INSERT INTO users (name, password) VALUES (?, ?)", req.Name, req.Password)
+	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			http.Error(w, "User already exists", http.StatusConflict)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	userID, _ := result.LastInsertId()
+
+	token, err := generateToken(int(userID), req.Name)
+	if err != nil {
+		http.Error(w, "Error generating token", http.StatusInternalServerError)
+		return
+	}
+
+	response := LoginResponse{
+		Token: token,
+		User: User{
+			ID:   int(userID),
+			Name: req.Name,
+		},
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func login(w http.ResponseWriter, r *http.Request) {
+	var req LoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	var user User
+	err := db.QueryRow("SELECT id, name FROM users WHERE name = ? AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	token, err := generateToken(user.ID, user.Name)
+	if err != nil {
+		http.Error(w, "Error generating token", http.StatusInternalServerError)
+		return
+	}
+
+	response := LoginResponse{
+		Token: token,
+		User:  user,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func generateToken(userID int, name string) (string, error) {
+	claims := Claims{
+		UserID: userID,
+		Name:   name,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtSecret)
+}
+
 func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, asset_type
 		FROM assets WHERE asset_type = 'store' AND avatar_id IS NULL ORDER BY cost`)
@@ -410,6 +534,8 @@ func main() {
 
 	// API routes
 	api := router.PathPrefix("/api").Subrouter()
+	api.HandleFunc("/register", register).Methods("POST")
+	api.HandleFunc("/login", login).Methods("POST")
 	api.HandleFunc("/avatars", getAvatars).Methods("GET")
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
