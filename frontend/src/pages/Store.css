@@ -258,7 +258,34 @@
   flex-direction: column;
   gap: 0.75rem;
   padding-top: 1rem;
-  border-top: 2px solid #e0e0e0;
+  border-top: 2px solid var(--charcoal-light);
+}
+
+.item-stock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--charcoal-light);
+  border-radius: 6px;
+  border: 1px solid var(--charcoal-dark);
+}
+
+.item-stock i {
+  color: var(--accent-green);
+  font-size: 1rem;
+}
+
+.stock-amount {
+  font-weight: 700;
+  color: var(--accent-green);
+  font-size: 1.2rem;
+}
+
+.stock-label {
+  color: var(--text-light);
+  font-size: 0.9rem;
 }
 
 .item-price {

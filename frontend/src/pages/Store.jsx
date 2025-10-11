@@ -74,8 +74,8 @@ function Store() {
       if (response.ok && data.success) {
         alert(data.message);
         setUserCoins(data.coins);
-        // Remove purchased item from store
-        setItems(items.filter((item) => item.id !== itemId));
+        // Refresh store items to show updated stock
+        fetchStoreItems();
       } else {
         alert(data.message || "Purchase failed");
       }
@@ -215,6 +215,11 @@ function Store() {
                     <i className='fa-solid fa-coins'></i>
                     <span className='price-amount'>{item.cost}</span>
                     <span className='price-label'>coins</span>
+                  </div>
+                  <div className='item-stock'>
+                    <i className='fa-solid fa-box'></i>
+                    <span className='stock-amount'>{item.availableUnits}</span>
+                    <span className='stock-label'>in stock</span>
                   </div>
                   <button
                     className={`purchase-btn ${
