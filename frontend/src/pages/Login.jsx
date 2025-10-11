@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
@@ -9,6 +9,14 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +111,9 @@ function Login() {
             ) : (
               <>
                 <i
-                  className={`fa-solid ${isLogin ? "fa-right-to-bracket" : "fa-user-plus"}`}
+                  className={`fa-solid ${
+                    isLogin ? "fa-right-to-bracket" : "fa-user-plus"
+                  }`}
                 ></i>
                 {isLogin ? "Login" : "Register"}
               </>
@@ -132,4 +142,3 @@ function Login() {
 }
 
 export default Login;
-
