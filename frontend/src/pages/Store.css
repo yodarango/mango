@@ -90,6 +90,19 @@
   border-color: #e0e0e0;
 }
 
+.store-item-card.locked-affordable {
+  filter: none;
+  opacity: 1;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.store-item-card.locked-affordable:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #f1c40f;
+}
+
 .store-item-image {
   width: 100%;
   height: 300px;
@@ -120,6 +133,12 @@
   font-size: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   z-index: 10;
+}
+
+.lock-overlay.lock-yellow {
+  background: rgba(241, 196, 15, 0.95);
+  color: #2c3e50;
+  box-shadow: 0 4px 12px rgba(241, 196, 15, 0.6);
 }
 
 .store-item-details {
@@ -232,6 +251,12 @@
   font-weight: 600;
   font-size: 0.9rem;
   border: 2px solid #e74c3c;
+}
+
+.level-requirement.level-requirement-yellow {
+  background: rgba(241, 196, 15, 0.15);
+  color: #f39c12;
+  border: 2px solid #f1c40f;
 }
 
 .level-requirement i {

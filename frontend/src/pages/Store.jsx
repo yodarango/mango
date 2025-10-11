@@ -125,19 +125,24 @@ function Store() {
           const meetsLevelRequirement = userLevel >= item.requiredLevel;
           const isLocked = !meetsLevelRequirement;
           const isUnaffordable = !canAfford && meetsLevelRequirement;
+          const isLockedButAffordable = isLocked && canAfford;
 
           return (
             <div
               key={item.id}
               className={`store-item-card ${
-                isLocked || isUnaffordable ? "unaffordable" : ""
-              }`}
+                isUnaffordable ? "unaffordable" : ""
+              } ${isLockedButAffordable ? "locked-affordable" : ""}`}
             >
               {item.thumbnail && (
                 <div className='store-item-image'>
                   <img src={item.thumbnail} alt={item.name} />
                   {isLocked && (
-                    <div className='lock-overlay'>
+                    <div
+                      className={`lock-overlay ${
+                        canAfford ? "lock-yellow" : ""
+                      }`}
+                    >
                       <i className='fa-solid fa-lock'></i>
                     </div>
                   )}
@@ -208,7 +213,11 @@ function Store() {
                     <span className='price-label'>coins</span>
                   </div>
                   {isLocked && (
-                    <div className='level-requirement'>
+                    <div
+                      className={`level-requirement ${
+                        canAfford ? "level-requirement-yellow" : ""
+                      }`}
+                    >
                       <i className='fa-solid fa-lock'></i>
                       <span>Requires Level {item.requiredLevel}</span>
                     </div>
