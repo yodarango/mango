@@ -9,6 +9,9 @@ import CreateNotifications from "./pages/CreateNotifications";
 import CreateGame from "./pages/CreateGame";
 import EditGame from "./pages/EditGame";
 import Play from "./pages/Play";
+import CreateBattle from "./pages/CreateBattle";
+import EditBattle from "./pages/EditBattle";
+import AdminBattle from "./pages/AdminBattle";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
 import "./App.css";
@@ -122,6 +125,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <Play />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-battle'
+            element={
+              <ProtectedRoute>
+                <CreateBattle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/edit-battle/:battleId'
+            element={
+              <ProtectedRoute>
+                <EditBattle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/battle/:battleId'
+            element={
+              <ProtectedRoute>
+                <AdminBattle />
               </ProtectedRoute>
             }
           />

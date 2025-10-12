@@ -127,6 +127,28 @@ type GameCell struct {
 	IsOccupied  bool   `json:"isOccupied"`  // Whether a player is currently on this cell
 }
 
+type Battle struct {
+	ID     int       `json:"id"`
+	Name   string    `json:"name"`
+	Reward string    `json:"reward"`
+	Winner *int      `json:"winner,omitempty"`
+	Date   time.Time `json:"date"`
+	Status string    `json:"status"` // pending, in_progress, completed
+}
+
+type BattleQuestion struct {
+	ID             int       `json:"id"`
+	BattleID       int       `json:"battleId"`
+	Question       string    `json:"question"`       // HTML content
+	Answer         string    `json:"answer"`         // Correct answer
+	UserID         *int      `json:"userId"`         // Avatar ID assigned to this question
+	PossiblePoints int       `json:"possiblePoints"` // Maximum points for this question
+	ReceivedScore  int       `json:"receivedScore"`  // Points awarded by admin
+	Time           int       `json:"time"`           // Time to answer in seconds
+	UserAnswer     *string   `json:"userAnswer"`     // User's submitted answer
+	SubmittedAt    *string   `json:"submittedAt"`    // When user submitted
+}
+
 type CreateGameRequest struct {
 	Name      string   `json:"name"`
 	Thumbnail string   `json:"thumbnail"`
@@ -264,6 +286,43 @@ func initDB() {
 	);`
 
 	_, err = db.Exec(createGameCellsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create battles table
+	createBattlesTableSQL := `CREATE TABLE IF NOT EXISTS battles (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		reward TEXT,
+		winner INTEGER,
+		date DATETIME DEFAULT CURRENT_TIMESTAMP,
+		status TEXT DEFAULT 'pending',
+		FOREIGN KEY (winner) REFERENCES avatars(id)
+	);`
+
+	_, err = db.Exec(createBattlesTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create battle_questions table
+	createBattleQuestionsTableSQL := `CREATE TABLE IF NOT EXISTS battle_questions (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		battle_id INTEGER NOT NULL,
+		question TEXT NOT NULL,
+		answer TEXT NOT NULL,
+		user_id INTEGER DEFAULT NULL,
+		possible_points INTEGER NOT NULL,
+		received_score INTEGER DEFAULT 0,
+		time INTEGER NOT NULL,
+		user_answer TEXT DEFAULT NULL,
+		submitted_at DATETIME DEFAULT NULL,
+		FOREIGN KEY (battle_id) REFERENCES battles(id) ON DELETE CASCADE,
+		FOREIGN KEY (user_id) REFERENCES avatars(id)
+	);`
+
+	_, err = db.Exec(createBattleQuestionsTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1187,6 +1246,397 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Create a new battle with questions
+func createBattle(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		Name      string `json:"name"`
+		Reward    string `json:"reward"`
+		Questions []struct {
+			Question       string `json:"question"`
+			Answer         string `json:"answer"`
+			PossiblePoints int    `json:"possiblePoints"`
+			Time           int    `json:"time"`
+		} `json:"questions"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Create battle
+	result, err := db.Exec("INSERT INTO battles (name, reward, status) VALUES (?, ?, 'pending')",
+		req.Name, req.Reward)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	battleID, _ := result.LastInsertId()
+
+	// Create questions
+	for _, q := range req.Questions {
+		_, err := db.Exec(`INSERT INTO battle_questions
+			(battle_id, question, answer, possible_points, time)
+			VALUES (?, ?, ?, ?, ?)`,
+			battleID, q.Question, q.Answer, q.PossiblePoints, q.Time)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":  true,
+		"battleId": battleID,
+	})
+}
+
+// Get all battles
+func getBattles(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	rows, err := db.Query("SELECT id, name, reward, winner, date, status FROM battles ORDER BY date DESC")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var battles []Battle
+	for rows.Next() {
+		var b Battle
+		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status)
+		if err != nil {
+			continue
+		}
+		battles = append(battles, b)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(battles)
+}
+
+// Get a specific battle with questions
+func getBattle(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	battleID := vars["id"]
+
+	var battle Battle
+	err = db.QueryRow("SELECT id, name, reward, winner, date, status FROM battles WHERE id = ?", battleID).
+		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status)
+	if err != nil {
+		http.Error(w, "Battle not found", http.StatusNotFound)
+		return
+	}
+
+	// Get questions
+	rows, err := db.Query(`SELECT id, battle_id, question, answer, user_id, possible_points,
+		received_score, time, user_answer, submitted_at FROM battle_questions WHERE battle_id = ?`, battleID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var questions []BattleQuestion
+	for rows.Next() {
+		var q BattleQuestion
+		err := rows.Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
+			&q.PossiblePoints, &q.ReceivedScore, &q.Time, &q.UserAnswer, &q.SubmittedAt)
+		if err != nil {
+			continue
+		}
+		questions = append(questions, q)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"battle":    battle,
+		"questions": questions,
+	})
+}
+
+// Assign questions to avatars
+func assignQuestions(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		Assignments []struct {
+			QuestionID int `json:"questionId"`
+			AvatarID   int `json:"avatarId"`
+		} `json:"assignments"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Update question assignments
+	for _, a := range req.Assignments {
+		_, err := db.Exec("UPDATE battle_questions SET user_id = ? WHERE id = ?",
+			a.AvatarID, a.QuestionID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Start battle (change status to in_progress)
+func startBattle(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	battleID := vars["id"]
+
+	_, err = db.Exec("UPDATE battles SET status = 'in_progress' WHERE id = ?", battleID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Submit answer (for students)
+func submitAnswer(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		QuestionID int    `json:"questionId"`
+		Answer     string `json:"answer"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get user's avatar ID
+	var avatarID int
+	err = db.QueryRow("SELECT id FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID)
+	if err != nil {
+		http.Error(w, "Avatar not found", http.StatusNotFound)
+		return
+	}
+
+	// Submit answer
+	_, err = db.Exec(`UPDATE battle_questions
+		SET user_answer = ?, submitted_at = CURRENT_TIMESTAMP
+		WHERE id = ? AND user_id = ?`,
+		req.Answer, req.QuestionID, avatarID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Grade answers (admin)
+func gradeAnswers(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		Grades []struct {
+			QuestionID    int `json:"questionId"`
+			ReceivedScore int `json:"receivedScore"`
+		} `json:"grades"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Update scores
+	for _, g := range req.Grades {
+		_, err := db.Exec("UPDATE battle_questions SET received_score = ? WHERE id = ?",
+			g.ReceivedScore, g.QuestionID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Update a battle
+func updateBattle(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	battleID := vars["id"]
+
+	var req struct {
+		Name      string `json:"name"`
+		Reward    string `json:"reward"`
+		Questions []struct {
+			ID             *int   `json:"id"`
+			Question       string `json:"question"`
+			Answer         string `json:"answer"`
+			PossiblePoints int    `json:"possiblePoints"`
+			Time           int    `json:"time"`
+		} `json:"questions"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Update battle details
+	_, err = db.Exec("UPDATE battles SET name = ?, reward = ? WHERE id = ?",
+		req.Name, req.Reward, battleID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get existing question IDs
+	rows, err := db.Query("SELECT id FROM battle_questions WHERE battle_id = ?", battleID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	existingIDs := make(map[int]bool)
+	for rows.Next() {
+		var id int
+		rows.Scan(&id)
+		existingIDs[id] = true
+	}
+	rows.Close()
+
+	// Track which questions are in the update
+	updatedIDs := make(map[int]bool)
+
+	// Update or insert questions
+	for _, q := range req.Questions {
+		if q.ID != nil && *q.ID > 0 {
+			// Update existing question
+			_, err := db.Exec(`UPDATE battle_questions
+				SET question = ?, answer = ?, possible_points = ?, time = ?
+				WHERE id = ? AND battle_id = ?`,
+				q.Question, q.Answer, q.PossiblePoints, q.Time, *q.ID, battleID)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			updatedIDs[*q.ID] = true
+		} else {
+			// Insert new question
+			_, err := db.Exec(`INSERT INTO battle_questions
+				(battle_id, question, answer, possible_points, time)
+				VALUES (?, ?, ?, ?, ?)`,
+				battleID, q.Question, q.Answer, q.PossiblePoints, q.Time)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		}
+	}
+
+	// Delete questions that were removed
+	for id := range existingIDs {
+		if !updatedIDs[id] {
+			_, err := db.Exec("DELETE FROM battle_questions WHERE id = ?", id)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -1211,6 +1661,16 @@ func main() {
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
+
+	// Battle routes
+	api.HandleFunc("/battles", getBattles).Methods("GET")
+	api.HandleFunc("/battles/create", createBattle).Methods("POST")
+	api.HandleFunc("/battles/{id}", getBattle).Methods("GET")
+	api.HandleFunc("/battles/{id}", updateBattle).Methods("PUT")
+	api.HandleFunc("/battles/{id}/assign", assignQuestions).Methods("POST")
+	api.HandleFunc("/battles/{id}/start", startBattle).Methods("POST")
+	api.HandleFunc("/battles/submit-answer", submitAnswer).Methods("POST")
+	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}

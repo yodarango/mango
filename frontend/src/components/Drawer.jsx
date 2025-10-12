@@ -103,6 +103,15 @@ function Drawer({ isOpen, onClose }) {
                   <i className='fa-solid fa-chess-board'></i>
                   <span>Create Game</span>
                 </Link>
+
+                <Link
+                  to='/admin/create-battle'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-swords'></i>
+                  <span>Create Battle</span>
+                </Link>
               </>
             )}
           </nav>
