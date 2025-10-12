@@ -4,6 +4,8 @@ import Avatars from "./pages/Avatars";
 import AvatarProfile from "./pages/AvatarProfile";
 import Store from "./pages/Store";
 import Login from "./pages/Login";
+import Messages from "./pages/Messages";
+import CreateNotifications from "./pages/CreateNotifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
 import "./App.css";
@@ -77,6 +79,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Store />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/messages'
+            element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-notifications'
+            element={
+              <ProtectedRoute>
+                <CreateNotifications />
               </ProtectedRoute>
             }
           />

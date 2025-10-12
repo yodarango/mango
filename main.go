@@ -61,6 +61,7 @@ type Asset struct {
 	Health         int    `json:"health"`
 	Stamina        int    `json:"stamina"`
 	AvailableUnits int    `json:"availableUnits"`
+	Description    string `json:"description"`
 }
 
 type LoginRequest struct {
@@ -87,6 +88,22 @@ type PurchaseResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
 	Coins   int    `json:"coins"`
+}
+
+type Notification struct {
+	ID        int       `json:"id"`
+	UserID    int       `json:"userId"`
+	Title     string    `json:"title"`
+	Message   string    `json:"message"`
+	IsRead    bool      `json:"isRead"`
+	CreatedAt time.Time `json:"createdAt"`
+	ReadAt    *time.Time `json:"readAt,omitempty"`
+}
+
+type CreateNotificationRequest struct {
+	UserIDs []int  `json:"userIds"` // Empty array or "all" means all students
+	Title   string `json:"title"`
+	Message string `json:"message"`
 }
 
 var db *sql.DB
@@ -165,10 +182,27 @@ func initDB() {
 		health INTEGER NOT NULL,
 		stamina INTEGER NOT NULL,
 		available_units INTEGER DEFAULT 0,
+		description TEXT,
 		FOREIGN KEY (avatar_id) REFERENCES avatars(id)
 	);`
 
 	_, err = db.Exec(createAssetsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createNotificationsTableSQL := `CREATE TABLE IF NOT EXISTS notifications (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		title TEXT NOT NULL,
+		message TEXT NOT NULL,
+		is_read INTEGER DEFAULT 0,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		read_at DATETIME,
+		FOREIGN KEY (user_id) REFERENCES users(id)
+	);`
+
+	_, err = db.Exec(createNotificationsTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -684,6 +718,164 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
+// Get all students (for admin)
+func getStudents(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query("SELECT id, name, role FROM users WHERE role = 'student' ORDER BY name")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var students []User
+	for rows.Next() {
+		var student User
+		if err := rows.Scan(&student.ID, &student.Name, &student.Role); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		students = append(students, student)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(students)
+}
+
+// Create notifications (admin only)
+func createNotifications(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req CreateNotificationRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get target user IDs
+	var targetUserIDs []int
+	if len(req.UserIDs) == 0 {
+		// Send to all students
+		rows, err := db.Query("SELECT id FROM users WHERE role = 'student'")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var userID int
+			if err := rows.Scan(&userID); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			targetUserIDs = append(targetUserIDs, userID)
+		}
+	} else {
+		targetUserIDs = req.UserIDs
+	}
+
+	// Create notifications for each user
+	for _, userID := range targetUserIDs {
+		_, err := db.Exec("INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)",
+			userID, req.Title, req.Message)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": fmt.Sprintf("Notification sent to %d student(s)", len(targetUserIDs)),
+		"count":   len(targetUserIDs),
+	})
+}
+
+// Get user's notifications
+func getNotifications(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	rows, err := db.Query(`SELECT id, user_id, title, message, is_read, created_at, read_at
+		FROM notifications WHERE user_id = ? ORDER BY created_at DESC`, claims.UserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var notifications []Notification
+	for rows.Next() {
+		var notif Notification
+		var isRead int
+		var readAt sql.NullTime
+		if err := rows.Scan(&notif.ID, &notif.UserID, &notif.Title, &notif.Message,
+			&isRead, &notif.CreatedAt, &readAt); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		notif.IsRead = isRead == 1
+		if readAt.Valid {
+			notif.ReadAt = &readAt.Time
+		}
+		notifications = append(notifications, notif)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(notifications)
+}
+
+// Mark notification as read
+func markNotificationRead(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	notifID := vars["id"]
+
+	// Verify notification belongs to user
+	var userID int
+	err = db.QueryRow("SELECT user_id FROM notifications WHERE id = ?", notifID).Scan(&userID)
+	if err != nil {
+		http.Error(w, "Notification not found", http.StatusNotFound)
+		return
+	}
+
+	if userID != claims.UserID {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	// Mark as read
+	_, err = db.Exec("UPDATE notifications SET is_read = 1, read_at = CURRENT_TIMESTAMP WHERE id = ?", notifID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -699,6 +891,10 @@ func main() {
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
 	api.HandleFunc("/store", getStoreItems).Methods("GET")
 	api.HandleFunc("/store/purchase", purchaseAsset).Methods("POST")
+	api.HandleFunc("/students", getStudents).Methods("GET")
+	api.HandleFunc("/notifications", getNotifications).Methods("GET")
+	api.HandleFunc("/notifications/create", createNotifications).Methods("POST")
+	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}

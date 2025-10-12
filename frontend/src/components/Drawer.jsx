@@ -61,6 +61,11 @@ function Drawer({ isOpen, onClose }) {
               <span>Store</span>
             </Link>
 
+            <Link to='/messages' className='drawer-link' onClick={onClose}>
+              <i className='fa-solid fa-envelope'></i>
+              <span>Messages</span>
+            </Link>
+
             {avatarId && (
               <Link
                 to={`/avatar/${avatarId}`}
