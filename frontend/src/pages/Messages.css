@@ -241,7 +241,167 @@
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 2rem;
-  white-space: pre-wrap;
+}
+
+/* Markdown Styling */
+.modal-message h1,
+.modal-message h2,
+.modal-message h3,
+.modal-message h4,
+.modal-message h5,
+.modal-message h6 {
+  font-family: "MedievalSharp", cursive;
+  color: var(--accent-yellow);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.modal-message h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--accent-green);
+  padding-bottom: 0.5rem;
+}
+
+.modal-message h2 {
+  font-size: 1.7rem;
+  border-bottom: 1px solid var(--charcoal-light);
+  padding-bottom: 0.4rem;
+}
+
+.modal-message h3 {
+  font-size: 1.4rem;
+}
+
+.modal-message h4 {
+  font-size: 1.2rem;
+}
+
+.modal-message p {
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.modal-message a {
+  color: var(--accent-green);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid var(--accent-green);
+  transition: all 0.3s ease;
+}
+
+.modal-message a:hover {
+  color: var(--accent-yellow);
+  border-bottom-color: var(--accent-yellow);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.modal-message ul,
+.modal-message ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.modal-message li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.modal-message ul li::marker {
+  color: var(--accent-orange);
+}
+
+.modal-message ol li::marker {
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.modal-message blockquote {
+  border-left: 4px solid var(--accent-orange);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--text-light);
+  background: var(--charcoal-dark);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.modal-message code {
+  background: var(--charcoal-dark);
+  color: var(--accent-green);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  border: 1px solid var(--charcoal-light);
+}
+
+.modal-message pre {
+  background: var(--charcoal-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 2px solid var(--charcoal-light);
+}
+
+.modal-message pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--accent-green);
+}
+
+.modal-message strong {
+  color: var(--accent-yellow);
+  font-weight: 700;
+}
+
+.modal-message em {
+  color: var(--accent-orange);
+  font-style: italic;
+}
+
+.modal-message hr {
+  border: none;
+  border-top: 2px solid var(--charcoal-light);
+  margin: 2rem 0;
+}
+
+.modal-message img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid var(--charcoal-light);
+  margin: 1rem 0;
+}
+
+.modal-message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background: var(--charcoal-dark);
+  border: 2px solid var(--charcoal-light);
+}
+
+.modal-message th,
+.modal-message td {
+  padding: 0.75rem;
+  border: 1px solid var(--charcoal-light);
+  text-align: left;
+}
+
+.modal-message th {
+  background: var(--charcoal-light);
+  color: var(--accent-yellow);
+  font-family: "MedievalSharp", cursive;
+  font-weight: 700;
+}
+
+.modal-message td {
+  color: var(--text-light);
 }
 
 .modal-footer {
@@ -317,4 +477,3 @@
     font-size: 1.5rem;
   }
 }
-

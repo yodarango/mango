@@ -106,6 +106,35 @@ type CreateNotificationRequest struct {
 	Message string `json:"message"`
 }
 
+type Game struct {
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	Thumbnail string    `json:"thumbnail"`
+	Rows      int       `json:"rows"`
+	Columns   int       `json:"columns"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type GameCell struct {
+	ID          int    `json:"id"`
+	GameID      int    `json:"gameId"`      // Foreign key to games table
+	CellID      string `json:"cellId"`      // Chess-like ID (e.g., A1, B3, E5)
+	Name        string `json:"name"`        // Display name for the cell
+	Description string `json:"description"` // Description of what's in this cell
+	Background  string `json:"background"`  // Color hex code or image URL
+	Active      bool   `json:"active"`      // Whether the cell is active/playable
+	Element     string `json:"element"`     // Terrain type or avatar element it belongs to
+	IsOccupied  bool   `json:"isOccupied"`  // Whether a player is currently on this cell
+}
+
+type CreateGameRequest struct {
+	Name      string   `json:"name"`
+	Thumbnail string   `json:"thumbnail"`
+	Rows      int      `json:"rows"`
+	Columns   int      `json:"columns"`
+	AvatarIDs []int    `json:"avatarIds"` // Selected avatars for this game
+}
+
 var db *sql.DB
 var jwtSecret = []byte("your-secret-key-change-this-in-production")
 
@@ -203,6 +232,44 @@ func initDB() {
 	);`
 
 	_, err = db.Exec(createNotificationsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createGamesTableSQL := `CREATE TABLE IF NOT EXISTS games (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		thumbnail TEXT,
+		rows INTEGER NOT NULL,
+		columns INTEGER NOT NULL,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	);`
+
+	_, err = db.Exec(createGamesTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createGameCellsTableSQL := `CREATE TABLE IF NOT EXISTS game_cells (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		game_id INTEGER NOT NULL,
+		cell_id TEXT NOT NULL,
+		name TEXT,
+		description TEXT,
+		background TEXT,
+		active INTEGER DEFAULT 1,
+		element TEXT,
+		is_occupied INTEGER DEFAULT 0,
+		FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+	);`
+
+	_, err = db.Exec(createGameCellsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Enable foreign keys
+	_, err = db.Exec("PRAGMA foreign_keys = ON;")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -876,6 +943,181 @@ func markNotificationRead(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Create a new game with grid cells
+func createGame(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req CreateGameRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate input
+	if req.Rows < 1 || req.Rows > 26 || req.Columns < 1 || req.Columns > 26 {
+		http.Error(w, "Rows and columns must be between 1 and 26", http.StatusBadRequest)
+		return
+	}
+
+	// Create game
+	result, err := db.Exec("INSERT INTO games (name, thumbnail, rows, columns) VALUES (?, ?, ?, ?)",
+		req.Name, req.Thumbnail, req.Rows, req.Columns)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	gameID, _ := result.LastInsertId()
+
+	// Generate grid cells (chess-like notation: A1, A2, B1, B2, etc.)
+	for row := 0; row < req.Rows; row++ {
+		rowLetter := string(rune('A' + row))
+		for col := 1; col <= req.Columns; col++ {
+			cellID := fmt.Sprintf("%s%d", rowLetter, col)
+			_, err := db.Exec(`INSERT INTO game_cells (game_id, cell_id, name, background, active, is_occupied)
+				VALUES (?, ?, ?, ?, 1, 0)`,
+				gameID, cellID, cellID, "#3a3a3a") // Default charcoal background
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"gameId":  gameID,
+		"message": fmt.Sprintf("Game created with %d cells", req.Rows*req.Columns),
+	})
+}
+
+// Get all games
+func getGames(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query("SELECT id, name, thumbnail, rows, columns, created_at FROM games ORDER BY created_at DESC")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var games []Game
+	for rows.Next() {
+		var game Game
+		if err := rows.Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CreatedAt); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		games = append(games, game)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(games)
+}
+
+// Get a specific game with all its cells
+func getGame(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	gameID := vars["id"]
+
+	var game Game
+	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, created_at FROM games WHERE id = ?", gameID).
+		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CreatedAt)
+	if err != nil {
+		http.Error(w, "Game not found", http.StatusNotFound)
+		return
+	}
+
+	// Get all cells for this game
+	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, is_occupied
+		FROM game_cells WHERE game_id = ? ORDER BY cell_id`, gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var cells []GameCell
+	for rows.Next() {
+		var cell GameCell
+		var active, isOccupied int
+		var name, description, background, element sql.NullString
+		if err := rows.Scan(&cell.ID, &cell.GameID, &cell.CellID, &name, &description, &background,
+			&active, &element, &isOccupied); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		cell.Active = active == 1
+		cell.IsOccupied = isOccupied == 1
+		if name.Valid {
+			cell.Name = name.String
+		}
+		if description.Valid {
+			cell.Description = description.String
+		}
+		if background.Valid {
+			cell.Background = background.String
+		}
+		if element.Valid {
+			cell.Element = element.String
+		}
+		cells = append(cells, cell)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"game":  game,
+		"cells": cells,
+	})
+}
+
+// Delete a game (cascades to delete all cells)
+func deleteGame(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	gameID := vars["id"]
+
+	result, err := db.Exec("DELETE FROM games WHERE id = ?", gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		http.Error(w, "Game not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -895,6 +1137,10 @@ func main() {
 	api.HandleFunc("/notifications", getNotifications).Methods("GET")
 	api.HandleFunc("/notifications/create", createNotifications).Methods("POST")
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
+	api.HandleFunc("/games", getGames).Methods("GET")
+	api.HandleFunc("/games/create", createGame).Methods("POST")
+	api.HandleFunc("/games/{id}", getGame).Methods("GET")
+	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}

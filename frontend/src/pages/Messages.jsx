@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import "./Messages.css";
 
 function Messages() {
@@ -72,20 +73,20 @@ function Messages() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className='loading-container'>
+        <div className='loading-spinner'></div>
         <p>Loading messages...</p>
       </div>
     );
   }
 
   return (
-    <div className="messages-container">
-      <div className="messages-header">
+    <div className='messages-container'>
+      <div className='messages-header'>
         <h1>
-          <i className="fa-solid fa-envelope"></i> Messages
+          <i className='fa-solid fa-envelope'></i> Messages
         </h1>
-        <p className="messages-subtitle">
+        <p className='messages-subtitle'>
           {unreadCount > 0
             ? `You have ${unreadCount} unread message${
                 unreadCount > 1 ? "s" : ""
@@ -95,13 +96,13 @@ function Messages() {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="empty-messages">
-          <i className="fa-solid fa-inbox"></i>
+        <div className='empty-messages'>
+          <i className='fa-solid fa-inbox'></i>
           <h2>No Messages</h2>
           <p>You don't have any messages yet.</p>
         </div>
       ) : (
-        <div className="notifications-list">
+        <div className='notifications-list'>
           {notifications.map((notification) => (
             <div
               key={notification.id}
@@ -110,27 +111,27 @@ function Messages() {
               }`}
               onClick={() => handleNotificationClick(notification)}
             >
-              <div className="notification-icon">
+              <div className='notification-icon'>
                 {notification.isRead ? (
-                  <i className="fa-solid fa-envelope-open"></i>
+                  <i className='fa-solid fa-envelope-open'></i>
                 ) : (
-                  <i className="fa-solid fa-envelope"></i>
+                  <i className='fa-solid fa-envelope'></i>
                 )}
               </div>
-              <div className="notification-content">
+              <div className='notification-content'>
                 <h3>{notification.title}</h3>
-                <p className="notification-preview">
+                <p className='notification-preview'>
                   {notification.message.substring(0, 100)}
                   {notification.message.length > 100 ? "..." : ""}
                 </p>
-                <div className="notification-meta">
-                  <span className="notification-date">
-                    <i className="fa-solid fa-clock"></i>{" "}
+                <div className='notification-meta'>
+                  <span className='notification-date'>
+                    <i className='fa-solid fa-clock'></i>{" "}
                     {formatDate(notification.createdAt)}
                   </span>
                   {!notification.isRead && (
-                    <span className="unread-badge">
-                      <i className="fa-solid fa-circle"></i> New
+                    <span className='unread-badge'>
+                      <i className='fa-solid fa-circle'></i> New
                     </span>
                   )}
                 </div>
@@ -143,24 +144,26 @@ function Messages() {
       {/* Modal for viewing full notification */}
       {selectedNotification && (
         <>
-          <div className="modal-overlay" onClick={closeModal}></div>
-          <div className="notification-modal">
-            <div className="modal-header">
+          <div className='modal-overlay' onClick={closeModal}></div>
+          <div className='notification-modal'>
+            <div className='modal-header'>
               <h2>{selectedNotification.title}</h2>
-              <button className="modal-close-btn" onClick={closeModal}>
-                <i className="fa-solid fa-times"></i>
+              <button className='modal-close-btn' onClick={closeModal}>
+                <i className='fa-solid fa-times'></i>
               </button>
             </div>
-            <div className="modal-body">
-              <p className="modal-message">{selectedNotification.message}</p>
-              <div className="modal-footer">
-                <span className="modal-date">
-                  <i className="fa-solid fa-calendar"></i>{" "}
+            <div className='modal-body'>
+              <div className='modal-message'>
+                <ReactMarkdown>{selectedNotification.message}</ReactMarkdown>
+              </div>
+              <div className='modal-footer'>
+                <span className='modal-date'>
+                  <i className='fa-solid fa-calendar'></i>{" "}
                   {formatDate(selectedNotification.createdAt)}
                 </span>
                 {selectedNotification.isRead && selectedNotification.readAt && (
-                  <span className="modal-read-date">
-                    <i className="fa-solid fa-check-double"></i> Read on{" "}
+                  <span className='modal-read-date'>
+                    <i className='fa-solid fa-check-double'></i> Read on{" "}
                     {formatDate(selectedNotification.readAt)}
                   </span>
                 )}
@@ -174,4 +177,3 @@ function Messages() {
 }
 
 export default Messages;
-

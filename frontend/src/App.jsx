@@ -6,6 +6,8 @@ import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import CreateNotifications from "./pages/CreateNotifications";
+import CreateGame from "./pages/CreateGame";
+import Play from "./pages/Play";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
 import "./App.css";
@@ -95,6 +97,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-game'
+            element={
+              <ProtectedRoute>
+                <CreateGame />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/play/:gameId'
+            element={
+              <ProtectedRoute>
+                <Play />
               </ProtectedRoute>
             }
           />

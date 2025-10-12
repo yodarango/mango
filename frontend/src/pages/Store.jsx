@@ -74,8 +74,8 @@ function Store() {
       if (response.ok && data.success) {
         alert(data.message);
         setUserCoins(data.coins);
-        // Refresh store items to show updated stock
-        fetchStoreItems();
+        // Remove purchased item from store
+        setItems(items.filter((item) => item.id !== itemId));
       } else {
         alert(data.message || "Purchase failed");
       }
