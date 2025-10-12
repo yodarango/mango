@@ -76,6 +76,35 @@ function Drawer({ isOpen, onClose }) {
                 <span>My Profile</span>
               </Link>
             )}
+
+            {/* Admin-only links */}
+            {user.role === "admin" && (
+              <>
+                <div className='drawer-divider'></div>
+                <div className='drawer-section-title'>
+                  <i className='fa-solid fa-crown'></i>
+                  <span>Admin Panel</span>
+                </div>
+
+                <Link
+                  to='/admin/create-notifications'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-bell'></i>
+                  <span>Create Notifications</span>
+                </Link>
+
+                <Link
+                  to='/admin/create-game'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-chess-board'></i>
+                  <span>Create Game</span>
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </div>
