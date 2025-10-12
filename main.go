@@ -966,8 +966,8 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate input
-	if req.Rows < 1 || req.Rows > 26 || req.Columns < 1 || req.Columns > 26 {
-		http.Error(w, "Rows and columns must be between 1 and 26", http.StatusBadRequest)
+	if req.Rows < 1 || req.Rows > 100 || req.Columns < 1 || req.Columns > 100 {
+		http.Error(w, "Rows and columns must be between 1 and 100", http.StatusBadRequest)
 		return
 	}
 
@@ -982,8 +982,20 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 	gameID, _ := result.LastInsertId()
 
 	// Generate grid cells (chess-like notation: A1, A2, B1, B2, etc.)
+	// For rows > 26, use AA, AB, AC... (like Excel columns)
 	for row := 0; row < req.Rows; row++ {
-		rowLetter := string(rune('A' + row))
+		var rowLetter string
+		if row < 26 {
+			rowLetter = string(rune('A' + row))
+		} else {
+			// For rows 26-51: AA, AB, AC... AZ
+			// For rows 52-77: BA, BB, BC... BZ
+			// etc.
+			firstLetter := rune('A' + (row / 26) - 1)
+			secondLetter := rune('A' + (row % 26))
+			rowLetter = string(firstLetter) + string(secondLetter)
+		}
+
 		for col := 1; col <= req.Columns; col++ {
 			cellID := fmt.Sprintf("%s%d", rowLetter, col)
 			_, err := db.Exec(`INSERT INTO game_cells (game_id, cell_id, name, background, active, is_occupied)

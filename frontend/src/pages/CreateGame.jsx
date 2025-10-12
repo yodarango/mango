@@ -55,8 +55,8 @@ function CreateGame() {
       return;
     }
 
-    if (rows < 1 || rows > 26 || columns < 1 || columns > 26) {
-      alert("Rows and columns must be between 1 and 26");
+    if (rows < 1 || rows > 100 || columns < 1 || columns > 100) {
+      alert("Rows and columns must be between 1 and 100");
       return;
     }
 
@@ -110,103 +110,103 @@ function CreateGame() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className='loading-container'>
+        <div className='loading-spinner'></div>
         <p>Loading avatars...</p>
       </div>
     );
   }
 
   return (
-    <div className="create-game-container">
-      <div className="create-game-header">
+    <div className='create-game-container'>
+      <div className='create-game-header'>
         <h1>
-          <i className="fa-solid fa-chess-board"></i> Create Game
+          <i className='fa-solid fa-chess-board'></i> Create Game
         </h1>
-        <p className="create-game-subtitle">
+        <p className='create-game-subtitle'>
           Set up a new game grid for your avatars
         </p>
       </div>
 
-      <form className="game-form" onSubmit={handleSubmit}>
-        <div className="form-section">
+      <form className='game-form' onSubmit={handleSubmit}>
+        <div className='form-section'>
           <h2>
-            <i className="fa-solid fa-gamepad"></i> Game Details
+            <i className='fa-solid fa-gamepad'></i> Game Details
           </h2>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="gameName">
-                <i className="fa-solid fa-tag"></i> Game Name
+          <div className='form-row'>
+            <div className='form-group'>
+              <label htmlFor='gameName'>
+                <i className='fa-solid fa-tag'></i> Game Name
               </label>
               <input
-                type="text"
-                id="gameName"
+                type='text'
+                id='gameName'
                 value={gameName}
                 onChange={(e) => setGameName(e.target.value)}
-                placeholder="Enter game name"
-                maxLength="100"
+                placeholder='Enter game name'
+                maxLength='100'
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="thumbnail">
-                <i className="fa-solid fa-image"></i> Thumbnail URL (Optional)
+            <div className='form-group'>
+              <label htmlFor='thumbnail'>
+                <i className='fa-solid fa-image'></i> Thumbnail URL (Optional)
               </label>
               <input
-                type="text"
-                id="thumbnail"
+                type='text'
+                id='thumbnail'
                 value={thumbnail}
                 onChange={(e) => setThumbnail(e.target.value)}
-                placeholder="Enter image URL"
+                placeholder='Enter image URL'
               />
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="rows">
-                <i className="fa-solid fa-grip-lines"></i> Rows (1-26)
+          <div className='form-row'>
+            <div className='form-group'>
+              <label htmlFor='rows'>
+                <i className='fa-solid fa-grip-lines'></i> Rows (1-100)
               </label>
               <input
-                type="number"
-                id="rows"
+                type='number'
+                id='rows'
                 value={rows}
                 onChange={(e) => setRows(e.target.value)}
-                min="1"
-                max="26"
+                min='1'
+                max='100'
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="columns">
-                <i className="fa-solid fa-grip-vertical"></i> Columns (1-26)
+            <div className='form-group'>
+              <label htmlFor='columns'>
+                <i className='fa-solid fa-grip-vertical'></i> Columns (1-100)
               </label>
               <input
-                type="number"
-                id="columns"
+                type='number'
+                id='columns'
                 value={columns}
                 onChange={(e) => setColumns(e.target.value)}
-                min="1"
-                max="26"
+                min='1'
+                max='100'
               />
             </div>
           </div>
 
-          <div className="grid-preview">
-            <i className="fa-solid fa-table-cells"></i>
+          <div className='grid-preview'>
+            <i className='fa-solid fa-table-cells'></i>
             <span>
               Grid Size: {rows} × {columns} = {rows * columns} cells
             </span>
           </div>
         </div>
 
-        <div className="form-section">
+        <div className='form-section'>
           <h2>
-            <i className="fa-solid fa-users"></i> Select Players
+            <i className='fa-solid fa-users'></i> Select Players
           </h2>
 
-          <div className="avatars-grid">
+          <div className='avatars-grid'>
             {avatars.map((avatar) => (
               <div
                 key={avatar.id}
@@ -220,41 +220,41 @@ function CreateGame() {
                     : "var(--charcoal-light)",
                 }}
               >
-                <div className="avatar-thumbnail">
+                <div className='avatar-thumbnail'>
                   <img src={avatar.thumbnail} alt={avatar.name} />
                 </div>
-                <div className="avatar-info">
+                <div className='avatar-info'>
                   <h3>{avatar.name}</h3>
                   <span
-                    className="avatar-element"
+                    className='avatar-element'
                     style={{ color: getElementColor(avatar.element) }}
                   >
                     {avatar.element}
                   </span>
                 </div>
                 {selectedAvatars.includes(avatar.id) && (
-                  <div className="selected-badge">
-                    <i className="fa-solid fa-check-circle"></i>
+                  <div className='selected-badge'>
+                    <i className='fa-solid fa-check-circle'></i>
                   </div>
                 )}
               </div>
             ))}
           </div>
 
-          <div className="selected-count">
-            <i className="fa-solid fa-user-check"></i>
+          <div className='selected-count'>
+            <i className='fa-solid fa-user-check'></i>
             <span>{selectedAvatars.length} avatar(s) selected</span>
           </div>
         </div>
 
-        <button type="submit" className="create-btn" disabled={creating}>
+        <button type='submit' className='create-btn' disabled={creating}>
           {creating ? (
             <>
-              <i className="fa-solid fa-spinner fa-spin"></i> Creating Game...
+              <i className='fa-solid fa-spinner fa-spin'></i> Creating Game...
             </>
           ) : (
             <>
-              <i className="fa-solid fa-plus-circle"></i> Create Game
+              <i className='fa-solid fa-plus-circle'></i> Create Game
             </>
           )}
         </button>
@@ -264,4 +264,3 @@ function CreateGame() {
 }
 
 export default CreateGame;
-

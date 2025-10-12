@@ -66,6 +66,17 @@ function Play() {
     return colors[element] || "#00ff41";
   };
 
+  // Generate row letter (A-Z, then AA-AZ, BA-BZ, etc.)
+  const getRowLetter = (row) => {
+    if (row < 26) {
+      return String.fromCharCode(65 + row);
+    } else {
+      const firstLetter = String.fromCharCode(65 + Math.floor(row / 26) - 1);
+      const secondLetter = String.fromCharCode(65 + (row % 26));
+      return firstLetter + secondLetter;
+    }
+  };
+
   // Generate grid structure
   const generateGrid = () => {
     if (!game || cells.length === 0) return [];
@@ -74,7 +85,7 @@ function Play() {
     for (let row = 0; row < game.rows; row++) {
       const rowCells = [];
       for (let col = 1; col <= game.columns; col++) {
-        const cellId = `${String.fromCharCode(65 + row)}${col}`;
+        const cellId = `${getRowLetter(row)}${col}`;
         const cell = cells.find((c) => c.cellId === cellId);
         rowCells.push(cell || { cellId, active: false });
       }
@@ -85,8 +96,8 @@ function Play() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className='loading-container'>
+        <div className='loading-spinner'></div>
         <p>Loading game...</p>
       </div>
     );
@@ -94,8 +105,8 @@ function Play() {
 
   if (!game) {
     return (
-      <div className="error-container">
-        <i className="fa-solid fa-exclamation-triangle"></i>
+      <div className='error-container'>
+        <i className='fa-solid fa-exclamation-triangle'></i>
         <h2>Game Not Found</h2>
         <p>The game you're looking for doesn't exist.</p>
       </div>
@@ -105,27 +116,28 @@ function Play() {
   const grid = generateGrid();
 
   return (
-    <div className="play-container">
-      <div className="play-header">
+    <div className='play-container'>
+      <div className='play-header'>
         <h1>
-          <i className="fa-solid fa-chess-board"></i> {game.name}
+          <i className='fa-solid fa-chess-board'></i> {game.name}
         </h1>
-        <div className="game-info">
+        <div className='game-info'>
           <span>
-            <i className="fa-solid fa-table-cells"></i> {game.rows} × {game.columns}
+            <i className='fa-solid fa-table-cells'></i> {game.rows} ×{" "}
+            {game.columns}
           </span>
           <span>
-            <i className="fa-solid fa-cubes"></i> {cells.length} cells
+            <i className='fa-solid fa-cubes'></i> {cells.length} cells
           </span>
         </div>
       </div>
 
-      <div className="grid-container">
+      <div className='grid-container'>
         {/* Column headers */}
-        <div className="grid-header">
-          <div className="corner-cell"></div>
+        <div className='grid-header'>
+          <div className='corner-cell'></div>
           {Array.from({ length: game.columns }, (_, i) => (
-            <div key={i} className="column-header">
+            <div key={i} className='column-header'>
               {i + 1}
             </div>
           ))}
@@ -133,10 +145,8 @@ function Play() {
 
         {/* Grid rows */}
         {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid-row">
-            <div className="row-header">
-              {String.fromCharCode(65 + rowIndex)}
-            </div>
+          <div key={rowIndex} className='grid-row'>
+            <div className='row-header'>{getRowLetter(rowIndex)}</div>
             {row.map((cell, colIndex) => (
               <div
                 key={colIndex}
@@ -146,18 +156,18 @@ function Play() {
                 style={getCellBackground(cell)}
                 onClick={() => cell.active && handleCellClick(cell)}
               >
-                <span className="cell-id">{cell.cellId}</span>
+                <span className='cell-id'>{cell.cellId}</span>
                 {cell.element && (
                   <div
-                    className="cell-element"
+                    className='cell-element'
                     style={{ color: getElementColor(cell.element) }}
                   >
-                    <i className="fa-solid fa-fire"></i>
+                    <i className='fa-solid fa-fire'></i>
                   </div>
                 )}
                 {cell.isOccupied && (
-                  <div className="occupied-marker">
-                    <i className="fa-solid fa-user"></i>
+                  <div className='occupied-marker'>
+                    <i className='fa-solid fa-user'></i>
                   </div>
                 )}
               </div>
@@ -169,34 +179,35 @@ function Play() {
       {/* Cell Details Modal */}
       {selectedCell && (
         <>
-          <div className="modal-overlay" onClick={closeModal}></div>
-          <div className="cell-modal">
-            <div className="modal-header">
+          <div className='modal-overlay' onClick={closeModal}></div>
+          <div className='cell-modal'>
+            <div className='modal-header'>
               <h2>
-                <i className="fa-solid fa-map-pin"></i> Cell {selectedCell.cellId}
+                <i className='fa-solid fa-map-pin'></i> Cell{" "}
+                {selectedCell.cellId}
               </h2>
-              <button className="modal-close-btn" onClick={closeModal}>
-                <i className="fa-solid fa-times"></i>
+              <button className='modal-close-btn' onClick={closeModal}>
+                <i className='fa-solid fa-times'></i>
               </button>
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               {selectedCell.name && (
-                <div className="modal-field">
+                <div className='modal-field'>
                   <label>Name:</label>
                   <span>{selectedCell.name}</span>
                 </div>
               )}
               {selectedCell.description && (
-                <div className="modal-field">
+                <div className='modal-field'>
                   <label>Description:</label>
                   <p>{selectedCell.description}</p>
                 </div>
               )}
               {selectedCell.element && (
-                <div className="modal-field">
+                <div className='modal-field'>
                   <label>Element:</label>
                   <span
-                    className="element-badge"
+                    className='element-badge'
                     style={{
                       backgroundColor: getElementColor(selectedCell.element),
                     }}
@@ -205,9 +216,13 @@ function Play() {
                   </span>
                 </div>
               )}
-              <div className="modal-field">
+              <div className='modal-field'>
                 <label>Status:</label>
-                <span className={selectedCell.isOccupied ? "occupied-status" : "free-status"}>
+                <span
+                  className={
+                    selectedCell.isOccupied ? "occupied-status" : "free-status"
+                  }
+                >
                   {selectedCell.isOccupied ? "Occupied" : "Free"}
                 </span>
               </div>
@@ -220,4 +235,3 @@ function Play() {
 }
 
 export default Play;
-
