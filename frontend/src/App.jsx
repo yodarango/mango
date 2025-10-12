@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import CreateNotifications from "./pages/CreateNotifications";
 import CreateGame from "./pages/CreateGame";
+import EditGame from "./pages/EditGame";
 import Play from "./pages/Play";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
@@ -105,6 +106,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateGame />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/edit-game/:gameId'
+            element={
+              <ProtectedRoute>
+                <EditGame />
               </ProtectedRoute>
             }
           />

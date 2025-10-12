@@ -83,7 +83,7 @@ function CreateGame() {
 
       if (response.ok && data.success) {
         alert(`Game created successfully! ${data.message}`);
-        navigate(`/play/${data.gameId}`);
+        navigate(`/admin/edit-game/${data.gameId}`);
       } else {
         alert("Failed to create game");
       }

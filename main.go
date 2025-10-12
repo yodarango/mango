@@ -1130,6 +1130,63 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Update a game cell
+func updateGameCell(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	cellID := vars["id"]
+
+	var req struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Background  string `json:"background"`
+		Active      bool   `json:"active"`
+		Element     string `json:"element"`
+		IsOccupied  bool   `json:"isOccupied"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Update cell
+	activeInt := 0
+	if req.Active {
+		activeInt = 1
+	}
+	isOccupiedInt := 0
+	if req.IsOccupied {
+		isOccupiedInt = 1
+	}
+
+	_, err = db.Exec(`UPDATE game_cells
+		SET name = ?, description = ?, background = ?, active = ?, element = ?, is_occupied = ?
+		WHERE id = ?`,
+		req.Name, req.Description, req.Background, activeInt, req.Element, isOccupiedInt, cellID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -1153,6 +1210,7 @@ func main() {
 	api.HandleFunc("/games/create", createGame).Methods("POST")
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
+	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 
 	// Serve static files from the frontend build
 	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}

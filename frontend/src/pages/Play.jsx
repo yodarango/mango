@@ -8,6 +8,7 @@ function Play() {
   const [cells, setCells] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [zoom, setZoom] = useState(100);
 
   useEffect(() => {
     if (gameId) {
@@ -39,6 +40,18 @@ function Play() {
 
   const closeModal = () => {
     setSelectedCell(null);
+  };
+
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 10, 200));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => Math.max(prev - 10, 30));
+  };
+
+  const handleResetZoom = () => {
+    setZoom(100);
   };
 
   const getCellBackground = (cell) => {
@@ -130,50 +143,71 @@ function Play() {
             <i className='fa-solid fa-cubes'></i> {cells.length} cells
           </span>
         </div>
+
+        {/* Zoom Controls */}
+        <div className='zoom-controls'>
+          <button onClick={handleZoomOut} className='zoom-btn'>
+            <i className='fa-solid fa-minus'></i>
+          </button>
+          <button onClick={handleResetZoom} className='zoom-btn zoom-reset'>
+            {zoom}%
+          </button>
+          <button onClick={handleZoomIn} className='zoom-btn'>
+            <i className='fa-solid fa-plus'></i>
+          </button>
+        </div>
       </div>
 
-      <div className='grid-container'>
-        {/* Column headers */}
-        <div className='grid-header'>
-          <div className='corner-cell'></div>
-          {Array.from({ length: game.columns }, (_, i) => (
-            <div key={i} className='column-header'>
-              {i + 1}
-            </div>
-          ))}
-        </div>
-
-        {/* Grid rows */}
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className='grid-row'>
-            <div className='row-header'>{getRowLetter(rowIndex)}</div>
-            {row.map((cell, colIndex) => (
-              <div
-                key={colIndex}
-                className={`grid-cell ${cell.active ? "active" : "inactive"} ${
-                  cell.isOccupied ? "occupied" : ""
-                }`}
-                style={getCellBackground(cell)}
-                onClick={() => cell.active && handleCellClick(cell)}
-              >
-                <span className='cell-id'>{cell.cellId}</span>
-                {cell.element && (
-                  <div
-                    className='cell-element'
-                    style={{ color: getElementColor(cell.element) }}
-                  >
-                    <i className='fa-solid fa-fire'></i>
-                  </div>
-                )}
-                {cell.isOccupied && (
-                  <div className='occupied-marker'>
-                    <i className='fa-solid fa-user'></i>
-                  </div>
-                )}
+      <div className='grid-wrapper'>
+        <div
+          className='grid-container'
+          style={{
+            transform: `scale(${zoom / 100})`,
+            transformOrigin: "top center",
+          }}
+        >
+          {/* Column headers */}
+          <div className='grid-header'>
+            <div className='corner-cell'></div>
+            {Array.from({ length: game.columns }, (_, i) => (
+              <div key={i} className='column-header'>
+                {i + 1}
               </div>
             ))}
           </div>
-        ))}
+
+          {/* Grid rows */}
+          {grid.map((row, rowIndex) => (
+            <div key={rowIndex} className='grid-row'>
+              <div className='row-header'>{getRowLetter(rowIndex)}</div>
+              {row.map((cell, colIndex) => (
+                <div
+                  key={colIndex}
+                  className={`grid-cell ${
+                    cell.active ? "active" : "inactive"
+                  } ${cell.isOccupied ? "occupied" : ""}`}
+                  style={getCellBackground(cell)}
+                  onClick={() => cell.active && handleCellClick(cell)}
+                >
+                  <span className='cell-id'>{cell.cellId}</span>
+                  {cell.element && (
+                    <div
+                      className='cell-element'
+                      style={{ color: getElementColor(cell.element) }}
+                    >
+                      <i className='fa-solid fa-fire'></i>
+                    </div>
+                  )}
+                  {cell.isOccupied && (
+                    <div className='occupied-marker'>
+                      <i className='fa-solid fa-user'></i>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Cell Details Modal */}
