@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNotifications } from "./NotificationProvider";
 import "./Drawer.css";
 
 function Drawer({ isOpen, onClose }) {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [avatarId, setAvatarId] = useState(null);
+  const { unreadCount } = useNotifications();
 
   useEffect(() => {
     const fetchUserAvatar = async () => {
@@ -64,6 +66,9 @@ function Drawer({ isOpen, onClose }) {
             <Link to='/messages' className='drawer-link' onClick={onClose}>
               <i className='fa-solid fa-envelope'></i>
               <span>Messages</span>
+              {unreadCount > 0 && (
+                <span className='notification-badge'>{unreadCount}</span>
+              )}
             </Link>
 
             {avatarId && (

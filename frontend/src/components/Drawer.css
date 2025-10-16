@@ -129,6 +129,35 @@
   font-weight: 600;
   transition: all 0.3s ease;
   border: 2px solid var(--charcoal-dark);
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  right: 1rem;
+  background: #ff0000;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
 }
 
 .drawer-link i {

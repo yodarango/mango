@@ -9,10 +9,12 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -159,6 +161,17 @@ type CreateGameRequest struct {
 
 var db *sql.DB
 var jwtSecret = []byte("your-secret-key-change-this-in-production")
+
+// WebSocket upgrader
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true // Allow all origins for development
+	},
+}
+
+// WebSocket clients map (userID -> connection)
+var clients = make(map[int]*websocket.Conn)
+var clientsMutex sync.RWMutex
 
 var (
 	mainPowers    = []string{"Fire 🔥", "Water 💧", "Electricity ⚡️", "Earth 🌱", "Wind 🌬️", "Time 🕥", "Light 🌞", "Metal 🪨"}
@@ -920,6 +933,12 @@ func createNotifications(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		// Send WebSocket notification
+		notifyUser(userID, "new_notification", map[string]interface{}{
+			"title":   req.Title,
+			"message": req.Message,
+		})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -965,6 +984,25 @@ func getNotifications(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(notifications)
+}
+
+// Get unread notification count
+func getUnreadCount(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var count int
+	err = db.QueryRow("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0", claims.UserID).Scan(&count)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]int{"count": count})
 }
 
 // Mark notification as read
@@ -1453,6 +1491,35 @@ func startBattle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Stop battle (change status to completed)
+func stopBattle(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	battleID := vars["id"]
+
+	_, err = db.Exec("UPDATE battles SET status = 'completed' WHERE id = ?", battleID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Submit answer (for students)
 func submitAnswer(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -1637,6 +1704,78 @@ func updateBattle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// WebSocket handler
+func handleWebSocket(w http.ResponseWriter, r *http.Request) {
+	// Get user from token
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Upgrade connection
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println("WebSocket upgrade error:", err)
+		return
+	}
+
+	// Store connection
+	clientsMutex.Lock()
+	clients[claims.UserID] = conn
+	clientsMutex.Unlock()
+
+	log.Printf("WebSocket connected: User %d", claims.UserID)
+
+	// Clean up on disconnect
+	defer func() {
+		clientsMutex.Lock()
+		delete(clients, claims.UserID)
+		clientsMutex.Unlock()
+		conn.Close()
+		log.Printf("WebSocket disconnected: User %d", claims.UserID)
+	}()
+
+	// Keep connection alive
+	for {
+		_, _, err := conn.ReadMessage()
+		if err != nil {
+			break
+		}
+	}
+}
+
+// Broadcast notification to specific user
+func notifyUser(userID int, notificationType string, data interface{}) {
+	clientsMutex.RLock()
+	conn, exists := clients[userID]
+	clientsMutex.RUnlock()
+
+	if !exists {
+		return
+	}
+
+	message := map[string]interface{}{
+		"type": notificationType,
+		"data": data,
+	}
+
+	err := conn.WriteJSON(message)
+	if err != nil {
+		log.Printf("Error sending notification to user %d: %v", userID, err)
+		clientsMutex.Lock()
+		delete(clients, userID)
+		clientsMutex.Unlock()
+	}
+}
+
+// Broadcast to multiple users
+func notifyUsers(userIDs []int, notificationType string, data interface{}) {
+	for _, userID := range userIDs {
+		notifyUser(userID, notificationType, data)
+	}
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -1654,8 +1793,10 @@ func main() {
 	api.HandleFunc("/store/purchase", purchaseAsset).Methods("POST")
 	api.HandleFunc("/students", getStudents).Methods("GET")
 	api.HandleFunc("/notifications", getNotifications).Methods("GET")
+	api.HandleFunc("/notifications/unread-count", getUnreadCount).Methods("GET")
 	api.HandleFunc("/notifications/create", createNotifications).Methods("POST")
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
+	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")
@@ -1669,6 +1810,7 @@ func main() {
 	api.HandleFunc("/battles/{id}", updateBattle).Methods("PUT")
 	api.HandleFunc("/battles/{id}/assign", assignQuestions).Methods("POST")
 	api.HandleFunc("/battles/{id}/start", startBattle).Methods("POST")
+	api.HandleFunc("/battles/{id}/stop", stopBattle).Methods("POST")
 	api.HandleFunc("/battles/submit-answer", submitAnswer).Methods("POST")
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
 
@@ -1704,4 +1846,3 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Serve the file
 	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, r)
 }
-

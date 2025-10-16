@@ -241,9 +241,19 @@
   font-weight: 700;
 }
 
+.battle-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .start-battle-btn,
-.grade-btn {
-  width: 100%;
+.grade-btn,
+.stop-battle-btn {
+  flex: 1;
+  min-width: 200px;
   padding: 1.25rem;
   background: var(--charcoal-light);
   color: var(--accent-yellow);
@@ -260,12 +270,29 @@
   font-family: "MedievalSharp", cursive;
 }
 
+.start-battle-btn {
+  width: 100%;
+}
+
+.stop-battle-btn {
+  background: var(--charcoal-light);
+  color: #ff4444;
+  border-color: #ff4444;
+}
+
 .start-battle-btn:hover,
 .grade-btn:hover {
   background: var(--accent-yellow);
   color: var(--charcoal-dark);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+.stop-battle-btn:hover {
+  background: #ff4444;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 68, 68, 0.5);
 }
 
 .live-answers-grid {

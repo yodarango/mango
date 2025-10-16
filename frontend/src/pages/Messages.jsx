@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import { useNotifications } from "../components/NotificationProvider";
 import "./Messages.css";
 
 function Messages() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedNotification, setSelectedNotification] = useState(null);
+  const { refreshUnreadCount } = useNotifications();
 
   useEffect(() => {
     fetchNotifications();
@@ -48,6 +50,9 @@ function Messages() {
             n.id === notification.id ? { ...n, isRead: true } : n
           )
         );
+
+        // Refresh unread count
+        refreshUnreadCount();
       } catch (error) {
         console.error("Error marking notification as read:", error);
       }

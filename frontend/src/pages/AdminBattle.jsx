@@ -134,6 +134,36 @@ function AdminBattle() {
     }
   };
 
+  const handleStopBattle = async () => {
+    if (
+      !confirm(
+        "Are you sure you want to stop this battle? This will mark it as completed."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/battles/${battleId}/stop`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Battle stopped successfully!");
+        navigate("/admin/create-battle");
+      } else {
+        alert("Failed to stop battle");
+      }
+    } catch (error) {
+      console.error("Error stopping battle:", error);
+      alert("Error stopping battle");
+    }
+  };
+
   const handleGradeSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -327,9 +357,14 @@ function AdminBattle() {
             })}
           </div>
 
-          <button className='grade-btn' onClick={() => setShowGrading(true)}>
-            <i className='fa-solid fa-pen-to-square'></i> Grade Answers
-          </button>
+          <div className='battle-actions'>
+            <button className='grade-btn' onClick={() => setShowGrading(true)}>
+              <i className='fa-solid fa-pen-to-square'></i> Grade Answers
+            </button>
+            <button className='stop-battle-btn' onClick={handleStopBattle}>
+              <i className='fa-solid fa-stop'></i> Stop Battle
+            </button>
+          </div>
         </div>
       )}
 

@@ -100,6 +100,19 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+}
+
+.menu-notification-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background: #ff0000;
+  border-radius: 50%;
+  border: 2px solid var(--charcoal-dark);
+  animation: pulse 2s infinite;
 }
 
 .menu-btn:hover {

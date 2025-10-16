@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useNotifications } from "./components/NotificationProvider";
 import Avatars from "./pages/Avatars";
 import AvatarProfile from "./pages/AvatarProfile";
 import Store from "./pages/Store";
@@ -22,6 +23,7 @@ function App() {
   const isLoginPage = location.pathname === "/login";
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { unreadCount } = useNotifications();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -51,6 +53,9 @@ function App() {
             </button>
             <button onClick={toggleDrawer} className='menu-btn'>
               <i className='fa-solid fa-bars'></i>
+              {unreadCount > 0 && (
+                <span className='menu-notification-dot'></span>
+              )}
             </button>
           </div>
         )}
