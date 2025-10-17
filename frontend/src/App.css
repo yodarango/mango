@@ -134,6 +134,11 @@
   width: 100%;
 }
 
+.main-content.full-width {
+  max-width: 94vw;
+  padding: 1rem;
+}
+
 .page {
   background: var(--charcoal-medium);
   padding: 2rem;

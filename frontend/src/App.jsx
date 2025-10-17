@@ -22,6 +22,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const isPlayPage = location.pathname.startsWith("/play/");
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { unreadCount } = useNotifications();
@@ -67,7 +68,7 @@ function App() {
         <Drawer isOpen={drawerOpen} onClose={closeDrawer} />
       )}
 
-      <main className='main-content'>
+      <main className={`main-content ${isPlayPage ? "full-width" : ""}`}>
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route
