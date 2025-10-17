@@ -136,7 +136,8 @@
 
 .main-content.full-width {
   max-width: 94vw;
-  padding: 1rem;
+  padding: 0;
+  overflow: hidden;
 }
 
 .page {

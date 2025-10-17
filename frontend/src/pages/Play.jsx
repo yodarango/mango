@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./Play.css";
 
@@ -11,6 +11,7 @@ function Play() {
   const [zoom, setZoom] = useState(100);
   const [warriors, setWarriors] = useState([]);
   const [avatarId, setAvatarId] = useState(null);
+  const gridWrapperRef = useRef(null);
 
   useEffect(() => {
     if (gameId) {
@@ -18,6 +19,16 @@ function Play() {
       fetchUserWarriors();
     }
   }, [gameId]);
+
+  // Center the grid on load
+  useEffect(() => {
+    if (gridWrapperRef.current && !loading) {
+      const wrapper = gridWrapperRef.current;
+      const scrollWidth = wrapper.scrollWidth;
+      const clientWidth = wrapper.clientWidth;
+      wrapper.scrollLeft = (scrollWidth - clientWidth) / 2;
+    }
+  }, [loading, game]);
 
   const fetchGame = async () => {
     try {
@@ -208,7 +219,7 @@ function Play() {
         </button>
       </div>
 
-      <div className='grid-wrapper'>
+      <div className='grid-wrapper' ref={gridWrapperRef}>
         <div
           className='grid-container'
           style={{
