@@ -1327,6 +1327,48 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Update a game (name and thumbnail)
+func updateGame(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	gameID := vars["id"]
+
+	var req struct {
+		Name      string `json:"name"`
+		Thumbnail string `json:"thumbnail"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Update game
+	_, err = db.Exec(`UPDATE games SET name = ?, thumbnail = ? WHERE id = ?`,
+		req.Name, req.Thumbnail, gameID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Update a game cell
 func updateGameCell(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -1900,6 +1942,7 @@ func main() {
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")
+	api.HandleFunc("/games/{id}", updateGame).Methods("PUT")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 
