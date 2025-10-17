@@ -46,9 +46,28 @@ type Avatar struct {
 }
 
 type Asset struct {
-	ID             int    `json:"id"`
-	AvatarID       int    `json:"avatarId"`
-	AssetType      string `json:"assetType"`
+	ID            int    `json:"id"`
+	AvatarID      int    `json:"avatarId"`
+	Status        string `json:"status"`
+	Type          string `json:"type"`
+	Name          string `json:"name"`
+	Thumbnail     string `json:"thumbnail"`
+	Attack        int    `json:"attack"`
+	Defense       int    `json:"defense"`
+	Healing       int    `json:"healing"`
+	Power         int    `json:"power"`
+	Endurance     int    `json:"endurance"`
+	Level         int    `json:"level"`
+	RequiredLevel int    `json:"requiredLevel"`
+	Cost          int    `json:"cost"`
+	Ability       string `json:"ability"`
+	Health        int    `json:"health"`
+	Stamina       int    `json:"stamina"`
+	Description   string `json:"description"`
+}
+
+type StoreItem struct {
+	Type           string `json:"type"`
 	Name           string `json:"name"`
 	Thumbnail      string `json:"thumbnail"`
 	Attack         int    `json:"attack"`
@@ -83,7 +102,7 @@ type Claims struct {
 }
 
 type PurchaseRequest struct {
-	AssetID int `json:"assetId"`
+	AssetType string `json:"assetType"`
 }
 
 type PurchaseResponse struct {
@@ -231,7 +250,8 @@ func initDB() {
 	createAssetsTableSQL := `CREATE TABLE IF NOT EXISTS assets (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		avatar_id INTEGER,
-		asset_type TEXT NOT NULL,
+		status TEXT NOT NULL,
+		type TEXT CHECK(length(type) <= 10),
 		name TEXT NOT NULL,
 		thumbnail TEXT NOT NULL,
 		attack INTEGER NOT NULL CHECK(attack <= 100),
@@ -245,7 +265,6 @@ func initDB() {
 		ability TEXT NOT NULL,
 		health INTEGER NOT NULL,
 		stamina INTEGER NOT NULL,
-		available_units INTEGER DEFAULT 0,
 		description TEXT,
 		FOREIGN KEY (avatar_id) REFERENCES avatars(id)
 	);`
@@ -253,6 +272,70 @@ func initDB() {
 	_, err = db.Exec(createAssetsTableSQL)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Add type column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN type TEXT CHECK(length(type) <= 10)`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Remove available_units column if it exists (migration)
+	// Note: SQLite doesn't support DROP COLUMN directly in older versions
+	// We'll need to check if the column exists first
+	var columnExists int
+	err = db.QueryRow(`SELECT COUNT(*) FROM pragma_table_info('assets') WHERE name='available_units'`).Scan(&columnExists)
+	if err == nil && columnExists > 0 {
+		// SQLite doesn't support DROP COLUMN easily, so we need to recreate the table
+		log.Println("Migrating assets table to remove available_units column...")
+
+		// Create new table without available_units
+		_, err = db.Exec(`CREATE TABLE assets_new (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			avatar_id INTEGER,
+			status TEXT NOT NULL,
+			type TEXT CHECK(length(type) <= 10),
+			name TEXT NOT NULL,
+			thumbnail TEXT NOT NULL,
+			attack INTEGER NOT NULL CHECK(attack <= 100),
+			defense INTEGER NOT NULL CHECK(defense <= 100),
+			healing INTEGER NOT NULL CHECK(healing <= 100),
+			power INTEGER NOT NULL,
+			endurance INTEGER NOT NULL CHECK(endurance <= 100),
+			level INTEGER NOT NULL CHECK(level <= 100),
+			required_level INTEGER DEFAULT 0,
+			cost INTEGER NOT NULL,
+			ability TEXT NOT NULL,
+			health INTEGER NOT NULL,
+			stamina INTEGER NOT NULL,
+			description TEXT,
+			FOREIGN KEY (avatar_id) REFERENCES avatars(id)
+		)`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Copy data from old table to new table
+		_, err = db.Exec(`INSERT INTO assets_new (id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, description)
+			SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, description FROM assets`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Drop old table
+		_, err = db.Exec(`DROP TABLE assets`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Rename new table to assets
+		_, err = db.Exec(`ALTER TABLE assets_new RENAME TO assets`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Println("Migration completed successfully")
 	}
 
 	createNotificationsTableSQL := `CREATE TABLE IF NOT EXISTS notifications (
@@ -404,9 +487,9 @@ func initDB() {
 			// Create 3 random warriors for this avatar
 			for j := 0; j < 3; j++ {
 				asset := generateRandomAsset(int(avatarID), "warrior")
-				_, err = db.Exec(`INSERT INTO assets (avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-					asset.AvatarID, asset.AssetType, asset.Name, asset.Thumbnail, asset.Attack, asset.Defense,
+				_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+					asset.AvatarID, asset.Status, asset.Type, asset.Name, asset.Thumbnail, asset.Attack, asset.Defense,
 					asset.Healing, asset.Power, asset.Endurance, asset.Level, asset.Cost,
 					asset.Ability, asset.Health, asset.Stamina)
 				if err != nil {
@@ -424,9 +507,9 @@ func initDB() {
 			mascot.Level = rand.Intn(5) + 5 // Level 5-10
 			mascot.Cost = mascot.Level * 20
 
-			_, err = db.Exec(`INSERT INTO assets (avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-				mascot.AvatarID, mascot.AssetType, mascot.Name, mascot.Thumbnail, mascot.Attack, mascot.Defense,
+			_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				mascot.AvatarID, mascot.Status, mascot.Type, mascot.Name, mascot.Thumbnail, mascot.Attack, mascot.Defense,
 				mascot.Healing, mascot.Power, mascot.Endurance, mascot.Level, mascot.Cost,
 				mascot.Ability, mascot.Health, mascot.Stamina)
 			if err != nil {
@@ -457,7 +540,7 @@ func generateRandomAvatar(name string) Avatar {
 	}
 }
 
-func generateRandomAsset(avatarID int, assetType string) Asset {
+func generateRandomAsset(avatarID int, status string) Asset {
 	level := rand.Intn(10) + 1
 	maxHealth := 100
 	maxStamina := 100
@@ -466,9 +549,13 @@ func generateRandomAsset(avatarID int, assetType string) Asset {
 	imgNum := rand.Intn(70) + 1
 	thumbnail := "https://i.pravatar.cc/300?img=" + fmt.Sprintf("%d", imgNum)
 
+	// Generate a random type ID for grouping
+	typeID := fmt.Sprintf("W%d", rand.Intn(1000))
+
 	return Asset{
 		AvatarID:  avatarID,
-		AssetType: assetType,
+		Status:    status,
+		Type:      typeID,
 		Name:      warriorNames[rand.Intn(len(warriorNames))],
 		Thumbnail: thumbnail,
 		Attack:    rand.Intn(100) + 1,
@@ -584,8 +671,8 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
 
-	rows, err := db.Query(`SELECT id, avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, available_units
-		FROM assets WHERE avatar_id = ? ORDER BY asset_type, level DESC`, avatarID)
+	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina
+		FROM assets WHERE avatar_id = ? ORDER BY status, level DESC`, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -595,10 +682,10 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	var assets []Asset
 	for rows.Next() {
 		var asset Asset
-		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.AssetType, &asset.Name, &asset.Thumbnail,
+		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-			&asset.Health, &asset.Stamina, &asset.AvailableUnits); err != nil {
+			&asset.Health, &asset.Stamina); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -751,36 +838,21 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get full asset details from store
-	var storeAsset Asset
-	err = tx.QueryRow(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, available_units
-		FROM assets WHERE id = ? AND avatar_id IS NULL AND asset_type = 'store'`, req.AssetID).Scan(
-		&storeAsset.ID, &storeAsset.Name, &storeAsset.Thumbnail, &storeAsset.Attack, &storeAsset.Defense,
-		&storeAsset.Healing, &storeAsset.Power, &storeAsset.Endurance, &storeAsset.Level, &storeAsset.RequiredLevel,
-		&storeAsset.Cost, &storeAsset.Ability, &storeAsset.Health, &storeAsset.Stamina, &storeAsset.AvailableUnits)
+	// Get asset details from the requested type
+	var assetCost int
+	var assetName string
+	err = tx.QueryRow(`SELECT cost, name FROM assets WHERE type = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetType).Scan(&assetCost, &assetName)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, "Asset not found or not available for purchase", http.StatusNotFound)
+			http.Error(w, "Asset not found or out of stock", http.StatusNotFound)
 		} else {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		return
 	}
 
-	// Check if available units > 0
-	if storeAsset.AvailableUnits <= 0 {
-		response := PurchaseResponse{
-			Success: false,
-			Message: "Item is out of stock",
-			Coins:   coins,
-		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-
 	// Check if user has enough coins
-	if coins < storeAsset.Cost {
+	if coins < assetCost {
 		response := PurchaseResponse{
 			Success: false,
 			Message: "Not enough coins",
@@ -791,27 +863,34 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Find the first available asset of this type in the store
+	var purchasedAssetID int
+	err = tx.QueryRow(`SELECT id FROM assets WHERE type = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetType).Scan(&purchasedAssetID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			response := PurchaseResponse{
+				Success: false,
+				Message: "Item is out of stock",
+				Coins:   coins,
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(response)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
 	// Deduct coins
-	newCoins := coins - storeAsset.Cost
+	newCoins := coins - assetCost
 	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Decrease available_units by 1
-	_, err = tx.Exec("UPDATE assets SET available_units = available_units - 1 WHERE id = ?", req.AssetID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Create new warrior asset with same stats
-	_, err = tx.Exec(`INSERT INTO assets (avatar_id, asset_type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, available_units)
-		VALUES (?, 'warrior', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
-		avatarID, storeAsset.Name, storeAsset.Thumbnail, storeAsset.Attack, storeAsset.Defense, storeAsset.Healing,
-		storeAsset.Power, storeAsset.Endurance, storeAsset.Level, storeAsset.RequiredLevel, storeAsset.Cost,
-		storeAsset.Ability, storeAsset.Health, storeAsset.Stamina)
+	// Update the asset: assign it to the avatar and change status to warrior
+	_, err = tx.Exec("UPDATE assets SET avatar_id = ?, status = 'warrior' WHERE id = ?", avatarID, purchasedAssetID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -825,7 +904,7 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 
 	response := PurchaseResponse{
 		Success: true,
-		Message: fmt.Sprintf("Successfully purchased %s", storeAsset.Name),
+		Message: fmt.Sprintf("Successfully purchased %s", assetName),
 		Coins:   newCoins,
 	}
 
@@ -834,19 +913,40 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStoreItems(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, asset_type, available_units
-		FROM assets WHERE asset_type = 'store' AND avatar_id IS NULL AND available_units > 0 ORDER BY cost`)
+	// Group by type and get one representative item per type with count
+	rows, err := db.Query(`
+		SELECT
+			type,
+			name,
+			thumbnail,
+			attack,
+			defense,
+			healing,
+			power,
+			endurance,
+			level,
+			required_level,
+			cost,
+			ability,
+			health,
+			stamina,
+			COUNT(*) as available_units
+		FROM assets
+		WHERE status = 'store' AND avatar_id IS NULL
+		GROUP BY type
+		ORDER BY cost`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer rows.Close()
 
-	var items []Asset
+	var items []StoreItem
 	for rows.Next() {
-		var item Asset
-		if err := rows.Scan(&item.ID, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
-			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability, &item.Health, &item.Stamina, &item.AssetType, &item.AvailableUnits); err != nil {
+		var item StoreItem
+		if err := rows.Scan(&item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
+			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability,
+			&item.Health, &item.Stamina, &item.AvailableUnits); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

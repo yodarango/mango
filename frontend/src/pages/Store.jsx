@@ -45,7 +45,7 @@ function Store() {
     }
   };
 
-  const handlePurchase = async (itemId, itemCost, requiredLevel) => {
+  const handlePurchase = async (itemType, itemCost, requiredLevel) => {
     if (userLevel < requiredLevel) {
       alert(`You need to be level ${requiredLevel} to purchase this item!`);
       return;
@@ -56,7 +56,7 @@ function Store() {
       return;
     }
 
-    setPurchasing(itemId);
+    setPurchasing(itemType);
 
     try {
       const token = localStorage.getItem("token");
@@ -66,7 +66,7 @@ function Store() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ assetId: itemId }),
+        body: JSON.stringify({ assetType: itemType }),
       });
 
       const data = await response.json();
@@ -74,8 +74,8 @@ function Store() {
       if (response.ok && data.success) {
         alert(data.message);
         setUserCoins(data.coins);
-        // Remove purchased item from store
-        setItems(items.filter((item) => item.id !== itemId));
+        // Refresh store items to get updated counts
+        fetchStoreItems();
       } else {
         alert(data.message || "Purchase failed");
       }
@@ -135,7 +135,7 @@ function Store() {
 
           return (
             <div
-              key={item.id}
+              key={item.type}
               className={`store-item-card ${!canAfford ? "unaffordable" : ""}`}
             >
               {item.thumbnail && (
@@ -226,11 +226,13 @@ function Store() {
                       isLocked && canAfford ? "btn-locked-yellow" : ""
                     }`}
                     onClick={() =>
-                      handlePurchase(item.id, item.cost, item.requiredLevel)
+                      handlePurchase(item.type, item.cost, item.requiredLevel)
                     }
-                    disabled={isLocked || !canAfford || purchasing === item.id}
+                    disabled={
+                      isLocked || !canAfford || purchasing === item.type
+                    }
                   >
-                    {purchasing === item.id ? (
+                    {purchasing === item.type ? (
                       <>
                         <i className='fa-solid fa-spinner fa-spin'></i>{" "}
                         Purchasing...
