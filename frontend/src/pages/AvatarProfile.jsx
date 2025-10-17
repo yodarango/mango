@@ -30,10 +30,10 @@ function AvatarProfile() {
 
       // Separate warriors and mascot
       const warriorsList = (assetsData || []).filter(
-        (asset) => asset.assetType === "warrior"
+        (asset) => asset.status === "warrior"
       );
       const mascotData = (assetsData || []).find(
-        (asset) => asset.assetType === "mascot"
+        (asset) => asset.status === "mascot"
       );
 
       setWarriors(warriorsList);
