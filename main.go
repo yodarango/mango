@@ -145,7 +145,8 @@ type GameCell struct {
 	Background  string `json:"background"`  // Color hex code or image URL
 	Active      bool   `json:"active"`      // Whether the cell is active/playable
 	Element     string `json:"element"`     // Terrain type or avatar element it belongs to
-	IsOccupied  bool   `json:"isOccupied"`  // Whether a player is currently on this cell
+	OccupiedBy  int    `json:"occupiedBy"`  // Avatar ID of the player occupying this cell (0 if empty)
+	Status      string `json:"status"`      // Status of the cell (max 20 chars)
 }
 
 type Battle struct {
@@ -377,13 +378,71 @@ func initDB() {
 		background TEXT,
 		active INTEGER DEFAULT 1,
 		element TEXT,
-		is_occupied INTEGER DEFAULT 0,
+		occupied_by INTEGER DEFAULT 0,
+		status TEXT CHECK(length(status) <= 20),
 		FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 	);`
 
 	_, err = db.Exec(createGameCellsTableSQL)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Migration: Add new fields and remove old field from game_cells
+	_, err = db.Exec(`ALTER TABLE game_cells ADD COLUMN occupied_by INTEGER DEFAULT 0`)
+	if err != nil {
+		// Column might already exist, which is fine
+	}
+
+	_, err = db.Exec(`ALTER TABLE game_cells ADD COLUMN status TEXT CHECK(length(status) <= 20)`)
+	if err != nil {
+		// Column might already exist, which is fine
+	}
+
+	// Check if is_occupied column exists and migrate data
+	var gameCellsColumnExists int
+	err = db.QueryRow(`SELECT COUNT(*) FROM pragma_table_info('game_cells') WHERE name='is_occupied'`).Scan(&gameCellsColumnExists)
+	if err == nil && gameCellsColumnExists > 0 {
+		log.Println("Migrating game_cells table to remove is_occupied column...")
+
+		// Create new table without is_occupied
+		_, err = db.Exec(`CREATE TABLE game_cells_new (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			game_id INTEGER NOT NULL,
+			cell_id TEXT NOT NULL,
+			name TEXT,
+			description TEXT,
+			background TEXT,
+			active INTEGER DEFAULT 1,
+			element TEXT,
+			occupied_by INTEGER DEFAULT 0,
+			status TEXT CHECK(length(status) <= 20),
+			FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+		)`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Copy data from old table to new table
+		_, err = db.Exec(`INSERT INTO game_cells_new (id, game_id, cell_id, name, description, background, active, element, occupied_by, status)
+			SELECT id, game_id, cell_id, name, description, background, active, element, occupied_by, status FROM game_cells`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Drop old table
+		_, err = db.Exec(`DROP TABLE game_cells`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Rename new table to game_cells
+		_, err = db.Exec(`ALTER TABLE game_cells_new RENAME TO game_cells`)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Println("game_cells migration completed successfully")
 	}
 
 	// Create battles table
@@ -1195,7 +1254,7 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 
 		for col := 1; col <= req.Columns; col++ {
 			cellID := fmt.Sprintf("%s%d", rowLetter, col)
-			_, err := db.Exec(`INSERT INTO game_cells (game_id, cell_id, name, background, active, is_occupied)
+			_, err := db.Exec(`INSERT INTO game_cells (game_id, cell_id, name, background, active, occupied_by)
 				VALUES (?, ?, ?, ?, 1, 0)`,
 				gameID, cellID, cellID, "#3a3a3a") // Default charcoal background
 			if err != nil {
@@ -1250,7 +1309,7 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get all cells for this game
-	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, is_occupied
+	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, occupied_by, status
 		FROM game_cells WHERE game_id = ? ORDER BY cell_id`, gameID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1261,15 +1320,18 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	var cells []GameCell
 	for rows.Next() {
 		var cell GameCell
-		var active, isOccupied int
-		var name, description, background, element sql.NullString
+		var active int
+		var name, description, background, element, status sql.NullString
+		var occupiedBy sql.NullInt64
 		if err := rows.Scan(&cell.ID, &cell.GameID, &cell.CellID, &name, &description, &background,
-			&active, &element, &isOccupied); err != nil {
+			&active, &element, &occupiedBy, &status); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		cell.Active = active == 1
-		cell.IsOccupied = isOccupied == 1
+		if occupiedBy.Valid {
+			cell.OccupiedBy = int(occupiedBy.Int64)
+		}
 		if name.Valid {
 			cell.Name = name.String
 		}
@@ -1281,6 +1343,9 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 		}
 		if element.Valid {
 			cell.Element = element.String
+		}
+		if status.Valid {
+			cell.Status = status.String
 		}
 		cells = append(cells, cell)
 	}
@@ -1394,7 +1459,8 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 		Background  string `json:"background"`
 		Active      bool   `json:"active"`
 		Element     string `json:"element"`
-		IsOccupied  bool   `json:"isOccupied"`
+		OccupiedBy  int    `json:"occupiedBy"`
+		Status      string `json:"status"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -1407,15 +1473,11 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 	if req.Active {
 		activeInt = 1
 	}
-	isOccupiedInt := 0
-	if req.IsOccupied {
-		isOccupiedInt = 1
-	}
 
 	_, err = db.Exec(`UPDATE game_cells
-		SET name = ?, description = ?, background = ?, active = ?, element = ?, is_occupied = ?
+		SET name = ?, description = ?, background = ?, active = ?, element = ?, occupied_by = ?, status = ?
 		WHERE id = ?`,
-		req.Name, req.Description, req.Background, activeInt, req.Element, isOccupiedInt, cellID)
+		req.Name, req.Description, req.Background, activeInt, req.Element, req.OccupiedBy, req.Status, cellID)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

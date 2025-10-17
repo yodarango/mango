@@ -46,7 +46,8 @@ function EditGame() {
       background: cell.background || "#3a3a3a",
       active: cell.active,
       element: cell.element || "",
-      isOccupied: cell.isOccupied,
+      occupiedBy: cell.occupiedBy || 0,
+      status: cell.status || "",
     });
   };
 
@@ -85,7 +86,8 @@ function EditGame() {
           background: editingCell.background,
           active: editingCell.active,
           element: editingCell.element,
-          isOccupied: editingCell.isOccupied,
+          occupiedBy: editingCell.occupiedBy,
+          status: editingCell.status,
         }),
       });
 
@@ -242,7 +244,7 @@ function EditGame() {
                   key={colIndex}
                   className={`grid-cell ${
                     cell.active ? "active" : "inactive"
-                  } ${cell.isOccupied ? "occupied" : ""} editable`}
+                  } ${cell.occupiedBy ? "occupied" : ""} editable`}
                   style={getCellBackground(cell)}
                   onClick={() => handleCellClick(cell)}
                 >
@@ -255,7 +257,7 @@ function EditGame() {
                       <i className='fa-solid fa-fire'></i>
                     </div>
                   )}
-                  {cell.isOccupied && (
+                  {cell.occupiedBy && (
                     <div className='occupied-marker'>
                       <i className='fa-solid fa-user'></i>
                     </div>
@@ -375,22 +377,39 @@ function EditGame() {
                   </label>
                 </div>
 
-                <div className='form-group checkbox-group'>
+                <div className='form-group'>
                   <label>
-                    <input
-                      type='checkbox'
-                      checked={editingCell.isOccupied}
-                      onChange={(e) =>
-                        setEditingCell({
-                          ...editingCell,
-                          isOccupied: e.target.checked,
-                        })
-                      }
-                    />
-                    <span>
-                      <i className='fa-solid fa-user'></i> Occupied
-                    </span>
+                    <i className='fa-solid fa-user'></i> Occupied By (Avatar ID)
                   </label>
+                  <input
+                    type='number'
+                    value={editingCell.occupiedBy}
+                    onChange={(e) =>
+                      setEditingCell({
+                        ...editingCell,
+                        occupiedBy: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    placeholder='0 for empty'
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label>
+                    <i className='fa-solid fa-info-circle'></i> Status
+                  </label>
+                  <input
+                    type='text'
+                    value={editingCell.status}
+                    onChange={(e) =>
+                      setEditingCell({
+                        ...editingCell,
+                        status: e.target.value.slice(0, 20),
+                      })
+                    }
+                    placeholder='Cell status (max 20 chars)'
+                    maxLength={20}
+                  />
                 </div>
               </div>
             </div>

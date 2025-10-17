@@ -246,7 +246,7 @@ function Play() {
                   key={colIndex}
                   className={`grid-cell ${
                     cell.active ? "active" : "inactive"
-                  } ${cell.isOccupied ? "occupied" : ""}`}
+                  } ${cell.occupiedBy ? "occupied" : ""}`}
                   style={getCellBackground(cell)}
                   onClick={() => cell.active && handleCellClick(cell)}
                 >
@@ -259,7 +259,7 @@ function Play() {
                       <i className='fa-solid fa-fire'></i>
                     </div>
                   )}
-                  {cell.isOccupied && (
+                  {cell.occupiedBy && (
                     <div className='occupied-marker'>
                       <i className='fa-solid fa-user'></i>
                     </div>
@@ -315,12 +315,18 @@ function Play() {
                 <label>Status:</label>
                 <span
                   className={
-                    selectedCell.isOccupied ? "occupied-status" : "free-status"
+                    selectedCell.occupiedBy ? "occupied-status" : "free-status"
                   }
                 >
-                  {selectedCell.isOccupied ? "Occupied" : "Free"}
+                  {selectedCell.occupiedBy ? "Occupied" : "Free"}
                 </span>
               </div>
+              {selectedCell.status && (
+                <div className='modal-field'>
+                  <label>Cell Status:</label>
+                  <span>{selectedCell.status}</span>
+                </div>
+              )}
             </div>
           </div>
         </>
