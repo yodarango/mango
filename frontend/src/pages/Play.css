@@ -7,13 +7,17 @@
 .play-header {
   text-align: center;
   margin-bottom: 2rem;
+  background: var(--charcoal-medium);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--charcoal-light);
 }
 
 .play-header h1 {
   font-family: "MedievalSharp", cursive;
   color: var(--accent-yellow);
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,32 +25,63 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
-.game-info {
+/* Warriors Display */
+.warriors-display {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  color: var(--text-light);
-  font-size: 1.1rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.game-info span {
+.no-warriors {
+  color: #888;
+  font-style: italic;
+  margin: 0;
+}
+
+.warrior-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
 
-.game-info i {
-  color: var(--accent-green);
+.warrior-thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--accent-green);
+  box-shadow: 0 2px 8px rgba(0, 255, 65, 0.3);
+  transition: all 0.3s ease;
 }
 
-/* Zoom Controls */
-.zoom-controls {
+.warrior-thumbnail:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.5);
+}
+
+.warrior-count {
+  color: var(--accent-orange);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Zoom Controls - Fixed Position */
+.zoom-controls-fixed {
+  position: fixed;
+  top: calc(var(--navbar-height, 80px) + 20px);
+  left: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   gap: 0.5rem;
-  margin-top: 1rem;
+  z-index: 100;
+  background: var(--charcoal-medium);
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 2px solid var(--accent-green);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .zoom-btn {
@@ -73,8 +108,8 @@
 }
 
 .zoom-reset {
-  width: 70px;
-  font-size: 0.95rem;
+  width: 45px;
+  font-size: 0.85rem;
   border-color: var(--accent-yellow);
   color: var(--accent-yellow);
 }

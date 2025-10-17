@@ -9,10 +9,13 @@ function Play() {
   const [loading, setLoading] = useState(true);
   const [selectedCell, setSelectedCell] = useState(null);
   const [zoom, setZoom] = useState(100);
+  const [warriors, setWarriors] = useState([]);
+  const [avatarId, setAvatarId] = useState(null);
 
   useEffect(() => {
     if (gameId) {
       fetchGame();
+      fetchUserWarriors();
     }
   }, [gameId]);
 
@@ -31,6 +34,50 @@ function Play() {
     } catch (error) {
       console.error("Error fetching game:", error);
       setLoading(false);
+    }
+  };
+
+  const fetchUserWarriors = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      // First, get the user's avatar
+      const avatarsResponse = await fetch("/api/avatars");
+      const avatars = await avatarsResponse.json();
+      const userAvatar = avatars.find((a) => a.userId === user.id);
+
+      if (!userAvatar) return;
+
+      setAvatarId(userAvatar.id);
+
+      // Then get the avatar's warriors
+      const assetsResponse = await fetch(
+        `/api/avatars/${userAvatar.id}/assets`
+      );
+      const assets = await assetsResponse.json();
+
+      // Filter for warriors only
+      const warriorAssets = (assets || []).filter(
+        (asset) => asset.status === "warrior"
+      );
+
+      // Group warriors by type and count them
+      const warriorGroups = {};
+      warriorAssets.forEach((warrior) => {
+        if (!warriorGroups[warrior.type]) {
+          warriorGroups[warrior.type] = {
+            type: warrior.type,
+            name: warrior.name,
+            thumbnail: warrior.thumbnail,
+            count: 0,
+          };
+        }
+        warriorGroups[warrior.type].count++;
+      });
+
+      setWarriors(Object.values(warriorGroups));
+    } catch (error) {
+      console.error("Error fetching warriors:", error);
     }
   };
 
@@ -130,32 +177,35 @@ function Play() {
 
   return (
     <div className='play-container'>
-      <div className='play-header'>
-        <h1>
-          <i className='fa-solid fa-chess-board'></i> {game.name}
-        </h1>
-        <div className='game-info'>
-          <span>
-            <i className='fa-solid fa-table-cells'></i> {game.rows} ×{" "}
-            {game.columns}
-          </span>
-          <span>
-            <i className='fa-solid fa-cubes'></i> {cells.length} cells
-          </span>
-        </div>
+      {/* Warriors Display */}
+      <div className='warriors-display'>
+        {warriors.length === 0 ? (
+          <p className='no-warriors'>No warriors available</p>
+        ) : (
+          warriors.map((warrior) => (
+            <div key={warrior.type} className='warrior-item'>
+              <img
+                src={warrior.thumbnail}
+                alt={warrior.name}
+                className='warrior-thumbnail'
+              />
+              <span className='warrior-count'>({warrior.count})</span>
+            </div>
+          ))
+        )}
+      </div>
 
-        {/* Zoom Controls */}
-        <div className='zoom-controls'>
-          <button onClick={handleZoomOut} className='zoom-btn'>
-            <i className='fa-solid fa-minus'></i>
-          </button>
-          <button onClick={handleResetZoom} className='zoom-btn zoom-reset'>
-            {zoom}%
-          </button>
-          <button onClick={handleZoomIn} className='zoom-btn'>
-            <i className='fa-solid fa-plus'></i>
-          </button>
-        </div>
+      {/* Zoom Controls - Fixed Position */}
+      <div className='zoom-controls-fixed'>
+        <button onClick={handleZoomOut} className='zoom-btn'>
+          <i className='fa-solid fa-minus'></i>
+        </button>
+        <button onClick={handleResetZoom} className='zoom-btn zoom-reset'>
+          {zoom}%
+        </button>
+        <button onClick={handleZoomIn} className='zoom-btn'>
+          <i className='fa-solid fa-plus'></i>
+        </button>
       </div>
 
       <div className='grid-wrapper'>
