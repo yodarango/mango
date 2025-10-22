@@ -16,13 +16,67 @@ function Play() {
   const [placingAsset, setPlacingAsset] = useState(false);
   const [viewingAsset, setViewingAsset] = useState(null);
   const gridWrapperRef = useRef(null);
+  const wsRef = useRef(null);
 
   useEffect(() => {
     if (gameId) {
       fetchGame();
       fetchUserWarriors();
+      setupWebSocket();
     }
+
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
   }, [gameId]);
+
+  const setupWebSocket = () => {
+    const token = localStorage.getItem("token");
+    // In development, Vite proxy will handle the WebSocket connection
+    // In production, use the actual host
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/api/ws?token=${token}`;
+
+    console.log("Connecting to WebSocket:", wsUrl);
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      console.log("WebSocket connected in Play");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("WebSocket message received:", data);
+
+        if (data.type === "game_update" && data.gameId === parseInt(gameId)) {
+          // Refresh game data when updates occur
+          fetchGame();
+        }
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket disconnected");
+      // Attempt to reconnect after 3 seconds
+      setTimeout(() => {
+        if (gameId) {
+          setupWebSocket();
+        }
+      }, 3000);
+    };
+
+    wsRef.current = ws;
+  };
 
   // Center the grid on load
   useEffect(() => {
@@ -55,13 +109,19 @@ function Play() {
   const fetchUserWarriors = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
+      console.log("Current user:", user);
 
       // First, get the user's avatar
       const avatarsResponse = await fetch("/api/avatars");
       const avatars = await avatarsResponse.json();
+      console.log("All avatars:", avatars);
+
       const userAvatar = avatars.find((a) => a.userId === user.id);
 
-      if (!userAvatar) return;
+      if (!userAvatar) {
+        console.log("No avatar found for user ID:", user.id);
+        return;
+      }
 
       setAvatarId(userAvatar.id);
 
@@ -95,6 +155,7 @@ function Play() {
         warriorGroups[warrior.type].assets.push(warrior);
       });
 
+      console.log("Warrior groups:", warriorGroups);
       setWarriors(Object.values(warriorGroups));
     } catch (error) {
       console.error("Error fetching warriors:", error);
@@ -125,29 +186,27 @@ function Play() {
       setPlacingAsset(true);
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`/api/game-cells/${cell.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: cell.name,
-            description: cell.description,
-            background: cell.background,
-            active: cell.active,
-            element: cell.element,
-            occupiedBy: selectedWarrior.id,
-            status: "warrior",
-          }),
-        });
+        const response = await fetch(
+          `/api/game-cells/${cell.id}/place-warrior`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              warriorId: selectedWarrior.id,
+            }),
+          }
+        );
 
         if (response.ok) {
           // Refresh the game data
           await fetchGame();
           setSelectedWarrior(null);
         } else {
-          alert("Failed to place warrior on cell");
+          const errorText = await response.text();
+          alert(`Failed to place warrior: ${errorText}`);
         }
       } catch (error) {
         console.error("Error placing warrior:", error);

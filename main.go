@@ -1486,6 +1486,14 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 		activeInt = 1
 	}
 
+	// Get the game_id for this cell
+	var gameID int
+	err = db.QueryRow("SELECT game_id FROM game_cells WHERE id = ?", cellID).Scan(&gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	_, err = db.Exec(`UPDATE game_cells
 		SET name = ?, description = ?, background = ?, active = ?, element = ?, occupied_by = ?, status = ?
 		WHERE id = ?`,
@@ -1495,6 +1503,92 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// Broadcast game update to all connected users
+	broadcastGameUpdate(gameID)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Place warrior on cell (for players)
+func placeWarriorOnCell(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	cellID := vars["id"]
+
+	var req struct {
+		WarriorID int `json:"warriorId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Verify the warrior belongs to the user's avatar
+	var avatarID int
+	err = db.QueryRow("SELECT id FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID)
+	if err != nil {
+		http.Error(w, "No avatar found for user", http.StatusNotFound)
+		return
+	}
+
+	// Verify the warrior belongs to this avatar
+	var warriorAvatarID int
+	var warriorStatus string
+	err = db.QueryRow("SELECT avatar_id, status FROM assets WHERE id = ?", req.WarriorID).Scan(&warriorAvatarID, &warriorStatus)
+	if err != nil {
+		http.Error(w, "Warrior not found", http.StatusNotFound)
+		return
+	}
+
+	if warriorAvatarID != avatarID {
+		http.Error(w, "This warrior does not belong to you", http.StatusForbidden)
+		return
+	}
+
+	if warriorStatus != "warrior" {
+		http.Error(w, "This asset is not a warrior", http.StatusBadRequest)
+		return
+	}
+
+	// Check if cell is active and not occupied
+	var cellActive int
+	var cellOccupiedBy sql.NullInt64
+	var gameID int
+	err = db.QueryRow("SELECT active, occupied_by, game_id FROM game_cells WHERE id = ?", cellID).Scan(&cellActive, &cellOccupiedBy, &gameID)
+	if err != nil {
+		http.Error(w, "Cell not found", http.StatusNotFound)
+		return
+	}
+
+	if cellActive != 1 {
+		http.Error(w, "This cell is not active", http.StatusBadRequest)
+		return
+	}
+
+	if cellOccupiedBy.Valid && cellOccupiedBy.Int64 != 0 {
+		http.Error(w, "This cell is already occupied", http.StatusBadRequest)
+		return
+	}
+
+	// Place warrior on cell
+	_, err = db.Exec(`UPDATE game_cells SET occupied_by = ?, status = ? WHERE id = ?`,
+		req.WarriorID, "warrior", cellID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Broadcast game update to all connected users
+	broadcastGameUpdate(gameID)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
@@ -1922,10 +2016,29 @@ func updateBattle(w http.ResponseWriter, r *http.Request) {
 
 // WebSocket handler
 func handleWebSocket(w http.ResponseWriter, r *http.Request) {
-	// Get user from token
-	claims, err := getUserFromToken(r)
-	if err != nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	// Get token from query parameter (WebSocket can't use Authorization header in browser)
+	tokenString := r.URL.Query().Get("token")
+	if tokenString == "" {
+		log.Println("No token provided in WebSocket connection")
+		http.Error(w, "Unauthorized: No token provided", http.StatusUnauthorized)
+		return
+	}
+
+	// Parse and validate token
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+
+	if err != nil || !token.Valid {
+		log.Println("Invalid token in WebSocket connection:", err)
+		http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
+		return
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok {
+		log.Println("Invalid claims in WebSocket token")
+		http.Error(w, "Unauthorized: Invalid claims", http.StatusUnauthorized)
 		return
 	}
 
@@ -1992,6 +2105,30 @@ func notifyUsers(userIDs []int, notificationType string, data interface{}) {
 	}
 }
 
+// Broadcast game update to all connected users
+func broadcastGameUpdate(gameID int) {
+	clientsMutex.RLock()
+	defer clientsMutex.RUnlock()
+
+	message := map[string]interface{}{
+		"type":   "game_update",
+		"gameId": gameID,
+	}
+
+	messageJSON, err := json.Marshal(message)
+	if err != nil {
+		log.Println("Error marshaling game update:", err)
+		return
+	}
+
+	for userID, conn := range clients {
+		err := conn.WriteMessage(websocket.TextMessage, messageJSON)
+		if err != nil {
+			log.Printf("Error sending game update to user %d: %v", userID, err)
+		}
+	}
+}
+
 func main() {
 	initDB()
 	defer db.Close()
@@ -2019,6 +2156,7 @@ func main() {
 	api.HandleFunc("/games/{id}", updateGame).Methods("PUT")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
+	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 
 	// Battle routes
 	api.HandleFunc("/battles", getBattles).Methods("GET")

@@ -75,13 +75,6 @@
   color: var(--charcoal-dark);
   box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
-/* 
-.grid-wrapper {
-  display: flex;
-  justify-content: center;
-  overflow: auto;
-  padding: 2rem;
-} */
 
 .grid-container {
   transition: transform 0.3s ease;

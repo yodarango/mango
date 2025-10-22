@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./EditGame.css";
 
@@ -11,12 +11,66 @@ function EditGame() {
   const [editingCell, setEditingCell] = useState(null);
   const [saving, setSaving] = useState(false);
   const [zoom, setZoom] = useState(100);
+  const wsRef = useRef(null);
 
   useEffect(() => {
     if (gameId) {
       fetchGame();
+      setupWebSocket();
     }
+
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
   }, [gameId]);
+
+  const setupWebSocket = () => {
+    const token = localStorage.getItem("token");
+    // In development, Vite proxy will handle the WebSocket connection
+    // In production, use the actual host
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/api/ws?token=${token}`;
+
+    console.log("Connecting to WebSocket:", wsUrl);
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+      console.log("WebSocket connected in EditGame");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("WebSocket message received:", data);
+
+        if (data.type === "game_update" && data.gameId === parseInt(gameId)) {
+          // Refresh game data when updates occur
+          fetchGame();
+        }
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket disconnected");
+      // Attempt to reconnect after 3 seconds
+      setTimeout(() => {
+        if (gameId) {
+          setupWebSocket();
+        }
+      }, 3000);
+    };
+
+    wsRef.current = ws;
+  };
 
   const fetchGame = async () => {
     try {
