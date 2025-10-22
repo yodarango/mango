@@ -16,6 +16,7 @@ function Play() {
   const [placingAsset, setPlacingAsset] = useState(false);
   const [viewingAsset, setViewingAsset] = useState(null);
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
+  const [wsConnected, setWsConnected] = useState(false);
   const gridWrapperRef = useRef(null);
   const wsRef = useRef(null);
   const fetchGameRef = useRef(null);
@@ -78,6 +79,7 @@ function Play() {
 
     ws.onopen = () => {
       console.log("WebSocket connected in Play");
+      setWsConnected(true);
     };
 
     ws.onmessage = (event) => {
@@ -98,16 +100,13 @@ function Play() {
 
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
+      setWsConnected(false);
     };
 
     ws.onclose = () => {
       console.log("WebSocket disconnected");
-      // Attempt to reconnect after 3 seconds
-      setTimeout(() => {
-        if (gameId) {
-          setupWebSocket();
-        }
-      }, 3000);
+      setWsConnected(false);
+      // Don't auto-reconnect, let user manually reconnect via button
     };
 
     wsRef.current = ws;
@@ -330,6 +329,17 @@ function Play() {
     setZoom(parseInt(e.target.value));
   };
 
+  const toggleWebSocket = () => {
+    if (wsConnected && wsRef.current) {
+      // Disconnect
+      wsRef.current.close();
+      setWsConnected(false);
+    } else {
+      // Connect
+      setupWebSocket();
+    }
+  };
+
   const getCellBackground = (cell) => {
     if (cell.background) {
       // Check if it's a color (starts with #) or an image URL
@@ -477,6 +487,17 @@ function Play() {
           className='zoom-slider'
           orient='vertical'
         />
+        <button
+          className={`ws-status-btn ${
+            wsConnected ? "connected" : "disconnected"
+          }`}
+          onClick={toggleWebSocket}
+          title={
+            wsConnected
+              ? "Connected - Click to disconnect"
+              : "Disconnected - Click to connect"
+          }
+        ></button>
       </div>
 
       <div className='grid-wrapper' ref={gridWrapperRef}>

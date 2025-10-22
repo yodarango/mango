@@ -100,6 +100,40 @@
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
 
+/* WebSocket Status Button */
+.ws-status-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--charcoal-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.ws-status-btn.connected {
+  background: #00ff41;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+}
+
+.ws-status-btn.disconnected {
+  background: #ff0000;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+
+.ws-status-btn:hover {
+  transform: scale(1.2);
+}
+
+.ws-status-btn.connected:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 65, 1);
+}
+
+.ws-status-btn.disconnected:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+}
+
 .grid-container {
   transition: transform 0.3s ease;
 }

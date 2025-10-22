@@ -12,6 +12,7 @@ function EditGame() {
   const [saving, setSaving] = useState(false);
   const [zoom, setZoom] = useState(100);
   const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
+  const [wsConnected, setWsConnected] = useState(false);
   const wsRef = useRef(null);
   const fetchGameRef = useRef(null);
 
@@ -100,6 +101,7 @@ function EditGame() {
 
     ws.onopen = () => {
       console.log("WebSocket connected in EditGame");
+      setWsConnected(true);
     };
 
     ws.onmessage = (event) => {
@@ -120,16 +122,13 @@ function EditGame() {
 
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
+      setWsConnected(false);
     };
 
     ws.onclose = () => {
       console.log("WebSocket disconnected");
-      // Attempt to reconnect after 3 seconds
-      setTimeout(() => {
-        if (gameId) {
-          setupWebSocket();
-        }
-      }, 3000);
+      setWsConnected(false);
+      // Don't auto-reconnect, let user manually reconnect via button
     };
 
     wsRef.current = ws;
@@ -157,6 +156,17 @@ function EditGame() {
 
   const handleZoomChange = (e) => {
     setZoom(parseInt(e.target.value));
+  };
+
+  const toggleWebSocket = () => {
+    if (wsConnected && wsRef.current) {
+      // Disconnect
+      wsRef.current.close();
+      setWsConnected(false);
+    } else {
+      // Connect
+      setupWebSocket();
+    }
   };
 
   const handleSaveCell = async () => {
@@ -305,6 +315,17 @@ function EditGame() {
             onChange={handleZoomChange}
             className='zoom-slider-horizontal'
           />
+          <button
+            className={`ws-status-btn ${
+              wsConnected ? "connected" : "disconnected"
+            }`}
+            onClick={toggleWebSocket}
+            title={
+              wsConnected
+                ? "Connected - Click to disconnect"
+                : "Disconnected - Click to connect"
+            }
+          ></button>
         </div>
       </div>
 
