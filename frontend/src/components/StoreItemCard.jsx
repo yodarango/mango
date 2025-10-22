@@ -45,18 +45,18 @@ function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
         <div className='store-item-details'>
           <h3>{item.name}</h3>
 
-          <div className='stat-row total-power'>
-            <i className='fa-solid fa-bolt'></i>
-            <span className='stat-label'>Overall Power:</span>
-            <span className='stat-value'>{overallPower}</span>
+          <div className='compact-stats'>
+            <div className='compact-stat'>
+              <i className='fa-solid fa-bolt'></i>
+              <span className='compact-value'>{overallPower}</span>
+            </div>
+            <div className='compact-stat'>
+              <i className='fa-solid fa-coins'></i>
+              <span className='compact-value'>{item.cost}</span>
+            </div>
           </div>
 
           <div className='store-item-footer'>
-            <div className='item-price'>
-              <i className='fa-solid fa-coins'></i>
-              <span className='price-amount'>{item.cost}</span>
-              <span className='price-label'>coins</span>
-            </div>
             <button
               className={`purchase-btn ${
                 isLocked && canAfford ? "btn-locked-yellow" : ""
@@ -79,10 +79,6 @@ function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
                 </>
               )}
             </button>
-          </div>
-
-          <div className='click-hint'>
-            <i className='fa-solid fa-circle-info'></i> Click for details
           </div>
         </div>
       </div>
