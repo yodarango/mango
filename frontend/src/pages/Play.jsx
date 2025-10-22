@@ -18,6 +18,38 @@ function Play() {
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
   const gridWrapperRef = useRef(null);
   const wsRef = useRef(null);
+  const fetchGameRef = useRef(null);
+
+  const fetchGame = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/games/${gameId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log("Fetched game data:", data);
+      console.log("Cells before update:", cells);
+      console.log("New cells:", data.cells);
+      setGame(data.game);
+      setCells(data.cells || []);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching game:", error);
+      setLoading(false);
+    }
+  };
+
+  // Keep fetchGameRef updated with the latest fetchGame function
+  useEffect(() => {
+    fetchGameRef.current = fetchGame;
+  });
+
+  // Debug: Log when cells change
+  useEffect(() => {
+    console.log("Cells state updated:", cells);
+  }, [cells]);
 
   useEffect(() => {
     if (gameId) {
@@ -54,8 +86,10 @@ function Play() {
         console.log("WebSocket message received:", data);
 
         if (data.type === "game_update" && data.gameId === parseInt(gameId)) {
-          // Refresh game data when updates occur
-          fetchGame();
+          // Refresh game data when updates occur using the ref
+          if (fetchGameRef.current) {
+            fetchGameRef.current();
+          }
         }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
@@ -88,24 +122,6 @@ function Play() {
       wrapper.scrollLeft = (scrollWidth - clientWidth) / 2;
     }
   }, [loading, game]);
-
-  const fetchGame = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/api/games/${gameId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setGame(data.game);
-      setCells(data.cells || []);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching game:", error);
-      setLoading(false);
-    }
-  };
 
   const fetchUserWarriors = async () => {
     try {
@@ -476,7 +492,7 @@ function Play() {
 
           {/* Grid rows */}
           {grid.map((row, rowIndex) => (
-            <div key={rowIndex} className='grid-row'>
+            <div key={`row-${rowIndex}`} className='grid-row'>
               <div className='row-header'>{getRowLetter(rowIndex)}</div>
               {row.map((cell, colIndex) => {
                 const isMovingFrom =
@@ -488,7 +504,7 @@ function Play() {
 
                 return (
                   <div
-                    key={colIndex}
+                    key={`${cell.id}-${cell.occupiedBy || "empty"}`}
                     className={`grid-cell ${
                       cell.active ? "active" : "inactive"
                     } ${cell.occupiedBy ? "occupied" : ""} ${
