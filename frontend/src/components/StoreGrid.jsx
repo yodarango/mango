@@ -9,8 +9,12 @@ function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
 
   // Get unique levels and types for filter options
   const uniqueLevels = useMemo(() => {
-    const levels = [...new Set(items.map((item) => item.requiredLevel))];
-    return levels.sort((a, b) => a - b);
+    const levels = [
+      ...new Set(
+        items.map((item) => item.requiredLevel || item.required_level)
+      ),
+    ];
+    return levels.filter((level) => level != null).sort((a, b) => a - b);
   }, [items]);
 
   const uniqueTypes = useMemo(() => {
@@ -18,23 +22,45 @@ function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
     return types.sort();
   }, [items]);
 
-  // Filter items based on search and filters
+  // Filter by name (search input)
+  const filterByName = (item) => {
+    if (searchTerm === "") return true;
+    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  };
+
+  // Filter by required_level
+  const filterByLevel = (item) => {
+    if (filterLevel === "all") return true;
+    const itemLevel = item.requiredLevel || item.required_level;
+    return itemLevel === parseInt(filterLevel);
+  };
+
+  // Filter by type
+  const filterByType = (item) => {
+    if (filterType === "all") return true;
+    return item.type === filterType;
+  };
+
+  // Apply all filters
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      // Search filter
-      const matchesSearch = item.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    let result = items;
 
-      // Level filter
-      const matchesLevel =
-        filterLevel === "all" || item.requiredLevel === parseInt(filterLevel);
+    // Apply name filter
+    if (searchTerm !== "") {
+      result = result.filter(filterByName);
+    }
 
-      // Type filter
-      const matchesType = filterType === "all" || item.type === filterType;
+    // Apply level filter
+    if (filterLevel !== "all") {
+      result = result.filter(filterByLevel);
+    }
 
-      return matchesSearch && matchesLevel && matchesType;
-    });
+    // Apply type filter
+    if (filterType !== "all") {
+      result = result.filter(filterByType);
+    }
+
+    return result;
   }, [items, searchTerm, filterLevel, filterType]);
 
   const handleClearFilters = () => {
@@ -127,9 +153,9 @@ function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
         </div>
       ) : (
         <div className='store-grid'>
-          {filteredItems.map((item) => (
+          {filteredItems.map((item, index) => (
             <StoreItemCard
-              key={item.type}
+              key={item.id || `${item.type}-${item.name}-${index}`}
               item={item}
               userCoins={userCoins}
               userLevel={userLevel}
