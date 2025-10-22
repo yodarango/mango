@@ -6,6 +6,8 @@ function Avatars() {
   const [avatars, setAvatars] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const isAdmin = user && user.role === "admin";
 
   useEffect(() => {
     fetchAvatars();
@@ -15,7 +17,13 @@ function Avatars() {
     try {
       const response = await fetch("/api/avatars");
       const data = await response.json();
-      setAvatars(data || []);
+
+      // Filter out "test" avatars for non-admin users
+      const filteredData = isAdmin
+        ? data || []
+        : (data || []).filter((avatar) => avatar.name.toLowerCase() !== "test");
+
+      setAvatars(filteredData);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching avatars:", error);
