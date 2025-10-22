@@ -726,6 +726,65 @@ func getAvatar(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(avatar)
 }
 
+// Update an avatar (admin only)
+func updateAvatar(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	avatarID := vars["id"]
+
+	var req Avatar
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate required fields
+	if req.Name == "" || req.AvatarName == "" {
+		http.Error(w, "Name and AvatarName are required", http.StatusBadRequest)
+		return
+	}
+
+	// Update avatar (excluding ID and user_id)
+	_, err = db.Exec(`UPDATE avatars SET
+		name = ?,
+		avatar_name = ?,
+		thumbnail = ?,
+		coins = ?,
+		level = ?,
+		required_level = ?,
+		element = ?,
+		super_power = ?,
+		personality = ?,
+		weakness = ?,
+		animal_ally = ?,
+		mascot = ?
+		WHERE id = ?`,
+		req.Name, req.AvatarName, req.Thumbnail, req.Coins, req.Level, req.RequiredLevel,
+		req.Element, req.SuperPower, req.Personality, req.Weakness, req.AnimalAlly, req.Mascot,
+		avatarID)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
@@ -2268,6 +2327,7 @@ func main() {
 	api.HandleFunc("/login", login).Methods("POST")
 	api.HandleFunc("/avatars", getAvatars).Methods("GET")
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
+	api.HandleFunc("/avatars/{id}", updateAvatar).Methods("PUT")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
 	api.HandleFunc("/assets/{id}", getAsset).Methods("GET")
 	api.HandleFunc("/store", getStoreItems).Methods("GET")

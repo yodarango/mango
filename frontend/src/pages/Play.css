@@ -215,7 +215,7 @@
   border: 2px solid var(--charcoal-dark);
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 

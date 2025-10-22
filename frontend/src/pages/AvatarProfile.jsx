@@ -64,11 +64,24 @@ function AvatarProfile() {
     );
   }
 
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const isAdmin = user && user.role === "admin";
+
   return (
     <div className='page profile-page'>
-      <button className='back-button' onClick={() => navigate("/")}>
-        ← Back to Gallery
-      </button>
+      <div className='profile-actions'>
+        <button className='back-button' onClick={() => navigate("/")}>
+          ← Back to Gallery
+        </button>
+        {isAdmin && (
+          <button
+            className='edit-avatar-button'
+            onClick={() => navigate(`/admin/edit-avatar/${id}`)}
+          >
+            <i className='fa-solid fa-pen-to-square'></i> Edit Avatar
+          </button>
+        )}
+      </div>
 
       <div className='profile-header'>
         <div className='avatar-image-container'>

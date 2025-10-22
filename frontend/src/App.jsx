@@ -14,6 +14,7 @@ import Play from "./pages/Play";
 import CreateBattle from "./pages/CreateBattle";
 import EditBattle from "./pages/EditBattle";
 import AdminBattle from "./pages/AdminBattle";
+import EditAvatar from "./pages/EditAvatar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
 import "./App.css";
@@ -164,6 +165,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminBattle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/edit-avatar/:id'
+            element={
+              <ProtectedRoute>
+                <EditAvatar />
               </ProtectedRoute>
             }
           />
