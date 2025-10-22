@@ -102,7 +102,7 @@ type Claims struct {
 }
 
 type PurchaseRequest struct {
-	AssetType string `json:"assetType"`
+	AssetName string `json:"assetName"`
 }
 
 type PurchaseResponse struct {
@@ -897,10 +897,10 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get asset details from the requested type
+	// Get asset details from the requested name
 	var assetCost int
 	var assetName string
-	err = tx.QueryRow(`SELECT cost, name FROM assets WHERE type = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetType).Scan(&assetCost, &assetName)
+	err = tx.QueryRow(`SELECT cost, name FROM assets WHERE name = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetName).Scan(&assetCost, &assetName)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Asset not found or out of stock", http.StatusNotFound)
@@ -922,9 +922,9 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Find the first available asset of this type in the store
+	// Find the first available asset of this name in the store
 	var purchasedAssetID int
-	err = tx.QueryRow(`SELECT id FROM assets WHERE type = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetType).Scan(&purchasedAssetID)
+	err = tx.QueryRow(`SELECT id FROM assets WHERE name = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetName).Scan(&purchasedAssetID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			response := PurchaseResponse{
@@ -972,7 +972,7 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStoreItems(w http.ResponseWriter, r *http.Request) {
-	// Group by type and get one representative item per type with count
+	// Group by name and get one representative item per name with count
 	rows, err := db.Query(`
 		SELECT
 			type,
@@ -992,7 +992,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 			COUNT(*) as available_units
 		FROM assets
 		WHERE status = 'store' AND avatar_id IS NULL
-		GROUP BY type
+		GROUP BY name
 		ORDER BY cost`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

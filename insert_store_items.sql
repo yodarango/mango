@@ -3,6 +3,7 @@
 BEGIN TRANSACTION;
 
 -- Colors (type: colors)
+
 DELETE FROM assets WHERE type = 'colors' AND status = 'store';
 INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina)
 VALUES
@@ -12,11 +13,12 @@ VALUES
   (NULL, 'store', 'colors', 'negro', '/src/assets/store/warriors/colors/negro.webp', 11, 14, 20, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'azul', '/src/assets/store/warriors/colors/azul.webp', 11, 14, 20, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'verde', '/src/assets/store/warriors/colors/verde.webp', 14, 11, 19, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'colors', 'yellow', '/src/assets/store/warriors/colors/yellow.webp', 20, 12, 13, 0, 5, 1, 1, 100, '', 100, 100),
+  (NULL, 'store', 'colors', 'amarillo', '/src/assets/store/warriors/colors/amarillo.webp', 20, 12, 13, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'rosa', '/src/assets/store/warriors/colors/rosa.webp', 20, 20, 20, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'cafe', '/src/assets/store/warriors/colors/cafe.webp', 15, 12, 18, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'gris', '/src/assets/store/warriors/colors/gris.webp', 13, 17, 11, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'colors', 'anaranjado', '/src/assets/store/warriors/colors/anaranjado.webp', 19, 14, 16, 0, 5, 1, 1, 100, '', 100, 100);
+
   
   DELETE FROM assets WHERE type = 'week_days' AND status = 'store';
   INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina)
@@ -44,4 +46,3 @@ VALUES
   -- (NULL, 'store', 'months', 'octubre', '/src/assets/store/warriors/octubre.webp', 30, 39, 37, 0, 5, 1, 1, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'noviembre', '/src/assets/store/warriors/noviembre.webp', 39, 31, 35, 0, 5, 1, 1, 100, '', 100, 100),
   (NULL, 'store', 'months', 'diciembre', '/src/assets/store/warriors/months/diciembre.webp', 36, 38, 30, 0, 5, 1, 1, 100, '', 100, 100);
-
