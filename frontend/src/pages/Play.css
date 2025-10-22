@@ -357,8 +357,31 @@
 
 .occupied-marker {
   position: absolute;
-  bottom: 4px;
-  right: 6px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.occupied-marker .warrior-thumbnail {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: none;
+}
+
+.occupied-marker:hover .warrior-thumbnail {
+  transform: scale(1.05);
+}
+
+.occupied-marker i {
   color: var(--accent-orange);
   font-size: 1.2rem;
   background: rgba(0, 0, 0, 0.8);
@@ -371,13 +394,6 @@
   justify-content: center;
   border: 2px solid var(--accent-orange);
   box-shadow: 0 2px 8px rgba(255, 107, 53, 0.5);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.occupied-marker:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.8);
 }
 
 /* Modal */

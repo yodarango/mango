@@ -11,6 +11,7 @@ function EditGame() {
   const [editingCell, setEditingCell] = useState(null);
   const [saving, setSaving] = useState(false);
   const [zoom, setZoom] = useState(100);
+  const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
   const wsRef = useRef(null);
   const fetchGameRef = useRef(null);
 
@@ -29,6 +30,39 @@ function EditGame() {
       setGame(data.game);
       setCells(data.cells || []);
       setLoading(false);
+
+      // Fetch thumbnails for occupied cells
+      const occupiedCells = (data.cells || []).filter((c) => c.occupiedBy);
+      const uniqueAssetIds = [
+        ...new Set(occupiedCells.map((c) => c.occupiedBy)),
+      ];
+
+      // Fetch asset details for thumbnails
+      const thumbnailPromises = uniqueAssetIds.map(async (assetId) => {
+        try {
+          const response = await fetch(`/api/assets/${assetId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.ok) {
+            const asset = await response.json();
+            return {
+              id: assetId,
+              thumbnail: asset.thumbnail,
+              name: asset.name,
+            };
+          }
+        } catch (err) {
+          console.error(`Error fetching asset ${assetId}:`, err);
+        }
+        return null;
+      });
+
+      const thumbnails = await Promise.all(thumbnailPromises);
+      const thumbnailMap = {};
+      thumbnails.forEach((t) => {
+        if (t) thumbnailMap[t.id] = t;
+      });
+      setAssetThumbnails(thumbnailMap);
     } catch (error) {
       console.error("Error fetching game:", error);
       setLoading(false);
@@ -322,11 +356,27 @@ function EditGame() {
                       <i className='fa-solid fa-fire'></i>
                     </div>
                   )}
-                  {cell.occupiedBy && (
-                    <div className='occupied-marker'>
-                      <i className='fa-solid fa-user'></i>
-                    </div>
-                  )}
+                  {cell.occupiedBy &&
+                    (() => {
+                      const asset = assetThumbnails[cell.occupiedBy];
+                      if (asset && asset.thumbnail) {
+                        return (
+                          <div className='occupied-marker'>
+                            <img
+                              src={asset.thumbnail}
+                              alt={asset.name}
+                              className='warrior-thumbnail'
+                            />
+                          </div>
+                        );
+                      }
+                      // Fallback to icon if asset not loaded yet
+                      return (
+                        <div className='occupied-marker'>
+                          <i className='fa-solid fa-user'></i>
+                        </div>
+                      );
+                    })()}
                   <div className='edit-indicator'>
                     <i className='fa-solid fa-pen'></i>
                   </div>

@@ -128,7 +128,7 @@ function Play() {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       console.log("Current user:", user);
 
-      // First, get the user's avatar
+      // First, get all avatars
       const avatarsResponse = await fetch("/api/avatars");
       const avatars = await avatarsResponse.json();
       console.log("All avatars:", avatars);
@@ -142,23 +142,34 @@ function Play() {
 
       setAvatarId(userAvatar.id);
 
-      // Then get the avatar's warriors
-      const assetsResponse = await fetch(
-        `/api/avatars/${userAvatar.id}/assets`
+      // Fetch warriors from ALL avatars (not just current user)
+      const allWarriorsPromises = avatars.map(async (avatar) => {
+        try {
+          const assetsResponse = await fetch(
+            `/api/avatars/${avatar.id}/assets`
+          );
+          const assets = await assetsResponse.json();
+          return (assets || []).filter((asset) => asset.status === "warrior");
+        } catch (err) {
+          console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
+          return [];
+        }
+      });
+
+      const allWarriorsArrays = await Promise.all(allWarriorsPromises);
+      const allWarriorsFlat = allWarriorsArrays.flat();
+
+      // Store ALL warrior assets (from all users) for thumbnail display
+      setAllWarriorAssets(allWarriorsFlat);
+
+      // Get only the current user's warriors for placement
+      const userWarriorAssets = allWarriorsFlat.filter(
+        (asset) => asset.avatarId === userAvatar.id
       );
-      const assets = await assetsResponse.json();
 
-      // Filter for warriors only
-      const warriorAssets = (assets || []).filter(
-        (asset) => asset.status === "warrior"
-      );
-
-      // Store all warrior assets for placement
-      setAllWarriorAssets(warriorAssets);
-
-      // Group warriors by type and count them
+      // Group user's warriors by type and count them
       const warriorGroups = {};
-      warriorAssets.forEach((warrior) => {
+      userWarriorAssets.forEach((warrior) => {
         if (!warriorGroups[warrior.type]) {
           warriorGroups[warrior.type] = {
             type: warrior.type,
@@ -172,7 +183,8 @@ function Play() {
         warriorGroups[warrior.type].assets.push(warrior);
       });
 
-      console.log("Warrior groups:", warriorGroups);
+      console.log("All warriors (all users):", allWarriorsFlat);
+      console.log("User's warrior groups:", warriorGroups);
       setWarriors(Object.values(warriorGroups));
     } catch (error) {
       console.error("Error fetching warriors:", error);
@@ -522,11 +534,30 @@ function Play() {
                         <i className='fa-solid fa-fire'></i>
                       </div>
                     )}
-                    {cell.occupiedBy && (
-                      <div className='occupied-marker'>
-                        <i className='fa-solid fa-user'></i>
-                      </div>
-                    )}
+                    {cell.occupiedBy &&
+                      (() => {
+                        // Find the warrior asset
+                        const warrior = allWarriorAssets.find(
+                          (w) => w.id === cell.occupiedBy
+                        );
+                        if (warrior && warrior.thumbnail) {
+                          return (
+                            <div className='occupied-marker'>
+                              <img
+                                src={warrior.thumbnail}
+                                alt={warrior.name}
+                                className='warrior-thumbnail'
+                              />
+                            </div>
+                          );
+                        }
+                        // Fallback to icon if warrior not found or no thumbnail
+                        return (
+                          <div className='occupied-marker'>
+                            <i className='fa-solid fa-user'></i>
+                          </div>
+                        );
+                      })()}
                   </div>
                 );
               })}
