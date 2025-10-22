@@ -206,22 +206,18 @@ function CreateGame() {
             <i className='fa-solid fa-users'></i> Select Players
           </h2>
 
-          <div className='avatars-grid-45'>
+          <div className='avatars-grid'>
             {avatars.map((avatar) => (
-              <div
-                key={avatar.id}
-                className={`avatar-card ${
-                  selectedAvatars.includes(avatar.id) ? "selected" : ""
-                }`}
-                onClick={() => handleAvatarToggle(avatar.id)}
-                style={{
-                  borderColor: selectedAvatars.includes(avatar.id)
-                    ? getElementColor(avatar.element)
-                    : "var(--charcoal-light)",
-                }}
-              >
-                <div className='avatar-thumbnail'>
-                  <img src={avatar.thumbnail} alt={avatar.name} />
+              <article key={avatar.id} className='avatars-grid-avatar'>
+                <div
+                  className={`avatar-circle-thumbnail ${
+                    selectedAvatars.includes(avatar.id) ? "selected" : ""
+                  }`}
+                  onClick={() => handleAvatarToggle(avatar.id)}
+                >
+                  <div className='avatar-thumbnail'>
+                    <img src={avatar.thumbnail} alt={avatar.name} />
+                  </div>
                 </div>
                 <div className='avatar-info'>
                   <h3>{avatar.name}</h3>
@@ -237,7 +233,7 @@ function CreateGame() {
                     <i className='fa-solid fa-check-circle'></i>
                   </div>
                 )}
-              </div>
+              </article>
             ))}
           </div>
 

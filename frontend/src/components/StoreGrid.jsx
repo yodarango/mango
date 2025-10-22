@@ -125,7 +125,7 @@ function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
             <option value='all'>All Types</option>
             {uniqueTypes.map((type) => (
               <option key={type} value={type}>
-                {type}
+                {type?.replaceAll("_", " ")}
               </option>
             ))}
           </select>
