@@ -11,6 +11,10 @@ function Play() {
   const [zoom, setZoom] = useState(100);
   const [warriors, setWarriors] = useState([]);
   const [avatarId, setAvatarId] = useState(null);
+  const [allWarriorAssets, setAllWarriorAssets] = useState([]);
+  const [selectedWarrior, setSelectedWarrior] = useState(null);
+  const [placingAsset, setPlacingAsset] = useState(false);
+  const [viewingAsset, setViewingAsset] = useState(null);
   const gridWrapperRef = useRef(null);
 
   useEffect(() => {
@@ -72,6 +76,9 @@ function Play() {
         (asset) => asset.status === "warrior"
       );
 
+      // Store all warrior assets for placement
+      setAllWarriorAssets(warriorAssets);
+
       // Group warriors by type and count them
       const warriorGroups = {};
       warriorAssets.forEach((warrior) => {
@@ -81,9 +88,11 @@ function Play() {
             name: warrior.name,
             thumbnail: warrior.thumbnail,
             count: 0,
+            assets: [],
           };
         }
         warriorGroups[warrior.type].count++;
+        warriorGroups[warrior.type].assets.push(warrior);
       });
 
       setWarriors(Object.values(warriorGroups));
@@ -92,12 +101,82 @@ function Play() {
     }
   };
 
-  const handleCellClick = (cell) => {
-    setSelectedCell(cell);
+  const handleWarriorClick = (warriorGroup) => {
+    // Find the first available warrior of this type (not placed on grid)
+    const availableWarrior = warriorGroup.assets.find(
+      (asset) => !cells.some((cell) => cell.occupiedBy === asset.id)
+    );
+
+    if (availableWarrior) {
+      setSelectedWarrior(availableWarrior);
+    } else {
+      alert("All warriors of this type are already placed on the grid!");
+    }
+  };
+
+  const handleCellClick = async (cell) => {
+    // If a warrior is selected, place it on the cell
+    if (selectedWarrior && cell.active) {
+      if (cell.occupiedBy) {
+        alert("This cell is already occupied!");
+        return;
+      }
+
+      setPlacingAsset(true);
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`/api/game-cells/${cell.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: cell.name,
+            description: cell.description,
+            background: cell.background,
+            active: cell.active,
+            element: cell.element,
+            occupiedBy: selectedWarrior.id,
+            status: "warrior",
+          }),
+        });
+
+        if (response.ok) {
+          // Refresh the game data
+          await fetchGame();
+          setSelectedWarrior(null);
+        } else {
+          alert("Failed to place warrior on cell");
+        }
+      } catch (error) {
+        console.error("Error placing warrior:", error);
+        alert("Error placing warrior");
+      } finally {
+        setPlacingAsset(false);
+      }
+    } else if (cell.occupiedBy && cell.status === "warrior") {
+      // If cell has a warrior, show its stats
+      const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
+      if (warrior) {
+        setViewingAsset(warrior);
+      }
+    } else {
+      // Otherwise show cell details
+      setSelectedCell(cell);
+    }
   };
 
   const closeModal = () => {
     setSelectedCell(null);
+  };
+
+  const closeAssetModal = () => {
+    setViewingAsset(null);
+  };
+
+  const cancelSelection = () => {
+    setSelectedWarrior(null);
   };
 
   const handleZoomIn = () => {
@@ -190,19 +269,49 @@ function Play() {
     <div className='play-container'>
       {/* Warriors Display */}
       <div className='warriors-display'>
+        {selectedWarrior && (
+          <div className='selection-banner'>
+            <span>
+              <i className='fa-solid fa-hand-pointer'></i> Click on a cell to
+              place {selectedWarrior.name}
+            </span>
+            <button onClick={cancelSelection} className='cancel-selection-btn'>
+              <i className='fa-solid fa-times'></i> Cancel
+            </button>
+          </div>
+        )}
         {warriors.length === 0 ? (
           <p className='no-warriors'>No warriors available</p>
         ) : (
-          warriors.map((warrior) => (
-            <div key={warrior.type} className='warrior-item'>
-              <img
-                src={warrior.thumbnail}
-                alt={warrior.name}
-                className='warrior-thumbnail'
-              />
-              <span className='warrior-count'>({warrior.count})</span>
-            </div>
-          ))
+          <div className='warriors-grid'>
+            {warriors.map((warrior) => {
+              const availableCount = warrior.assets.filter(
+                (asset) => !cells.some((cell) => cell.occupiedBy === asset.id)
+              ).length;
+              const isSelected =
+                selectedWarrior && selectedWarrior.type === warrior.type;
+
+              return (
+                <div
+                  key={warrior.type}
+                  className={`warrior-item ${isSelected ? "selected" : ""} ${
+                    availableCount === 0 ? "depleted" : ""
+                  }`}
+                  onClick={() => handleWarriorClick(warrior)}
+                  title={`${availableCount} available`}
+                >
+                  <img
+                    src={warrior.thumbnail}
+                    alt={warrior.name}
+                    className='warrior-thumbnail'
+                  />
+                  <span className='warrior-count'>
+                    ({availableCount}/{warrior.count})
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
 
@@ -246,9 +355,13 @@ function Play() {
                   key={colIndex}
                   className={`grid-cell ${
                     cell.active ? "active" : "inactive"
-                  } ${cell.occupiedBy ? "occupied" : ""}`}
+                  } ${cell.occupiedBy ? "occupied" : ""} ${
+                    selectedWarrior && cell.active && !cell.occupiedBy
+                      ? "placeable"
+                      : ""
+                  }`}
                   style={getCellBackground(cell)}
-                  onClick={() => cell.active && handleCellClick(cell)}
+                  onClick={() => handleCellClick(cell)}
                 >
                   <span className='cell-id'>{cell.cellId}</span>
                   {cell.element && (
@@ -325,6 +438,96 @@ function Play() {
                 <div className='modal-field'>
                   <label>Cell Status:</label>
                   <span>{selectedCell.status}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Asset Stats Modal */}
+      {viewingAsset && (
+        <>
+          <div className='modal-overlay' onClick={closeAssetModal}></div>
+          <div className='asset-modal'>
+            <div className='modal-header'>
+              <h2>
+                <i className='fa-solid fa-user-shield'></i> {viewingAsset.name}
+              </h2>
+              <button className='modal-close-btn' onClick={closeAssetModal}>
+                <i className='fa-solid fa-times'></i>
+              </button>
+            </div>
+            <div className='modal-body'>
+              <div className='asset-thumbnail-large'>
+                <img src={viewingAsset.thumbnail} alt={viewingAsset.name} />
+              </div>
+
+              <div className='asset-stats-grid'>
+                <div className='stat-item'>
+                  <i className='fa-solid fa-sword'></i>
+                  <span className='stat-label'>Attack</span>
+                  <span className='stat-value'>{viewingAsset.attack}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-shield'></i>
+                  <span className='stat-label'>Defense</span>
+                  <span className='stat-value'>{viewingAsset.defense}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-heart'></i>
+                  <span className='stat-label'>Healing</span>
+                  <span className='stat-value'>{viewingAsset.healing}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-bolt'></i>
+                  <span className='stat-label'>Power</span>
+                  <span className='stat-value'>{viewingAsset.power}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-dumbbell'></i>
+                  <span className='stat-label'>Endurance</span>
+                  <span className='stat-value'>{viewingAsset.endurance}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-star'></i>
+                  <span className='stat-label'>Level</span>
+                  <span className='stat-value'>{viewingAsset.level}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-heart-pulse'></i>
+                  <span className='stat-label'>Health</span>
+                  <span className='stat-value'>{viewingAsset.health}</span>
+                </div>
+
+                <div className='stat-item'>
+                  <i className='fa-solid fa-fire'></i>
+                  <span className='stat-label'>Stamina</span>
+                  <span className='stat-value'>{viewingAsset.stamina}</span>
+                </div>
+              </div>
+
+              {viewingAsset.ability && (
+                <div className='asset-ability'>
+                  <h3>
+                    <i className='fa-solid fa-wand-sparkles'></i> Ability
+                  </h3>
+                  <p>{viewingAsset.ability}</p>
+                </div>
+              )}
+
+              {viewingAsset.description && (
+                <div className='asset-description'>
+                  <h3>
+                    <i className='fa-solid fa-scroll'></i> Description
+                  </h3>
+                  <p>{viewingAsset.description}</p>
                 </div>
               )}
             </div>
