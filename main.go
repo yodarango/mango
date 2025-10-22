@@ -48,9 +48,9 @@ type Avatar struct {
 type Asset struct {
 	ID            int    `json:"id"`
 	AvatarID      int    `json:"avatarId"`
-	Status        string `json:"status"`
-	Type          string `json:"type"`
-	Name          string `json:"name"`
+	Status        string `json:"status"` 
+	Type          string `json:"type"` // this needs to change to what learngin they require like days of the week, months, etc) and just group them by name instead
+	Name          string `json:"name"` // do not allow user to edit this 
 	Thumbnail     string `json:"thumbnail"`
 	Attack        int    `json:"attack"`
 	Defense       int    `json:"defense"`
