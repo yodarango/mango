@@ -12,6 +12,7 @@ function EditGame() {
   const [saving, setSaving] = useState(false);
   const [zoom, setZoom] = useState(100);
   const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
+  const [avatarsMap, setAvatarsMap] = useState({}); // Map of avatarId -> avatar data
   const [wsConnected, setWsConnected] = useState(false);
   const wsRef = useRef(null);
   const fetchGameRef = useRef(null);
@@ -38,7 +39,7 @@ function EditGame() {
         ...new Set(occupiedCells.map((c) => c.occupiedBy)),
       ];
 
-      // Fetch asset details for thumbnails
+      // Fetch asset details for thumbnails and avatars
       const thumbnailPromises = uniqueAssetIds.map(async (assetId) => {
         try {
           const response = await fetch(`/api/assets/${assetId}`, {
@@ -50,6 +51,7 @@ function EditGame() {
               id: assetId,
               thumbnail: asset.thumbnail,
               name: asset.name,
+              avatarId: asset.avatarId,
             };
           }
         } catch (err) {
@@ -60,10 +62,38 @@ function EditGame() {
 
       const thumbnails = await Promise.all(thumbnailPromises);
       const thumbnailMap = {};
+      const uniqueAvatarIds = new Set();
       thumbnails.forEach((t) => {
-        if (t) thumbnailMap[t.id] = t;
+        if (t) {
+          thumbnailMap[t.id] = t;
+          uniqueAvatarIds.add(t.avatarId);
+        }
       });
       setAssetThumbnails(thumbnailMap);
+
+      // Fetch avatar data for element colors
+      const avatarPromises = Array.from(uniqueAvatarIds).map(
+        async (avatarId) => {
+          try {
+            const response = await fetch(`/api/avatars/${avatarId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.ok) {
+              return await response.json();
+            }
+          } catch (err) {
+            console.error(`Error fetching avatar ${avatarId}:`, err);
+          }
+          return null;
+        }
+      );
+
+      const avatars = await Promise.all(avatarPromises);
+      const avatarMap = {};
+      avatars.forEach((avatar) => {
+        if (avatar) avatarMap[avatar.id] = avatar;
+      });
+      setAvatarsMap(avatarMap);
     } catch (error) {
       console.error("Error fetching game:", error);
       setLoading(false);
@@ -213,6 +243,22 @@ function EditGame() {
   };
 
   const getCellBackground = (cell) => {
+    // If cell is occupied, use the avatar's element color with 50% opacity
+    if (cell.occupiedBy) {
+      const asset = assetThumbnails[cell.occupiedBy];
+      if (asset && avatarsMap[asset.avatarId]) {
+        const avatar = avatarsMap[asset.avatarId];
+        const elementColor = getElementColor(avatar.element);
+        // Convert hex to rgba with 50% opacity
+        const hex = elementColor.replace("#", "");
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return { backgroundColor: `rgba(${r}, ${g}, ${b}, 0.5)` };
+      }
+    }
+
+    // Otherwise use the cell's background
     if (cell.background) {
       if (cell.background.startsWith("#")) {
         return { backgroundColor: cell.background };
@@ -224,17 +270,15 @@ function EditGame() {
   };
 
   const getElementColor = (element) => {
-    const colors = {
-      Electricity: "#ffd700",
-      Air: "#d4a5a5",
-      Metal: "#c0c0c0",
-      Fire: "#ff6b35",
-      Water: "#4ecdc4",
-      Earth: "#95b46a",
-      Time: "#9b59b6",
-      Other: "#00ff41",
-    };
-    return colors[element] || "#00ff41";
+    if (element.includes("Metal")) return "#2c2c2c";
+    if (element.includes("Electricity")) return "#ffd700";
+    if (element.includes("Wind")) return "#9b59b6";
+    if (element.includes("Water")) return "#4a90e2";
+    if (element.includes("Fire")) return "#e74c3c";
+    if (element.includes("Earth")) return "#27ae60";
+    if (element.includes("Time")) return "#ff8c42";
+    if (element.includes("Light")) return "#f0f0f0";
+    return "#667eea";
   };
 
   const getRowLetter = (row) => {

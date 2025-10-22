@@ -12,6 +12,7 @@ function Play() {
   const [warriors, setWarriors] = useState([]);
   const [avatarId, setAvatarId] = useState(null);
   const [allWarriorAssets, setAllWarriorAssets] = useState([]);
+  const [avatarsMap, setAvatarsMap] = useState({}); // Map of avatarId -> avatar data
   const [selectedWarrior, setSelectedWarrior] = useState(null);
   const [placingAsset, setPlacingAsset] = useState(false);
   const [viewingAsset, setViewingAsset] = useState(null);
@@ -131,6 +132,13 @@ function Play() {
       const avatarsResponse = await fetch("/api/avatars");
       const avatars = await avatarsResponse.json();
       console.log("All avatars:", avatars);
+
+      // Create a map of avatarId -> avatar for quick lookup
+      const avatarMap = {};
+      avatars.forEach((avatar) => {
+        avatarMap[avatar.id] = avatar;
+      });
+      setAvatarsMap(avatarMap);
 
       const userAvatar = avatars.find((a) => a.userId === user.id);
 
@@ -341,6 +349,22 @@ function Play() {
   };
 
   const getCellBackground = (cell) => {
+    // If cell is occupied, use the avatar's element color with 50% opacity
+    if (cell.occupiedBy) {
+      const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
+      if (warrior && avatarsMap[warrior.avatarId]) {
+        const avatar = avatarsMap[warrior.avatarId];
+        const elementColor = getElementColor(avatar.element);
+        // Convert hex to rgba with 50% opacity
+        const hex = elementColor.replace("#", "");
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return { backgroundColor: `rgba(${r}, ${g}, ${b}, 0.5)` };
+      }
+    }
+
+    // Otherwise use the cell's background
     if (cell.background) {
       // Check if it's a color (starts with #) or an image URL
       if (cell.background.startsWith("#")) {
@@ -353,16 +377,15 @@ function Play() {
   };
 
   const getElementColor = (element) => {
-    const colors = {
-      Fire: "#ff6b35",
-      Water: "#4ecdc4",
-      Earth: "#95b46a",
-      Air: "#d4a5a5",
-      Lightning: "#ffd700",
-      Ice: "#87ceeb",
-      Shadow: "#9b59b6",
-    };
-    return colors[element] || "#00ff41";
+    if (element.includes("Metal")) return "#2c2c2c";
+    if (element.includes("Electricity")) return "#ffd700";
+    if (element.includes("Wind")) return "#9b59b6";
+    if (element.includes("Water")) return "#4a90e2";
+    if (element.includes("Fire")) return "#e74c3c";
+    if (element.includes("Earth")) return "#27ae60";
+    if (element.includes("Time")) return "#ff8c42";
+    if (element.includes("Light")) return "#f0f0f0";
+    return "#667eea";
   };
 
   // Generate row letter (A-Z, then AA-AZ, BA-BZ, etc.)
@@ -418,17 +441,6 @@ function Play() {
     <div className='play-container'>
       {/* Warriors Display */}
       <div className='warriors-display'>
-        {movingWarrior && (
-          <div className='selection-banner'>
-            <span>
-              <i className='fa-solid fa-arrows-alt'></i> Moving{" "}
-              {movingWarrior.warrior.name} - Click on a cell to move it there
-            </span>
-            <button onClick={cancelSelection} className='cancel-selection-btn'>
-              <i className='fa-solid fa-times'></i> Cancel
-            </button>
-          </div>
-        )}
         {selectedWarrior && !movingWarrior && (
           <div className='selection-banner'>
             <span>

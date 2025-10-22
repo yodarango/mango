@@ -171,6 +171,11 @@
   z-index: 10;
 }
 
+/* Remove border from occupied cells */
+.grid-cell.occupied {
+  border: none;
+}
+
 /* Edit Modal */
 .edit-cell-modal {
   position: fixed;
