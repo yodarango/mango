@@ -324,16 +324,8 @@ function Play() {
     setMovingWarrior(null);
   };
 
-  const handleZoomIn = () => {
-    setZoom((prev) => Math.min(prev + 10, 200));
-  };
-
-  const handleZoomOut = () => {
-    setZoom((prev) => Math.max(prev - 10, 30));
-  };
-
-  const handleResetZoom = () => {
-    setZoom(100);
+  const handleZoomChange = (e) => {
+    setZoom(parseInt(e.target.value));
   };
 
   const getCellBackground = (cell) => {
@@ -471,17 +463,18 @@ function Play() {
         )}
       </div>
 
-      {/* Zoom Controls - Fixed Position */}
-      <div className='zoom-controls-fixed'>
-        <button onClick={handleZoomOut} className='zoom-btn'>
-          <i className='fa-solid fa-minus'></i>
-        </button>
-        <button onClick={handleResetZoom} className='zoom-btn zoom-reset'>
-          {zoom}%
-        </button>
-        <button onClick={handleZoomIn} className='zoom-btn'>
-          <i className='fa-solid fa-plus'></i>
-        </button>
+      {/* Zoom Controls - Vertical Slider */}
+      <div className='zoom-slider-container'>
+        <div className='zoom-label'>{zoom}%</div>
+        <input
+          type='range'
+          min='30'
+          max='200'
+          value={zoom}
+          onChange={handleZoomChange}
+          className='zoom-slider'
+          orient='vertical'
+        />
       </div>
 
       <div className='grid-wrapper' ref={gridWrapperRef}>

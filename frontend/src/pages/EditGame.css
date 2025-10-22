@@ -31,49 +31,73 @@
   gap: 0.5rem;
 }
 
-/* Zoom Controls */
-.zoom-controls {
+/* Zoom Slider - Horizontal */
+.zoom-slider-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-top: 1rem;
 }
 
-.zoom-btn {
+.zoom-label {
+  color: var(--accent-yellow);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "MedievalSharp", cursive;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  min-width: 60px;
+  text-align: center;
+}
+
+.zoom-slider-horizontal {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 200px;
+  height: 8px;
   background: var(--charcoal-light);
-  color: var(--accent-green);
-  border: 2px solid var(--accent-green);
-  width: 45px;
-  height: 45px;
   border-radius: 8px;
+  outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  font-weight: 700;
 }
 
-.zoom-btn:hover {
+.zoom-slider-horizontal::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
   background: var(--accent-green);
-  color: var(--charcoal-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.4);
+  border: 2px solid var(--accent-yellow);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  transition: all 0.3s ease;
 }
 
-.zoom-reset {
-  width: 70px;
-  font-size: 0.95rem;
-  border-color: var(--accent-yellow);
-  color: var(--accent-yellow);
-}
-
-.zoom-reset:hover {
+.zoom-slider-horizontal::-webkit-slider-thumb:hover {
   background: var(--accent-yellow);
-  color: var(--charcoal-dark);
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+  border-color: var(--accent-green);
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+
+.zoom-slider-horizontal::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--accent-green);
+  border: 2px solid var(--accent-yellow);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  transition: all 0.3s ease;
+}
+
+.zoom-slider-horizontal::-moz-range-thumb:hover {
+  background: var(--accent-yellow);
+  border-color: var(--accent-green);
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
 
 .grid-container {

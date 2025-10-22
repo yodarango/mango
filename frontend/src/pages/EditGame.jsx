@@ -155,16 +155,8 @@ function EditGame() {
     setEditingCell(null);
   };
 
-  const handleZoomIn = () => {
-    setZoom((prev) => Math.min(prev + 10, 200));
-  };
-
-  const handleZoomOut = () => {
-    setZoom((prev) => Math.max(prev - 10, 30));
-  };
-
-  const handleResetZoom = () => {
-    setZoom(100);
+  const handleZoomChange = (e) => {
+    setZoom(parseInt(e.target.value));
   };
 
   const handleSaveCell = async () => {
@@ -302,17 +294,17 @@ function EditGame() {
           properties
         </p>
 
-        {/* Zoom Controls */}
-        <div className='zoom-controls'>
-          <button onClick={handleZoomOut} className='zoom-btn'>
-            <i className='fa-solid fa-minus'></i>
-          </button>
-          <button onClick={handleResetZoom} className='zoom-btn zoom-reset'>
-            {zoom}%
-          </button>
-          <button onClick={handleZoomIn} className='zoom-btn'>
-            <i className='fa-solid fa-plus'></i>
-          </button>
+        {/* Zoom Slider */}
+        <div className='zoom-slider-wrapper'>
+          <div className='zoom-label'>{zoom}%</div>
+          <input
+            type='range'
+            min='30'
+            max='200'
+            value={zoom}
+            onChange={handleZoomChange}
+            className='zoom-slider-horizontal'
+          />
         </div>
       </div>
 
