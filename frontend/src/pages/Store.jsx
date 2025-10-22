@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Store.css";
-import StoreItemCard from "../components/StoreItemCard";
+import StoreGrid from "../components/StoreGrid";
 
 function Store() {
   const [items, setItems] = useState([]);
@@ -134,18 +134,13 @@ function Store() {
         </div>
       </div>
 
-      <div className='store-grid'>
-        {items.map((item) => (
-          <StoreItemCard
-            key={item.type}
-            item={item}
-            userCoins={userCoins}
-            userLevel={userLevel}
-            purchasing={purchasing}
-            onPurchase={handlePurchase}
-          />
-        ))}
-      </div>
+      <StoreGrid
+        items={items}
+        userCoins={userCoins}
+        userLevel={userLevel}
+        purchasing={purchasing}
+        onPurchase={handlePurchase}
+      />
     </div>
   );
 }

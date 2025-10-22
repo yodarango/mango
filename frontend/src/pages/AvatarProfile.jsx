@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AvatarProfile.css";
+import StoreGrid from "../components/StoreGrid";
 
 function AvatarProfile() {
   const { id } = useParams();
@@ -235,107 +236,11 @@ function AvatarProfile() {
             {warriors.length === 0 ? (
               <p>No warriors yet. Purchase some with your coins!</p>
             ) : (
-              warriors.map((asset) => (
-                <div key={asset.id} className='warrior-card'>
-                  <div className='warrior-image-container'>
-                    <img
-                      src={asset.thumbnail}
-                      alt={asset.name}
-                      className='warrior-image'
-                    />
-                  </div>
-
-                  <div className='warrior-header'>
-                    <h3>{asset.name}</h3>
-                    <span className='warrior-level'>Level {asset.level}</span>
-                  </div>
-
-                  <div className='warrior-ability'>
-                    <strong>Ability:</strong> {asset.ability}
-                  </div>
-
-                  <div className='warrior-stats'>
-                    <div className='stat-bar'>
-                      <span className='stat-name'>
-                        <i className='fa-solid fa-sword'></i> Attack
-                      </span>
-                      <div className='bar-container'>
-                        <div
-                          className='bar-fill attack'
-                          style={{ width: `${asset.attack}%` }}
-                        ></div>
-                      </div>
-                      <span className='stat-number'>{asset.attack}</span>
-                    </div>
-
-                    <div className='stat-bar'>
-                      <span className='stat-name'>
-                        <i className='fa-solid fa-shield'></i> Defense
-                      </span>
-                      <div className='bar-container'>
-                        <div
-                          className='bar-fill defense'
-                          style={{ width: `${asset.defense}%` }}
-                        ></div>
-                      </div>
-                      <span className='stat-number'>{asset.defense}</span>
-                    </div>
-
-                    <div className='stat-bar'>
-                      <span className='stat-name'>
-                        <i className='fa-solid fa-heart'></i> Healing
-                      </span>
-                      <div className='bar-container'>
-                        <div
-                          className='bar-fill healing'
-                          style={{ width: `${asset.healing}%` }}
-                        ></div>
-                      </div>
-                      <span className='stat-number'>{asset.healing}</span>
-                    </div>
-
-                    <div className='stat-bar'>
-                      <span className='stat-name'>
-                        <i className='fa-solid fa-dumbbell'></i> Endurance
-                      </span>
-                      <div className='bar-container'>
-                        <div
-                          className='bar-fill endurance'
-                          style={{ width: `${asset.endurance}%` }}
-                        ></div>
-                      </div>
-                      <span className='stat-number'>{asset.endurance}</span>
-                    </div>
-                  </div>
-
-                  <div className='warrior-status'>
-                    <div className='status-item'>
-                      <span>
-                        <i className='fa-solid fa-heart'></i> Health:
-                      </span>
-                      <span>{asset.health}/100</span>
-                    </div>
-                    <div className='status-item'>
-                      <span>
-                        <i className='fa-solid fa-bolt'></i> Stamina:
-                      </span>
-                      <span>{asset.stamina}/100</span>
-                    </div>
-                    <div className='status-item'>
-                      <span>
-                        <i className='fa-solid fa-fire'></i> Power:
-                      </span>
-                      <span>{asset.power}</span>
-                    </div>
-                  </div>
-
-                  <div className='warrior-footer'>
-                    <span className='warrior-cost'>
-                      <i className='fa-solid fa-coins'></i> {asset.cost} coins
-                    </span>
-                  </div>
-                </div>
-              ))
+              <StoreGrid
+                items={warriors}
+                userCoins={avatar.coins}
+                userLevel={avatar.level}
+              />
             )}
           </div>
         </div>

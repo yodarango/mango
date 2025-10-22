@@ -23,18 +23,18 @@ VALUES
   DELETE FROM assets WHERE type = 'week_days' AND status = 'store';
   INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina)
   VALUES
-  (NULL, 'store', 'week_days', 'lunes', '/src/assets/store/warriors/week_days/lunes.webp', 23, 26, 21, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'martes', '/src/assets/store/warriors/week_days/martes.webp', 27, 22, 25, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'miercoles', '/src/assets/store/warriors/week_days/miercoles.webp', 21, 28, 24, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'jueves', '/src/assets/store/warriors/week_days/jueves.webp', 29, 23, 27, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'viernes', '/src/assets/store/warriors/week_days/viernes.webp', 24, 29, 22, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'sabado', '/src/assets/store/warriors/week_days/sabado.webp', 26, 21, 28, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'week_days', 'domingo', '/src/assets/store/warriors/week_days/domingo.webp', 22, 25, 29, 0, 5, 1, 1, 100, '', 100, 100);
+  (NULL, 'store', 'week_days', 'lunes', '/src/assets/store/warriors/week_days/lunes.webp', 23, 26, 21, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'martes', '/src/assets/store/warriors/week_days/martes.webp', 27, 22, 25, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'miercoles', '/src/assets/store/warriors/week_days/miercoles.webp', 21, 28, 24, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'jueves', '/src/assets/store/warriors/week_days/jueves.webp', 29, 23, 27, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'viernes', '/src/assets/store/warriors/week_days/viernes.webp', 24, 29, 22, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'sabado', '/src/assets/store/warriors/week_days/sabado.webp', 26, 21, 28, 0, 5, 1, 2, 100, '', 100, 100),
+  (NULL, 'store', 'week_days', 'domingo', '/src/assets/store/warriors/week_days/domingo.webp', 22, 25, 29, 0, 5, 1, 2, 100, '', 100, 100);
 
 DELETE FROM assets WHERE type = 'months' AND status = 'store';
 INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina)
 VALUES
-  (NULL, 'store', 'months', 'enero', '/src/assets/store/warriors/months/enero.webp', 34, 31, 37, 0, 5, 1, 1, 100, '', 100, 100),
+  (NULL, 'store', 'months', 'enero', '/src/assets/store/warriors/months/enero.webp', 34, 31, 37, 0, 5, 1, 3, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'febrero', '/src/assets/store/warriors/febrero.webp', 32, 38, 35, 0, 5, 1, 1, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'marzo', '/src/assets/store/warriors/marzo.webp', 39, 33, 31, 0, 5, 1, 1, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'abril', '/src/assets/store/warriors/abril.webp', 36, 35, 39, 0, 5, 1, 1, 100, '', 100, 100),
@@ -45,4 +45,4 @@ VALUES
   -- (NULL, 'store', 'months', 'septiembre', '/src/assets/store/warriors/septiembre.webp', 37, 36, 33, 0, 5, 1, 1, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'octubre', '/src/assets/store/warriors/octubre.webp', 30, 39, 37, 0, 5, 1, 1, 100, '', 100, 100),
   -- (NULL, 'store', 'months', 'noviembre', '/src/assets/store/warriors/noviembre.webp', 39, 31, 35, 0, 5, 1, 1, 100, '', 100, 100),
-  (NULL, 'store', 'months', 'diciembre', '/src/assets/store/warriors/months/diciembre.webp', 36, 38, 30, 0, 5, 1, 1, 100, '', 100, 100);
+  (NULL, 'store', 'months', 'diciembre', '/src/assets/store/warriors/months/diciembre.webp', 36, 38, 30, 0, 5, 1, 3, 100, '', 100, 100);

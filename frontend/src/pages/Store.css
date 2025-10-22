@@ -88,12 +88,6 @@
   font-size: 1.3rem;
 }
 
-.store-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
 .loading-container {
   display: flex;
   flex-direction: column;

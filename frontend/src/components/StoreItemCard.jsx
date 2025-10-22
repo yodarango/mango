@@ -56,30 +56,33 @@ function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
             </div>
           </div>
 
-          <div className='store-item-footer'>
-            <button
-              className={`purchase-btn ${
-                isLocked && canAfford ? "btn-locked-yellow" : ""
-              }`}
-              onClick={handlePurchaseClick}
-              disabled={isLocked || !canAfford || purchasing === item.name}
-            >
-              {purchasing === item.name ? (
-                <>
-                  <i className='fa-solid fa-spinner fa-spin'></i> Purchasing...
-                </>
-              ) : isLocked ? (
-                <>
-                  <i className='fa-solid fa-lock'></i> Level{" "}
-                  {item.requiredLevel}
-                </>
-              ) : (
-                <>
-                  <i className='fa-solid fa-cart-shopping'></i> Purchase
-                </>
-              )}
-            </button>
-          </div>
+          {onPurchase && (
+            <div className='store-item-footer'>
+              <button
+                className={`purchase-btn ${
+                  isLocked && canAfford ? "btn-locked-yellow" : ""
+                }`}
+                onClick={handlePurchaseClick}
+                disabled={isLocked || !canAfford || purchasing === item.name}
+              >
+                {purchasing === item.name ? (
+                  <>
+                    <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                    Purchasing...
+                  </>
+                ) : isLocked ? (
+                  <>
+                    <i className='fa-solid fa-lock'></i> Level{" "}
+                    {item.requiredLevel}
+                  </>
+                ) : (
+                  <>
+                    <i className='fa-solid fa-cart-shopping'></i> Purchase
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -163,42 +166,46 @@ function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
                   <span className='ability-name'>{item.ability}</span>
                 </div>
               )}
+              {onPurchase && (
+                <div className='popup-footer'>
+                  <div className='item-stock'>
+                    <i className='fa-solid fa-box'></i>
+                    <span className='stock-amount'>{item.availableUnits}</span>
+                    <span className='stock-label'>in stock</span>
+                  </div>
+                  <div className='item-price'>
+                    <i className='fa-solid fa-coins'></i>
+                    <span className='price-amount'>{item.cost}</span>
+                    <span className='price-label'>coins</span>
+                  </div>
 
-              <div className='popup-footer'>
-                <div className='item-stock'>
-                  <i className='fa-solid fa-box'></i>
-                  <span className='stock-amount'>{item.availableUnits}</span>
-                  <span className='stock-label'>in stock</span>
+                  <button
+                    className={`purchase-btn ${
+                      isLocked && canAfford ? "btn-locked-yellow" : ""
+                    }`}
+                    onClick={handlePurchaseClick}
+                    disabled={
+                      isLocked || !canAfford || purchasing === item.name
+                    }
+                  >
+                    {purchasing === item.name ? (
+                      <>
+                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                        Purchasing...
+                      </>
+                    ) : isLocked ? (
+                      <>
+                        <i className='fa-solid fa-lock'></i> Locked until level{" "}
+                        {item.requiredLevel}
+                      </>
+                    ) : (
+                      <>
+                        <i className='fa-solid fa-cart-shopping'></i> Purchase
+                      </>
+                    )}
+                  </button>
                 </div>
-                <div className='item-price'>
-                  <i className='fa-solid fa-coins'></i>
-                  <span className='price-amount'>{item.cost}</span>
-                  <span className='price-label'>coins</span>
-                </div>
-                <button
-                  className={`purchase-btn ${
-                    isLocked && canAfford ? "btn-locked-yellow" : ""
-                  }`}
-                  onClick={handlePurchaseClick}
-                  disabled={isLocked || !canAfford || purchasing === item.name}
-                >
-                  {purchasing === item.name ? (
-                    <>
-                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                      Purchasing...
-                    </>
-                  ) : isLocked ? (
-                    <>
-                      <i className='fa-solid fa-lock'></i> Locked until level{" "}
-                      {item.requiredLevel}
-                    </>
-                  ) : (
-                    <>
-                      <i className='fa-solid fa-cart-shopping'></i> Purchase
-                    </>
-                  )}
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
