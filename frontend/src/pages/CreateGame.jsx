@@ -118,7 +118,7 @@ function CreateGame() {
   }
 
   return (
-    <div className='create-game-container'>
+    <div className='create-game-container-34jfsdk3'>
       <div className='create-game-header'>
         <h1>
           <i className='fa-solid fa-chess-board'></i> Create Game
@@ -206,7 +206,7 @@ function CreateGame() {
             <i className='fa-solid fa-users'></i> Select Players
           </h2>
 
-          <div className='avatars-grid'>
+          <div className='avatars-grid-45'>
             {avatars.map((avatar) => (
               <div
                 key={avatar.id}

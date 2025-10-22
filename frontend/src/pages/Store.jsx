@@ -45,7 +45,7 @@ function Store() {
     }
   };
 
-  const handlePurchase = async (itemType, itemCost, requiredLevel) => {
+  const handlePurchase = async (itemName, itemCost, requiredLevel) => {
     if (userLevel < requiredLevel) {
       alert(`You need to be level ${requiredLevel} to purchase this item!`);
       return;
@@ -56,20 +56,26 @@ function Store() {
       return;
     }
 
-    setPurchasing(itemType);
+    setPurchasing(itemName);
 
     try {
       const token = localStorage.getItem("token");
+      console.log("Token:", token ? "exists" : "missing");
+      console.log("Purchasing item:", itemName);
+
       const response = await fetch("/api/store/purchase", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ assetType: itemType }),
+        body: JSON.stringify({ assetName: itemName }),
       });
 
+      console.log("Response status:", response.status);
+
       const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok && data.success) {
         alert(data.message);
@@ -226,13 +232,13 @@ function Store() {
                       isLocked && canAfford ? "btn-locked-yellow" : ""
                     }`}
                     onClick={() =>
-                      handlePurchase(item.type, item.cost, item.requiredLevel)
+                      handlePurchase(item.name, item.cost, item.requiredLevel)
                     }
                     disabled={
-                      isLocked || !canAfford || purchasing === item.type
+                      isLocked || !canAfford || purchasing === item.name
                     }
                   >
-                    {purchasing === item.type ? (
+                    {purchasing === item.name ? (
                       <>
                         <i className='fa-solid fa-spinner fa-spin'></i>{" "}
                         Purchasing...
