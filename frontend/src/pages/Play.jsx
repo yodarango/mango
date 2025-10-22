@@ -282,9 +282,11 @@ function Play() {
         setPlacingAsset(false);
       }
     } else if (cell.occupiedBy && cell.status === "warrior") {
-      // If cell has a warrior, check if it belongs to the user
+      // If cell has a warrior, check if it belongs to the current user
       const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
-      if (warrior) {
+
+      // Check if this warrior belongs to the current user's avatar
+      if (warrior && warrior.avatarId === avatarId) {
         // This warrior belongs to the user, allow them to move it
         setMovingWarrior({ warrior, fromCell: cell });
       } else {
