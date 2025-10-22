@@ -755,6 +755,31 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(assets)
 }
 
+// Get a single asset by ID
+func getAsset(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	assetID := vars["id"]
+
+	var asset Asset
+	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina
+		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+		&asset.Health, &asset.Stamina)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Asset not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(asset)
+}
+
 func register(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -1594,6 +1619,108 @@ func placeWarriorOnCell(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Move warrior from one cell to another (for players)
+func moveWarrior(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		FromCellID int `json:"fromCellId"`
+		ToCellID   int `json:"toCellId"`
+		WarriorID  int `json:"warriorId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Verify the warrior belongs to the user's avatar
+	var avatarID int
+	err = db.QueryRow("SELECT id FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID)
+	if err != nil {
+		http.Error(w, "No avatar found for user", http.StatusNotFound)
+		return
+	}
+
+	// Verify the warrior belongs to this avatar
+	var warriorAvatarID int
+	err = db.QueryRow("SELECT avatar_id FROM assets WHERE id = ?", req.WarriorID).Scan(&warriorAvatarID)
+	if err != nil {
+		http.Error(w, "Warrior not found", http.StatusNotFound)
+		return
+	}
+
+	if warriorAvatarID != avatarID {
+		http.Error(w, "This warrior does not belong to you", http.StatusForbidden)
+		return
+	}
+
+	// Verify the from cell has this warrior
+	var fromCellOccupiedBy sql.NullInt64
+	var fromGameID int
+	err = db.QueryRow("SELECT occupied_by, game_id FROM game_cells WHERE id = ?", req.FromCellID).Scan(&fromCellOccupiedBy, &fromGameID)
+	if err != nil {
+		http.Error(w, "From cell not found", http.StatusNotFound)
+		return
+	}
+
+	if !fromCellOccupiedBy.Valid || int(fromCellOccupiedBy.Int64) != req.WarriorID {
+		http.Error(w, "Warrior is not in the from cell", http.StatusBadRequest)
+		return
+	}
+
+	// Check if destination cell is active and not occupied
+	var toCellActive int
+	var toCellOccupiedBy sql.NullInt64
+	var toGameID int
+	err = db.QueryRow("SELECT active, occupied_by, game_id FROM game_cells WHERE id = ?", req.ToCellID).Scan(&toCellActive, &toCellOccupiedBy, &toGameID)
+	if err != nil {
+		http.Error(w, "Destination cell not found", http.StatusNotFound)
+		return
+	}
+
+	if toCellActive != 1 {
+		http.Error(w, "Destination cell is not active", http.StatusBadRequest)
+		return
+	}
+
+	if toCellOccupiedBy.Valid && toCellOccupiedBy.Int64 != 0 {
+		http.Error(w, "Destination cell is already occupied", http.StatusBadRequest)
+		return
+	}
+
+	// Verify both cells are in the same game
+	if fromGameID != toGameID {
+		http.Error(w, "Cells must be in the same game", http.StatusBadRequest)
+		return
+	}
+
+	// Clear the from cell
+	_, err = db.Exec(`UPDATE game_cells SET occupied_by = NULL, status = '' WHERE id = ?`, req.FromCellID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Place warrior on destination cell
+	_, err = db.Exec(`UPDATE game_cells SET occupied_by = ?, status = ? WHERE id = ?`,
+		req.WarriorID, "warrior", req.ToCellID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Broadcast game update to all connected users
+	broadcastGameUpdate(fromGameID)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Create a new battle with questions
 func createBattle(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -2142,6 +2269,7 @@ func main() {
 	api.HandleFunc("/avatars", getAvatars).Methods("GET")
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
+	api.HandleFunc("/assets/{id}", getAsset).Methods("GET")
 	api.HandleFunc("/store", getStoreItems).Methods("GET")
 	api.HandleFunc("/store/purchase", purchaseAsset).Methods("POST")
 	api.HandleFunc("/students", getStudents).Methods("GET")
@@ -2157,6 +2285,7 @@ func main() {
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
+	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
 
 	// Battle routes
 	api.HandleFunc("/battles", getBattles).Methods("GET")

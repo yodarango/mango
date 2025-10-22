@@ -15,6 +15,7 @@ function Play() {
   const [selectedWarrior, setSelectedWarrior] = useState(null);
   const [placingAsset, setPlacingAsset] = useState(false);
   const [viewingAsset, setViewingAsset] = useState(null);
+  const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
   const gridWrapperRef = useRef(null);
   const wsRef = useRef(null);
 
@@ -176,8 +177,46 @@ function Play() {
   };
 
   const handleCellClick = async (cell) => {
+    // If moving a warrior, move it to this cell
+    if (movingWarrior && cell.active) {
+      if (cell.occupiedBy) {
+        alert("This cell is already occupied!");
+        return;
+      }
+
+      setPlacingAsset(true);
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`/api/game-cells/move-warrior`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            fromCellId: movingWarrior.fromCell.id,
+            toCellId: cell.id,
+            warriorId: movingWarrior.warrior.id,
+          }),
+        });
+
+        if (response.ok) {
+          // Refresh the game data
+          await fetchGame();
+          setMovingWarrior(null);
+        } else {
+          const errorText = await response.text();
+          alert(`Failed to move warrior: ${errorText}`);
+        }
+      } catch (error) {
+        console.error("Error moving warrior:", error);
+        alert("Error moving warrior");
+      } finally {
+        setPlacingAsset(false);
+      }
+    }
     // If a warrior is selected, place it on the cell
-    if (selectedWarrior && cell.active) {
+    else if (selectedWarrior && cell.active) {
       if (cell.occupiedBy) {
         alert("This cell is already occupied!");
         return;
@@ -215,10 +254,28 @@ function Play() {
         setPlacingAsset(false);
       }
     } else if (cell.occupiedBy && cell.status === "warrior") {
-      // If cell has a warrior, show its stats
+      // If cell has a warrior, check if it belongs to the user
       const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
       if (warrior) {
-        setViewingAsset(warrior);
+        // This warrior belongs to the user, allow them to move it
+        setMovingWarrior({ warrior, fromCell: cell });
+      } else {
+        // This warrior belongs to someone else, just show stats
+        // Try to fetch the warrior details from the backend
+        try {
+          const token = localStorage.getItem("token");
+          const response = await fetch(`/api/assets/${cell.occupiedBy}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            const warriorData = await response.json();
+            setViewingAsset(warriorData);
+          }
+        } catch (error) {
+          console.error("Error fetching warrior details:", error);
+        }
       }
     } else {
       // Otherwise show cell details
@@ -236,6 +293,7 @@ function Play() {
 
   const cancelSelection = () => {
     setSelectedWarrior(null);
+    setMovingWarrior(null);
   };
 
   const handleZoomIn = () => {
@@ -328,7 +386,18 @@ function Play() {
     <div className='play-container'>
       {/* Warriors Display */}
       <div className='warriors-display'>
-        {selectedWarrior && (
+        {movingWarrior && (
+          <div className='selection-banner'>
+            <span>
+              <i className='fa-solid fa-arrows-alt'></i> Moving{" "}
+              {movingWarrior.warrior.name} - Click on a cell to move it there
+            </span>
+            <button onClick={cancelSelection} className='cancel-selection-btn'>
+              <i className='fa-solid fa-times'></i> Cancel
+            </button>
+          </div>
+        )}
+        {selectedWarrior && !movingWarrior && (
           <div className='selection-banner'>
             <span>
               <i className='fa-solid fa-hand-pointer'></i> Click on a cell to
@@ -409,35 +478,42 @@ function Play() {
           {grid.map((row, rowIndex) => (
             <div key={rowIndex} className='grid-row'>
               <div className='row-header'>{getRowLetter(rowIndex)}</div>
-              {row.map((cell, colIndex) => (
-                <div
-                  key={colIndex}
-                  className={`grid-cell ${
-                    cell.active ? "active" : "inactive"
-                  } ${cell.occupiedBy ? "occupied" : ""} ${
-                    selectedWarrior && cell.active && !cell.occupiedBy
-                      ? "placeable"
-                      : ""
-                  }`}
-                  style={getCellBackground(cell)}
-                  onClick={() => handleCellClick(cell)}
-                >
-                  <span className='cell-id'>{cell.cellId}</span>
-                  {cell.element && (
-                    <div
-                      className='cell-element'
-                      style={{ color: getElementColor(cell.element) }}
-                    >
-                      <i className='fa-solid fa-fire'></i>
-                    </div>
-                  )}
-                  {cell.occupiedBy && (
-                    <div className='occupied-marker'>
-                      <i className='fa-solid fa-user'></i>
-                    </div>
-                  )}
-                </div>
-              ))}
+              {row.map((cell, colIndex) => {
+                const isMovingFrom =
+                  movingWarrior && movingWarrior.fromCell.id === cell.id;
+                const isPlaceable =
+                  (selectedWarrior || movingWarrior) &&
+                  cell.active &&
+                  !cell.occupiedBy;
+
+                return (
+                  <div
+                    key={colIndex}
+                    className={`grid-cell ${
+                      cell.active ? "active" : "inactive"
+                    } ${cell.occupiedBy ? "occupied" : ""} ${
+                      isPlaceable ? "placeable" : ""
+                    } ${isMovingFrom ? "moving-from" : ""}`}
+                    style={getCellBackground(cell)}
+                    onClick={() => handleCellClick(cell)}
+                  >
+                    <span className='cell-id'>{cell.cellId}</span>
+                    {cell.element && (
+                      <div
+                        className='cell-element'
+                        style={{ color: getElementColor(cell.element) }}
+                      >
+                        <i className='fa-solid fa-fire'></i>
+                      </div>
+                    )}
+                    {cell.occupiedBy && (
+                      <div className='occupied-marker'>
+                        <i className='fa-solid fa-user'></i>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>
