@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Store.css";
+import StoreItemCard from "../components/StoreItemCard";
 
 function Store() {
   const [items, setItems] = useState([]);
@@ -134,131 +135,16 @@ function Store() {
       </div>
 
       <div className='store-grid'>
-        {items.map((item) => {
-          const canAfford = userCoins >= item.cost;
-          const meetsLevelRequirement = userLevel >= item.requiredLevel;
-          const isLocked = !meetsLevelRequirement;
-
-          return (
-            <div
-              key={item.type}
-              className={`store-item-card ${!canAfford ? "unaffordable" : ""}`}
-            >
-              {item.thumbnail && (
-                <div className='store-item-image'>
-                  <img src={item.thumbnail} alt={item.name} />
-                  {isLocked && (
-                    <div
-                      className={`lock-overlay ${
-                        canAfford ? "lock-yellow" : ""
-                      }`}
-                    >
-                      <i className='fa-solid fa-lock'></i>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className='store-item-details'>
-                <h3>{item.name}</h3>
-
-                <div className='store-item-stats'>
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-sword'></i>
-                    <span className='stat-label'>Attack:</span>
-                    <span className='stat-value'>{item.attack}</span>
-                  </div>
-
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-shield'></i>
-                    <span className='stat-label'>Defense:</span>
-                    <span className='stat-value'>{item.defense}</span>
-                  </div>
-
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-heart'></i>
-                    <span className='stat-label'>Healing:</span>
-                    <span className='stat-value'>{item.healing}</span>
-                  </div>
-
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-fire'></i>
-                    <span className='stat-label'>Power:</span>
-                    <span className='stat-value'>{item.power}</span>
-                  </div>
-
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-dumbbell'></i>
-                    <span className='stat-label'>Endurance:</span>
-                    <span className='stat-value'>{item.endurance}</span>
-                  </div>
-
-                  <div className='stat-row'>
-                    <i className='fa-solid fa-star'></i>
-                    <span className='stat-label'>Level:</span>
-                    <span className='stat-value'>{item.level}</span>
-                  </div>
-
-                  <div className='stat-row total-power'>
-                    <i className='fa-solid fa-bolt'></i>
-                    <span className='stat-label'>Overall Power:</span>
-                    <span className='stat-value'>
-                      {item.attack + item.defense + item.healing}
-                    </span>
-                  </div>
-                </div>
-
-                {item.ability && (
-                  <div className='store-item-ability'>
-                    <i className='fa-solid fa-wand-magic-sparkles'></i>
-                    <span className='ability-label'>Ability:</span>
-                    <span className='ability-name'>{item.ability}</span>
-                  </div>
-                )}
-
-                <div className='store-item-footer'>
-                  <div className='item-price'>
-                    <i className='fa-solid fa-coins'></i>
-                    <span className='price-amount'>{item.cost}</span>
-                    <span className='price-label'>coins</span>
-                  </div>
-                  <div className='item-stock'>
-                    <i className='fa-solid fa-box'></i>
-                    <span className='stock-amount'>{item.availableUnits}</span>
-                    <span className='stock-label'>in stock</span>
-                  </div>
-                  <button
-                    className={`purchase-btn ${
-                      isLocked && canAfford ? "btn-locked-yellow" : ""
-                    }`}
-                    onClick={() =>
-                      handlePurchase(item.name, item.cost, item.requiredLevel)
-                    }
-                    disabled={
-                      isLocked || !canAfford || purchasing === item.name
-                    }
-                  >
-                    {purchasing === item.name ? (
-                      <>
-                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                        Purchasing...
-                      </>
-                    ) : isLocked ? (
-                      <>
-                        <i className='fa-solid fa-lock'></i> Locked until level{" "}
-                        {item.requiredLevel}
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa-solid fa-cart-shopping'></i> Purchase
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {items.map((item) => (
+          <StoreItemCard
+            key={item.type}
+            item={item}
+            userCoins={userCoins}
+            userLevel={userLevel}
+            purchasing={purchasing}
+            onPurchase={handlePurchase}
+          />
+        ))}
       </div>
     </div>
   );
