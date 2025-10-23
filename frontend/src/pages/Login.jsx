@@ -121,7 +121,8 @@ function Login() {
           </button>
         </form>
 
-        <div className='login-footer'>
+        {/* do not allow this for now */}
+        {/* <div className='login-footer'>
           <p>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button
@@ -135,7 +136,7 @@ function Login() {
               {isLogin ? "Register here" : "Login here"}
             </button>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
