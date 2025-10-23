@@ -9,7 +9,7 @@ services:
     ports:
       - "8010:8010"
     volumes:
-      - /private/var/www/websites/temp/spanish_quest/app/data.db:/root/data.db
+      - ./data.db:/root/data.db
     environment:
       - PORT=8010
       - DB_PATH=/root/data.db
