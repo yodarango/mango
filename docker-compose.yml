@@ -1,7 +1,10 @@
 version: "3.8"
 
+name: mengou
+
 services:
-  app:
+  mengou:
+    container_name: mengou
     build: .
     ports:
       - "8010:8010"

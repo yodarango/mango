@@ -209,7 +209,12 @@ var (
 func initDB() {
 	var err error
 
+	// do not change this
 	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "./data.db"
+	}
+
 
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
