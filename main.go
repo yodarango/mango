@@ -208,11 +208,8 @@ var (
 
 func initDB() {
 	var err error
-	// Use environment variable for database path, default to ./data.db
+
 	dbPath := os.Getenv("DB_PATH")
-	if dbPath == "" {
-		dbPath = "./data.db"
-	}
 
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
@@ -892,7 +889,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user User
-	err := db.QueryRow("SELECT id, name, role FROM users WHERE name = ? AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role)
+	err := db.QueryRow("SELECT id, name, role FROM users WHERE LOWER(name) = LOWER(?) AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)

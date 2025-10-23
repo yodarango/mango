@@ -8,6 +8,7 @@
 *.so
 *.dylib
 server
+*.db
 
 # Node
 node_modules/
