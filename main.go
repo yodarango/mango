@@ -15,6 +15,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -207,7 +208,13 @@ var (
 
 func initDB() {
 	var err error
-	db, err = sql.Open("sqlite3", "./data.db")
+	// Use environment variable for database path, default to ./data.db
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "./data.db"
+	}
+
+	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -528,7 +535,7 @@ func initDB() {
 		rand.Seed(time.Now().UnixNano())
 		for i, data := range avatarData {
 			imageFile := elementToImage[data.Element]
-			thumbnail := fmt.Sprintf("/src/assets/avatars/%s", imageFile)
+			thumbnail := fmt.Sprintf("/assets/avatars/%s", imageFile)
 			level := rand.Intn(10) + 1
 
 			result, err := db.Exec(`INSERT INTO avatars (name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot)
@@ -2316,6 +2323,9 @@ func broadcastGameUpdate(gameID int) {
 }
 
 func main() {
+	// Load environment variables from .env file
+	godotenv.Load(".env")
+
 	initDB()
 	defer db.Close()
 
@@ -2359,7 +2369,11 @@ func main() {
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
 
 	// Serve static files from the frontend build
-	spa := spaHandler{staticPath: "frontend/dist", indexPath: "index.html"}
+	staticPath := os.Getenv("STATIC_PATH")
+	if staticPath == "" {
+		staticPath = "frontend/dist" // Default to production path
+	}
+	spa := spaHandler{staticPath: staticPath, indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
 
 	port := os.Getenv("PORT")

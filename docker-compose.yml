@@ -1,12 +1,14 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8010:8010"
     volumes:
-      - ./data:/root/data
+      - /private/var/www/websites/temp/spanish_quest/app/data.db:/root/data.db
     environment:
-      - PORT=8080
-
+      - PORT=8010
+      - DB_PATH=/root/data.db
+      - STATIC_PATH=frontend/dist
+      - ENV=production

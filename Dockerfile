@@ -32,7 +32,7 @@ WORKDIR /root/
 COPY --from=backend-build /app/server .
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 
-EXPOSE 8080
+EXPOSE 8010
 
 CMD ["./server"]
 
