@@ -31,6 +31,10 @@ WORKDIR /root/
 
 COPY --from=backend-build /app/server .
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
+COPY --from=frontend-build /app/frontend/src ./frontend/src
+
+# Create symlink so database paths like /src/assets/... work
+RUN ln -s /root/frontend/src /root/frontend/dist/src
 
 EXPOSE 8010
 
