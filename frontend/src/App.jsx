@@ -7,6 +7,7 @@ import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import CreateNotifications from "./pages/CreateNotifications";
+import AdminMessages from "./pages/AdminMessages";
 import Games from "./pages/Games";
 import CreateGame from "./pages/CreateGame";
 import EditGame from "./pages/EditGame";
@@ -109,6 +110,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/messages'
+            element={
+              <ProtectedRoute>
+                <AdminMessages />
               </ProtectedRoute>
             }
           />

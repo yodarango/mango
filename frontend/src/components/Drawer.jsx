@@ -101,6 +101,15 @@ function Drawer({ isOpen, onClose }) {
                 </Link>
 
                 <Link
+                  to='/admin/messages'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-envelope'></i>
+                  <span>Messages</span>
+                </Link>
+
+                <Link
                   to='/admin/games'
                   className='drawer-link admin-link'
                   onClick={onClose}

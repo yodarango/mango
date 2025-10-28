@@ -1304,6 +1304,101 @@ func markNotificationRead(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Get all notifications with user info (admin only)
+func getAllNotifications(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	type NotificationWithUser struct {
+		ID        int        `json:"id"`
+		UserID    int        `json:"userId"`
+		UserName  string     `json:"userName"`
+		Title     string     `json:"title"`
+		Message   string     `json:"message"`
+		IsRead    bool       `json:"isRead"`
+		CreatedAt time.Time  `json:"createdAt"`
+		ReadAt    *time.Time `json:"readAt,omitempty"`
+	}
+
+	rows, err := db.Query(`
+		SELECT n.id, n.user_id, u.name, n.title, n.message, n.is_read, n.created_at, n.read_at
+		FROM notifications n
+		JOIN users u ON n.user_id = u.id
+		ORDER BY n.created_at DESC
+	`)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var notifications []NotificationWithUser
+	for rows.Next() {
+		var notif NotificationWithUser
+		var isRead int
+		var readAt sql.NullTime
+		if err := rows.Scan(&notif.ID, &notif.UserID, &notif.UserName, &notif.Title, &notif.Message,
+			&isRead, &notif.CreatedAt, &readAt); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		notif.IsRead = isRead == 1
+		if readAt.Valid {
+			notif.ReadAt = &readAt.Time
+		}
+		notifications = append(notifications, notif)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(notifications)
+}
+
+// Delete notification (admin only)
+func deleteNotification(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	notifID := vars["id"]
+
+	result, err := db.Exec("DELETE FROM notifications WHERE id = ?", notifID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+	if rowsAffected == 0 {
+		http.Error(w, "Notification not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Create a new game with grid cells
 func createGame(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -2349,6 +2444,8 @@ func main() {
 	api.HandleFunc("/notifications/unread-count", getUnreadCount).Methods("GET")
 	api.HandleFunc("/notifications/create", createNotifications).Methods("POST")
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
+	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
+	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
 	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
