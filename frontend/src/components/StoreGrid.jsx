@@ -2,7 +2,14 @@ import { useState, useMemo } from "react";
 import StoreItemCard from "./StoreItemCard";
 import "./StoreGrid.css";
 
-function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
+function StoreGrid({
+  items,
+  userCoins,
+  userLevel,
+  purchasing,
+  onPurchase,
+  alwasyActive,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterLevel, setFilterLevel] = useState("all");
   const [filterType, setFilterType] = useState("all");
@@ -158,6 +165,7 @@ function StoreGrid({ items, userCoins, userLevel, purchasing, onPurchase }) {
               key={item.id || `${item.type}-${item.name}-${index}`}
               item={item}
               userCoins={userCoins}
+              alwasyActive={alwasyActive}
               userLevel={userLevel}
               purchasing={purchasing}
               onPurchase={onPurchase}

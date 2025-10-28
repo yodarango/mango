@@ -1,9 +1,16 @@
 import { useState } from "react";
 import "./StoreItemCard.css";
 
-function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
+function StoreItemCard({
+  item,
+  userCoins,
+  userLevel,
+  purchasing,
+  onPurchase,
+  alwasyActive,
+}) {
   const [showDetails, setShowDetails] = useState(false);
-  const canAfford = userCoins >= item.cost;
+  const canAfford = userCoins >= item.cost || alwasyActive;
   const meetsLevelRequirement = userLevel >= item.requiredLevel;
   const isLocked = !meetsLevelRequirement;
   const overallPower = item.attack + item.defense + item.healing;
@@ -50,10 +57,14 @@ function StoreItemCard({ item, userCoins, userLevel, purchasing, onPurchase }) {
               <i className='fa-solid fa-bolt'></i>
               <span className='compact-value'>{overallPower}</span>
             </div>
-            <div className='compact-stat'>
-              <i className='fa-solid fa-coins'></i>
-              <span className='compact-value'>{item.cost}</span>
-            </div>
+            {onPurchase ? (
+              <div className='compact-stat'>
+                <i className='fa-solid fa-coins'></i>
+                <span className='compact-value'>{item.cost}</span>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
 
           {onPurchase && (

@@ -253,6 +253,7 @@ function AvatarProfile() {
                 items={warriors}
                 userCoins={avatar.coins}
                 userLevel={avatar.level}
+                alwasyActive
               />
             )}
           </div>
