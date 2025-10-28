@@ -1,6 +1,9 @@
 # Environment
 .env
 
+# Sync script
+sync_db.sh
+
 # Go
 *.exe
 *.exe~
