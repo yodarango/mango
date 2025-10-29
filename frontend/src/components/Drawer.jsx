@@ -71,6 +71,16 @@ function Drawer({ isOpen, onClose }) {
               )}
             </Link>
 
+            <Link to='/assignments' className='drawer-link' onClick={onClose}>
+              <i className='fa-solid fa-clipboard-list'></i>
+              <span>Assignments</span>
+            </Link>
+
+            <Link to='/resources' className='drawer-link' onClick={onClose}>
+              <i className='fa-solid fa-book'></i>
+              <span>Resources</span>
+            </Link>
+
             {avatarId && (
               <Link
                 to={`/avatar/${avatarId}`}

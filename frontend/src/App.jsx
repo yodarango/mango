@@ -6,6 +6,8 @@ import AvatarProfile from "./pages/AvatarProfile";
 import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
+import Assignments from "./pages/Assignments";
+import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
 import AdminMessages from "./pages/AdminMessages";
 import Games from "./pages/Games";
@@ -102,6 +104,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Messages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments'
+            element={
+              <ProtectedRoute>
+                <Assignments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/resources'
+            element={
+              <ProtectedRoute>
+                <Resources />
               </ProtectedRoute>
             }
           />
