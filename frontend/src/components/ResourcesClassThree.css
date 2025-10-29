@@ -1,0 +1,57 @@
+.resources-class-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.resources-class-container .resources-header {
+  margin-bottom: 2rem;
+}
+
+.resources-class-container .resources-header h1 {
+  color: #00ff00;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.resources-class-container .resources-header .subtitle {
+  color: #888;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.resources-class-container .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #1a1a1a;
+  border: 2px dashed #333;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.resources-class-container .empty-state i {
+  font-size: 4rem;
+  color: #00ff00;
+  margin-bottom: 1.5rem;
+}
+
+.resources-class-container .empty-state h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.resources-class-container .empty-state p {
+  color: #888;
+  font-size: 1rem;
+  max-width: 500px;
+  line-height: 1.6;
+}
+

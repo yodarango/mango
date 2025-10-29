@@ -1,23 +1,26 @@
-import "./Resources.css";
+import { useEffect, useState } from "react";
+import ResourcesClassTwo from "../components/ResourcesClassTwo";
+import ResourcesClassThree from "../components/ResourcesClassThree";
 
 function Resources() {
-  return (
-    <div className="resources-container">
-      <div className="resources-header">
-        <h1>
-          <i className="fa-solid fa-book"></i> Resources
-        </h1>
-        <p className="subtitle">Study materials and learning resources</p>
-      </div>
+  const [user, setUser] = useState(null);
 
-      <div className="empty-state">
-        <i className="fa-solid fa-folder-open"></i>
-        <h2>Materials Coming Soon</h2>
-        <p>Your teacher will be adding study materials, PDFs, images, and other helpful resources here.</p>
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.class === 2) {
+    return <ResourcesClassTwo />;
+  }
+
+  return <ResourcesClassThree />;
 }
 
 export default Resources;
-

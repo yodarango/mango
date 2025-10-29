@@ -24,6 +24,7 @@ type User struct {
 	Name     string `json:"name"`
 	Password string `json:"-"` // Never send password in JSON
 	Role     string `json:"role"`
+	Class 		int `json:"class"`
 }
 
 type Avatar struct {
