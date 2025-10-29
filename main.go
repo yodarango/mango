@@ -129,6 +129,14 @@ type CreateNotificationRequest struct {
 	Message string `json:"message"`
 }
 
+type Assignment struct {
+	ID           int    `json:"id"`
+	Coins        int    `json:"coins"`
+	AssignmentID string `json:"assignmentId"`
+	UserID       int    `json:"userId"`
+	Completed    bool   `json:"completed"`
+}
+
 type Game struct {
 	ID        int       `json:"id"`
 	Name      string    `json:"name"`
@@ -361,6 +369,20 @@ func initDB() {
 	);`
 
 	_, err = db.Exec(createNotificationsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createAssignmentsTableSQL := `CREATE TABLE IF NOT EXISTS assignments (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		coins INTEGER NOT NULL,
+		assignment_id TEXT NOT NULL,
+		user_id INTEGER NOT NULL,
+		completed INTEGER DEFAULT 0,
+		FOREIGN KEY (user_id) REFERENCES users(id)
+	);`
+
+	_, err = db.Exec(createAssignmentsTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}

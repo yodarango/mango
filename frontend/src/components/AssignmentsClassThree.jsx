@@ -4,6 +4,7 @@ import "./AssignmentsClassThree.css";
 const assignments = [
   {
     path: "assignments/numbers",
+    id: 1000,
     name: "Numbers",
   },
 ];
