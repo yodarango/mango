@@ -143,6 +143,7 @@ const TYPED_ANSWER_BANK = [
 
 const QUIZ_TIME = 60 * 3; // 3 minutes
 const COINS_PER_QUESTION = 50;
+const ASSIGNMENT_ID = "1001";
 
 function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
   const [showWarning, setShowWarning] = useState(true);
@@ -316,7 +317,7 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          assignmentId: "2000",
+          assignmentId: ASSIGNMENT_ID,
           coinsReceived: score,
         }),
       });
