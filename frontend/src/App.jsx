@@ -7,7 +7,7 @@ import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import Assignments from "./pages/Assignments";
-import Numbers from "./pages/Numbers";
+import IIINumbers from "./pages/assignments/III_Numbers";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
 import AdminMessages from "./pages/AdminMessages";
@@ -120,7 +120,7 @@ function App() {
             path='/assignments/numbers'
             element={
               <ProtectedRoute>
-                <Numbers />
+                <IIINumbers />
               </ProtectedRoute>
             }
           />

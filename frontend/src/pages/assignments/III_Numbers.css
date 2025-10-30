@@ -1,0 +1,375 @@
+.numbers-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.numbers-header {
+  margin-bottom: 2rem;
+}
+
+.numbers-header h1 {
+  color: #00ff00;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.numbers-header .subtitle {
+  color: #888;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.numbers-content {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+/* Introduction Section */
+.intro-section {
+  background: #252525;
+  border-left: 4px solid #00ff00;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 4px;
+}
+
+.intro-section p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+/* Number Groups */
+.number-group {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: #0d0d0d;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+.number-group.group-1 {
+  border-color: #ff9500;
+}
+
+.number-group.group-2 {
+  border-color: #ffeb3b;
+}
+
+.number-group.group-3 {
+  border-color: #00ff00;
+}
+
+.number-group.group-4 {
+  border-color: #9c27b0;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.group-number {
+  background: linear-gradient(135deg, #00ff00, #00cc00);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.group-1 .group-number {
+  background: linear-gradient(135deg, #ff9500, #ff6600);
+}
+
+.group-2 .group-number {
+  background: linear-gradient(135deg, #ffeb3b, #ffc107);
+}
+
+.group-3 .group-number {
+  background: linear-gradient(135deg, #00ff00, #00cc00);
+}
+
+.group-4 .group-number {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+}
+
+.group-header h2 {
+  color: #fff;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+/* Group Description */
+.group-description {
+  margin-bottom: 2rem;
+}
+
+.group-description p {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.highlight {
+  background: #00ff00;
+  color: #000;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.english-comparison {
+  background: #1a2a3a;
+  border-left: 3px solid #4a9eff;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.english-comparison i {
+  color: #4a9eff;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.english-comparison strong {
+  color: #4a9eff;
+}
+
+/* Numbers Grid */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Number Cards */
+.number-card {
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.number-card:hover {
+  border-color: #00ff00;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);
+}
+
+.number-card .digit {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ff9500;
+}
+
+.number-card .spanish {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+.number-card .formula {
+  font-size: 0.75rem;
+  color: #888;
+  font-style: italic;
+}
+
+.highlight-text {
+  color: #00ff00;
+  font-weight: 700;
+}
+
+/* Sub-patterns */
+.sub-pattern {
+  margin-bottom: 2rem;
+}
+
+.sub-pattern h3 {
+  color: #ffeb3b;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #ffeb3b;
+}
+
+/* Pattern Notes */
+.pattern-note {
+  background: #1a2a1a;
+  border: 1px solid #00ff00;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.pattern-note i {
+  color: #ffeb3b;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.pattern-note p {
+  margin: 0;
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.pattern-note strong {
+  color: #00ff00;
+}
+
+/* Summary Section */
+.summary-section {
+  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  border: 2px solid #00ff00;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 3rem;
+}
+
+.summary-section h2 {
+  color: #00ff00;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.summary-card {
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  border-color: #00ff00;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);
+}
+
+.summary-card:nth-child(1) {
+  border-color: #ff9500;
+}
+
+.summary-card:nth-child(2) {
+  border-color: #ffeb3b;
+}
+
+.summary-card:nth-child(3) {
+  border-color: #00ff00;
+}
+
+.summary-card:nth-child(4) {
+  border-color: #9c27b0;
+}
+
+.summary-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00ff00;
+  margin-bottom: 0.75rem;
+}
+
+.summary-card:nth-child(1) .summary-title {
+  color: #ff9500;
+}
+
+.summary-card:nth-child(2) .summary-title {
+  color: #ffeb3b;
+}
+
+.summary-card:nth-child(3) .summary-title {
+  color: #00ff00;
+}
+
+.summary-card:nth-child(4) .summary-title {
+  color: #9c27b0;
+}
+
+.summary-content {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .numbers-container {
+    padding: 1rem;
+  }
+
+  .numbers-content {
+    padding: 1rem;
+  }
+
+  .number-group {
+    padding: 1rem;
+  }
+
+  .numbers-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .number-card {
+    padding: 0.75rem;
+  }
+
+  .number-card .digit {
+    font-size: 1.25rem;
+  }
+
+  .number-card .spanish {
+    font-size: 1rem;
+  }
+
+  .group-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .group-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

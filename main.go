@@ -130,11 +130,14 @@ type CreateNotificationRequest struct {
 }
 
 type Assignment struct {
-	ID           int    `json:"id"`
-	Coins        int    `json:"coins"`
-	AssignmentID string `json:"assignmentId"`
-	UserID       int    `json:"userId"`
-	Completed    bool   `json:"completed"`
+	ID           int       `json:"id"`
+	Coins        int       `json:"coins"`
+	AssignmentID string    `json:"assignmentId"`
+	UserID       int       `json:"userId"`
+	Completed    bool      `json:"completed"`
+	Name         string    `json:"name"`
+	DueDate      time.Time `json:"dueDate"`
+	Path         string    `json:"path"`
 }
 
 type Game struct {
@@ -379,6 +382,9 @@ func initDB() {
 		assignment_id TEXT NOT NULL,
 		user_id INTEGER NOT NULL,
 		completed INTEGER DEFAULT 0,
+		name TEXT NOT NULL,
+		due_date DATETIME,
+		path TEXT,
 		FOREIGN KEY (user_id) REFERENCES users(id)
 	);`
 
@@ -607,6 +613,23 @@ func initDB() {
 				log.Fatal(err)
 			}
 		}
+	}
+
+	// Insert assignment records for users 4, 7, 5
+	var assignmentCount int
+	db.QueryRow("SELECT COUNT(*) FROM assignments").Scan(&assignmentCount)
+	if assignmentCount == 0 {
+		userIDs := []int{4, 7, 5}
+		dueDate := time.Now().Add(7 * 24 * time.Hour) // Due in 7 days
+		for _, userID := range userIDs {
+			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
+				VALUES (?, ?, ?, ?, ?, ?, ?)`,
+				120, "1000", userID, 0, "numbers", dueDate, "assignments/numbers")
+			if err != nil {
+				log.Printf("Error inserting assignment for user %d: %v", userID, err)
+			}
+		}
+		log.Println("Inserted assignment records for users 4, 7, and 5")
 	}
 }
 
@@ -1290,6 +1313,47 @@ func getUnreadCount(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]int{"count": count})
+}
+
+// Get user's assignments
+func getAssignments(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path
+		FROM assignments WHERE user_id = ? ORDER BY due_date ASC`, claims.UserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var assignments []Assignment
+	for rows.Next() {
+		var assignment Assignment
+		var completed int
+		var dueDate sql.NullTime
+		var path sql.NullString
+		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		assignment.Completed = completed == 1
+		if dueDate.Valid {
+			assignment.DueDate = dueDate.Time
+		}
+		if path.Valid {
+			assignment.Path = path.String
+		}
+		assignments = append(assignments, assignment)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(assignments)
 }
 
 // Mark notification as read
@@ -2469,6 +2533,7 @@ func main() {
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
 	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
+	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")

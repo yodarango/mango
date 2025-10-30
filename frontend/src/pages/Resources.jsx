@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import ResourcesClassTwo from "../components/ResourcesClassTwo";
 import ResourcesClassThree from "../components/ResourcesClassThree";
+import ResourcesClassTwo from "../components/ResourcesClassTwo";
+import { useEffect, useState } from "react";
 
 function Resources() {
   const [user, setUser] = useState(null);
