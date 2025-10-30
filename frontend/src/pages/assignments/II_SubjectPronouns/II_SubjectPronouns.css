@@ -1,0 +1,422 @@
+.pronouns-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #0d0d0d;
+  min-height: 100vh;
+}
+
+.pronouns-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 3px solid #ff9500;
+}
+
+.pronouns-header h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pronouns-header h1 i {
+  color: #ff9500;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.take-quiz-btn {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #00ff00, #00cc00);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+}
+
+.take-quiz-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.4);
+}
+
+.take-quiz-btn.completed {
+  background: linear-gradient(135deg, #ff9500, #ff7700);
+  color: #fff;
+}
+
+.take-quiz-btn.completed:hover {
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
+}
+
+/* Introduction */
+.intro-section {
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  border: 2px solid #00ff00;
+}
+
+.intro-section h2 {
+  color: #00ff00;
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.intro-text {
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1.8;
+}
+
+.example-box {
+  background: #0d0d0d;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid #ffeb3b;
+  margin-top: 1rem;
+}
+
+.example-box p {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.highlight-green {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.highlight-yellow {
+  background: rgba(255, 235, 59, 0.2);
+  color: #ffeb3b;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Section Cards */
+.section-card {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  border: 3px solid;
+}
+
+.section-card.purple-border {
+  border-color: #9c27b0;
+}
+
+.section-card.orange-border {
+  border-color: #ff9500;
+}
+
+.section-card.green-border {
+  border-color: #00ff00;
+}
+
+.section-card h2 {
+  color: #fff;
+  font-size: 2rem;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emoji {
+  font-size: 2.5rem;
+}
+
+/* Pronoun Grid */
+.pronoun-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.pronoun-card {
+  background: linear-gradient(135deg, #252525, #1a1a1a);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 3px solid;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.pronoun-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 255, 0, 0.3);
+}
+
+.yo-card { border-color: #ff0000; }
+.tu-card { border-color: #0000ff; }
+.el-card { border-color: #00ff00; }
+.ella-card { border-color: #ff69b4; }
+.nosotros-card { border-color: #ffeb3b; }
+.ustedes-card { border-color: #ff9500; }
+.ellos-card { border-color: #00ffff; }
+.ellas-card { border-color: #9c27b0; }
+
+.pronoun-emoji {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.pronoun-spanish {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #00ff00;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.pronoun-english {
+  font-size: 1.5rem;
+  color: #ffeb3b;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.pronoun-example {
+  background: #0d0d0d;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.pronoun-example strong {
+  color: #fff;
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.translation {
+  color: #aaa;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.pronoun-tip {
+  color: #ff9500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.pronoun-tip i {
+  color: #ffeb3b;
+}
+
+/* Info Box */
+.info-box {
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.blue-bg {
+  background: linear-gradient(135deg, #1a237e, #283593);
+  border: 3px solid #00ffff;
+}
+
+.info-box h3 {
+  color: #00ffff;
+  font-size: 1.8rem;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.es-son-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.es-box,
+.son-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #ffeb3b;
+}
+
+.es-box h4,
+.son-box h4 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+.es-box p,
+.son-box p {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.es-box ul,
+.son-box ul {
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.es-box li,
+.son-box li {
+  margin-bottom: 0.5rem;
+}
+
+/* Color Examples */
+.color-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.color-card {
+  background: #252525;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 3px solid;
+  transition: all 0.3s ease;
+}
+
+.color-card:hover {
+  transform: scale(1.05);
+}
+
+.red-card { border-color: #ff0000; }
+.blue-card { border-color: #0000ff; }
+.green-card { border-color: #00ff00; }
+.yellow-card { border-color: #ffeb3b; }
+
+.color-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.color-card p {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.color-card .small {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* Tips Section */
+.tips-section {
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 3px solid #ff9500;
+}
+
+.tips-section h2 {
+  color: #ff9500;
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tip-card {
+  background: #0d0d0d;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #00ff00;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+  border-color: #ffeb3b;
+  transform: translateY(-3px);
+}
+
+.tip-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.tip-card h4 {
+  color: #00ff00;
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
+}
+
+.tip-card p {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pronouns-container {
+    padding: 1rem;
+  }
+
+  .pronouns-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .pronouns-header h1 {
+    font-size: 2rem;
+  }
+
+  .take-quiz-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pronoun-grid,
+  .color-examples,
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

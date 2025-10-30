@@ -626,12 +626,25 @@ func initDB() {
 		for _, userID := range userIDs {
 			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
 				VALUES (?, ?, ?, ?, ?, ?, ?)`,
-				120, "1000", userID, 0, "numbers", dueDate, "assignments/numbers")
+				120, "1000", userID, 0, "Numbers", dueDate, "/numbers")
 			if err != nil {
 				log.Printf("Error inserting assignment for user %d: %v", userID, err)
 			}
 		}
-		log.Println("Inserted assignment records for users 4, 7, and 5")
+		log.Println("Inserted Numbers assignment records for users 4, 7, and 5")
+
+		// Insert Subject Pronouns assignment for users 1, 2, 3, 6
+		pronounUserIDs := []int{1, 2, 3, 6}
+		pronounDueDate := time.Now().Add(7 * 24 * time.Hour) // Due in 7 days
+		for _, userID := range pronounUserIDs {
+			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
+				VALUES (?, ?, ?, ?, ?, ?, ?)`,
+				120, "2000", userID, 0, "Subject Pronouns", pronounDueDate, "/subject-pronouns")
+			if err != nil {
+				log.Printf("Error inserting Subject Pronouns assignment for user %d: %v", userID, err)
+			}
+		}
+		log.Println("Inserted Subject Pronouns assignment records for users 1, 2, 3, and 6")
 	}
 }
 

@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import Assignments from "./pages/Assignments";
 import IIINumbers from "./pages/assignments/III_Numbers/III_Numbers";
+import IISubjectPronouns from "./pages/assignments/II_SubjectPronouns/II_SubjectPronouns";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
 import AdminMessages from "./pages/AdminMessages";
@@ -121,6 +122,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <IIINumbers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments/subject-pronouns'
+            element={
+              <ProtectedRoute>
+                <IISubjectPronouns />
               </ProtectedRoute>
             }
           />
