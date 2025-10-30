@@ -36,9 +36,7 @@ function IISubjectPronouns() {
           <h1>
             <i className='fa-solid fa-users'></i> Subject Pronouns
           </h1>
-          <p className='subtitle'>
-            Learn who's who in Spanish! 🌟
-          </p>
+          <p className='subtitle'>Learn who's who in Spanish! 🌟</p>
         </div>
         <button
           onClick={handleOpenQuiz}
@@ -71,8 +69,10 @@ function IISubjectPronouns() {
         </p>
         <div className='example-box'>
           <p>
-            <strong>Example:</strong> Instead of saying "Maria is responsible" 
-            we can say <span className='highlight-green'>"Ella es responsible"</span> (She is responsible)
+            <strong>Example:</strong> Instead of saying "Maria is responsible"
+            we can say{" "}
+            <span className='highlight-green'>"Ella es responsible"</span> (She
+            is responsible)
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@ function IISubjectPronouns() {
         <h2>
           <span className='emoji'>👤</span> Singular Pronouns (One Person)
         </h2>
-        
+
         <div className='pronoun-grid'>
           {/* YO */}
           <div className='pronoun-card yo-card'>
@@ -95,7 +95,8 @@ function IISubjectPronouns() {
               <span className='translation'>I am a student</span>
             </div>
             <div className='pronoun-tip'>
-              <i className='fa-solid fa-lightbulb'></i> Use when talking about yourself!
+              <i className='fa-solid fa-lightbulb'></i> Use when talking about
+              yourself!
             </div>
           </div>
 
@@ -110,7 +111,8 @@ function IISubjectPronouns() {
               <span className='translation'>You are intelligent</span>
             </div>
             <div className='pronoun-tip'>
-              <i className='fa-solid fa-lightbulb'></i> Use with friends and kids!
+              <i className='fa-solid fa-lightbulb'></i> Use with friends and
+              kids!
             </div>
           </div>
 
@@ -151,7 +153,7 @@ function IISubjectPronouns() {
         <h2>
           <span className='emoji'>👥</span> Plural Pronouns (More Than One)
         </h2>
-        
+
         <div className='pronoun-grid'>
           {/* NOSOTROS */}
           <div className='pronoun-card nosotros-card'>
@@ -194,7 +196,8 @@ function IISubjectPronouns() {
               <span className='translation'>They are students</span>
             </div>
             <div className='pronoun-tip'>
-              <i className='fa-solid fa-lightbulb'></i> For groups of boys or mixed!
+              <i className='fa-solid fa-lightbulb'></i> For groups of boys or
+              mixed!
             </div>
           </div>
 
@@ -209,35 +212,9 @@ function IISubjectPronouns() {
               <span className='translation'>They are intelligent</span>
             </div>
             <div className='pronoun-tip'>
-              <i className='fa-solid fa-lightbulb'></i> Only for groups of girls!
+              <i className='fa-solid fa-lightbulb'></i> Only for groups of
+              girls!
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Special Note about ES vs SON */}
-      <div className='info-box blue-bg'>
-        <h3>
-          <i className='fa-solid fa-star'></i> Important: ES vs SON
-        </h3>
-        <div className='es-son-grid'>
-          <div className='es-box'>
-            <h4>Use <span className='highlight-yellow'>ES</span></h4>
-            <p>With ONE person:</p>
-            <ul>
-              <li>Yo soy → but we say "Yo <strong>soy</strong>"</li>
-              <li>Tú <strong>eres</strong></li>
-              <li>Él/Ella <strong>es</strong></li>
-            </ul>
-          </div>
-          <div className='son-box'>
-            <h4>Use <span className='highlight-yellow'>SON</span></h4>
-            <p>With MORE THAN ONE:</p>
-            <ul>
-              <li>Nosotros <strong>somos</strong></li>
-              <li>Ustedes <strong>son</strong></li>
-              <li>Ellos/Ellas <strong>son</strong></li>
-            </ul>
           </div>
         </div>
       </div>
@@ -249,23 +226,43 @@ function IISubjectPronouns() {
         </h2>
         <div className='color-examples'>
           <div className='color-card red-card'>
-            <div className='color-circle' style={{ background: '#ff0000' }}></div>
-            <p><strong>Yo soy rojo</strong></p>
+            <div
+              className='color-circle'
+              style={{ background: "#ff0000" }}
+            ></div>
+            <p>
+              <strong>Yo soy rojo</strong>
+            </p>
             <p className='small'>I am red</p>
           </div>
           <div className='color-card blue-card'>
-            <div className='color-circle' style={{ background: '#0000ff' }}></div>
-            <p><strong>Tú eres azul</strong></p>
+            <div
+              className='color-circle'
+              style={{ background: "#0000ff" }}
+            ></div>
+            <p>
+              <strong>Tú eres azul</strong>
+            </p>
             <p className='small'>You are blue</p>
           </div>
           <div className='color-card green-card'>
-            <div className='color-circle' style={{ background: '#00ff00' }}></div>
-            <p><strong>Ella es verde</strong></p>
+            <div
+              className='color-circle'
+              style={{ background: "#00ff00" }}
+            ></div>
+            <p>
+              <strong>Ella es verde</strong>
+            </p>
             <p className='small'>She is green</p>
           </div>
           <div className='color-card yellow-card'>
-            <div className='color-circle' style={{ background: '#ffeb3b' }}></div>
-            <p><strong>Nosotros somos amarillos</strong></p>
+            <div
+              className='color-circle'
+              style={{ background: "#ffeb3b" }}
+            ></div>
+            <p>
+              <strong>Nosotros somos amarillos</strong>
+            </p>
             <p className='small'>We are yellow</p>
           </div>
         </div>
@@ -304,4 +301,3 @@ function IISubjectPronouns() {
 }
 
 export default IISubjectPronouns;
-

@@ -14,79 +14,51 @@ const MULTIPLE_CHOICE_BANK = [
   {
     id: 2,
     type: "multiple",
-    question: "Which pronoun do you use when talking to a friend?",
-    options: ["Yo", "Tú", "Ustedes", "Nosotros"],
-    correct: 1,
+    question: "Which pronoun means 'YOU' in Spanish?",
+    options: ["Tú", "Yo", "Él", "Ella"],
+    correct: 0,
   },
   {
     id: 3,
     type: "multiple",
-    question: "What does 'Nosotros' mean?",
-    options: ["They", "We", "You all", "I"],
-    correct: 1,
+    question: "Which pronoun means 'HE' in Spanish?",
+    options: ["Tú", "Yo", "Él", "Ella"],
+    correct: 2,
   },
   {
     id: 4,
     type: "multiple",
-    question: "Which pronoun means 'She'?",
-    options: ["Él", "Ella", "Ellos", "Ellas"],
-    correct: 1,
+    question: "Which pronoun means 'SHE' in Spanish?",
+    options: ["Tú", "Yo", "Él", "Ella"],
+    correct: 3,
   },
   {
     id: 5,
     type: "multiple",
-    question: "What is the correct pronoun for a group of boys?",
-    options: ["Ellas", "Nosotros", "Ellos", "Ustedes"],
+    question: "Which pronoun means 'WE' in Spanish?",
+    options: ["Tú", "Yo", "Nosotros", "Ella"],
     correct: 2,
   },
   {
     id: 6,
     type: "multiple",
-    question: "Which word goes with 'Ellos'? Ellos ___ estudiantes.",
-    options: ["es", "son", "eres", "soy"],
-    correct: 1,
+    question: "Which pronoun means 'THEY (boys)' in Spanish?",
+    options: ["Tú", "Yo", "Nosotros", "Ellos"],
+    correct: 3,
   },
   {
     id: 7,
     type: "multiple",
-    question: "Which pronoun means 'You all'?",
-    options: ["Tú", "Nosotros", "Ustedes", "Ellos"],
-    correct: 2,
+    question: "Which pronoun means 'YOU ALL' in Spanish?",
+    options: ["Tú", "Yo", "Nosotros", "Ustedes"],
+    correct: 3,
   },
   {
-    id: 8,
+    id: 6,
     type: "multiple",
-    question: "What does 'Él' mean?",
-    options: ["She", "He", "They", "We"],
+    question: "Which pronoun means 'THEY (girls)' in Spanish?",
+    options: ["Tú", "Ellas", "Nosotros", "Ellos"],
     correct: 1,
-  },
-  {
-    id: 9,
-    type: "multiple",
-    question: "Which pronoun is for a group of girls only?",
-    options: ["Ellos", "Ellas", "Nosotros", "Ustedes"],
-    correct: 1,
-  },
-  {
-    id: 10,
-    type: "multiple",
-    question: "Complete: Yo ___ responsable.",
-    options: ["son", "es", "soy", "eres"],
-    correct: 2,
-  },
-  {
-    id: 11,
-    type: "multiple",
-    question: "Complete: Tú ___ inteligente.",
-    options: ["eres", "soy", "es", "son"],
-    correct: 0,
-  },
-  {
-    id: 12,
-    type: "multiple",
-    question: "Complete: Ella ___ amable.",
-    options: ["soy", "eres", "es", "son"],
-    correct: 2,
   },
 ];
 
@@ -149,19 +121,22 @@ const TYPED_ANSWER_BANK = [
   {
     id: 110,
     type: "typed",
-    question: "Complete the sentence: Tú ___ inteligente. (You are intelligent)",
+    question:
+      "Complete the sentence: Tú ___ inteligente. (You are intelligent)",
     correctAnswers: ["eres"],
   },
   {
     id: 111,
     type: "typed",
-    question: "Complete the sentence: Ellos ___ estudiantes. (They are students)",
+    question:
+      "Complete the sentence: Ellos ___ estudiantes. (They are students)",
     correctAnswers: ["son"],
   },
   {
     id: 112,
     type: "typed",
-    question: "Complete the sentence: Nosotros ___ importantes. (We are important)",
+    question:
+      "Complete the sentence: Nosotros ___ importantes. (We are important)",
     correctAnswers: ["somos"],
   },
 ];
@@ -359,7 +334,10 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
 
       const data = await response.json();
       if (response.ok && data.success) {
-        console.log("Assignment submitted successfully. New coins:", data.coins);
+        console.log(
+          "Assignment submitted successfully. New coins:",
+          data.coins
+        );
       }
     } catch (error) {
       console.error("Error submitting assignment:", error);
@@ -385,8 +363,8 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
           <div className='quiz-warning'>
             <div className='warning-header'>
               <h2>
-                <i className='fa-solid fa-exclamation-circle'></i> Ready for
-                the Quiz?
+                <i className='fa-solid fa-exclamation-circle'></i> Ready for the
+                Quiz?
               </h2>
             </div>
             <div className='warning-content'>
@@ -438,7 +416,7 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
 
             <div className='quiz-question'>
               <h3>{questions[currentQuestion].question}</h3>
-              
+
               {questions[currentQuestion].type === "multiple" ? (
                 <div className='quiz-options'>
                   {questions[currentQuestion].options.map((option, index) => (
@@ -516,7 +494,8 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
                 >
                   {submitting ? (
                     <>
-                      <i className='fa-solid fa-spinner fa-spin'></i> Submitting...
+                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                      Submitting...
                     </>
                   ) : (
                     <>
@@ -600,4 +579,3 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
 }
 
 export default SubjectPronounsQuiz;
-
