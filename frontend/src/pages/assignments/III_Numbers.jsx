@@ -1,16 +1,67 @@
+import { useState, useEffect } from "react";
+import NumbersQuiz from "../../components/NumbersQuiz";
 import "./III_Numbers.css";
 
 function IIINumbers() {
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  useEffect(() => {
+    // Check if quiz is already completed
+    const savedState = localStorage.getItem("III_numbers");
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      setQuizCompleted(state.completed || false);
+    }
+  }, []);
+
+  const handleOpenQuiz = () => {
+    setShowQuiz(true);
+  };
+
+  const handleCloseQuiz = () => {
+    setShowQuiz(false);
+    // Recheck completion status
+    const savedState = localStorage.getItem("III_numbers");
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      setQuizCompleted(state.completed || false);
+    }
+  };
+
   return (
     <div className='numbers-container'>
       <div className='numbers-header'>
-        <h1>
-          <i className='fa-solid fa-hashtag'></i> Numbers Assignment
-        </h1>
-        <p className='subtitle'>
-          Understanding Spanish numbers 1-1000: The Four Groups
-        </p>
+        <div>
+          <h1>
+            <i className='fa-solid fa-hashtag'></i> Numbers Assignment
+          </h1>
+          <p className='subtitle'>
+            Understanding Spanish numbers 1-1000: The Four Groups
+          </p>
+        </div>
+        <button
+          onClick={handleOpenQuiz}
+          className='take-quiz-btn'
+          disabled={quizCompleted}
+        >
+          {quizCompleted ? (
+            <>
+              <i className='fa-solid fa-check-circle'></i> Quiz Completed
+            </>
+          ) : (
+            <>
+              <i className='fa-solid fa-pen-to-square'></i> Take Quiz
+            </>
+          )}
+        </button>
       </div>
+
+      <NumbersQuiz
+        isOpen={showQuiz}
+        onClose={handleCloseQuiz}
+        assignmentId='1000'
+      />
 
       <div className='numbers-content'>
         {/* Introduction */}

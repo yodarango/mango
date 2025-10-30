@@ -6,6 +6,15 @@
 
 .numbers-header {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.numbers-header > div {
+  flex: 1;
 }
 
 .numbers-header h1 {
@@ -21,6 +30,34 @@
   color: #888;
   font-size: 1rem;
   margin: 0;
+}
+
+.take-quiz-btn {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #00ff00, #00cc00);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.take-quiz-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.4);
+}
+
+.take-quiz-btn:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .numbers-content {

@@ -130,14 +130,15 @@ type CreateNotificationRequest struct {
 }
 
 type Assignment struct {
-	ID           int       `json:"id"`
-	Coins        int       `json:"coins"`
-	AssignmentID string    `json:"assignmentId"`
-	UserID       int       `json:"userId"`
-	Completed    bool      `json:"completed"`
-	Name         string    `json:"name"`
-	DueDate      time.Time `json:"dueDate"`
-	Path         string    `json:"path"`
+	ID            int       `json:"id"`
+	Coins         int       `json:"coins"`
+	AssignmentID  string    `json:"assignmentId"`
+	UserID        int       `json:"userId"`
+	Completed     bool      `json:"completed"`
+	Name          string    `json:"name"`
+	DueDate       time.Time `json:"dueDate"`
+	Path          string    `json:"path"`
+	CoinsReceived int       `json:"coinsReceived"`
 }
 
 type Game struct {
@@ -385,6 +386,7 @@ func initDB() {
 		name TEXT NOT NULL,
 		due_date DATETIME,
 		path TEXT,
+		coins_received INTEGER DEFAULT 0,
 		FOREIGN KEY (user_id) REFERENCES users(id)
 	);`
 
@@ -1323,7 +1325,7 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received
 		FROM assignments WHERE user_id = ? ORDER BY due_date ASC`, claims.UserID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1338,7 +1340,7 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		var dueDate sql.NullTime
 		var path sql.NullString
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &assignment.CoinsReceived); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1354,6 +1356,80 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(assignments)
+}
+
+// Submit assignment and award coins
+func submitAssignment(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		AssignmentID  string `json:"assignmentId"`
+		CoinsReceived int    `json:"coinsReceived"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Get user's avatar ID
+	var avatarID int
+	err = tx.QueryRow("SELECT id FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID)
+	if err != nil {
+		http.Error(w, "Avatar not found", http.StatusNotFound)
+		return
+	}
+
+	// Get current avatar coins
+	var currentCoins int
+	err = tx.QueryRow("SELECT coins FROM avatars WHERE id = ?", avatarID).Scan(&currentCoins)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Update assignment as completed and set coins_received
+	_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
+		WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, req.AssignmentID, claims.UserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Add coins to avatar
+	newCoins := currentCoins + req.CoinsReceived
+	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Commit transaction
+	if err = tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"success": true,
+		"message": "Assignment submitted successfully",
+		"coins":   newCoins,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 // Mark notification as read
@@ -2534,6 +2610,7 @@ func main() {
 	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
+	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
