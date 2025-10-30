@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import "./NumbersQuiz.css";
+import "./III_NumbersQuizz.css";
 
 // Question bank - 18 total questions
 const QUESTION_BANK = [
@@ -124,8 +124,8 @@ const QUESTION_BANK = [
   },
 ];
 
-const QUIZ_TIME = 4 * 60; // 4 minutes in seconds
-const POINTS_PER_QUESTION = 20;
+const QUIZ_TIME = 60 * 2;
+const COINS_PER_QUESTION = 20;
 const TOTAL_QUESTIONS = 6;
 
 function NumbersQuiz({ isOpen, onClose, assignmentId }) {
@@ -149,6 +149,7 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
       if (state.completed) {
         setQuizCompleted(true);
         setResults(state.results);
+        setShowWarning(false); // Skip warning screen if already completed
       }
     }
   }, [isOpen]);
@@ -206,9 +207,7 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
   const handleSubmit = async (autoSubmit = false) => {
     if (!autoSubmit && Object.keys(answers).length < questions.length) {
       if (
-        !window.confirm(
-          "You haven't answered all questions. Submit anyway?"
-        )
+        !window.confirm("You haven't answered all questions. Submit anyway?")
       ) {
         return;
       }
@@ -225,13 +224,14 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
 
       return {
         question: q.question,
-        userAnswer: userAnswer !== undefined ? q.options[userAnswer] : "No answer",
+        userAnswer:
+          userAnswer !== undefined ? q.options[userAnswer] : "No answer",
         correctAnswer: q.options[q.correct],
         isCorrect,
       };
     });
 
-    const score = correctCount * POINTS_PER_QUESTION;
+    const score = correctCount * COINS_PER_QUESTION;
     const timeSpent = QUIZ_TIME - timeLeft;
 
     const resultsData = {
@@ -271,7 +271,10 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
 
       const data = await response.json();
       if (response.ok && data.success) {
-        console.log("Assignment submitted successfully. New coins:", data.coins);
+        console.log(
+          "Assignment submitted successfully. New coins:",
+          data.coins
+        );
       }
     } catch (error) {
       console.error("Error submitting assignment:", error);
@@ -306,9 +309,15 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
                 <strong>Important Information:</strong>
               </p>
               <ul>
-                <li>This quiz contains <strong>6 questions</strong></li>
-                <li>You have <strong>4 minutes</strong> to complete it</li>
-                <li>Each question is worth <strong>20 points</strong></li>
+                <li>
+                  This quiz contains <strong>6 questions</strong>
+                </li>
+                <li>
+                  You have <strong>4 minutes</strong> to complete it
+                </li>
+                <li>
+                  Each question is worth <strong>20 coins</strong>
+                </li>
                 <li>
                   <strong>You cannot pause</strong> once you start
                 </li>
@@ -379,7 +388,11 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
                     key={index}
                     className={`dot ${
                       index === currentQuestion ? "active" : ""
-                    } ${answers[questions[index].id] !== undefined ? "answered" : ""}`}
+                    } ${
+                      answers[questions[index].id] !== undefined
+                        ? "answered"
+                        : ""
+                    }`}
                     onClick={() => setCurrentQuestion(index)}
                   ></span>
                 ))}
@@ -408,8 +421,10 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
                 <i className='fa-solid fa-trophy'></i> Quiz Results
               </h2>
               <div className='results-score'>
-                <div className='score-value'>{results.score}</div>
-                <div className='score-label'>points</div>
+                <div className='score-value'>
+                  <i className='fa-solid fa-coins'></i> {results.score}
+                </div>
+                <div className='score-label'>coins earned</div>
               </div>
             </div>
 
@@ -471,4 +486,3 @@ function NumbersQuiz({ isOpen, onClose, assignmentId }) {
 }
 
 export default NumbersQuiz;
-

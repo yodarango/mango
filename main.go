@@ -1339,8 +1339,9 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		var completed int
 		var dueDate sql.NullTime
 		var path sql.NullString
+		var coinsReceived sql.NullInt64
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &assignment.CoinsReceived); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1350,6 +1351,9 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		}
 		if path.Valid {
 			assignment.Path = path.String
+		}
+		if coinsReceived.Valid {
+			assignment.CoinsReceived = int(coinsReceived.Int64)
 		}
 		assignments = append(assignments, assignment)
 	}

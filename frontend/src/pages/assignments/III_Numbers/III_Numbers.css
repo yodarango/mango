@@ -48,16 +48,18 @@
   white-space: nowrap;
 }
 
-.take-quiz-btn:hover:not(:disabled) {
+.take-quiz-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 255, 0, 0.4);
 }
 
-.take-quiz-btn:disabled {
-  background: #333;
-  color: #666;
-  cursor: not-allowed;
-  transform: none;
+.take-quiz-btn.completed {
+  background: linear-gradient(135deg, #ff9500, #ff7700);
+  color: #fff;
+}
+
+.take-quiz-btn.completed:hover {
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
 }
 
 .numbers-content {

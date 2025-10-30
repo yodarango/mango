@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import NumbersQuiz from "../../components/NumbersQuiz";
+import NumbersQuiz from "./III_NumbersQuizz";
 import "./III_Numbers.css";
 
 function IIINumbers() {
@@ -42,12 +42,11 @@ function IIINumbers() {
         </div>
         <button
           onClick={handleOpenQuiz}
-          className='take-quiz-btn'
-          disabled={quizCompleted}
+          className={`take-quiz-btn ${quizCompleted ? "completed" : ""}`}
         >
           {quizCompleted ? (
             <>
-              <i className='fa-solid fa-check-circle'></i> Quiz Completed
+              <i className='fa-solid fa-eye'></i> View Results
             </>
           ) : (
             <>
