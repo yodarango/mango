@@ -142,7 +142,7 @@ const TYPED_ANSWER_BANK = [
 ];
 
 const QUIZ_TIME = 60 * 3; // 3 minutes
-const COINS_PER_QUESTION = 20;
+const COINS_PER_QUESTION = 50;
 
 function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
   const [showWarning, setShowWarning] = useState(true);
@@ -171,29 +171,18 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
     }
   }, [isOpen]);
 
-  // Select random questions when quiz starts (4 multiple choice + 2 typed)
+  // Select random questions when quiz starts (6 multiple choice)
   const startQuiz = () => {
-    // Select 4 random multiple choice questions
+    // Select 6 random multiple choice questions and shuffle their options
     const shuffledMultiple = [...MULTIPLE_CHOICE_BANK].sort(
       () => Math.random() - 0.5
     );
-    const selectedMultiple = shuffledMultiple.slice(0, 4).map((q) => ({
+    const selectedMultiple = shuffledMultiple.slice(0, 6).map((q) => ({
       ...q,
       options: [...q.options].sort(() => Math.random() - 0.5),
     }));
 
-    // Select 2 random typed questions
-    const shuffledTyped = [...TYPED_ANSWER_BANK].sort(
-      () => Math.random() - 0.5
-    );
-    const selectedTyped = shuffledTyped.slice(0, 2);
-
-    // Combine and shuffle all questions
-    const allQuestions = [...selectedMultiple, ...selectedTyped].sort(
-      () => Math.random() - 0.5
-    );
-
-    setQuestions(allQuestions);
+    setQuestions(selectedMultiple);
     setShowWarning(false);
     setQuizStarted(true);
   };
@@ -373,14 +362,14 @@ function SubjectPronounsQuiz({ isOpen, onClose, assignmentId }) {
               </p>
               <ul>
                 <li>
-                  This quiz contains <strong>6 questions</strong> (4 multiple
-                  choice + 2 typed answers)
+                  This quiz contains{" "}
+                  <strong>6 multiple choice questions</strong>
                 </li>
                 <li>
                   You have <strong>3 minutes</strong> to complete it
                 </li>
                 <li>
-                  Each question is worth <strong>20 coins</strong>
+                  Each question is worth <strong>50 coins</strong>
                 </li>
                 <li>
                   <strong>You cannot pause</strong> once you start

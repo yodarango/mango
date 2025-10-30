@@ -639,7 +639,7 @@ func initDB() {
 		for _, userID := range pronounUserIDs {
 			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
 				VALUES (?, ?, ?, ?, ?, ?, ?)`,
-				120, "2000", userID, 0, "Subject Pronouns", pronounDueDate, "/subject-pronouns")
+				300, "2000", userID, 0, "Subject Pronouns", pronounDueDate, "/subject-pronouns")
 			if err != nil {
 				log.Printf("Error inserting Subject Pronouns assignment for user %d: %v", userID, err)
 			}
