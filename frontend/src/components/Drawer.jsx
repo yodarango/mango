@@ -111,11 +111,20 @@ function Drawer({ isOpen, onClose }) {
                 </Link>
 
                 <Link
-                  to='/admin/create-assignment'
+                  to='/admin/assignments'
                   className='drawer-link admin-link'
                   onClick={onClose}
                 >
                   <i className='fa-solid fa-clipboard-list'></i>
+                  <span>Assignments</span>
+                </Link>
+
+                <Link
+                  to='/admin/create-assignment'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-plus-circle'></i>
                   <span>Create Assignment</span>
                 </Link>
 

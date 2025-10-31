@@ -1475,6 +1475,207 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Get all assignments (admin only)
+func getAllAssignments(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+		FROM assignments ORDER BY due_date DESC`)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var assignments []Assignment
+	for rows.Next() {
+		var assignment Assignment
+		var completed int
+		var dueDate sql.NullTime
+		var path sql.NullString
+		var coinsReceived sql.NullInt64
+		var data sql.NullString
+		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		assignment.Completed = completed == 1
+		if dueDate.Valid {
+			assignment.DueDate = dueDate.Time
+		}
+		if path.Valid {
+			assignment.Path = path.String
+		}
+		if coinsReceived.Valid {
+			assignment.CoinsReceived = int(coinsReceived.Int64)
+		}
+		if data.Valid && data.String != "" {
+			assignment.Data = json.RawMessage(data.String)
+		}
+		assignments = append(assignments, assignment)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(assignments)
+}
+
+// Get assignment by ID (admin only)
+func getAssignmentByID(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var assignment Assignment
+	var completed int
+	var dueDate sql.NullTime
+	var path sql.NullString
+	var coinsReceived sql.NullInt64
+	var data sql.NullString
+
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+		FROM assignments WHERE id = ?`, id).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Assignment not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	assignment.Completed = completed == 1
+	if dueDate.Valid {
+		assignment.DueDate = dueDate.Time
+	}
+	if path.Valid {
+		assignment.Path = path.String
+	}
+	if coinsReceived.Valid {
+		assignment.CoinsReceived = int(coinsReceived.Int64)
+	}
+	if data.Valid && data.String != "" {
+		assignment.Data = json.RawMessage(data.String)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(assignment)
+}
+
+// Update assignment (admin only)
+func updateAssignment(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var req struct {
+		Name    string  `json:"name"`
+		Coins   int     `json:"coins"`
+		DueDate string  `json:"dueDate"`
+		Path    string  `json:"path"`
+		Data    *string `json:"data"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Parse due date
+	dueDate, err := time.Parse(time.RFC3339, req.DueDate)
+	if err != nil {
+		http.Error(w, "Invalid due date format", http.StatusBadRequest)
+		return
+	}
+
+	var dataValue interface{}
+	if req.Data != nil && *req.Data != "" {
+		dataValue = *req.Data
+	} else {
+		dataValue = nil
+	}
+
+	_, err = db.Exec(`UPDATE assignments SET name = ?, coins = ?, due_date = ?, path = ?, data = ?
+		WHERE id = ?`, req.Name, req.Coins, dueDate, req.Path, dataValue, id)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Delete assignment (admin only)
+func deleteAssignment(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	_, err = db.Exec("DELETE FROM assignments WHERE id = ?", id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Submit assignment and award coins
 func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -2729,6 +2930,10 @@ func main() {
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")
+	api.HandleFunc("/assignments/admin/all", getAllAssignments).Methods("GET")
+	api.HandleFunc("/assignments/admin/{id}", getAssignmentByID).Methods("GET")
+	api.HandleFunc("/assignments/{id}", updateAssignment).Methods("PUT")
+	api.HandleFunc("/assignments/{id}", deleteAssignment).Methods("DELETE")
 	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")

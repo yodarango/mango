@@ -13,6 +13,8 @@ import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
 import CreateAssignment from "./pages/CreateAssignment";
+import AdminAssignments from "./pages/AdminAssignments";
+import ViewAssignment from "./pages/ViewAssignment";
 import AdminMessages from "./pages/AdminMessages";
 import Games from "./pages/Games";
 import CreateGame from "./pages/CreateGame";
@@ -164,6 +166,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateAssignment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/assignments'
+            element={
+              <ProtectedRoute>
+                <AdminAssignments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/assignments/:id'
+            element={
+              <ProtectedRoute>
+                <ViewAssignment />
               </ProtectedRoute>
             }
           />
