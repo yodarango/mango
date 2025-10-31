@@ -270,10 +270,13 @@ function CreateAssignment() {
               id='path'
               value={path}
               onChange={(e) => setPath(e.target.value)}
-              placeholder='e.g., /quiz/1001 or /assignments/subject-pronouns'
+              placeholder='e.g., /quiz/1001 or /subject-pronouns'
               required
             />
-            <small>Route path for this assignment</small>
+            <small>
+              Route path for this assignment. For quizzes, use
+              /quiz/[assignment_id] (e.g., /quiz/1001)
+            </small>
           </div>
 
           <div className='form-group'>

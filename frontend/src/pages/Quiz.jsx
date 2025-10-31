@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./Quiz.css";
 
 function Quiz() {
-  const { id } = useParams();
+  const { assignmentId } = useParams(); // Get assignmentId from URL (e.g., "1001")
   const navigate = useNavigate();
   const [assignment, setAssignment] = useState(null);
   const [questions, setQuestions] = useState([]);
@@ -22,39 +22,43 @@ function Quiz() {
     const fetchAssignment = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/api/assignments", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch assignments");
-        }
-
-        const assignments = await response.json();
-        const foundAssignment = assignments.find(
-          (a) => a.assignmentId === id
+        // Fetch single assignment by assignment_id
+        const response = await fetch(
+          `/api/assignments/student/${assignmentId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
-        if (!foundAssignment) {
-          throw new Error("Assignment not found");
+        if (!response.ok) {
+          throw new Error("Failed to fetch assignment");
         }
 
-        setAssignment(foundAssignment);
+        const assignmentData = await response.json();
+
+        setAssignment(assignmentData);
 
         // Parse quiz data
-        if (foundAssignment.data) {
-          const quizData = JSON.parse(foundAssignment.data);
+        if (assignmentData.data) {
+          const quizData =
+            typeof assignmentData.data === "string"
+              ? JSON.parse(assignmentData.data)
+              : assignmentData.data;
           setQuestions(quizData);
-          
+
           // Calculate total time (sum of all question time_alloted)
-          const totalTime = quizData.reduce((sum, q) => sum + (q.time_alloted || 0), 0);
+          const totalTime = quizData.reduce(
+            (sum, q) => sum + (q.time_alloted || 0),
+            0
+          );
           setTimeLeft(totalTime);
         }
 
         // Check if already completed
-        if (foundAssignment.completed) {
+        if (assignmentData.completed) {
           setQuizCompleted(true);
           // Load results from assignment data if available
           // You might want to store results separately
@@ -68,7 +72,7 @@ function Quiz() {
     };
 
     fetchAssignment();
-  }, [id]);
+  }, [assignmentId]);
 
   // Timer countdown
   useEffect(() => {
@@ -146,7 +150,9 @@ function Quiz() {
         if (typedAnswer) {
           userAnswer = typedAnswer;
           // For typed answers, q.answer should be an array of acceptable answers
-          const acceptableAnswers = Array.isArray(q.answer) ? q.answer : [q.answer];
+          const acceptableAnswers = Array.isArray(q.answer)
+            ? q.answer
+            : [q.answer];
           isCorrect = acceptableAnswers.some(
             (correct) =>
               correct.toLowerCase() === typedAnswer.toLowerCase().trim()
@@ -186,14 +192,17 @@ function Quiz() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          assignmentId: id,
+          assignmentId: assignmentId, // Use the assignmentId from URL params
           coinsReceived: totalCoins,
         }),
       });
 
       const data = await response.json();
       if (response.ok && data.success) {
-        console.log("Assignment submitted successfully. New coins:", data.coins);
+        console.log(
+          "Assignment submitted successfully. New coins:",
+          data.coins
+        );
       }
     } catch (error) {
       console.error("Error submitting assignment:", error);
@@ -380,7 +389,10 @@ function Quiz() {
                 Next <i className='fa-solid fa-chevron-right'></i>
               </button>
             ) : (
-              <button onClick={() => handleSubmit(false)} className='btn-submit'>
+              <button
+                onClick={() => handleSubmit(false)}
+                className='btn-submit'
+              >
                 <i className='fa-solid fa-check'></i> Submit Quiz
               </button>
             )}
@@ -444,4 +456,3 @@ function Quiz() {
 }
 
 export default Quiz;
-

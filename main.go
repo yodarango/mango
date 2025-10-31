@@ -1475,6 +1475,56 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Get single assignment by assignment_id for student
+func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	assignmentID := vars["assignmentId"] // This is the assignment_id (e.g., "1001"), not the database id
+
+	var assignment Assignment
+	var completed int
+	var dueDate sql.NullTime
+	var path sql.NullString
+	var coinsReceived sql.NullInt64
+	var data sql.NullString
+
+	// Fetch assignment by assignment_id and user_id
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+		FROM assignments WHERE assignment_id = ? AND user_id = ?`, assignmentID, claims.UserID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Assignment not found or access denied", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	assignment.Completed = completed == 1
+	if dueDate.Valid {
+		assignment.DueDate = dueDate.Time
+	}
+	if path.Valid {
+		assignment.Path = path.String
+	}
+	if coinsReceived.Valid {
+		assignment.CoinsReceived = int(coinsReceived.Int64)
+	}
+	if data.Valid && data.String != "" {
+		assignment.Data = json.RawMessage(data.String)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(assignment)
+}
+
 // Get all assignments (admin only)
 func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -2930,6 +2980,7 @@ func main() {
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")
+	api.HandleFunc("/assignments/student/{assignmentId}", getStudentAssignment).Methods("GET")
 	api.HandleFunc("/assignments/admin/all", getAllAssignments).Methods("GET")
 	api.HandleFunc("/assignments/admin/{id}", getAssignmentByID).Methods("GET")
 	api.HandleFunc("/assignments/{id}", updateAssignment).Methods("PUT")

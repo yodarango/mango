@@ -24,6 +24,38 @@ function ViewAssignment() {
     fetchAssignment();
   }, [id]);
 
+  // Update edit form when assignment data changes
+  useEffect(() => {
+    if (assignment) {
+      let formattedData = "";
+      if (assignment.data) {
+        try {
+          const parsed =
+            typeof assignment.data === "string"
+              ? JSON.parse(assignment.data)
+              : assignment.data;
+          formattedData = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          console.error("Error parsing assignment data:", e);
+          formattedData =
+            typeof assignment.data === "string"
+              ? assignment.data
+              : JSON.stringify(assignment.data);
+        }
+      }
+
+      setEditData({
+        name: assignment.name || "",
+        coins: assignment.coins || "",
+        dueDate: assignment.dueDate
+          ? formatDateForInput(assignment.dueDate)
+          : "",
+        path: assignment.path || "",
+        data: formattedData,
+      });
+    }
+  }, [assignment]);
+
   const fetchAssignment = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -47,14 +79,33 @@ function ViewAssignment() {
       setStudent(studentInfo);
 
       // Initialize edit form
+      let formattedData = "";
+      if (assignmentData.data) {
+        // If data is already a string, parse and re-stringify for formatting
+        // If it's an object, just stringify it
+        try {
+          const parsed =
+            typeof assignmentData.data === "string"
+              ? JSON.parse(assignmentData.data)
+              : assignmentData.data;
+          formattedData = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          console.error("Error parsing assignment data:", e);
+          formattedData =
+            typeof assignmentData.data === "string"
+              ? assignmentData.data
+              : JSON.stringify(assignmentData.data);
+        }
+      }
+
       setEditData({
-        name: assignmentData.name,
-        coins: assignmentData.coins,
-        dueDate: formatDateForInput(assignmentData.dueDate),
-        path: assignmentData.path,
-        data: assignmentData.data
-          ? JSON.stringify(JSON.parse(assignmentData.data), null, 2)
+        name: assignmentData.name || "",
+        coins: assignmentData.coins || "",
+        dueDate: assignmentData.dueDate
+          ? formatDateForInput(assignmentData.dueDate)
           : "",
+        path: assignmentData.path || "",
+        data: formattedData,
       });
 
       setLoading(false);
@@ -94,6 +145,10 @@ function ViewAssignment() {
     setSaving(true);
     try {
       const token = localStorage.getItem("token");
+
+      // Convert datetime-local format to RFC3339
+      const dueDateISO = new Date(editData.dueDate).toISOString();
+
       const response = await fetch(`/api/assignments/${id}`, {
         method: "PUT",
         headers: {
@@ -103,7 +158,7 @@ function ViewAssignment() {
         body: JSON.stringify({
           name: editData.name,
           coins: parseInt(editData.coins),
-          dueDate: editData.dueDate,
+          dueDate: dueDateISO,
           path: editData.path,
           data: editData.data.trim() || null,
         }),
@@ -160,13 +215,13 @@ function ViewAssignment() {
     <div className='view-assignment-container'>
       {/* Header */}
       <div className='assignment-header'>
-        <button className='back-btn' onClick={() => navigate("/admin/assignments")}>
+        <button
+          className='back-btn'
+          onClick={() => navigate("/admin/assignments")}
+        >
           <i className='fa-solid fa-arrow-left'></i> Back
         </button>
-        <button
-          className='edit-btn'
-          onClick={() => setEditing(!editing)}
-        >
+        <button className='edit-btn' onClick={() => setEditing(!editing)}>
           {editing ? (
             <>
               <i className='fa-solid fa-times'></i> Cancel
@@ -233,7 +288,11 @@ function ViewAssignment() {
                     {assignment.coinsReceived} / {assignment.coins}
                   </span>
                   <span className='percentage'>
-                    ({Math.round((assignment.coinsReceived / assignment.coins) * 100)}%)
+                    (
+                    {Math.round(
+                      (assignment.coinsReceived / assignment.coins) * 100
+                    )}
+                    %)
                   </span>
                 </div>
               </div>
@@ -263,7 +322,9 @@ function ViewAssignment() {
                         {q.answer.map((opt, i) => (
                           <div
                             key={i}
-                            className={`option ${i === q.correct ? "correct" : ""}`}
+                            className={`option ${
+                              i === q.correct ? "correct" : ""
+                            }`}
                           >
                             {i === q.correct && (
                               <i className='fa-solid fa-check'></i>
@@ -295,7 +356,9 @@ function ViewAssignment() {
             <input
               type='text'
               value={editData.name}
-              onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, name: e.target.value })
+              }
             />
           </div>
           <div className='form-row'>
@@ -304,7 +367,9 @@ function ViewAssignment() {
               <input
                 type='number'
                 value={editData.coins}
-                onChange={(e) => setEditData({ ...editData, coins: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, coins: e.target.value })
+                }
               />
             </div>
             <div className='form-group'>
@@ -312,7 +377,9 @@ function ViewAssignment() {
               <input
                 type='datetime-local'
                 value={editData.dueDate}
-                onChange={(e) => setEditData({ ...editData, dueDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, dueDate: e.target.value })
+                }
               />
             </div>
           </div>
@@ -321,14 +388,18 @@ function ViewAssignment() {
             <input
               type='text'
               value={editData.path}
-              onChange={(e) => setEditData({ ...editData, path: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, path: e.target.value })
+              }
             />
           </div>
           <div className='form-group'>
             <label>Quiz Data (JSON)</label>
             <textarea
               value={editData.data}
-              onChange={(e) => setEditData({ ...editData, data: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, data: e.target.value })
+              }
               rows='15'
               className='json-textarea'
             />
@@ -356,4 +427,3 @@ function ViewAssignment() {
 }
 
 export default ViewAssignment;
-

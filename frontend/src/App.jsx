@@ -138,7 +138,7 @@ function App() {
             }
           />
           <Route
-            path='/quiz/:id'
+            path='/assignments/quiz/:assignmentId'
             element={
               <ProtectedRoute>
                 <Quiz />
