@@ -106,9 +106,8 @@ function CreateAssignment() {
         }),
       });
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
+      if (response.ok) {
+        const result = await response.json();
         alert(result.message || "Assignments created successfully!");
         // Reset form
         setCoins("");
@@ -120,11 +119,15 @@ function CreateAssignment() {
         setSelectedStudents([]);
         setSelectAll(false);
       } else {
-        alert(result.error || "Failed to create assignments");
+        const errorText = await response.text();
+        console.error("Error response:", response.status, errorText);
+        alert(
+          `Failed to create assignments: ${errorText || response.statusText}`
+        );
       }
     } catch (error) {
       console.error("Error creating assignments:", error);
-      alert("Error creating assignments");
+      alert("Error creating assignments: " + error.message);
     } finally {
       setCreating(false);
     }
@@ -321,4 +324,3 @@ function CreateAssignment() {
 }
 
 export default CreateAssignment;
-
