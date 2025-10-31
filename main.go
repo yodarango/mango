@@ -137,7 +137,6 @@ type Assignment struct {
 	Completed     bool            `json:"completed"`
 	Name          string          `json:"name"`
 	DueDate       time.Time       `json:"dueDate"`
-	Path          string          `json:"path"`
 	CoinsReceived int             `json:"coinsReceived"`
 	Data          json.RawMessage `json:"data,omitempty"`
 }
@@ -386,7 +385,6 @@ func initDB() {
 		completed INTEGER DEFAULT 0,
 		name TEXT NOT NULL,
 		due_date DATETIME,
-		path TEXT,
 		coins_received INTEGER DEFAULT 0,
 		data TEXT,
 		FOREIGN KEY (user_id) REFERENCES users(id)
@@ -632,9 +630,9 @@ func initDB() {
 		userIDs := []int{4, 7, 5}
 		dueDate := time.Now().Add(7 * 24 * time.Hour) // Due in 7 days
 		for _, userID := range userIDs {
-			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
-				VALUES (?, ?, ?, ?, ?, ?, ?)`,
-				120, "1000", userID, 0, "Numbers", dueDate, "/numbers")
+			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date)
+				VALUES (?, ?, ?, ?, ?, ?)`,
+				120, "1000", userID, 0, "Numbers", dueDate)
 			if err != nil {
 				log.Printf("Error inserting assignment for user %d: %v", userID, err)
 			}
@@ -645,9 +643,9 @@ func initDB() {
 		pronounUserIDs := []int{1, 2, 3, 6}
 		pronounDueDate := time.Now().Add(7 * 24 * time.Hour) // Due in 7 days
 		for _, userID := range pronounUserIDs {
-			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path)
-				VALUES (?, ?, ?, ?, ?, ?, ?)`,
-				300, "2000", userID, 0, "Subject Pronouns", pronounDueDate, "/subject-pronouns")
+			_, err := db.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date)
+				VALUES (?, ?, ?, ?, ?, ?)`,
+				300, "2000", userID, 0, "Subject Pronouns", pronounDueDate)
 			if err != nil {
 				log.Printf("Error inserting Subject Pronouns assignment for user %d: %v", userID, err)
 			}
@@ -1346,7 +1344,7 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
 		FROM assignments WHERE user_id = ? ORDER BY due_date ASC`, claims.UserID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1359,20 +1357,16 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		var assignment Assignment
 		var completed int
 		var dueDate sql.NullTime
-		var path sql.NullString
 		var coinsReceived sql.NullInt64
 		var data sql.NullString
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		assignment.Completed = completed == 1
 		if dueDate.Valid {
 			assignment.DueDate = dueDate.Time
-		}
-		if path.Valid {
-			assignment.Path = path.String
 		}
 		if coinsReceived.Valid {
 			assignment.CoinsReceived = int(coinsReceived.Int64)
@@ -1409,7 +1403,6 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 		UserIDs      []int    `json:"userIds"`
 		Name         string   `json:"name"`
 		DueDate      string   `json:"dueDate"`
-		Path         string   `json:"path"`
 		Data         *string  `json:"data"`
 	}
 
@@ -1419,7 +1412,7 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate required fields
-	if req.Coins <= 0 || req.AssignmentID == "" || req.Name == "" || req.DueDate == "" || req.Path == "" {
+	if req.Coins <= 0 || req.AssignmentID == "" || req.Name == "" || req.DueDate == "" {
 		http.Error(w, "Missing required fields", http.StatusBadRequest)
 		return
 	}
@@ -1453,9 +1446,9 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 			dataValue = nil
 		}
 
-		_, err := tx.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-			req.Coins, req.AssignmentID, userID, 0, req.Name, dueDate, req.Path, 0, dataValue)
+		_, err := tx.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, coins_received, data)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			req.Coins, req.AssignmentID, userID, 0, req.Name, dueDate, 0, dataValue)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error creating assignment for user %d: %v", userID, err), http.StatusInternalServerError)
 			return
@@ -1489,14 +1482,13 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 	var assignment Assignment
 	var completed int
 	var dueDate sql.NullTime
-	var path sql.NullString
 	var coinsReceived sql.NullInt64
 	var data sql.NullString
 
 	// Fetch assignment by assignment_id and user_id
-	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
 		FROM assignments WHERE assignment_id = ? AND user_id = ?`, assignmentID, claims.UserID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-		&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data)
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -1510,9 +1502,6 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 	assignment.Completed = completed == 1
 	if dueDate.Valid {
 		assignment.DueDate = dueDate.Time
-	}
-	if path.Valid {
-		assignment.Path = path.String
 	}
 	if coinsReceived.Valid {
 		assignment.CoinsReceived = int(coinsReceived.Int64)
@@ -1541,7 +1530,7 @@ func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
 		FROM assignments ORDER BY due_date DESC`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1554,20 +1543,16 @@ func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 		var assignment Assignment
 		var completed int
 		var dueDate sql.NullTime
-		var path sql.NullString
 		var coinsReceived sql.NullInt64
 		var data sql.NullString
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		assignment.Completed = completed == 1
 		if dueDate.Valid {
 			assignment.DueDate = dueDate.Time
-		}
-		if path.Valid {
-			assignment.Path = path.String
 		}
 		if coinsReceived.Valid {
 			assignment.CoinsReceived = int(coinsReceived.Int64)
@@ -1604,13 +1589,12 @@ func getAssignmentByID(w http.ResponseWriter, r *http.Request) {
 	var assignment Assignment
 	var completed int
 	var dueDate sql.NullTime
-	var path sql.NullString
 	var coinsReceived sql.NullInt64
 	var data sql.NullString
 
-	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
 		FROM assignments WHERE id = ?`, id).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-		&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data)
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -1624,9 +1608,6 @@ func getAssignmentByID(w http.ResponseWriter, r *http.Request) {
 	assignment.Completed = completed == 1
 	if dueDate.Valid {
 		assignment.DueDate = dueDate.Time
-	}
-	if path.Valid {
-		assignment.Path = path.String
 	}
 	if coinsReceived.Valid {
 		assignment.CoinsReceived = int(coinsReceived.Int64)
@@ -1662,7 +1643,6 @@ func updateAssignment(w http.ResponseWriter, r *http.Request) {
 		Name    string  `json:"name"`
 		Coins   int     `json:"coins"`
 		DueDate string  `json:"dueDate"`
-		Path    string  `json:"path"`
 		Data    *string `json:"data"`
 	}
 
@@ -1685,8 +1665,8 @@ func updateAssignment(w http.ResponseWriter, r *http.Request) {
 		dataValue = nil
 	}
 
-	_, err = db.Exec(`UPDATE assignments SET name = ?, coins = ?, due_date = ?, path = ?, data = ?
-		WHERE id = ?`, req.Name, req.Coins, dueDate, req.Path, dataValue, id)
+	_, err = db.Exec(`UPDATE assignments SET name = ?, coins = ?, due_date = ?, data = ?
+		WHERE id = ?`, req.Name, req.Coins, dueDate, dataValue, id)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

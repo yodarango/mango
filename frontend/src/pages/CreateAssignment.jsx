@@ -15,7 +15,6 @@ function CreateAssignment() {
   const [assignmentId, setAssignmentId] = useState("");
   const [name, setName] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [path, setPath] = useState("");
   const [data, setData] = useState("");
 
   useEffect(() => {
@@ -70,7 +69,7 @@ function CreateAssignment() {
     e.preventDefault();
 
     // Validation
-    if (!coins || !assignmentId || !name || !dueDate || !path) {
+    if (!coins || !assignmentId || !name || !dueDate) {
       alert("Please fill in all required fields");
       return;
     }
@@ -105,7 +104,6 @@ function CreateAssignment() {
           userIds: selectedStudents,
           name: name,
           dueDate: dueDateISO,
-          path: path,
           data: data.trim() ? data : null,
         }),
       });
@@ -118,7 +116,6 @@ function CreateAssignment() {
         setAssignmentId("");
         setName("");
         setDueDate("");
-        setPath("");
         setData("");
         setSelectedStudents([]);
         setSelectAll(false);
@@ -259,24 +256,6 @@ function CreateAssignment() {
                 required
               />
             </div>
-          </div>
-
-          <div className='form-group'>
-            <label htmlFor='path'>
-              <i className='fa-solid fa-link'></i> Path *
-            </label>
-            <input
-              type='text'
-              id='path'
-              value={path}
-              onChange={(e) => setPath(e.target.value)}
-              placeholder='e.g., /quiz/1001 or /subject-pronouns'
-              required
-            />
-            <small>
-              Route path for this assignment. For quizzes, use
-              /quiz/[assignment_id] (e.g., /quiz/1001)
-            </small>
           </div>
 
           <div className='form-group'>

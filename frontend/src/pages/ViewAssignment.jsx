@@ -16,7 +16,6 @@ function ViewAssignment() {
     name: "",
     coins: "",
     dueDate: "",
-    path: "",
     data: "",
   });
 
@@ -50,7 +49,6 @@ function ViewAssignment() {
         dueDate: assignment.dueDate
           ? formatDateForInput(assignment.dueDate)
           : "",
-        path: assignment.path || "",
         data: formattedData,
       });
     }
@@ -104,7 +102,6 @@ function ViewAssignment() {
         dueDate: assignmentData.dueDate
           ? formatDateForInput(assignmentData.dueDate)
           : "",
-        path: assignmentData.path || "",
         data: formattedData,
       });
 
@@ -159,7 +156,6 @@ function ViewAssignment() {
           name: editData.name,
           coins: parseInt(editData.coins),
           dueDate: dueDateISO,
-          path: editData.path,
           data: editData.data.trim() || null,
         }),
       });
@@ -251,10 +247,6 @@ function ViewAssignment() {
               <div className='info-item'>
                 <label>Due Date:</label>
                 <span>{formatDate(assignment.dueDate)}</span>
-              </div>
-              <div className='info-item'>
-                <label>Path:</label>
-                <span className='path-value'>{assignment.path}</span>
               </div>
               <div className='info-item'>
                 <label>Total Coins:</label>
@@ -382,16 +374,6 @@ function ViewAssignment() {
                 }
               />
             </div>
-          </div>
-          <div className='form-group'>
-            <label>Path</label>
-            <input
-              type='text'
-              value={editData.path}
-              onChange={(e) =>
-                setEditData({ ...editData, path: e.target.value })
-              }
-            />
           </div>
           <div className='form-group'>
             <label>Quiz Data (JSON)</label>
