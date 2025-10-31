@@ -10,7 +10,7 @@ function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [typedAnswers, setTypedAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [results, setResults] = useState(null);
@@ -48,13 +48,6 @@ function Quiz() {
               ? JSON.parse(assignmentData.data)
               : assignmentData.data;
           setQuestions(quizData);
-
-          // Calculate total time (sum of all question time_alloted)
-          const totalTime = quizData.reduce(
-            (sum, q) => sum + (q.time_alloted || 0),
-            0
-          );
-          setTimeLeft(totalTime);
         }
 
         // Check if already completed
@@ -74,14 +67,27 @@ function Quiz() {
     fetchAssignment();
   }, [assignmentId]);
 
-  // Timer countdown
+  // Initialize question timer when quiz starts or question changes
   useEffect(() => {
-    if (!quizStarted || quizCompleted || timeLeft <= 0) return;
+    if (quizStarted && !quizCompleted && questions.length > 0) {
+      const currentQ = questions[currentQuestion];
+      setQuestionTimeLeft(currentQ.time_alloted || 30); // Default 30 seconds if not specified
+    }
+  }, [quizStarted, currentQuestion, questions, quizCompleted]);
+
+  // Timer countdown for current question
+  useEffect(() => {
+    if (!quizStarted || quizCompleted || questionTimeLeft <= 0) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
+      setQuestionTimeLeft((prev) => {
         if (prev <= 1) {
-          handleSubmit(true);
+          // Time's up for this question - auto-advance or submit
+          if (currentQuestion < questions.length - 1) {
+            setCurrentQuestion(currentQuestion + 1);
+          } else {
+            handleSubmit(true);
+          }
           return 0;
         }
         return prev - 1;
@@ -89,7 +95,13 @@ function Quiz() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [quizStarted, quizCompleted, timeLeft]);
+  }, [
+    quizStarted,
+    quizCompleted,
+    questionTimeLeft,
+    currentQuestion,
+    questions.length,
+  ]);
 
   const startQuiz = () => {
     setQuizStarted(true);
@@ -139,13 +151,18 @@ function Quiz() {
       let isCorrect = false;
       let userAnswer = "No answer";
 
-      if (q.type === "multiple") {
+      // Handle multiple choice questions (both "multiple" and "multiple-choice" types)
+      if (q.type === "multiple" || q.type === "multiple-choice") {
         const answerIndex = answers[q.id];
         if (answerIndex !== undefined) {
-          userAnswer = q.answer[answerIndex];
+          // Support both "answer" and "options" field names
+          const optionsList = q.options || q.answer;
+          userAnswer = optionsList[answerIndex];
           isCorrect = q.correct === answerIndex;
         }
-      } else if (q.type === "typed") {
+      }
+      // Handle input/typed questions (both "typed" and "input" types)
+      else if (q.type === "typed" || q.type === "input") {
         const typedAnswer = typedAnswers[q.id];
         if (typedAnswer) {
           userAnswer = typedAnswer;
@@ -277,10 +294,10 @@ function Quiz() {
                 Total questions: <strong>{questions.length}</strong>
               </li>
               <li>
-                Total time: <strong>{formatTime(timeLeft)}</strong>
+                Total coins possible: <strong>{assignment.coins}</strong>
               </li>
               <li>
-                Total coins possible: <strong>{assignment.coins}</strong>
+                <strong>Each question is timed individually</strong>
               </li>
               <li>
                 <strong>You cannot pause</strong> once you start
@@ -311,17 +328,24 @@ function Quiz() {
             <div className='quiz-progress'>
               Question {currentQuestion + 1} of {questions.length}
             </div>
-            <div className={`quiz-timer ${timeLeft < 60 ? "warning" : ""}`}>
-              <i className='fa-solid fa-clock'></i> {formatTime(timeLeft)}
+            <div
+              className={`quiz-timer ${questionTimeLeft < 10 ? "warning" : ""}`}
+            >
+              <i className='fa-solid fa-clock'></i>{" "}
+              {formatTime(questionTimeLeft)}
             </div>
           </div>
 
           <div className='quiz-question'>
             <h3>{questions[currentQuestion].question}</h3>
 
-            {questions[currentQuestion].type === "multiple" ? (
+            {questions[currentQuestion].type === "multiple" ||
+            questions[currentQuestion].type === "multiple-choice" ? (
               <div className='quiz-options'>
-                {questions[currentQuestion].answer.map((option, index) => (
+                {(
+                  questions[currentQuestion].options ||
+                  questions[currentQuestion].answer
+                ).map((option, index) => (
                   <button
                     key={index}
                     className={`quiz-option ${
@@ -370,7 +394,7 @@ function Quiz() {
             <div className='quiz-dots'>
               {questions.map((q, index) => {
                 const isAnswered =
-                  q.type === "multiple"
+                  q.type === "multiple" || q.type === "multiple-choice"
                     ? answers[q.id] !== undefined
                     : typedAnswers[q.id] && typedAnswers[q.id].trim() !== "";
                 return (

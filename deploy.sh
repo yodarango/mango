@@ -29,16 +29,12 @@ else
     exit 1
 fi
 
-echo "Backing up db..."
-
-# Backup the database
-cp data.db data.db.bak
-
-# Sync the database
-sync_db.sh
-
 echo "Syncing db..."
 sync_db.sh
+
+echo "Backing up db..."
+# Sync the database
+cp ./data.db > ../data.bkp.db
 # Copy the files to the VPS
 ssh_main "\
 cd /var/www/repos/mango/app; \
