@@ -9,8 +9,10 @@ import Messages from "./pages/Messages";
 import Assignments from "./pages/Assignments";
 import IIINumbers from "./pages/assignments/III_Numbers/III_Numbers";
 import IISubjectPronouns from "./pages/assignments/II_SubjectPronouns/II_SubjectPronouns";
+import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
+import CreateAssignment from "./pages/CreateAssignment";
 import AdminMessages from "./pages/AdminMessages";
 import Games from "./pages/Games";
 import CreateGame from "./pages/CreateGame";
@@ -134,6 +136,14 @@ function App() {
             }
           />
           <Route
+            path='/quiz/:id'
+            element={
+              <ProtectedRoute>
+                <Quiz />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path='/resources'
             element={
               <ProtectedRoute>
@@ -146,6 +156,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-assignment'
+            element={
+              <ProtectedRoute>
+                <CreateAssignment />
               </ProtectedRoute>
             }
           />

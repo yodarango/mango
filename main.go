@@ -130,15 +130,16 @@ type CreateNotificationRequest struct {
 }
 
 type Assignment struct {
-	ID            int       `json:"id"`
-	Coins         int       `json:"coins"`
-	AssignmentID  string    `json:"assignmentId"`
-	UserID        int       `json:"userId"`
-	Completed     bool      `json:"completed"`
-	Name          string    `json:"name"`
-	DueDate       time.Time `json:"dueDate"`
-	Path          string    `json:"path"`
-	CoinsReceived int       `json:"coinsReceived"`
+	ID            int             `json:"id"`
+	Coins         int             `json:"coins"`
+	AssignmentID  string          `json:"assignmentId"`
+	UserID        int             `json:"userId"`
+	Completed     bool            `json:"completed"`
+	Name          string          `json:"name"`
+	DueDate       time.Time       `json:"dueDate"`
+	Path          string          `json:"path"`
+	CoinsReceived int             `json:"coinsReceived"`
+	Data          json.RawMessage `json:"data,omitempty"`
 }
 
 type Game struct {
@@ -387,12 +388,19 @@ func initDB() {
 		due_date DATETIME,
 		path TEXT,
 		coins_received INTEGER DEFAULT 0,
+		data TEXT,
 		FOREIGN KEY (user_id) REFERENCES users(id)
 	);`
 
 	_, err = db.Exec(createAssignmentsTableSQL)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Add data column if it doesn't exist (for existing databases)
+	_, err = db.Exec(`ALTER TABLE assignments ADD COLUMN data TEXT`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add data column: %v", err)
 	}
 
 	createGamesTableSQL := `CREATE TABLE IF NOT EXISTS games (
@@ -1338,7 +1346,7 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data
 		FROM assignments WHERE user_id = ? ORDER BY due_date ASC`, claims.UserID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1353,8 +1361,9 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		var dueDate sql.NullTime
 		var path sql.NullString
 		var coinsReceived sql.NullInt64
+		var data sql.NullString
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &path, &coinsReceived, &data); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1368,11 +1377,102 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		if coinsReceived.Valid {
 			assignment.CoinsReceived = int(coinsReceived.Int64)
 		}
+		if data.Valid && data.String != "" {
+			assignment.Data = json.RawMessage(data.String)
+		}
 		assignments = append(assignments, assignment)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(assignments)
+}
+
+// Create assignments for multiple users
+func createAssignments(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		Coins        int      `json:"coins"`
+		AssignmentID string   `json:"assignmentId"`
+		UserIDs      []int    `json:"userIds"`
+		Name         string   `json:"name"`
+		DueDate      string   `json:"dueDate"`
+		Path         string   `json:"path"`
+		Data         *string  `json:"data"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate required fields
+	if req.Coins <= 0 || req.AssignmentID == "" || req.Name == "" || req.DueDate == "" || req.Path == "" {
+		http.Error(w, "Missing required fields", http.StatusBadRequest)
+		return
+	}
+
+	if len(req.UserIDs) == 0 {
+		http.Error(w, "At least one user ID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Parse due date
+	dueDate, err := time.Parse(time.RFC3339, req.DueDate)
+	if err != nil {
+		http.Error(w, "Invalid due date format", http.StatusBadRequest)
+		return
+	}
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Insert assignment for each user
+	for _, userID := range req.UserIDs {
+		var dataValue interface{}
+		if req.Data != nil && *req.Data != "" {
+			dataValue = *req.Data
+		} else {
+			dataValue = nil
+		}
+
+		_, err := tx.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, path, coins_received, data)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			req.Coins, req.AssignmentID, userID, 0, req.Name, dueDate, req.Path, 0, dataValue)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error creating assignment for user %d: %v", userID, err), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Commit transaction
+	if err := tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": fmt.Sprintf("Successfully created assignments for %d students", len(req.UserIDs)),
+	})
 }
 
 // Submit assignment and award coins
@@ -2628,6 +2728,7 @@ func main() {
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
+	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")
 	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
