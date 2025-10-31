@@ -89,6 +89,10 @@ function CreateAssignment() {
 
     try {
       const token = localStorage.getItem("token");
+
+      // Convert datetime-local format to RFC3339
+      const dueDateISO = new Date(dueDate).toISOString();
+
       const response = await fetch("/api/assignments/create", {
         method: "POST",
         headers: {
@@ -100,7 +104,7 @@ function CreateAssignment() {
           assignmentId: assignmentId,
           userIds: selectedStudents,
           name: name,
-          dueDate: dueDate,
+          dueDate: dueDateISO,
           path: path,
           data: data.trim() ? data : null,
         }),
