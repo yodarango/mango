@@ -30,7 +30,7 @@ else
 fi
 
 echo "Syncing db..."
-sync_db.sh
+./sync_db.sh
 
 echo "Backing up db..."
 # Sync the database
