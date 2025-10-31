@@ -384,13 +384,14 @@ function Quiz() {
           </div>
 
           <div className='quiz-navigation'>
-            <button
+            <div></div>
+            {/* <button
               onClick={handlePrevious}
               disabled={currentQuestion === 0}
               className='btn-nav'
             >
               <i className='fa-solid fa-chevron-left'></i> Previous
-            </button>
+            </button> */}
             <div className='quiz-dots'>
               {questions.map((q, index) => {
                 const isAnswered =
