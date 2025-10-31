@@ -113,7 +113,7 @@ function AssignmentsClassThree() {
             return (
               <Link
                 key={assignment.id}
-                to={`/assignments${assignment.path}`}
+                to={`/assignments/quizes/${assignment.assignment_id}`}
                 className='assignment-link'
               >
                 <i className='fa-solid fa-file-lines'></i>
