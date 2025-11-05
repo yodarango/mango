@@ -16,6 +16,8 @@ function Resources() {
     return null;
   }
 
+  console.log(user);
+
   if (user.class === 2) {
     return <ResourcesClassTwo />;
   }
