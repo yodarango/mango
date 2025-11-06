@@ -474,9 +474,9 @@
 
 .result-answers {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
 }
 
 .result-answer {
@@ -487,9 +487,23 @@
   gap: 0.5rem;
 }
 
-.result-answer i {
+.result-answer i.fa-check {
   color: #00ff00;
   font-size: 1.2rem;
+}
+
+.result-answer i.fa-xmark {
+  color: #ff0000;
+  font-size: 1.2rem;
+}
+
+.result-correct-answer {
+  color: #00ff00;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0;
 }
 
 .result-coins {

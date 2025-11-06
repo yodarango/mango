@@ -252,13 +252,20 @@ function Quiz() {
     const questionResults = questions.map((q) => {
       let isCorrect = false;
       let userAnswer = "No answer";
+      let correctAnswer = "";
 
       // Handle multiple choice questions (both "multiple" and "multiple-choice" types)
       if (q.type === "multiple" || q.type === "multiple-choice") {
         const answerIndex = answers[q.id];
+        // Support both "answer" and "options" field names
+        const optionsList = q.options || q.answer;
+
+        // Get correct answer
+        if (q.correct !== undefined && q.correct !== null) {
+          correctAnswer = optionsList[q.correct];
+        }
+
         if (answerIndex !== undefined) {
-          // Support both "answer" and "options" field names
-          const optionsList = q.options || q.answer;
           userAnswer = optionsList[answerIndex];
           isCorrect = q.correct === answerIndex;
         }
@@ -266,12 +273,17 @@ function Quiz() {
       // Handle input/typed questions (both "typed" and "input" types)
       else if (q.type === "typed" || q.type === "input") {
         const typedAnswer = typedAnswers[q.id];
+
+        // For typed answers, q.answer should be an array of acceptable answers
+        const acceptableAnswers = Array.isArray(q.answer)
+          ? q.answer
+          : [q.answer];
+
+        // Set correct answer (show first acceptable answer)
+        correctAnswer = Array.isArray(q.answer) ? q.answer[0] : q.answer;
+
         if (typedAnswer) {
           userAnswer = typedAnswer;
-          // For typed answers, q.answer should be an array of acceptable answers
-          const acceptableAnswers = Array.isArray(q.answer)
-            ? q.answer
-            : [q.answer];
           isCorrect = acceptableAnswers.some(
             (correct) =>
               correct.toLowerCase() === typedAnswer.toLowerCase().trim()
@@ -288,6 +300,7 @@ function Quiz() {
         question: q.question,
         type: q.type,
         userAnswer,
+        correctAnswer,
         isCorrect,
         coinsEarned: isCorrect ? q.coins_worth : 0,
       };
@@ -712,7 +725,13 @@ function Quiz() {
                   <div className='result-answer'>
                     <strong>Your answer:</strong> {result.userAnswer}
                     {result.isCorrect && <i className='fa-solid fa-check'></i>}
+                    {!result.isCorrect && <i className='fa-solid fa-xmark'></i>}
                   </div>
+                  {!result.isCorrect && (
+                    <div className='result-correct-answer'>
+                      <strong>Correct answer:</strong> {result.correctAnswer}
+                    </div>
+                  )}
                   <div className='result-coins'>
                     <i className='fa-solid fa-coins'></i> {result.coinsEarned}{" "}
                     coins
