@@ -349,13 +349,12 @@ function Quiz() {
           data.coins
         );
 
-        // Update results with asset leveling info if available
-        if (data.assetLeveledUp) {
+        // Update results with asset data if available
+        if (data.assetData) {
           setResults({
             ...resultsData,
-            assetLeveledUp: true,
-            assetName: selectedAsset?.name,
-            newLevel: data.newLevel,
+            assetLeveledUp: data.assetLeveledUp,
+            assetData: data.assetData,
           });
         }
       } else {
@@ -617,13 +616,78 @@ function Quiz() {
             </div>
           </div>
 
-          {results.assetLeveledUp && (
+          {/* XP Gained Display */}
+          {results.assetData && (
+            <div className='xp-gained-banner'>
+              <i className='fa-solid fa-bolt'></i>
+              <span>
+                {results.assetData.name} gained {results.assetData.xpGained} XP!
+              </span>
+            </div>
+          )}
+
+          {/* Level Up Display */}
+          {results.assetLeveledUp && results.assetData && (
             <div className='level-up-banner'>
-              <i className='fa-solid fa-star'></i>
-              <h3>
-                {results.assetName} leveled up to Level {results.newLevel}!
-              </h3>
-              <i className='fa-solid fa-star'></i>
+              <div className='level-up-content'>
+                <div className='level-up-header'>
+                  <i className='fa-solid fa-star'></i>
+                  <h3>LEVEL UP!</h3>
+                  <i className='fa-solid fa-star'></i>
+                </div>
+
+                <div className='level-up-asset'>
+                  <img
+                    src={results.assetData.thumbnail}
+                    alt={results.assetData.name}
+                    className='level-up-thumbnail'
+                  />
+                  <div className='level-up-info'>
+                    <h4>{results.assetData.name}</h4>
+                    <div className='level-change'>
+                      Level {results.assetData.oldLevel}{" "}
+                      <i className='fa-solid fa-arrow-right'></i> Level{" "}
+                      {results.assetData.newLevel}
+                    </div>
+                  </div>
+                </div>
+
+                <div className='stat-changes'>
+                  <div className='stat-change'>
+                    <i className='fa-solid fa-sword'></i>
+                    <span className='stat-label'>Attack:</span>
+                    <span className='stat-old'>
+                      {results.assetData.oldAttack}
+                    </span>
+                    <i className='fa-solid fa-arrow-right'></i>
+                    <span className='stat-new'>
+                      {results.assetData.newAttack}
+                    </span>
+                  </div>
+                  <div className='stat-change'>
+                    <i className='fa-solid fa-shield'></i>
+                    <span className='stat-label'>Defense:</span>
+                    <span className='stat-old'>
+                      {results.assetData.oldDefense}
+                    </span>
+                    <i className='fa-solid fa-arrow-right'></i>
+                    <span className='stat-new'>
+                      {results.assetData.newDefense}
+                    </span>
+                  </div>
+                  <div className='stat-change'>
+                    <i className='fa-solid fa-heart'></i>
+                    <span className='stat-label'>Healing:</span>
+                    <span className='stat-old'>
+                      {results.assetData.oldHealing}
+                    </span>
+                    <i className='fa-solid fa-arrow-right'></i>
+                    <span className='stat-new'>
+                      {results.assetData.newHealing}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

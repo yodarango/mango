@@ -2081,12 +2081,13 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 
 	// Handle asset XP update if asset was selected
 	var assetLeveledUp bool
-	var newLevel int
+	var assetData map[string]interface{}
 	if req.AssetID != nil && req.XPGain > 0 {
 		// Get current asset data
 		var currentXP, xpRequired, level, attack, defense, healing, cost int
-		err = tx.QueryRow(`SELECT COALESCE(xp, 0), COALESCE(xp_required, 100), level, attack, defense, healing, cost
-			FROM assets WHERE id = ? AND avatar_id = ?`, *req.AssetID, avatarID).Scan(&currentXP, &xpRequired, &level, &attack, &defense, &healing, &cost)
+		var name, thumbnail string
+		err = tx.QueryRow(`SELECT COALESCE(xp, 0), COALESCE(xp_required, 100), level, attack, defense, healing, cost, name, thumbnail
+			FROM assets WHERE id = ? AND avatar_id = ?`, *req.AssetID, avatarID).Scan(&currentXP, &xpRequired, &level, &attack, &defense, &healing, &cost, &name, &thumbnail)
 		if err != nil {
 			// Asset not found or doesn't belong to user - just log and continue
 			log.Printf("Warning: Asset %d not found or doesn't belong to avatar %d: %v", *req.AssetID, avatarID, err)
@@ -2097,7 +2098,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 			// Check if leveled up
 			if newXP >= xpRequired {
 				assetLeveledUp = true
-				newLevel = level + 1
+				newLevel := level + 1
 
 				// Calculate overage XP
 				overageXP := newXP - xpRequired
@@ -2115,12 +2116,34 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, fmt.Sprintf("Error leveling up asset: %v", err), http.StatusInternalServerError)
 					return
 				}
+
+				// Prepare asset data for response
+				assetData = map[string]interface{}{
+					"name":       name,
+					"thumbnail":  thumbnail,
+					"oldLevel":   level,
+					"newLevel":   newLevel,
+					"oldAttack":  attack,
+					"newAttack":  newAttack,
+					"oldDefense": defense,
+					"newDefense": newDefense,
+					"oldHealing": healing,
+					"newHealing": newHealing,
+					"xpGained":   req.XPGain,
+				}
 			} else {
 				// Just update XP
 				_, err = tx.Exec(`UPDATE assets SET xp = ? WHERE id = ?`, newXP, *req.AssetID)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error updating asset XP: %v", err), http.StatusInternalServerError)
 					return
+				}
+
+				// Prepare asset data for response (no level up)
+				assetData = map[string]interface{}{
+					"name":      name,
+					"thumbnail": thumbnail,
+					"xpGained":  req.XPGain,
 				}
 			}
 		}
@@ -2137,7 +2160,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		"message":        "Assignment submitted successfully",
 		"coins":          newCoins,
 		"assetLeveledUp": assetLeveledUp,
-		"newLevel":       newLevel,
+		"assetData":      assetData,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
