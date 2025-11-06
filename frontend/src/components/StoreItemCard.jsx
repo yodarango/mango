@@ -118,57 +118,79 @@ function StoreItemCard({
                 <div className='stat-row'>
                   <i className='fa-solid fa-sword'></i>
                   <span className='stat-label'>Attack:</span>
-                  <span className='stat-value'>{item.attack}</span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{ width: `${(item.attack / 10000) * 100}%` }}
+                    ></div>
+                    <span className='stat-value'>{item.attack}</span>
+                  </div>
                 </div>
 
                 <div className='stat-row'>
                   <i className='fa-solid fa-shield'></i>
                   <span className='stat-label'>Defense:</span>
-                  <span className='stat-value'>{item.defense}</span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{ width: `${(item.defense / 10000) * 100}%` }}
+                    ></div>
+                    <span className='stat-value'>{item.defense}</span>
+                  </div>
                 </div>
 
                 <div className='stat-row'>
                   <i className='fa-solid fa-heart'></i>
                   <span className='stat-label'>Healing:</span>
-                  <span className='stat-value'>{item.healing}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-fire'></i>
-                  <span className='stat-label'>Power:</span>
-                  <span className='stat-value'>{item.power}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-dumbbell'></i>
-                  <span className='stat-label'>Endurance:</span>
-                  <span className='stat-value'>{item.endurance}</span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{ width: `${(item.healing / 10000) * 100}%` }}
+                    ></div>
+                    <span className='stat-value'>{item.healing}</span>
+                  </div>
                 </div>
 
                 <div className='stat-row'>
                   <i className='fa-solid fa-star'></i>
                   <span className='stat-label'>Level:</span>
-                  <span className='stat-value'>{item.level}</span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{ width: `${(item.level / 10) * 100}%` }}
+                    ></div>
+                    <span className='stat-value'>{item.level}</span>
+                  </div>
                 </div>
 
                 <div className='stat-row'>
                   <i className='fa-solid fa-heart-pulse'></i>
                   <span className='stat-label'>Health:</span>
-                  <span className='stat-value'>{item.health}</span>
-                </div>
-
-                <div className='stat-row'>
-                  <i className='fa-solid fa-running'></i>
-                  <span className='stat-label'>Stamina:</span>
-                  <span className='stat-value'>{item.stamina}</span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{ width: `${(item.health / 100) * 100}%` }}
+                    ></div>
+                    <span className='stat-value'>{item.health}</span>
+                  </div>
                 </div>
 
                 <div className='stat-row'>
                   <i className='fa-solid fa-chart-line'></i>
                   <span className='stat-label'>XP:</span>
-                  <span className='stat-value'>
-                    {item.xp || 0} / {item.xpRequired || 100}
-                  </span>
+                  <div className='stat-bar-container'>
+                    <div
+                      className='stat-bar'
+                      style={{
+                        width: `${
+                          ((item.xp || 0) / (item.xpRequired || 100)) * 100
+                        }%`,
+                      }}
+                    ></div>
+                    <span className='stat-value'>
+                      {item.xp || 0} / {item.xpRequired || 100}
+                    </span>
+                  </div>
                 </div>
 
                 <div className='stat-row total-power'>
