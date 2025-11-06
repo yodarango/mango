@@ -112,26 +112,30 @@ function Quiz() {
             // Reconstruct results from saved data
             let totalCoins = 0;
             const questionResults = quizData.map((q) => {
-              let isCorrect = false;
-              const userAnswer = q.userAnswer || "No answer";
+              // Use is_correct if available (standardized format)
+              let isCorrect = q.is_correct !== undefined ? q.is_correct : false;
+              const userAnswer = q.user_answer || q.userAnswer || "No answer";
 
-              // Check if answer is correct
-              if (q.type === "multiple" || q.type === "multiple-choice") {
-                // For multiple choice, find the index of the user's answer
-                const optionsList = q.options || q.answer;
-                const userAnswerIndex = optionsList.findIndex(
-                  (opt) => opt === userAnswer
-                );
-                isCorrect = q.correct === userAnswerIndex;
-              } else if (q.type === "typed" || q.type === "input") {
-                // For typed answers, check against acceptable answers
-                const acceptableAnswers = Array.isArray(q.answer)
-                  ? q.answer
-                  : [q.answer];
-                isCorrect = acceptableAnswers.some(
-                  (correct) =>
-                    correct.toLowerCase() === userAnswer.toLowerCase().trim()
-                );
+              // If is_correct is not available, calculate it
+              if (q.is_correct === undefined) {
+                // Check if answer is correct
+                if (q.type === "multiple" || q.type === "multiple-choice") {
+                  // For multiple choice, find the index of the user's answer
+                  const optionsList = q.options || q.answer;
+                  const userAnswerIndex = optionsList.findIndex(
+                    (opt) => opt === userAnswer
+                  );
+                  isCorrect = q.correct === userAnswerIndex;
+                } else if (q.type === "typed" || q.type === "input") {
+                  // For typed answers, check against acceptable answers
+                  const acceptableAnswers = Array.isArray(q.answer)
+                    ? q.answer
+                    : [q.answer];
+                  isCorrect = acceptableAnswers.some(
+                    (correct) =>
+                      correct.toLowerCase() === userAnswer.toLowerCase().trim()
+                  );
+                }
               }
 
               const coinsEarned = isCorrect ? q.coins_worth : 0;
@@ -301,6 +305,7 @@ function Quiz() {
     const userAnswersForBackend = questionResults.map((result) => ({
       questionId: result.questionId,
       userAnswer: result.userAnswer,
+      isCorrect: result.isCorrect,
     }));
 
     // Calculate success rate for XP
@@ -318,7 +323,7 @@ function Quiz() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          assignmentId: assignmentId, // Use the assignmentId from URL params
+          assignmentId: assignment.id, // Use the database ID, not the category assignmentId
           coinsReceived: totalCoins,
           userAnswers: userAnswersForBackend, // Include user answers
           assetId: selectedAsset?.id, // Include selected asset ID
@@ -326,8 +331,19 @@ function Quiz() {
         }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          "Error submitting assignment:",
+          response.status,
+          errorText
+        );
+        alert(`Failed to submit assignment: ${errorText || "Unknown error"}`);
+        return;
+      }
+
       const data = await response.json();
-      if (response.ok && data.success) {
+      if (data.success) {
         console.log(
           "Assignment submitted successfully. New coins:",
           data.coins
@@ -342,9 +358,14 @@ function Quiz() {
             newLevel: data.newLevel,
           });
         }
+      } else {
+        alert(
+          `Failed to submit assignment: ${data.message || "Unknown error"}`
+        );
       }
     } catch (error) {
       console.error("Error submitting assignment:", error);
+      alert(`Error submitting assignment: ${error.message}`);
     }
 
     setQuizCompleted(true);

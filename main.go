@@ -143,6 +143,19 @@ type Assignment struct {
 	Data          json.RawMessage `json:"data,omitempty"`
 }
 
+// QuizQuestion represents a standardized quiz question structure
+type QuizQuestion struct {
+	ID          string      `json:"id"`                    // Random alphanumeric string
+	Type        string      `json:"type"`                  // "multiple" or "input"
+	Question    string      `json:"question"`              // Question text
+	Answer      interface{} `json:"answer"`                // Array for multiple choice, string for input
+	Correct     *int        `json:"correct"`               // Index of correct answer (null for input)
+	CoinsWorth  int         `json:"coins_worth"`           // Coins awarded for correct answer
+	TimeAlloted int         `json:"time_alloted"`          // Time limit in seconds
+	UserAnswer  interface{} `json:"user_answer,omitempty"` // User's submitted answer
+	IsCorrect   *bool       `json:"is_correct,omitempty"`  // Whether user got it right
+}
+
 type Game struct {
 	ID        int       `json:"id"`
 	Name      string    `json:"name"`
@@ -1591,8 +1604,8 @@ func createDailyVocabAssignments(w http.ResponseWriter, r *http.Request) {
 	// Get the words to use
 	wordsToUse := vocabWords[startIndex : startIndex+req.WordCount]
 
-	// Generate quiz data
-	quizData := make([]map[string]interface{}, 0, req.WordCount)
+	// Generate quiz data using standardized QuizQuestion struct
+	quizData := make([]QuizQuestion, 0, req.WordCount)
 	for _, word := range wordsToUse {
 		engWord := word["eng"].(string)
 		spaWord := word["spa"].(string)
@@ -1600,15 +1613,14 @@ func createDailyVocabAssignments(w http.ResponseWriter, r *http.Request) {
 		// Generate random alphanumeric ID
 		questionID := generateRandomID(8)
 
-		quizData = append(quizData, map[string]interface{}{
-			"id":           questionID,
-			"type":         "typed",
-			"question":     fmt.Sprintf("How do you say '%s' in Spanish?", engWord),
-			"answer":       []string{spaWord},
-			"correct":      0,
-			"coins_worth":  req.WordWorth,
-			"time_alloted": 20,
-			"userAnswer":   nil,
+		quizData = append(quizData, QuizQuestion{
+			ID:          questionID,
+			Type:        "input",
+			Question:    fmt.Sprintf("How do you say '%s' in Spanish?", engWord),
+			Answer:      spaWord, // String for input type
+			Correct:     nil,     // Null for input type
+			CoinsWorth:  req.WordWorth,
+			TimeAlloted: 20,
 		})
 	}
 
@@ -1712,14 +1724,14 @@ func generateRandomID(length int) string {
 
 // Get single assignment by assignment_id for student
 func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
-	claims, err := getUserFromToken(r)
+	_, err := getUserFromToken(r)
 	if err != nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
 	vars := mux.Vars(r)
-	assignmentID := vars["assignmentId"] // This is the assignment_id (e.g., "1001"), not the database id
+	assignmentID := vars["assignmentId"] // This is the assignment_id (e.g., "1005"), not the database id
 
 	var assignment Assignment
 	var completed int
@@ -1729,7 +1741,7 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 
 	// Fetch assignment by assignment_id and user_id
 	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
-		FROM assignments WHERE id = ?`, assignmentID, claims.UserID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+		FROM assignments WHERE id = ?`, assignmentID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
 		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
 
 	if err != nil {
@@ -1957,7 +1969,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		AssignmentID  string                   `json:"assignmentId"`
+		AssignmentID  int                      `json:"assignmentId"` // This is the database ID
 		CoinsReceived int                      `json:"coinsReceived"`
 		UserAnswers   []map[string]interface{} `json:"userAnswers,omitempty"`
 		AssetID       *int                     `json:"assetId,omitempty"`
@@ -1968,6 +1980,9 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
+
+	log.Printf("Submit assignment request: user_id=%d, assignment_db_id=%d, coins=%d, asset_id=%v, xp_gain=%d",
+		claims.UserID, req.AssignmentID, req.CoinsReceived, req.AssetID, req.XPGain)
 
 	// Start transaction
 	tx, err := db.Begin()
@@ -1993,19 +2008,22 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Use the assignment database ID directly (no need to query)
+	assignmentDBID := req.AssignmentID
+
 	// If userAnswers are provided, update the assignment data with user answers
 	if req.UserAnswers != nil && len(req.UserAnswers) > 0 {
 		// Get current assignment data
 		var currentData sql.NullString
 		err = tx.QueryRow(`SELECT data FROM assignments WHERE id = ?`,
-			req.AssignmentID).Scan(&currentData)
+			assignmentDBID).Scan(&currentData)
 		if err != nil {
 			http.Error(w, "Assignment not found", http.StatusNotFound)
 			return
 		}
 
 		// Parse existing data (quiz questions)
-		var quizData []map[string]interface{}
+		var quizData []QuizQuestion
 		if currentData.Valid && currentData.String != "" {
 			if err := json.Unmarshal([]byte(currentData.String), &quizData); err != nil {
 				http.Error(w, "Error parsing assignment data", http.StatusInternalServerError)
@@ -2013,16 +2031,17 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// Add userAnswer field to each question
+		// Add user_answer and is_correct fields to each question
 		for i := range quizData {
 			// Find matching user answer by question ID
 			for _, userAnswer := range req.UserAnswers {
-				if questionID, ok := quizData[i]["id"]; ok {
-					if userAnswerID, ok := userAnswer["questionId"]; ok {
-						if questionID == userAnswerID {
-							quizData[i]["userAnswer"] = userAnswer["userAnswer"]
-							break
+				if userAnswerID, ok := userAnswer["questionId"]; ok {
+					if quizData[i].ID == userAnswerID {
+						quizData[i].UserAnswer = userAnswer["userAnswer"]
+						if isCorrect, ok := userAnswer["isCorrect"].(bool); ok {
+							quizData[i].IsCorrect = &isCorrect
 						}
+						break
 					}
 				}
 			}
@@ -2037,7 +2056,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 
 		// Update assignment with new data, mark as completed, and set coins_received
 		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, data = ?
-			WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, string(updatedData), req.AssignmentID, claims.UserID)
+			WHERE id = ?`, req.CoinsReceived, string(updatedData), assignmentDBID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -2045,7 +2064,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// No user answers provided, just mark as completed
 		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
-			WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, req.AssignmentID, claims.UserID)
+			WHERE id = ?`, req.CoinsReceived, assignmentDBID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

@@ -327,14 +327,20 @@ function ViewAssignment() {
                       <span className='stat-value'>
                         {
                           quizData.filter((q) => {
-                            if (!q.userAnswer) return false;
+                            // Use is_correct if available (standardized format)
+                            if (q.is_correct !== undefined) {
+                              return q.is_correct;
+                            }
+                            // Fallback to old calculation
+                            const userAnswer = q.user_answer || q.userAnswer;
+                            if (!userAnswer) return false;
                             if (
                               q.type === "multiple" ||
                               q.type === "multiple-choice"
                             ) {
                               const optionsList = q.options || q.answer;
                               const userAnswerIndex = optionsList.findIndex(
-                                (opt) => opt === q.userAnswer
+                                (opt) => opt === userAnswer
                               );
                               return q.correct === userAnswerIndex;
                             } else if (
@@ -347,7 +353,7 @@ function ViewAssignment() {
                               return acceptableAnswers.some(
                                 (correct) =>
                                   correct.toLowerCase() ===
-                                  q.userAnswer.toLowerCase().trim()
+                                  userAnswer.toLowerCase().trim()
                               );
                             }
                             return false;
@@ -361,14 +367,20 @@ function ViewAssignment() {
                       <span className='stat-value'>
                         {Math.round(
                           (quizData.filter((q) => {
-                            if (!q.userAnswer) return false;
+                            // Use is_correct if available (standardized format)
+                            if (q.is_correct !== undefined) {
+                              return q.is_correct;
+                            }
+                            // Fallback to old calculation
+                            const userAnswer = q.user_answer || q.userAnswer;
+                            if (!userAnswer) return false;
                             if (
                               q.type === "multiple" ||
                               q.type === "multiple-choice"
                             ) {
                               const optionsList = q.options || q.answer;
                               const userAnswerIndex = optionsList.findIndex(
-                                (opt) => opt === q.userAnswer
+                                (opt) => opt === userAnswer
                               );
                               return q.correct === userAnswerIndex;
                             } else if (
@@ -381,7 +393,7 @@ function ViewAssignment() {
                               return acceptableAnswers.some(
                                 (correct) =>
                                   correct.toLowerCase() ===
-                                  q.userAnswer.toLowerCase().trim()
+                                  userAnswer.toLowerCase().trim()
                               );
                             }
                             return false;
@@ -398,17 +410,26 @@ function ViewAssignment() {
 
               <div className='questions-list'>
                 {quizData.map((q, index) => {
-                  // Calculate if answer is correct (for completed assignments)
-                  let isCorrect = false;
-                  let correctAnswer = "";
+                  // Use standardized field names
+                  const userAnswer = q.user_answer || q.userAnswer;
                   const hasUserAnswer =
-                    q.userAnswer !== undefined && q.userAnswer !== null;
+                    userAnswer !== undefined && userAnswer !== null;
 
-                  if (assignment.completed && hasUserAnswer) {
+                  // Use is_correct if available (standardized format)
+                  let isCorrect =
+                    q.is_correct !== undefined ? q.is_correct : false;
+                  let correctAnswer = "";
+
+                  // Calculate if not already provided
+                  if (
+                    assignment.completed &&
+                    hasUserAnswer &&
+                    q.is_correct === undefined
+                  ) {
                     if (q.type === "multiple" || q.type === "multiple-choice") {
                       const optionsList = q.options || q.answer;
                       const userAnswerIndex = optionsList.findIndex(
-                        (opt) => opt === q.userAnswer
+                        (opt) => opt === userAnswer
                       );
                       isCorrect = q.correct === userAnswerIndex;
                       correctAnswer = optionsList[q.correct];
@@ -419,8 +440,18 @@ function ViewAssignment() {
                       isCorrect = acceptableAnswers.some(
                         (correct) =>
                           correct.toLowerCase() ===
-                          q.userAnswer.toLowerCase().trim()
+                          userAnswer.toLowerCase().trim()
                       );
+                      correctAnswer = Array.isArray(q.answer)
+                        ? q.answer[0]
+                        : q.answer;
+                    }
+                  } else if (assignment.completed) {
+                    // Get correct answer for display
+                    if (q.type === "multiple" || q.type === "multiple-choice") {
+                      const optionsList = q.options || q.answer;
+                      correctAnswer = optionsList[q.correct];
+                    } else if (q.type === "typed" || q.type === "input") {
                       correctAnswer = Array.isArray(q.answer)
                         ? q.answer[0]
                         : q.answer;
@@ -448,7 +479,7 @@ function ViewAssignment() {
                           {!isCorrect && (
                             <div className='answer-row incorrect-row'>
                               <i className='fa-solid fa-times'></i>
-                              <span>{q.userAnswer}</span>
+                              <span>{userAnswer}</span>
                             </div>
                           )}
                           <div className='answer-row correct-row'>

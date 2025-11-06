@@ -58,7 +58,59 @@ function CreateAssignment() {
   const validateJSON = (jsonString) => {
     if (!jsonString.trim()) return true; // Empty is OK
     try {
-      JSON.parse(jsonString);
+      const parsed = JSON.parse(jsonString);
+
+      // Validate quiz question format if it's an array
+      if (Array.isArray(parsed)) {
+        for (const q of parsed) {
+          // Check required fields
+          if (
+            !q.id ||
+            !q.type ||
+            !q.question ||
+            q.answer === undefined ||
+            q.coins_worth === undefined ||
+            q.time_alloted === undefined
+          ) {
+            alert(
+              "Invalid quiz format: Each question must have id, type, question, answer, coins_worth, and time_alloted"
+            );
+            return false;
+          }
+
+          // Validate type
+          if (q.type !== "multiple" && q.type !== "input") {
+            alert(
+              `Invalid question type "${q.type}". Must be "multiple" or "input"`
+            );
+            return false;
+          }
+
+          // Validate answer format
+          if (q.type === "multiple") {
+            if (!Array.isArray(q.answer)) {
+              alert("For multiple choice questions, answer must be an array");
+              return false;
+            }
+            if (q.correct === undefined || q.correct === null) {
+              alert(
+                "For multiple choice questions, correct field is required (index of correct answer)"
+              );
+              return false;
+            }
+          } else if (q.type === "input") {
+            if (typeof q.answer !== "string") {
+              alert("For input questions, answer must be a string");
+              return false;
+            }
+            if (q.correct !== null && q.correct !== undefined) {
+              alert("For input questions, correct field must be null");
+              return false;
+            }
+          }
+        }
+      }
+
       return true;
     } catch (e) {
       return false;
@@ -272,6 +324,21 @@ function CreateAssignment() {
             ></textarea>
             <small>
               Optional: JSON array of quiz questions. Leave empty if not a quiz.
+              <br />
+              <strong>Required format:</strong>
+              <pre style={{ fontSize: "0.85em", marginTop: "0.5rem" }}>
+                {`[
+  {
+    "id": "abc123",
+    "type": "multiple" or "input",
+    "question": "Question text",
+    "answer": ["option1", "option2"] for multiple, "answer" for input,
+    "correct": 0 for multiple (index), null for input,
+    "coins_worth": 10,
+    "time_alloted": 20
+  }
+]`}
+              </pre>
             </small>
             {data.trim() && !validateJSON(data) && (
               <div className='error-message'>
