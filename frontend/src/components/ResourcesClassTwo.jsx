@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./ResourcesClassTwo.css";
 
 function ResourcesClassTwo() {
@@ -10,13 +11,17 @@ function ResourcesClassTwo() {
         <p className='subtitle'>Study materials and learning resources</p>
       </div>
 
-      <div className='empty-state'>
-        <i className='fa-solid fa-folder-open'></i>
-        <h2>Materials Coming Soon</h2>
-        <p>
-          Your teacher will be adding study materials, PDFs, images, and other
-          helpful resources here.
-        </p>
+      <div className='resources-list'>
+        <Link to='/assignments/subject-pronouns' className='resource-link'>
+          <i className='fa-solid fa-user-group'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>Subject Pronouns</span>
+            <span className='resource-description'>
+              Learn about Spanish subject pronouns (yo, tú, él, ella, etc.)
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
       </div>
     </div>
   );

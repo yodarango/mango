@@ -961,7 +961,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user User
-	err := db.QueryRow("SELECT id, name, role FROM users WHERE LOWER(name) = LOWER(?) AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role)
+	err := db.QueryRow("SELECT id, name, role, class FROM users WHERE LOWER(name) = LOWER(?) AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role, &user.Class)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
@@ -1190,7 +1190,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 
 // Get all students (for admin)
 func getStudents(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("SELECT id, name, role FROM users WHERE role = 'student' ORDER BY name")
+	rows, err := db.Query("SELECT id, name, role, class FROM users WHERE role = 'student' ORDER BY name")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -1200,7 +1200,7 @@ func getStudents(w http.ResponseWriter, r *http.Request) {
 	var students []User
 	for rows.Next() {
 		var student User
-		if err := rows.Scan(&student.ID, &student.Name, &student.Role); err != nil {
+		if err := rows.Scan(&student.ID, &student.Name, &student.Role, &student.Class); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
