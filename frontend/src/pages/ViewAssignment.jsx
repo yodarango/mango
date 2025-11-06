@@ -76,6 +76,16 @@ function ViewAssignment() {
       setAssignment(assignmentData);
       setStudent(studentInfo);
 
+      // Debug: Log assignment data to check for userAnswer fields
+      console.log("Assignment data:", assignmentData);
+      if (assignmentData.data) {
+        const parsedData =
+          typeof assignmentData.data === "string"
+            ? JSON.parse(assignmentData.data)
+            : assignmentData.data;
+        console.log("Quiz questions with userAnswer:", parsedData);
+      }
+
       // Initialize edit form
       let formattedData = "";
       if (assignmentData.data) {
@@ -178,8 +188,14 @@ function ViewAssignment() {
   const parseQuizData = () => {
     if (!assignment.data) return null;
     try {
+      // If data is already an object/array, return it directly
+      if (typeof assignment.data === "object") {
+        return assignment.data;
+      }
+      // If it's a string, parse it
       return JSON.parse(assignment.data);
     } catch (e) {
+      console.error("Error parsing quiz data:", e);
       return null;
     }
   };
@@ -298,41 +314,161 @@ function ViewAssignment() {
                 <i className='fa-solid fa-list-check'></i> Quiz Questions (
                 {quizData.length})
               </h2>
-              <div className='questions-list'>
-                {quizData.map((q, index) => (
-                  <div key={q.id || index} className='question-item'>
-                    <div className='question-header'>
-                      <span className='question-number'>Q{index + 1}</span>
-                      <span className='question-type'>{q.type}</span>
-                      <span className='question-coins'>
-                        <i className='fa-solid fa-coins'></i> {q.coins_worth}
+
+              {/* Show results if completed */}
+              {assignment.completed && (
+                <div className='student-results-summary'>
+                  <h3>
+                    <i className='fa-solid fa-chart-bar'></i> Student Results
+                  </h3>
+                  <div className='results-stats'>
+                    <div className='stat-item'>
+                      <span className='stat-label'>Correct Answers:</span>
+                      <span className='stat-value'>
+                        {
+                          quizData.filter((q) => {
+                            if (!q.userAnswer) return false;
+                            if (
+                              q.type === "multiple" ||
+                              q.type === "multiple-choice"
+                            ) {
+                              const optionsList = q.options || q.answer;
+                              const userAnswerIndex = optionsList.findIndex(
+                                (opt) => opt === q.userAnswer
+                              );
+                              return q.correct === userAnswerIndex;
+                            } else if (
+                              q.type === "typed" ||
+                              q.type === "input"
+                            ) {
+                              const acceptableAnswers = Array.isArray(q.answer)
+                                ? q.answer
+                                : [q.answer];
+                              return acceptableAnswers.some(
+                                (correct) =>
+                                  correct.toLowerCase() ===
+                                  q.userAnswer.toLowerCase().trim()
+                              );
+                            }
+                            return false;
+                          }).length
+                        }{" "}
+                        / {quizData.length}
                       </span>
                     </div>
-                    <div className='question-text'>{q.question}</div>
-                    {q.type === "multiple" && q.answer && (
-                      <div className='question-options'>
-                        {q.answer.map((opt, i) => (
-                          <div
-                            key={i}
-                            className={`option ${
-                              i === q.correct ? "correct" : ""
-                            }`}
-                          >
-                            {i === q.correct && (
-                              <i className='fa-solid fa-check'></i>
-                            )}
-                            {opt}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {q.type === "typed" && (
-                      <div className='correct-answer'>
-                        <strong>Answer:</strong> {q.answer}
-                      </div>
-                    )}
+                    <div className='stat-item'>
+                      <span className='stat-label'>Score:</span>
+                      <span className='stat-value'>
+                        {Math.round(
+                          (quizData.filter((q) => {
+                            if (!q.userAnswer) return false;
+                            if (
+                              q.type === "multiple" ||
+                              q.type === "multiple-choice"
+                            ) {
+                              const optionsList = q.options || q.answer;
+                              const userAnswerIndex = optionsList.findIndex(
+                                (opt) => opt === q.userAnswer
+                              );
+                              return q.correct === userAnswerIndex;
+                            } else if (
+                              q.type === "typed" ||
+                              q.type === "input"
+                            ) {
+                              const acceptableAnswers = Array.isArray(q.answer)
+                                ? q.answer
+                                : [q.answer];
+                              return acceptableAnswers.some(
+                                (correct) =>
+                                  correct.toLowerCase() ===
+                                  q.userAnswer.toLowerCase().trim()
+                              );
+                            }
+                            return false;
+                          }).length /
+                            quizData.length) *
+                            100
+                        )}
+                        %
+                      </span>
+                    </div>
                   </div>
-                ))}
+                </div>
+              )}
+
+              <div className='questions-list'>
+                {quizData.map((q, index) => {
+                  // Calculate if answer is correct (for completed assignments)
+                  let isCorrect = false;
+                  let correctAnswer = "";
+                  const hasUserAnswer =
+                    q.userAnswer !== undefined && q.userAnswer !== null;
+
+                  if (assignment.completed && hasUserAnswer) {
+                    if (q.type === "multiple" || q.type === "multiple-choice") {
+                      const optionsList = q.options || q.answer;
+                      const userAnswerIndex = optionsList.findIndex(
+                        (opt) => opt === q.userAnswer
+                      );
+                      isCorrect = q.correct === userAnswerIndex;
+                      correctAnswer = optionsList[q.correct];
+                    } else if (q.type === "typed" || q.type === "input") {
+                      const acceptableAnswers = Array.isArray(q.answer)
+                        ? q.answer
+                        : [q.answer];
+                      isCorrect = acceptableAnswers.some(
+                        (correct) =>
+                          correct.toLowerCase() ===
+                          q.userAnswer.toLowerCase().trim()
+                      );
+                      correctAnswer = Array.isArray(q.answer)
+                        ? q.answer[0]
+                        : q.answer;
+                    }
+                  }
+
+                  return (
+                    <div
+                      key={q.id || index}
+                      className={`question-item-compact ${
+                        assignment.completed && hasUserAnswer
+                          ? isCorrect
+                            ? "correct"
+                            : "incorrect"
+                          : ""
+                      }`}
+                    >
+                      <div className='question-compact'>
+                        <span className='q-num'>Q{index + 1}.</span>
+                        <span className='q-text'>{q.question}</span>
+                      </div>
+
+                      {assignment.completed && hasUserAnswer && (
+                        <div className='answers-compact'>
+                          {!isCorrect && (
+                            <div className='answer-row incorrect-row'>
+                              <i className='fa-solid fa-times'></i>
+                              <span>{q.userAnswer}</span>
+                            </div>
+                          )}
+                          <div className='answer-row correct-row'>
+                            <i className='fa-solid fa-check'></i>
+                            <span>{correctAnswer}</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {assignment.completed && !hasUserAnswer && (
+                        <div className='answers-compact'>
+                          <div className='answer-row no-answer-row'>
+                            <i className='fa-solid fa-minus'></i>
+                            <span>No answer</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
