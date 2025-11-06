@@ -163,6 +163,14 @@ function StoreItemCard({
                   <span className='stat-value'>{item.stamina}</span>
                 </div>
 
+                <div className='stat-row'>
+                  <i className='fa-solid fa-chart-line'></i>
+                  <span className='stat-label'>XP:</span>
+                  <span className='stat-value'>
+                    {item.xp || 0} / {item.xpRequired || 100}
+                  </span>
+                </div>
+
                 <div className='stat-row total-power'>
                   <i className='fa-solid fa-bolt'></i>
                   <span className='stat-label'>Overall Power:</span>

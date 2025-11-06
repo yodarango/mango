@@ -50,9 +50,9 @@ type Avatar struct {
 type Asset struct {
 	ID            int    `json:"id"`
 	AvatarID      int    `json:"avatarId"`
-	Status        string `json:"status"` 
+	Status        string `json:"status"`
 	Type          string `json:"type"` // this needs to change to what learngin they require like days of the week, months, etc) and just group them by name instead
-	Name          string `json:"name"` // do not allow user to edit this 
+	Name          string `json:"name"` // do not allow user to edit this
 	Thumbnail     string `json:"thumbnail"`
 	Attack        int    `json:"attack"`
 	Defense       int    `json:"defense"`
@@ -66,6 +66,8 @@ type Asset struct {
 	Health        int    `json:"health"`
 	Stamina       int    `json:"stamina"`
 	Description   string `json:"description"`
+	XP            int    `json:"xp"`
+	XPRequired    int    `json:"xpRequired"`
 }
 
 type StoreItem struct {
@@ -302,6 +304,27 @@ func initDB() {
 	if err != nil {
 		// Column might already exist, which is fine
 		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Add xp column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN xp INTEGER DEFAULT 0`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Add xp_required column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN xp_required INTEGER DEFAULT 100`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Update all existing assets to have xp_required = 100 if NULL
+	_, err = db.Exec(`UPDATE assets SET xp_required = 100 WHERE xp_required IS NULL`)
+	if err != nil {
+		// Log error but don't fail
+		log.Printf("Warning: Could not update xp_required values: %v", err)
 	}
 
 	// Remove available_units column if it exists (migration)
@@ -865,7 +888,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
 
-	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina
+	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100)
 		FROM assets WHERE avatar_id = ? ORDER BY status, level DESC`, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -879,7 +902,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-			&asset.Health, &asset.Stamina); err != nil {
+			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -896,11 +919,11 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 	assetID := vars["id"]
 
 	var asset Asset
-	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina
+	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100)
 		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-		&asset.Health, &asset.Stamina)
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
