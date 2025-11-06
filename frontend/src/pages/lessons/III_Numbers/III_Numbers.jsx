@@ -1,33 +1,7 @@
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./III_Numbers.css";
 
 function IIINumbers() {
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-
-  useEffect(() => {
-    // Check if quiz is already completed
-    const savedState = localStorage.getItem("III_numbers");
-    if (savedState) {
-      const state = JSON.parse(savedState);
-      setQuizCompleted(state.completed || false);
-    }
-  }, []);
-
-  const handleOpenQuiz = () => {
-    setShowQuiz(true);
-  };
-
-  const handleCloseQuiz = () => {
-    setShowQuiz(false);
-    // Recheck completion status
-    const savedState = localStorage.getItem("III_numbers");
-    if (savedState) {
-      const state = JSON.parse(savedState);
-      setQuizCompleted(state.completed || false);
-    }
-  };
-
   return (
     <div className='numbers-container'>
       <div className='numbers-header'>
@@ -39,20 +13,9 @@ function IIINumbers() {
             Understanding Spanish numbers 1-1000: The Four Groups
           </p>
         </div>
-        <button
-          onClick={handleOpenQuiz}
-          className={`take-quiz-btn ${quizCompleted ? "completed" : ""}`}
-        >
-          {quizCompleted ? (
-            <>
-              <i className='fa-solid fa-eye'></i> View Results
-            </>
-          ) : (
-            <>
-              <i className='fa-solid fa-pen-to-square'></i> Take Quiz
-            </>
-          )}
-        </button>
+        <Link className={`take-quiz-btn`} to='/assignments/quiz/1003'>
+          Take Quiz
+        </Link>
       </div>
       <div className='numbers-content'>
         {/* Introduction */}

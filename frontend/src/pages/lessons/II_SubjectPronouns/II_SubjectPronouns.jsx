@@ -1,33 +1,7 @@
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./II_SubjectPronouns.css";
 
 function IISubjectPronouns() {
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-
-  useEffect(() => {
-    // Check if quiz is already completed
-    const savedState = localStorage.getItem("II_subject_pronouns");
-    if (savedState) {
-      const state = JSON.parse(savedState);
-      setQuizCompleted(state.completed || false);
-    }
-  }, []);
-
-  const handleOpenQuiz = () => {
-    setShowQuiz(true);
-  };
-
-  const handleCloseQuiz = () => {
-    setShowQuiz(false);
-    // Recheck completion status
-    const savedState = localStorage.getItem("II_subject_pronouns");
-    if (savedState) {
-      const state = JSON.parse(savedState);
-      setQuizCompleted(state.completed || false);
-    }
-  };
-
   return (
     <div className='pronouns-container'>
       <div className='pronouns-header'>
@@ -37,20 +11,9 @@ function IISubjectPronouns() {
           </h1>
           <p className='subtitle'>Learn who's who in Spanish! 🌟</p>
         </div>
-        <button
-          onClick={handleOpenQuiz}
-          className={`take-quiz-btn ${quizCompleted ? "completed" : ""}`}
-        >
-          {quizCompleted ? (
-            <>
-              <i className='fa-solid fa-eye'></i> View Results
-            </>
-          ) : (
-            <>
-              <i className='fa-solid fa-pen-to-square'></i> Take Quiz
-            </>
-          )}
-        </button>
+        <Link to='/assignments/quiz/1004' className={`take-quiz-btn`}>
+          Take Quiz
+        </Link>
       </div>
 
       {/* Introduction */}
