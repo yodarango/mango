@@ -447,10 +447,12 @@
 
 .result-item.correct {
   border-color: #00ff00;
+  background-color: rgba(0, 255, 0, 0.075);
 }
 
 .result-item.incorrect {
   border-color: #ff0000;
+  background-color: rgba(255, 0, 0, 0.075);
 }
 
 .result-question {
@@ -551,4 +553,3 @@
     justify-content: center;
   }
 }
-

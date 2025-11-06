@@ -48,13 +48,55 @@ function Quiz() {
               ? JSON.parse(assignmentData.data)
               : assignmentData.data;
           setQuestions(quizData);
-        }
 
-        // Check if already completed
-        if (assignmentData.completed) {
-          setQuizCompleted(true);
-          // Load results from assignment data if available
-          // You might want to store results separately
+          // Check if already completed
+          if (assignmentData.completed) {
+            setQuizCompleted(true);
+
+            // Reconstruct results from saved data
+            let totalCoins = 0;
+            const questionResults = quizData.map((q) => {
+              let isCorrect = false;
+              const userAnswer = q.userAnswer || "No answer";
+
+              // Check if answer is correct
+              if (q.type === "multiple" || q.type === "multiple-choice") {
+                // For multiple choice, find the index of the user's answer
+                const optionsList = q.options || q.answer;
+                const userAnswerIndex = optionsList.findIndex(
+                  (opt) => opt === userAnswer
+                );
+                isCorrect = q.correct === userAnswerIndex;
+              } else if (q.type === "typed" || q.type === "input") {
+                // For typed answers, check against acceptable answers
+                const acceptableAnswers = Array.isArray(q.answer)
+                  ? q.answer
+                  : [q.answer];
+                isCorrect = acceptableAnswers.some(
+                  (correct) =>
+                    correct.toLowerCase() === userAnswer.toLowerCase().trim()
+                );
+              }
+
+              const coinsEarned = isCorrect ? q.coins_worth : 0;
+              totalCoins += coinsEarned;
+
+              return {
+                questionId: q.id,
+                question: q.question,
+                type: q.type,
+                userAnswer,
+                isCorrect,
+                coinsEarned,
+              };
+            });
+
+            setResults({
+              totalCoins,
+              questionResults,
+              completedAt: new Date().toISOString(),
+            });
+          }
         }
 
         setLoading(false);
@@ -447,7 +489,11 @@ function Quiz() {
           </div>
 
           <div className='results-details'>
-            <h3>Question Review</h3>
+            <h3>
+              You answered{" "}
+              {results.questionResults.filter((r) => r.isCorrect).length}{" "}
+              correct out of {results.questionResults.length} questions
+            </h3>
             {results.questionResults.map((result, index) => (
               <div
                 key={index}
