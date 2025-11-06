@@ -998,8 +998,8 @@ func generateToken(userID int, name string) (string, error) {
 		UserID: userID,
 		Name:   name,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			// No expiration - token never expires
+			IssuedAt: jwt.NewNumericDate(time.Now()),
 		},
 	}
 

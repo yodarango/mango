@@ -789,10 +789,6 @@
 789. comercializar (to commercialize)
 790. salvaguardar (to safeguard)
 791. escalar (to climb)
-
-List of ER Verbs
-These verbs end in -ER and also follow a regular conjugation pattern.
-
 792. deber (to owe, must, should)
 793. parecer (to seem, appear)
 794. conocer (to know, to meet)
@@ -918,10 +914,6 @@ These verbs end in -ER and also follow a regular conjugation pattern.
 914. abastecer (to supply, provide)
 915. barrer (to sweep)
 916. rehacer (to re-do)
-
-List of IR Verbs
-Regular verbs ending in -IR are slightly less common but very important. Here’s the full list.
-
 917. existir (to exist)
 918. permitir (to permit, allow)
 919. vivir (to live)

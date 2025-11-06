@@ -1,0 +1,7887 @@
+[
+  {
+    "index": 792,
+    "spa": "deber",
+    "eng": [
+      "to owe",
+      "must",
+      "should"
+    ]
+  },
+  {
+    "index": 793,
+    "spa": "parecer",
+    "eng": [
+      "to seem",
+      "appear"
+    ]
+  },
+  {
+    "index": 1,
+    "spa": "llegar",
+    "eng": [
+      "to arrive",
+      "to reach"
+    ]
+  },
+  {
+    "index": 2,
+    "spa": "tratar",
+    "eng": [
+      "to try",
+      "to treat"
+    ]
+  },
+  {
+    "index": 3,
+    "spa": "hablar",
+    "eng": [
+      "to speak",
+      "to talk"
+    ]
+  },
+  {
+    "index": 4,
+    "spa": "dejar",
+    "eng": [
+      "to leave",
+      "to allow",
+      "to let"
+    ]
+  },
+  {
+    "index": 5,
+    "spa": "pasar",
+    "eng": [
+      "to pass",
+      "to happen",
+      "to spend (time"
+    ]
+  },
+  {
+    "index": 6,
+    "spa": "llevar",
+    "eng": [
+      "to carry",
+      "to take",
+      "to wear"
+    ]
+  },
+  {
+    "index": 917,
+    "spa": "existir",
+    "eng": [
+      "to exist"
+    ]
+  },
+  {
+    "index": 794,
+    "spa": "conocer",
+    "eng": [
+      "to know",
+      "to meet"
+    ]
+  },
+  {
+    "index": 7,
+    "spa": "tomar",
+    "eng": [
+      "to take",
+      "to drink"
+    ]
+  },
+  {
+    "index": 8,
+    "spa": "encontrar",
+    "eng": [
+      "to find",
+      "to encounter"
+    ]
+  },
+  {
+    "index": 9,
+    "spa": "crear",
+    "eng": [
+      "to create"
+    ]
+  },
+  {
+    "index": 10,
+    "spa": "evitar",
+    "eng": [
+      "to avoid",
+      "to prevent"
+    ]
+  },
+  {
+    "index": 11,
+    "spa": "quedar",
+    "eng": [
+      "to stay",
+      "to remain",
+      "to be left"
+    ]
+  },
+  {
+    "index": 12,
+    "spa": "realizar",
+    "eng": [
+      "to carry out",
+      "to perform",
+      "to achieve"
+    ]
+  },
+  {
+    "index": 918,
+    "spa": "permitir",
+    "eng": [
+      "to permit",
+      "allow"
+    ]
+  },
+  {
+    "index": 13,
+    "spa": "resultar",
+    "eng": [
+      "to result",
+      "to turn out"
+    ]
+  },
+  {
+    "index": 919,
+    "spa": "vivir",
+    "eng": [
+      "to live"
+    ]
+  },
+  {
+    "index": 14,
+    "spa": "buscar",
+    "eng": [
+      "to search",
+      "to look for"
+    ]
+  },
+  {
+    "index": 15,
+    "spa": "entrar",
+    "eng": [
+      "to enter",
+      "to go in"
+    ]
+  },
+  {
+    "index": 16,
+    "spa": "considerar",
+    "eng": [
+      "to consider"
+    ]
+  },
+  {
+    "index": 17,
+    "spa": "señalar",
+    "eng": [
+      "to point out",
+      "to indicate"
+    ]
+  },
+  {
+    "index": 18,
+    "spa": "presentar",
+    "eng": [
+      "to present",
+      "to introduce"
+    ]
+  },
+  {
+    "index": 795,
+    "spa": "perder",
+    "eng": [
+      "to lose"
+    ]
+  },
+  {
+    "index": 796,
+    "spa": "aparecer",
+    "eng": [
+      "to appear",
+      "show up"
+    ]
+  },
+  {
+    "index": 19,
+    "spa": "trabajar",
+    "eng": [
+      "to work"
+    ]
+  },
+  {
+    "index": 797,
+    "spa": "obtener",
+    "eng": [
+      "to obtain",
+      "get"
+    ]
+  },
+  {
+    "index": 20,
+    "spa": "lograr",
+    "eng": [
+      "to achieve",
+      "to manage to"
+    ]
+  },
+  {
+    "index": 21,
+    "spa": "esperar",
+    "eng": [
+      "to wait",
+      "to hope",
+      "to expect"
+    ]
+  },
+  {
+    "index": 22,
+    "spa": "afirmar",
+    "eng": [
+      "to affirm",
+      "to assert",
+      "to state"
+    ]
+  },
+  {
+    "index": 23,
+    "spa": "preguntar",
+    "eng": [
+      "to ask"
+    ]
+  },
+  {
+    "index": 24,
+    "spa": "ganar",
+    "eng": [
+      "to win",
+      "to earn",
+      "to gain"
+    ]
+  },
+  {
+    "index": 25,
+    "spa": "llamar",
+    "eng": [
+      "to call",
+      "to name"
+    ]
+  },
+  {
+    "index": 920,
+    "spa": "ocurrir",
+    "eng": [
+      "to occur",
+      "happen"
+    ]
+  },
+  {
+    "index": 26,
+    "spa": "cambiar",
+    "eng": [
+      "to change"
+    ]
+  },
+  {
+    "index": 27,
+    "spa": "significar",
+    "eng": [
+      "to mean",
+      "to signify"
+    ]
+  },
+  {
+    "index": 28,
+    "spa": "gustar",
+    "eng": [
+      "to like",
+      "to be pleasing"
+    ]
+  },
+  {
+    "index": 798,
+    "spa": "establecer",
+    "eng": [
+      "to establish"
+    ]
+  },
+  {
+    "index": 921,
+    "spa": "cumplir",
+    "eng": [
+      "to fulfill",
+      "accomplish"
+    ]
+  },
+  {
+    "index": 29,
+    "spa": "explicar",
+    "eng": [
+      "to explain"
+    ]
+  },
+  {
+    "index": 30,
+    "spa": "alcanzar",
+    "eng": [
+      "to reach",
+      "to catch up",
+      "to achieve"
+    ]
+  },
+  {
+    "index": 31,
+    "spa": "pagar",
+    "eng": [
+      "to pay"
+    ]
+  },
+  {
+    "index": 799,
+    "spa": "creer",
+    "eng": [
+      "to believe"
+    ]
+  },
+  {
+    "index": 800,
+    "spa": "comer",
+    "eng": [
+      "to eat"
+    ]
+  },
+  {
+    "index": 32,
+    "spa": "mirar",
+    "eng": [
+      "to look at",
+      "to watch"
+    ]
+  },
+  {
+    "index": 33,
+    "spa": "sacar",
+    "eng": [
+      "to take out",
+      "to remove"
+    ]
+  },
+  {
+    "index": 922,
+    "spa": "abrir",
+    "eng": [
+      "to open"
+    ]
+  },
+  {
+    "index": 34,
+    "spa": "asegurar",
+    "eng": [
+      "to assure",
+      "to secure",
+      "to ensure"
+    ]
+  },
+  {
+    "index": 35,
+    "spa": "utilizar",
+    "eng": [
+      "to use",
+      "to utilize"
+    ]
+  },
+  {
+    "index": 801,
+    "spa": "ofrecer",
+    "eng": [
+      "to offer"
+    ]
+  },
+  {
+    "index": 923,
+    "spa": "recibir",
+    "eng": [
+      "to receive"
+    ]
+  },
+  {
+    "index": 924,
+    "spa": "constituir",
+    "eng": [
+      "to constitute"
+    ]
+  },
+  {
+    "index": 925,
+    "spa": "escribir",
+    "eng": [
+      "to write"
+    ]
+  },
+  {
+    "index": 36,
+    "spa": "informar",
+    "eng": [
+      "to inform",
+      "to report"
+    ]
+  },
+  {
+    "index": 37,
+    "spa": "necesitar",
+    "eng": [
+      "to need"
+    ]
+  },
+  {
+    "index": 926,
+    "spa": "referir",
+    "eng": [
+      "to refer"
+    ]
+  },
+  {
+    "index": 38,
+    "spa": "declarar",
+    "eng": [
+      "to declare",
+      "to state"
+    ]
+  },
+  {
+    "index": 39,
+    "spa": "representar",
+    "eng": [
+      "to represent"
+    ]
+  },
+  {
+    "index": 802,
+    "spa": "soler",
+    "eng": [
+      "to usually do",
+      "to tend to"
+    ]
+  },
+  {
+    "index": 40,
+    "spa": "manifestar",
+    "eng": [
+      "to express",
+      "to show",
+      "to state"
+    ]
+  },
+  {
+    "index": 803,
+    "spa": "corresponder",
+    "eng": [
+      "to correspond"
+    ]
+  },
+  {
+    "index": 41,
+    "spa": "olvidar",
+    "eng": [
+      "to forget"
+    ]
+  },
+  {
+    "index": 927,
+    "spa": "decidir",
+    "eng": [
+      "to decide"
+    ]
+  },
+  {
+    "index": 42,
+    "spa": "acabar",
+    "eng": [
+      "to finish",
+      "to end"
+    ]
+  },
+  {
+    "index": 43,
+    "spa": "anunciar",
+    "eng": [
+      "to announce"
+    ]
+  },
+  {
+    "index": 804,
+    "spa": "reconocer",
+    "eng": [
+      "to recognize"
+    ]
+  },
+  {
+    "index": 805,
+    "spa": "pretender",
+    "eng": [
+      "to intend",
+      "pretend",
+      "claim"
+    ]
+  },
+  {
+    "index": 928,
+    "spa": "añadir",
+    "eng": [
+      "to add"
+    ]
+  },
+  {
+    "index": 44,
+    "spa": "aceptar",
+    "eng": [
+      "to accept"
+    ]
+  },
+  {
+    "index": 929,
+    "spa": "consistir",
+    "eng": [
+      "to consist of"
+    ]
+  },
+  {
+    "index": 45,
+    "spa": "indicar",
+    "eng": [
+      "to indicate",
+      "to point out"
+    ]
+  },
+  {
+    "index": 46,
+    "spa": "ayudar",
+    "eng": [
+      "to help"
+    ]
+  },
+  {
+    "index": 806,
+    "spa": "comprender",
+    "eng": [
+      "to understand"
+    ]
+  },
+  {
+    "index": 47,
+    "spa": "terminar",
+    "eng": [
+      "to finish",
+      "to end"
+    ]
+  },
+  {
+    "index": 48,
+    "spa": "escuchar",
+    "eng": [
+      "to listen"
+    ]
+  },
+  {
+    "index": 49,
+    "spa": "importar",
+    "eng": [
+      "to matter",
+      "to import"
+    ]
+  },
+  {
+    "index": 50,
+    "spa": "mejorar",
+    "eng": [
+      "to improve",
+      "to get better"
+    ]
+  },
+  {
+    "index": 51,
+    "spa": "comprar",
+    "eng": [
+      "to buy"
+    ]
+  },
+  {
+    "index": 930,
+    "spa": "reducir",
+    "eng": [
+      "to reduce"
+    ]
+  },
+  {
+    "index": 807,
+    "spa": "defender",
+    "eng": [
+      "to defend"
+    ]
+  },
+  {
+    "index": 52,
+    "spa": "estudiar",
+    "eng": [
+      "to study"
+    ]
+  },
+  {
+    "index": 53,
+    "spa": "desarrollar",
+    "eng": [
+      "to develop"
+    ]
+  },
+  {
+    "index": 54,
+    "spa": "formar",
+    "eng": [
+      "to form",
+      "to shape"
+    ]
+  },
+  {
+    "index": 55,
+    "spa": "sentar",
+    "eng": [
+      "to sit",
+      "to seat"
+    ]
+  },
+  {
+    "index": 808,
+    "spa": "responder",
+    "eng": [
+      "to respond",
+      "answer"
+    ]
+  },
+  {
+    "index": 931,
+    "spa": "requerir",
+    "eng": [
+      "to require"
+    ]
+  },
+  {
+    "index": 809,
+    "spa": "depender",
+    "eng": [
+      "to depend"
+    ]
+  },
+  {
+    "index": 56,
+    "spa": "aplicar",
+    "eng": [
+      "to apply"
+    ]
+  },
+  {
+    "index": 57,
+    "spa": "matar",
+    "eng": [
+      "to kill"
+    ]
+  },
+  {
+    "index": 58,
+    "spa": "participar",
+    "eng": [
+      "to participate"
+    ]
+  },
+  {
+    "index": 59,
+    "spa": "levantar",
+    "eng": [
+      "to lift",
+      "to raise"
+    ]
+  },
+  {
+    "index": 60,
+    "spa": "actuar",
+    "eng": [
+      "to act",
+      "to perform"
+    ]
+  },
+  {
+    "index": 810,
+    "spa": "suceder",
+    "eng": [
+      "to happen",
+      "succeed/follow"
+    ]
+  },
+  {
+    "index": 61,
+    "spa": "abandonar",
+    "eng": [
+      "to abandon",
+      "to leave"
+    ]
+  },
+  {
+    "index": 62,
+    "spa": "intentar",
+    "eng": [
+      "to try",
+      "to attempt"
+    ]
+  },
+  {
+    "index": 63,
+    "spa": "continuar",
+    "eng": [
+      "to continue"
+    ]
+  },
+  {
+    "index": 64,
+    "spa": "observar",
+    "eng": [
+      "to observe"
+    ]
+  },
+  {
+    "index": 65,
+    "spa": "enfrentar",
+    "eng": [
+      "to face",
+      "to confront"
+    ]
+  },
+  {
+    "index": 66,
+    "spa": "comprobar",
+    "eng": [
+      "to verify",
+      "to check",
+      "to confirm"
+    ]
+  },
+  {
+    "index": 67,
+    "spa": "recuperar",
+    "eng": [
+      "to recover",
+      "to get back"
+    ]
+  },
+  {
+    "index": 68,
+    "spa": "demostrar",
+    "eng": [
+      "to demonstrate",
+      "to show"
+    ]
+  },
+  {
+    "index": 69,
+    "spa": "usar",
+    "eng": [
+      "to use"
+    ]
+  },
+  {
+    "index": 811,
+    "spa": "poseer",
+    "eng": [
+      "to possess",
+      "own"
+    ]
+  },
+  {
+    "index": 70,
+    "spa": "aumentar",
+    "eng": [
+      "to increase",
+      "to raise"
+    ]
+  },
+  {
+    "index": 71,
+    "spa": "comentar",
+    "eng": [
+      "to comment",
+      "to remark"
+    ]
+  },
+  {
+    "index": 72,
+    "spa": "agregar",
+    "eng": [
+      "to add"
+    ]
+  },
+  {
+    "index": 73,
+    "spa": "iniciar",
+    "eng": [
+      "to initiate",
+      "to start"
+    ]
+  },
+  {
+    "index": 74,
+    "spa": "echar",
+    "eng": [
+      "to throw",
+      "to pour",
+      "to expel"
+    ]
+  },
+  {
+    "index": 75,
+    "spa": "superar",
+    "eng": [
+      "to overcome",
+      "to surpass"
+    ]
+  },
+  {
+    "index": 812,
+    "spa": "vender",
+    "eng": [
+      "to sell"
+    ]
+  },
+  {
+    "index": 932,
+    "spa": "descubrir",
+    "eng": [
+      "to discover"
+    ]
+  },
+  {
+    "index": 933,
+    "spa": "exigir",
+    "eng": [
+      "to demand"
+    ]
+  },
+  {
+    "index": 76,
+    "spa": "colocar",
+    "eng": [
+      "to place",
+      "to put"
+    ]
+  },
+  {
+    "index": 77,
+    "spa": "tocar",
+    "eng": [
+      "to touch",
+      "to play (an instrument"
+    ]
+  },
+  {
+    "index": 78,
+    "spa": "determinar",
+    "eng": [
+      "to determine",
+      "to establish"
+    ]
+  },
+  {
+    "index": 813,
+    "spa": "meter",
+    "eng": [
+      "to put",
+      "insert"
+    ]
+  },
+  {
+    "index": 79,
+    "spa": "interesar",
+    "eng": [
+      "to interest"
+    ]
+  },
+  {
+    "index": 934,
+    "spa": "subir",
+    "eng": [
+      "to go up",
+      "to climb",
+      "to upload"
+    ]
+  },
+  {
+    "index": 80,
+    "spa": "controlar",
+    "eng": [
+      "to control",
+      "to monitor"
+    ]
+  },
+  {
+    "index": 814,
+    "spa": "correr",
+    "eng": [
+      "to run"
+    ]
+  },
+  {
+    "index": 81,
+    "spa": "faltar",
+    "eng": [
+      "to lack",
+      "to miss"
+    ]
+  },
+  {
+    "index": 82,
+    "spa": "bajar",
+    "eng": [
+      "to go down",
+      "to lower",
+      "to download"
+    ]
+  },
+  {
+    "index": 935,
+    "spa": "definir",
+    "eng": [
+      "to define"
+    ]
+  },
+  {
+    "index": 83,
+    "spa": "implicar",
+    "eng": [
+      "to imply",
+      "to involve"
+    ]
+  },
+  {
+    "index": 84,
+    "spa": "expresar",
+    "eng": [
+      "to express"
+    ]
+  },
+  {
+    "index": 936,
+    "spa": "dirigir",
+    "eng": [
+      "to direct",
+      "manage"
+    ]
+  },
+  {
+    "index": 85,
+    "spa": "ocupar",
+    "eng": [
+      "to occupy",
+      "to take up"
+    ]
+  },
+  {
+    "index": 86,
+    "spa": "preparar",
+    "eng": [
+      "to prepare"
+    ]
+  },
+  {
+    "index": 815,
+    "spa": "contener",
+    "eng": [
+      "to contain"
+    ]
+  },
+  {
+    "index": 87,
+    "spa": "imaginar",
+    "eng": [
+      "to imagine"
+    ]
+  },
+  {
+    "index": 937,
+    "spa": "cubrir",
+    "eng": [
+      "to cover"
+    ]
+  },
+  {
+    "index": 88,
+    "spa": "desear",
+    "eng": [
+      "to wish",
+      "to desire"
+    ]
+  },
+  {
+    "index": 89,
+    "spa": "quitar",
+    "eng": [
+      "to remove",
+      "to take away"
+    ]
+  },
+  {
+    "index": 90,
+    "spa": "salvar",
+    "eng": [
+      "to save",
+      "to rescue"
+    ]
+  },
+  {
+    "index": 816,
+    "spa": "romper",
+    "eng": [
+      "to break"
+    ]
+  },
+  {
+    "index": 91,
+    "spa": "afectar",
+    "eng": [
+      "to affect"
+    ]
+  },
+  {
+    "index": 92,
+    "spa": "regresar",
+    "eng": [
+      "to return",
+      "to go back"
+    ]
+  },
+  {
+    "index": 93,
+    "spa": "analizar",
+    "eng": [
+      "to analyze"
+    ]
+  },
+  {
+    "index": 94,
+    "spa": "contestar",
+    "eng": [
+      "to answer",
+      "to reply"
+    ]
+  },
+  {
+    "index": 95,
+    "spa": "entregar",
+    "eng": [
+      "to deliver",
+      "to hand over"
+    ]
+  },
+  {
+    "index": 96,
+    "spa": "acercar",
+    "eng": [
+      "to bring closer",
+      "to approach"
+    ]
+  },
+  {
+    "index": 817,
+    "spa": "nacer",
+    "eng": [
+      "to be born"
+    ]
+  },
+  {
+    "index": 97,
+    "spa": "visitar",
+    "eng": [
+      "to visit"
+    ]
+  },
+  {
+    "index": 818,
+    "spa": "aprender",
+    "eng": [
+      "to learn"
+    ]
+  },
+  {
+    "index": 819,
+    "spa": "atender",
+    "eng": [
+      "to attend to",
+      "assist"
+    ]
+  },
+  {
+    "index": 820,
+    "spa": "imponer",
+    "eng": [
+      "to impose"
+    ]
+  },
+  {
+    "index": 821,
+    "spa": "disponer",
+    "eng": [
+      "to arrange",
+      "dispose"
+    ]
+  },
+  {
+    "index": 98,
+    "spa": "bastar",
+    "eng": [
+      "to be enough",
+      "to suffice"
+    ]
+  },
+  {
+    "index": 822,
+    "spa": "pertenecer",
+    "eng": [
+      "to belong"
+    ]
+  },
+  {
+    "index": 823,
+    "spa": "recoger",
+    "eng": [
+      "to pick up",
+      "collect"
+    ]
+  },
+  {
+    "index": 99,
+    "spa": "eliminar",
+    "eng": [
+      "to eliminate",
+      "to remove"
+    ]
+  },
+  {
+    "index": 100,
+    "spa": "destacar",
+    "eng": [
+      "to highlight",
+      "to emphasize"
+    ]
+  },
+  {
+    "index": 824,
+    "spa": "proteger",
+    "eng": [
+      "to protect"
+    ]
+  },
+  {
+    "index": 938,
+    "spa": "sufrir",
+    "eng": [
+      "to suffer"
+    ]
+  },
+  {
+    "index": 101,
+    "spa": "celebrar",
+    "eng": [
+      "to celebrate"
+    ]
+  },
+  {
+    "index": 102,
+    "spa": "retirar",
+    "eng": [
+      "to withdraw",
+      "to remove"
+    ]
+  },
+  {
+    "index": 103,
+    "spa": "plantear",
+    "eng": [
+      "to propose",
+      "to suggest",
+      "to raise (an issue"
+    ]
+  },
+  {
+    "index": 939,
+    "spa": "asumir",
+    "eng": [
+      "to assume",
+      "take on"
+    ]
+  },
+  {
+    "index": 104,
+    "spa": "apoyar",
+    "eng": [
+      "to support",
+      "to back"
+    ]
+  },
+  {
+    "index": 105,
+    "spa": "citar",
+    "eng": [
+      "to quote",
+      "to cite",
+      "to summon"
+    ]
+  },
+  {
+    "index": 106,
+    "spa": "provocar",
+    "eng": [
+      "to provoke",
+      "to cause"
+    ]
+  },
+  {
+    "index": 825,
+    "spa": "beber",
+    "eng": [
+      "to drink"
+    ]
+  },
+  {
+    "index": 107,
+    "spa": "aprovechar",
+    "eng": [
+      "to take advantage of",
+      "to make the most of"
+    ]
+  },
+  {
+    "index": 108,
+    "spa": "parar",
+    "eng": [
+      "to stop"
+    ]
+  },
+  {
+    "index": 826,
+    "spa": "convencer",
+    "eng": [
+      "to convince"
+    ]
+  },
+  {
+    "index": 940,
+    "spa": "reunir",
+    "eng": [
+      "to gather",
+      "reunite"
+    ]
+  },
+  {
+    "index": 109,
+    "spa": "garantizar",
+    "eng": [
+      "to guarantee",
+      "to ensure"
+    ]
+  },
+  {
+    "index": 110,
+    "spa": "efectuar",
+    "eng": [
+      "to carry out",
+      "to execute"
+    ]
+  },
+  {
+    "index": 111,
+    "spa": "relacionar",
+    "eng": [
+      "to relate",
+      "to connect"
+    ]
+  },
+  {
+    "index": 941,
+    "spa": "insistir",
+    "eng": [
+      "to insist"
+    ]
+  },
+  {
+    "index": 112,
+    "spa": "facilitar",
+    "eng": [
+      "to facilitate",
+      "to provide"
+    ]
+  },
+  {
+    "index": 827,
+    "spa": "merecer",
+    "eng": [
+      "to deserve"
+    ]
+  },
+  {
+    "index": 113,
+    "spa": "modificar",
+    "eng": [
+      "to modify",
+      "to change"
+    ]
+  },
+  {
+    "index": 114,
+    "spa": "situar",
+    "eng": [
+      "to place",
+      "to locate"
+    ]
+  },
+  {
+    "index": 115,
+    "spa": "identificar",
+    "eng": [
+      "to identify"
+    ]
+  },
+  {
+    "index": 116,
+    "spa": "llorar",
+    "eng": [
+      "to cry"
+    ]
+  },
+  {
+    "index": 117,
+    "spa": "ordenar",
+    "eng": [
+      "to order",
+      "to arrange"
+    ]
+  },
+  {
+    "index": 118,
+    "spa": "obligar",
+    "eng": [
+      "to force",
+      "to oblige"
+    ]
+  },
+  {
+    "index": 119,
+    "spa": "organizar",
+    "eng": [
+      "to organize"
+    ]
+  },
+  {
+    "index": 120,
+    "spa": "escapar",
+    "eng": [
+      "to escape"
+    ]
+  },
+  {
+    "index": 942,
+    "spa": "unir",
+    "eng": [
+      "to unite",
+      "join"
+    ]
+  },
+  {
+    "index": 828,
+    "spa": "ejercer",
+    "eng": [
+      "to exercise",
+      "practice"
+    ]
+  },
+  {
+    "index": 121,
+    "spa": "cortar",
+    "eng": [
+      "to cut"
+    ]
+  },
+  {
+    "index": 122,
+    "spa": "confirmar",
+    "eng": [
+      "to confirm"
+    ]
+  },
+  {
+    "index": 123,
+    "spa": "incorporar",
+    "eng": [
+      "to incorporate",
+      "to include"
+    ]
+  },
+  {
+    "index": 943,
+    "spa": "surgir",
+    "eng": [
+      "to arise",
+      "emerge"
+    ]
+  },
+  {
+    "index": 944,
+    "spa": "combatir",
+    "eng": [
+      "to combat",
+      "fight"
+    ]
+  },
+  {
+    "index": 124,
+    "spa": "enviar",
+    "eng": [
+      "to send"
+    ]
+  },
+  {
+    "index": 125,
+    "spa": "publicar",
+    "eng": [
+      "to publish"
+    ]
+  },
+  {
+    "index": 126,
+    "spa": "negociar",
+    "eng": [
+      "to negotiate"
+    ]
+  },
+  {
+    "index": 829,
+    "spa": "permanecer",
+    "eng": [
+      "to remain",
+      "stay"
+    ]
+  },
+  {
+    "index": 945,
+    "spa": "asistir",
+    "eng": [
+      "to attend",
+      "assist"
+    ]
+  },
+  {
+    "index": 127,
+    "spa": "adoptar",
+    "eng": [
+      "to adopt"
+    ]
+  },
+  {
+    "index": 128,
+    "spa": "contemplar",
+    "eng": [
+      "to contemplate",
+      "to consider"
+    ]
+  },
+  {
+    "index": 129,
+    "spa": "hallar",
+    "eng": [
+      "to find",
+      "to discover"
+    ]
+  },
+  {
+    "index": 130,
+    "spa": "luchar",
+    "eng": [
+      "to fight",
+      "to struggle"
+    ]
+  },
+  {
+    "index": 830,
+    "spa": "tender",
+    "eng": [
+      "to tend",
+      "stretch out"
+    ]
+  },
+  {
+    "index": 946,
+    "spa": "discutir",
+    "eng": [
+      "to discuss",
+      "argue"
+    ]
+  },
+  {
+    "index": 131,
+    "spa": "conservar",
+    "eng": [
+      "to preserve",
+      "to conserve"
+    ]
+  },
+  {
+    "index": 132,
+    "spa": "acompañar",
+    "eng": [
+      "to accompany"
+    ]
+  },
+  {
+    "index": 133,
+    "spa": "dedicar",
+    "eng": [
+      "to dedicate",
+      "to devote"
+    ]
+  },
+  {
+    "index": 947,
+    "spa": "acudir",
+    "eng": [
+      "to go",
+      "attend"
+    ]
+  },
+  {
+    "index": 134,
+    "spa": "caminar",
+    "eng": [
+      "to walk"
+    ]
+  },
+  {
+    "index": 135,
+    "spa": "reflejar",
+    "eng": [
+      "to reflect"
+    ]
+  },
+  {
+    "index": 136,
+    "spa": "cantar",
+    "eng": [
+      "to sing"
+    ]
+  },
+  {
+    "index": 137,
+    "spa": "interpretar",
+    "eng": [
+      "to interpret",
+      "to perform"
+    ]
+  },
+  {
+    "index": 831,
+    "spa": "acceder",
+    "eng": [
+      "to access",
+      "agree"
+    ]
+  },
+  {
+    "index": 138,
+    "spa": "casar",
+    "eng": [
+      "to marry"
+    ]
+  },
+  {
+    "index": 139,
+    "spa": "comunicar",
+    "eng": [
+      "to communicate"
+    ]
+  },
+  {
+    "index": 140,
+    "spa": "estimar",
+    "eng": [
+      "to estimate",
+      "to appreciate"
+    ]
+  },
+  {
+    "index": 141,
+    "spa": "aclarar",
+    "eng": [
+      "to clarify",
+      "to clear up"
+    ]
+  },
+  {
+    "index": 142,
+    "spa": "soportar",
+    "eng": [
+      "to endure",
+      "to tolerate"
+    ]
+  },
+  {
+    "index": 143,
+    "spa": "funcionar",
+    "eng": [
+      "to function",
+      "to work"
+    ]
+  },
+  {
+    "index": 144,
+    "spa": "probar",
+    "eng": [
+      "to try",
+      "to test"
+    ]
+  },
+  {
+    "index": 145,
+    "spa": "ocultar",
+    "eng": [
+      "to hide",
+      "to conceal"
+    ]
+  },
+  {
+    "index": 146,
+    "spa": "lanzar",
+    "eng": [
+      "to throw",
+      "to launch"
+    ]
+  },
+  {
+    "index": 832,
+    "spa": "desaparecer",
+    "eng": [
+      "to disappear"
+    ]
+  },
+  {
+    "index": 948,
+    "spa": "recurrir",
+    "eng": [
+      "to resort to",
+      "recur"
+    ]
+  },
+  {
+    "index": 147,
+    "spa": "justificar",
+    "eng": [
+      "to justify"
+    ]
+  },
+  {
+    "index": 148,
+    "spa": "viajar",
+    "eng": [
+      "to travel"
+    ]
+  },
+  {
+    "index": 149,
+    "spa": "ampliar",
+    "eng": [
+      "to expand",
+      "to enlarge"
+    ]
+  },
+  {
+    "index": 150,
+    "spa": "fijar",
+    "eng": [
+      "to set",
+      "to fix"
+    ]
+  },
+  {
+    "index": 151,
+    "spa": "solicitar",
+    "eng": [
+      "to request",
+      "to apply for"
+    ]
+  },
+  {
+    "index": 833,
+    "spa": "promover",
+    "eng": [
+      "to promote"
+    ]
+  },
+  {
+    "index": 949,
+    "spa": "compartir",
+    "eng": [
+      "to share"
+    ]
+  },
+  {
+    "index": 152,
+    "spa": "apreciar",
+    "eng": [
+      "to appreciate",
+      "to value"
+    ]
+  },
+  {
+    "index": 153,
+    "spa": "despertar",
+    "eng": [
+      "to wake up"
+    ]
+  },
+  {
+    "index": 154,
+    "spa": "calificar",
+    "eng": [
+      "to grade",
+      "to qualify"
+    ]
+  },
+  {
+    "index": 155,
+    "spa": "avanzar",
+    "eng": [
+      "to advance",
+      "to move forward"
+    ]
+  },
+  {
+    "index": 156,
+    "spa": "caracterizar",
+    "eng": [
+      "to characterize"
+    ]
+  },
+  {
+    "index": 834,
+    "spa": "vencer",
+    "eng": [
+      "to defeat",
+      "overcome"
+    ]
+  },
+  {
+    "index": 157,
+    "spa": "gritar",
+    "eng": [
+      "to shout",
+      "to scream"
+    ]
+  },
+  {
+    "index": 158,
+    "spa": "figurar",
+    "eng": [
+      "to appear",
+      "to figure"
+    ]
+  },
+  {
+    "index": 159,
+    "spa": "guardar",
+    "eng": [
+      "to keep",
+      "to save"
+    ]
+  },
+  {
+    "index": 160,
+    "spa": "separar",
+    "eng": [
+      "to separate"
+    ]
+  },
+  {
+    "index": 161,
+    "spa": "transformar",
+    "eng": [
+      "to transform"
+    ]
+  },
+  {
+    "index": 162,
+    "spa": "aprobar",
+    "eng": [
+      "to approve",
+      "to pass"
+    ]
+  },
+  {
+    "index": 163,
+    "spa": "preocupar",
+    "eng": [
+      "to worry"
+    ]
+  },
+  {
+    "index": 164,
+    "spa": "disfrutar",
+    "eng": [
+      "to enjoy"
+    ]
+  },
+  {
+    "index": 165,
+    "spa": "basar",
+    "eng": [
+      "to base"
+    ]
+  },
+  {
+    "index": 166,
+    "spa": "prestar",
+    "eng": [
+      "to lend"
+    ]
+  },
+  {
+    "index": 835,
+    "spa": "crecer",
+    "eng": [
+      "to grow"
+    ]
+  },
+  {
+    "index": 167,
+    "spa": "juzgar",
+    "eng": [
+      "to judge"
+    ]
+  },
+  {
+    "index": 950,
+    "spa": "destruir",
+    "eng": [
+      "to destroy"
+    ]
+  },
+  {
+    "index": 168,
+    "spa": "respetar",
+    "eng": [
+      "to respect"
+    ]
+  },
+  {
+    "index": 169,
+    "spa": "enseñar",
+    "eng": [
+      "to teach",
+      "to show"
+    ]
+  },
+  {
+    "index": 170,
+    "spa": "integrar",
+    "eng": [
+      "to integrate"
+    ]
+  },
+  {
+    "index": 171,
+    "spa": "durar",
+    "eng": [
+      "to last"
+    ]
+  },
+  {
+    "index": 172,
+    "spa": "investigar",
+    "eng": [
+      "to investigate"
+    ]
+  },
+  {
+    "index": 173,
+    "spa": "mencionar",
+    "eng": [
+      "to mention"
+    ]
+  },
+  {
+    "index": 174,
+    "spa": "cruzar",
+    "eng": [
+      "to cross"
+    ]
+  },
+  {
+    "index": 175,
+    "spa": "revelar",
+    "eng": [
+      "to reveal"
+    ]
+  },
+  {
+    "index": 836,
+    "spa": "recorrer",
+    "eng": [
+      "to travel through",
+      "go across"
+    ]
+  },
+  {
+    "index": 837,
+    "spa": "someter",
+    "eng": [
+      "to submit",
+      "subdue"
+    ]
+  },
+  {
+    "index": 176,
+    "spa": "generar",
+    "eng": [
+      "to generate"
+    ]
+  },
+  {
+    "index": 951,
+    "spa": "sustituir",
+    "eng": [
+      "to substitute",
+      "replace"
+    ]
+  },
+  {
+    "index": 177,
+    "spa": "constar",
+    "eng": [
+      "to consist of",
+      "to be recorded"
+    ]
+  },
+  {
+    "index": 178,
+    "spa": "manejar",
+    "eng": [
+      "to handle",
+      "to drive"
+    ]
+  },
+  {
+    "index": 179,
+    "spa": "notar",
+    "eng": [
+      "to notice",
+      "to note"
+    ]
+  },
+  {
+    "index": 180,
+    "spa": "tirar",
+    "eng": [
+      "to throw",
+      "to pull"
+    ]
+  },
+  {
+    "index": 181,
+    "spa": "afrontar",
+    "eng": [
+      "to face",
+      "to confront"
+    ]
+  },
+  {
+    "index": 182,
+    "spa": "trasladar",
+    "eng": [
+      "to transfer",
+      "to move"
+    ]
+  },
+  {
+    "index": 838,
+    "spa": "extender",
+    "eng": [
+      "to extend"
+    ]
+  },
+  {
+    "index": 183,
+    "spa": "solucionar",
+    "eng": [
+      "to solve"
+    ]
+  },
+  {
+    "index": 184,
+    "spa": "denominar",
+    "eng": [
+      "to call",
+      "to name"
+    ]
+  },
+  {
+    "index": 185,
+    "spa": "cobrar",
+    "eng": [
+      "to charge",
+      "to collect"
+    ]
+  },
+  {
+    "index": 186,
+    "spa": "instalar",
+    "eng": [
+      "to install"
+    ]
+  },
+  {
+    "index": 952,
+    "spa": "contribuir",
+    "eng": [
+      "to contribute"
+    ]
+  },
+  {
+    "index": 953,
+    "spa": "partir",
+    "eng": [
+      "to leave",
+      "divide"
+    ]
+  },
+  {
+    "index": 954,
+    "spa": "admitir",
+    "eng": [
+      "to admit"
+    ]
+  },
+  {
+    "index": 187,
+    "spa": "renunciar",
+    "eng": [
+      "to resign",
+      "to give up"
+    ]
+  },
+  {
+    "index": 188,
+    "spa": "llenar",
+    "eng": [
+      "to fill"
+    ]
+  },
+  {
+    "index": 189,
+    "spa": "elaborar",
+    "eng": [
+      "to develop",
+      "to elaborate"
+    ]
+  },
+  {
+    "index": 190,
+    "spa": "firmar",
+    "eng": [
+      "to sign"
+    ]
+  },
+  {
+    "index": 191,
+    "spa": "marchar",
+    "eng": [
+      "to march",
+      "to go"
+    ]
+  },
+  {
+    "index": 192,
+    "spa": "nombrar",
+    "eng": [
+      "to name",
+      "to appoint"
+    ]
+  },
+  {
+    "index": 193,
+    "spa": "incrementar",
+    "eng": [
+      "to increase"
+    ]
+  },
+  {
+    "index": 194,
+    "spa": "emplear",
+    "eng": [
+      "to employ",
+      "to use"
+    ]
+  },
+  {
+    "index": 195,
+    "spa": "apuntar",
+    "eng": [
+      "to aim",
+      "to point",
+      "to write down"
+    ]
+  },
+  {
+    "index": 839,
+    "spa": "devolver",
+    "eng": [
+      "to return something"
+    ]
+  },
+  {
+    "index": 955,
+    "spa": "coincidir",
+    "eng": [
+      "to coincide",
+      "agree"
+    ]
+  },
+  {
+    "index": 956,
+    "spa": "disminuir",
+    "eng": [
+      "to diminish",
+      "decrease"
+    ]
+  },
+  {
+    "index": 840,
+    "spa": "carecer",
+    "eng": [
+      "to lack"
+    ]
+  },
+  {
+    "index": 196,
+    "spa": "completar",
+    "eng": [
+      "to complete"
+    ]
+  },
+  {
+    "index": 197,
+    "spa": "bailar",
+    "eng": [
+      "to dance"
+    ]
+  },
+  {
+    "index": 198,
+    "spa": "subrayar",
+    "eng": [
+      "to underline",
+      "to emphasize"
+    ]
+  },
+  {
+    "index": 199,
+    "spa": "cuidar",
+    "eng": [
+      "to take care of"
+    ]
+  },
+  {
+    "index": 200,
+    "spa": "elevar",
+    "eng": [
+      "to raise",
+      "to elevate"
+    ]
+  },
+  {
+    "index": 841,
+    "spa": "proceder",
+    "eng": [
+      "to proceed"
+    ]
+  },
+  {
+    "index": 201,
+    "spa": "precisar",
+    "eng": [
+      "to specify",
+      "to need"
+    ]
+  },
+  {
+    "index": 202,
+    "spa": "marcar",
+    "eng": [
+      "to mark",
+      "to dial",
+      "to score"
+    ]
+  },
+  {
+    "index": 203,
+    "spa": "votar",
+    "eng": [
+      "to vote"
+    ]
+  },
+  {
+    "index": 204,
+    "spa": "gobernar",
+    "eng": [
+      "to govern",
+      "to rule"
+    ]
+  },
+  {
+    "index": 957,
+    "spa": "transmitir",
+    "eng": [
+      "to transmit",
+      "broadcast"
+    ]
+  },
+  {
+    "index": 205,
+    "spa": "proporcionar",
+    "eng": [
+      "to provide",
+      "to supply"
+    ]
+  },
+  {
+    "index": 842,
+    "spa": "coger",
+    "eng": [
+      "to take",
+      "catch"
+    ]
+  },
+  {
+    "index": 206,
+    "spa": "acusar",
+    "eng": [
+      "to accuse",
+      "to charge"
+    ]
+  },
+  {
+    "index": 958,
+    "spa": "describir",
+    "eng": [
+      "to describe"
+    ]
+  },
+  {
+    "index": 843,
+    "spa": "sorprender",
+    "eng": [
+      "to surprise"
+    ]
+  },
+  {
+    "index": 207,
+    "spa": "sumar",
+    "eng": [
+      "to add",
+      "to amount to"
+    ]
+  },
+  {
+    "index": 208,
+    "spa": "abordar",
+    "eng": [
+      "to board",
+      "to tackle",
+      "to approach"
+    ]
+  },
+  {
+    "index": 209,
+    "spa": "finalizar",
+    "eng": [
+      "to finish",
+      "to end"
+    ]
+  },
+  {
+    "index": 210,
+    "spa": "detectar",
+    "eng": [
+      "to detect",
+      "to spot"
+    ]
+  },
+  {
+    "index": 959,
+    "spa": "percibir",
+    "eng": [
+      "to perceive"
+    ]
+  },
+  {
+    "index": 844,
+    "spa": "componer",
+    "eng": [
+      "to compose",
+      "fix"
+    ]
+  },
+  {
+    "index": 211,
+    "spa": "adaptar",
+    "eng": [
+      "to adapt",
+      "to adjust"
+    ]
+  },
+  {
+    "index": 212,
+    "spa": "mandar",
+    "eng": [
+      "to send",
+      "to command"
+    ]
+  },
+  {
+    "index": 213,
+    "spa": "destinar",
+    "eng": [
+      "to assign",
+      "to allocate",
+      "to send"
+    ]
+  },
+  {
+    "index": 845,
+    "spa": "exponer",
+    "eng": [
+      "to expose",
+      "exhibit"
+    ]
+  },
+  {
+    "index": 960,
+    "spa": "confundir",
+    "eng": [
+      "to confuse"
+    ]
+  },
+  {
+    "index": 961,
+    "spa": "sobrevivir",
+    "eng": [
+      "to survive"
+    ]
+  },
+  {
+    "index": 962,
+    "spa": "prevenir",
+    "eng": [
+      "to prevent"
+    ]
+  },
+  {
+    "index": 214,
+    "spa": "revisar",
+    "eng": [
+      "to review",
+      "to check",
+      "to revise"
+    ]
+  },
+  {
+    "index": 215,
+    "spa": "consultar",
+    "eng": [
+      "to consult",
+      "to check with"
+    ]
+  },
+  {
+    "index": 216,
+    "spa": "sonar",
+    "eng": [
+      "to sound",
+      "to ring"
+    ]
+  },
+  {
+    "index": 963,
+    "spa": "resistir",
+    "eng": [
+      "to resist"
+    ]
+  },
+  {
+    "index": 217,
+    "spa": "asesinar",
+    "eng": [
+      "to murder",
+      "to assassinate"
+    ]
+  },
+  {
+    "index": 218,
+    "spa": "aportar",
+    "eng": [
+      "to contribute",
+      "to provide"
+    ]
+  },
+  {
+    "index": 219,
+    "spa": "evaluar",
+    "eng": [
+      "to evaluate",
+      "to assess"
+    ]
+  },
+  {
+    "index": 964,
+    "spa": "residir",
+    "eng": [
+      "to reside",
+      "live"
+    ]
+  },
+  {
+    "index": 220,
+    "spa": "rechazar",
+    "eng": [
+      "to reject",
+      "to turn down"
+    ]
+  },
+  {
+    "index": 221,
+    "spa": "rodear",
+    "eng": [
+      "to surround",
+      "to encircle"
+    ]
+  },
+  {
+    "index": 222,
+    "spa": "pronunciar",
+    "eng": [
+      "to pronounce",
+      "to declare"
+    ]
+  },
+  {
+    "index": 223,
+    "spa": "denunciar",
+    "eng": [
+      "to report",
+      "to denounce"
+    ]
+  },
+  {
+    "index": 224,
+    "spa": "acordar",
+    "eng": [
+      "to agree",
+      "to remember"
+    ]
+  },
+  {
+    "index": 225,
+    "spa": "fumar",
+    "eng": [
+      "to smoke"
+    ]
+  },
+  {
+    "index": 226,
+    "spa": "exclamar",
+    "eng": [
+      "to exclaim",
+      "to shout"
+    ]
+  },
+  {
+    "index": 965,
+    "spa": "presidir",
+    "eng": [
+      "to preside over",
+      "chair"
+    ]
+  },
+  {
+    "index": 227,
+    "spa": "averiguar",
+    "eng": [
+      "to find out",
+      "to inquire"
+    ]
+  },
+  {
+    "index": 228,
+    "spa": "saltar",
+    "eng": [
+      "to jump",
+      "to leap"
+    ]
+  },
+  {
+    "index": 229,
+    "spa": "montar",
+    "eng": [
+      "to ride",
+      "to mount",
+      "to assemble"
+    ]
+  },
+  {
+    "index": 230,
+    "spa": "condenar",
+    "eng": [
+      "to condemn",
+      "to convict"
+    ]
+  },
+  {
+    "index": 231,
+    "spa": "registrar",
+    "eng": [
+      "to record",
+      "to register",
+      "to search"
+    ]
+  },
+  {
+    "index": 232,
+    "spa": "comparar",
+    "eng": [
+      "to compare"
+    ]
+  },
+  {
+    "index": 846,
+    "spa": "ceder",
+    "eng": [
+      "to yield",
+      "give in"
+    ]
+  },
+  {
+    "index": 233,
+    "spa": "respectar",
+    "eng": [
+      "nonstandard verb — see ‘respetar’"
+    ]
+  },
+  {
+    "index": 234,
+    "spa": "limpiar",
+    "eng": [
+      "to clean"
+    ]
+  },
+  {
+    "index": 235,
+    "spa": "alejar",
+    "eng": [
+      "to move away",
+      "to distance"
+    ]
+  },
+  {
+    "index": 236,
+    "spa": "arreglar",
+    "eng": [
+      "to fix",
+      "to arrange"
+    ]
+  },
+  {
+    "index": 847,
+    "spa": "conceder",
+    "eng": [
+      "to grant",
+      "concede"
+    ]
+  },
+  {
+    "index": 237,
+    "spa": "lavar",
+    "eng": [
+      "to wash"
+    ]
+  },
+  {
+    "index": 238,
+    "spa": "titular",
+    "eng": [
+      "to title",
+      "to headline"
+    ]
+  },
+  {
+    "index": 239,
+    "spa": "enterar",
+    "eng": [
+      "to find out",
+      "to inform — often used reflexively"
+    ]
+  },
+  {
+    "index": 240,
+    "spa": "atravesar",
+    "eng": [
+      "to cross",
+      "to go through"
+    ]
+  },
+  {
+    "index": 966,
+    "spa": "emitir",
+    "eng": [
+      "to emit",
+      "issue"
+    ]
+  },
+  {
+    "index": 241,
+    "spa": "practicar",
+    "eng": [
+      "to practice"
+    ]
+  },
+  {
+    "index": 242,
+    "spa": "ejecutar",
+    "eng": [
+      "to execute",
+      "to carry out"
+    ]
+  },
+  {
+    "index": 243,
+    "spa": "colaborar",
+    "eng": [
+      "to collaborate",
+      "to contribute"
+    ]
+  },
+  {
+    "index": 967,
+    "spa": "atribuir",
+    "eng": [
+      "to attribute"
+    ]
+  },
+  {
+    "index": 968,
+    "spa": "invertir",
+    "eng": [
+      "to invest",
+      "invert"
+    ]
+  },
+  {
+    "index": 244,
+    "spa": "dominar",
+    "eng": [
+      "to dominate",
+      "to master"
+    ]
+  },
+  {
+    "index": 245,
+    "spa": "reforzar",
+    "eng": [
+      "to reinforce",
+      "to strengthen"
+    ]
+  },
+  {
+    "index": 246,
+    "spa": "limitar",
+    "eng": [
+      "to limit",
+      "to restrict"
+    ]
+  },
+  {
+    "index": 247,
+    "spa": "amar",
+    "eng": [
+      "to love"
+    ]
+  },
+  {
+    "index": 248,
+    "spa": "financiar",
+    "eng": [
+      "to finance",
+      "to fund"
+    ]
+  },
+  {
+    "index": 249,
+    "spa": "liberar",
+    "eng": [
+      "to free",
+      "to liberate"
+    ]
+  },
+  {
+    "index": 250,
+    "spa": "frenar",
+    "eng": [
+      "to brake",
+      "to slow down",
+      "to stop"
+    ]
+  },
+  {
+    "index": 251,
+    "spa": "atacar",
+    "eng": [
+      "to attack"
+    ]
+  },
+  {
+    "index": 969,
+    "spa": "sugerir",
+    "eng": [
+      "to suggest"
+    ]
+  },
+  {
+    "index": 252,
+    "spa": "otorgar",
+    "eng": [
+      "to grant",
+      "to award"
+    ]
+  },
+  {
+    "index": 253,
+    "spa": "valorar",
+    "eng": [
+      "to value",
+      "to assess"
+    ]
+  },
+  {
+    "index": 254,
+    "spa": "descansar",
+    "eng": [
+      "to rest",
+      "to relax"
+    ]
+  },
+  {
+    "index": 255,
+    "spa": "ingresar",
+    "eng": [
+      "to enter",
+      "to join",
+      "to deposit"
+    ]
+  },
+  {
+    "index": 256,
+    "spa": "cenar",
+    "eng": [
+      "to have dinner"
+    ]
+  },
+  {
+    "index": 257,
+    "spa": "captar",
+    "eng": [
+      "to capture",
+      "to grasp"
+    ]
+  },
+  {
+    "index": 970,
+    "spa": "herir",
+    "eng": [
+      "to injure",
+      "hurt"
+    ]
+  },
+  {
+    "index": 848,
+    "spa": "emprender",
+    "eng": [
+      "to undertake",
+      "start"
+    ]
+  },
+  {
+    "index": 258,
+    "spa": "recomendar",
+    "eng": [
+      "to recommend",
+      "to advise"
+    ]
+  },
+  {
+    "index": 259,
+    "spa": "operar",
+    "eng": [
+      "to operate"
+    ]
+  },
+  {
+    "index": 260,
+    "spa": "volar",
+    "eng": [
+      "to fly"
+    ]
+  },
+  {
+    "index": 261,
+    "spa": "reiterar",
+    "eng": [
+      "to reiterate",
+      "to repeat"
+    ]
+  },
+  {
+    "index": 262,
+    "spa": "curar",
+    "eng": [
+      "to heal",
+      "to cure"
+    ]
+  },
+  {
+    "index": 849,
+    "spa": "favorecer",
+    "eng": [
+      "to favor"
+    ]
+  },
+  {
+    "index": 263,
+    "spa": "impulsar",
+    "eng": [
+      "to promote",
+      "to boost",
+      "to propel"
+    ]
+  },
+  {
+    "index": 264,
+    "spa": "opinar",
+    "eng": [
+      "to give an opinion",
+      "to think"
+    ]
+  },
+  {
+    "index": 265,
+    "spa": "cocinar",
+    "eng": [
+      "to cook"
+    ]
+  },
+  {
+    "index": 266,
+    "spa": "generalizar",
+    "eng": [
+      "to generalize"
+    ]
+  },
+  {
+    "index": 267,
+    "spa": "radicar",
+    "eng": [
+      "to lie in",
+      "to be rooted in — often used with ‘en’"
+    ]
+  },
+  {
+    "index": 268,
+    "spa": "saludar",
+    "eng": [
+      "to greet",
+      "to salute"
+    ]
+  },
+  {
+    "index": 269,
+    "spa": "consolidar",
+    "eng": [
+      "to consolidate",
+      "to strengthen"
+    ]
+  },
+  {
+    "index": 270,
+    "spa": "causar",
+    "eng": [
+      "to cause"
+    ]
+  },
+  {
+    "index": 271,
+    "spa": "pintar",
+    "eng": [
+      "to paint"
+    ]
+  },
+  {
+    "index": 272,
+    "spa": "examinar",
+    "eng": [
+      "to examine",
+      "to inspect"
+    ]
+  },
+  {
+    "index": 850,
+    "spa": "desprender",
+    "eng": [
+      "to detach",
+      "release"
+    ]
+  },
+  {
+    "index": 273,
+    "spa": "variar",
+    "eng": [
+      "to vary",
+      "to change"
+    ]
+  },
+  {
+    "index": 274,
+    "spa": "calcular",
+    "eng": [
+      "to calculate",
+      "to estimate"
+    ]
+  },
+  {
+    "index": 275,
+    "spa": "invitar",
+    "eng": [
+      "to invite"
+    ]
+  },
+  {
+    "index": 276,
+    "spa": "picar",
+    "eng": [
+      "to sting",
+      "to bite",
+      "to chop",
+      "to snack on"
+    ]
+  },
+  {
+    "index": 277,
+    "spa": "respirar",
+    "eng": [
+      "to breathe"
+    ]
+  },
+  {
+    "index": 851,
+    "spa": "equivaler",
+    "eng": [
+      "to be equivalent"
+    ]
+  },
+  {
+    "index": 278,
+    "spa": "convocar",
+    "eng": [
+      "to convene",
+      "to call",
+      "to summon"
+    ]
+  },
+  {
+    "index": 852,
+    "spa": "cometer",
+    "eng": [
+      "to commit"
+    ]
+  },
+  {
+    "index": 279,
+    "spa": "mezclar",
+    "eng": [
+      "to mix"
+    ]
+  },
+  {
+    "index": 280,
+    "spa": "concretar",
+    "eng": [
+      "to specify",
+      "to settle",
+      "to materialize"
+    ]
+  },
+  {
+    "index": 853,
+    "spa": "suspender",
+    "eng": [
+      "to suspend",
+      "fail an exam"
+    ]
+  },
+  {
+    "index": 971,
+    "spa": "provenir",
+    "eng": [
+      "to originate",
+      "come from"
+    ]
+  },
+  {
+    "index": 854,
+    "spa": "fallecer",
+    "eng": [
+      "to pass away",
+      "die"
+    ]
+  },
+  {
+    "index": 281,
+    "spa": "jurar",
+    "eng": [
+      "to swear",
+      "to take an oath"
+    ]
+  },
+  {
+    "index": 855,
+    "spa": "fortalecer",
+    "eng": [
+      "to strengthen"
+    ]
+  },
+  {
+    "index": 856,
+    "spa": "doler",
+    "eng": [
+      "to hurt",
+      "ache"
+    ]
+  },
+  {
+    "index": 282,
+    "spa": "abarcar",
+    "eng": [
+      "to cover",
+      "to span",
+      "to include"
+    ]
+  },
+  {
+    "index": 972,
+    "spa": "consumir",
+    "eng": [
+      "to consume"
+    ]
+  },
+  {
+    "index": 283,
+    "spa": "engañar",
+    "eng": [
+      "to deceive",
+      "to trick",
+      "to cheat"
+    ]
+  },
+  {
+    "index": 284,
+    "spa": "arrancar",
+    "eng": [
+      "to start up",
+      "to pull out",
+      "to tear off"
+    ]
+  },
+  {
+    "index": 285,
+    "spa": "adelantar",
+    "eng": [
+      "to advance",
+      "to overtake",
+      "to bring forward"
+    ]
+  },
+  {
+    "index": 286,
+    "spa": "concentrar",
+    "eng": [
+      "to concentrate",
+      "to focus"
+    ]
+  },
+  {
+    "index": 287,
+    "spa": "ubicar",
+    "eng": [
+      "to locate",
+      "to place"
+    ]
+  },
+  {
+    "index": 288,
+    "spa": "reclamar",
+    "eng": [
+      "to claim",
+      "to demand",
+      "to complain"
+    ]
+  },
+  {
+    "index": 289,
+    "spa": "formular",
+    "eng": [
+      "to formulate",
+      "to pose (a question"
+    ]
+  },
+  {
+    "index": 857,
+    "spa": "esconder",
+    "eng": [
+      "to hide"
+    ]
+  },
+  {
+    "index": 858,
+    "spa": "prometer",
+    "eng": [
+      "to promise"
+    ]
+  },
+  {
+    "index": 290,
+    "spa": "conformar",
+    "eng": [
+      "to make up",
+      "to form",
+      "to comply"
+    ]
+  },
+  {
+    "index": 291,
+    "spa": "estimular",
+    "eng": [
+      "to stimulate",
+      "to encourage"
+    ]
+  },
+  {
+    "index": 859,
+    "spa": "escoger",
+    "eng": [
+      "to choose"
+    ]
+  },
+  {
+    "index": 292,
+    "spa": "penetrar",
+    "eng": [
+      "to penetrate",
+      "to go into"
+    ]
+  },
+  {
+    "index": 293,
+    "spa": "preservar",
+    "eng": [
+      "to preserve",
+      "to protect"
+    ]
+  },
+  {
+    "index": 294,
+    "spa": "confesar",
+    "eng": [
+      "to confess",
+      "to admit"
+    ]
+  },
+  {
+    "index": 295,
+    "spa": "fabricar",
+    "eng": [
+      "to manufacture",
+      "to make"
+    ]
+  },
+  {
+    "index": 296,
+    "spa": "robar",
+    "eng": [
+      "to steal",
+      "to rob"
+    ]
+  },
+  {
+    "index": 297,
+    "spa": "besar",
+    "eng": [
+      "to kiss"
+    ]
+  },
+  {
+    "index": 298,
+    "spa": "aguantar",
+    "eng": [
+      "to endure",
+      "to tolerate",
+      "to hold on"
+    ]
+  },
+  {
+    "index": 299,
+    "spa": "seleccionar",
+    "eng": [
+      "to select",
+      "to choose"
+    ]
+  },
+  {
+    "index": 300,
+    "spa": "alimentar",
+    "eng": [
+      "to feed",
+      "to nourish"
+    ]
+  },
+  {
+    "index": 301,
+    "spa": "cansar",
+    "eng": [
+      "to tire",
+      "to get tired"
+    ]
+  },
+  {
+    "index": 302,
+    "spa": "acostar",
+    "eng": [
+      "to lay down",
+      "to put to bed"
+    ]
+  },
+  {
+    "index": 860,
+    "spa": "oponer",
+    "eng": [
+      "to oppose"
+    ]
+  },
+  {
+    "index": 303,
+    "spa": "desplazar",
+    "eng": [
+      "to move",
+      "to displace"
+    ]
+  },
+  {
+    "index": 304,
+    "spa": "fomentar",
+    "eng": [
+      "to encourage",
+      "to promote"
+    ]
+  },
+  {
+    "index": 305,
+    "spa": "alterar",
+    "eng": [
+      "to alter",
+      "to upset"
+    ]
+  },
+  {
+    "index": 861,
+    "spa": "temer",
+    "eng": [
+      "to fear"
+    ]
+  },
+  {
+    "index": 973,
+    "spa": "reproducir",
+    "eng": [
+      "to reproduce",
+      "replicate"
+    ]
+  },
+  {
+    "index": 306,
+    "spa": "conquistar",
+    "eng": [
+      "to conquer",
+      "to win over"
+    ]
+  },
+  {
+    "index": 307,
+    "spa": "encargar",
+    "eng": [
+      "to put in charge",
+      "to order"
+    ]
+  },
+  {
+    "index": 308,
+    "spa": "cargar",
+    "eng": [
+      "to load",
+      "to charge"
+    ]
+  },
+  {
+    "index": 309,
+    "spa": "disparar",
+    "eng": [
+      "to shoot",
+      "to fire"
+    ]
+  },
+  {
+    "index": 310,
+    "spa": "borrar",
+    "eng": [
+      "to erase",
+      "to delete"
+    ]
+  },
+  {
+    "index": 311,
+    "spa": "pegar",
+    "eng": [
+      "to hit",
+      "to stick",
+      "to glue"
+    ]
+  },
+  {
+    "index": 312,
+    "spa": "amenazar",
+    "eng": [
+      "to threaten"
+    ]
+  },
+  {
+    "index": 862,
+    "spa": "obedecer",
+    "eng": [
+      "to obey"
+    ]
+  },
+  {
+    "index": 313,
+    "spa": "inventar",
+    "eng": [
+      "to invent",
+      "to make up"
+    ]
+  },
+  {
+    "index": 314,
+    "spa": "dudar",
+    "eng": [
+      "to doubt"
+    ]
+  },
+  {
+    "index": 315,
+    "spa": "callar",
+    "eng": [
+      "to be quiet",
+      "to silence"
+    ]
+  },
+  {
+    "index": 316,
+    "spa": "pasear",
+    "eng": [
+      "to stroll",
+      "to take a walk"
+    ]
+  },
+  {
+    "index": 317,
+    "spa": "soltar",
+    "eng": [
+      "to let go",
+      "to release"
+    ]
+  },
+  {
+    "index": 318,
+    "spa": "confiar",
+    "eng": [
+      "to trust",
+      "to confide"
+    ]
+  },
+  {
+    "index": 319,
+    "spa": "tardar",
+    "eng": [
+      "to delay",
+      "to take time"
+    ]
+  },
+  {
+    "index": 320,
+    "spa": "rescatar",
+    "eng": [
+      "to rescue",
+      "to recover"
+    ]
+  },
+  {
+    "index": 321,
+    "spa": "orientar",
+    "eng": [
+      "to guide",
+      "to orient"
+    ]
+  },
+  {
+    "index": 322,
+    "spa": "reflexionar",
+    "eng": [
+      "to reflect",
+      "to think over"
+    ]
+  },
+  {
+    "index": 323,
+    "spa": "administrar",
+    "eng": [
+      "to manage",
+      "to administer"
+    ]
+  },
+  {
+    "index": 324,
+    "spa": "derivar",
+    "eng": [
+      "to derive",
+      "to result in"
+    ]
+  },
+  {
+    "index": 325,
+    "spa": "golpear",
+    "eng": [
+      "to hit",
+      "to strike"
+    ]
+  },
+  {
+    "index": 863,
+    "spa": "encender",
+    "eng": [
+      "to turn on",
+      "ignite"
+    ]
+  },
+  {
+    "index": 864,
+    "spa": "padecer",
+    "eng": [
+      "to suffer",
+      "endure"
+    ]
+  },
+  {
+    "index": 865,
+    "spa": "ascender",
+    "eng": [
+      "to ascend",
+      "promote"
+    ]
+  },
+  {
+    "index": 326,
+    "spa": "vincular",
+    "eng": [
+      "to link",
+      "to connect"
+    ]
+  },
+  {
+    "index": 327,
+    "spa": "ignorar",
+    "eng": [
+      "to ignore",
+      "to not know"
+    ]
+  },
+  {
+    "index": 328,
+    "spa": "girar",
+    "eng": [
+      "to turn",
+      "to spin"
+    ]
+  },
+  {
+    "index": 329,
+    "spa": "especializar",
+    "eng": [
+      "to specialize"
+    ]
+  },
+  {
+    "index": 974,
+    "spa": "perseguir",
+    "eng": [
+      "to pursue",
+      "chase"
+    ]
+  },
+  {
+    "index": 330,
+    "spa": "disimular",
+    "eng": [
+      "to hide",
+      "to conceal"
+    ]
+  },
+  {
+    "index": 331,
+    "spa": "regular",
+    "eng": [
+      "to regulate",
+      "to control"
+    ]
+  },
+  {
+    "index": 332,
+    "spa": "diferenciar",
+    "eng": [
+      "to differentiate",
+      "to distinguish"
+    ]
+  },
+  {
+    "index": 975,
+    "spa": "dividir",
+    "eng": [
+      "to divide"
+    ]
+  },
+  {
+    "index": 333,
+    "spa": "renovar",
+    "eng": [
+      "to renew",
+      "to renovate"
+    ]
+  },
+  {
+    "index": 866,
+    "spa": "desconocer",
+    "eng": [
+      "to not know",
+      "ignore"
+    ]
+  },
+  {
+    "index": 334,
+    "spa": "fundar",
+    "eng": [
+      "to found",
+      "to establish"
+    ]
+  },
+  {
+    "index": 335,
+    "spa": "compensar",
+    "eng": [
+      "to compensate",
+      "to make up for"
+    ]
+  },
+  {
+    "index": 336,
+    "spa": "localizar",
+    "eng": [
+      "to locate",
+      "to find"
+    ]
+  },
+  {
+    "index": 337,
+    "spa": "reaccionar",
+    "eng": [
+      "to react"
+    ]
+  },
+  {
+    "index": 338,
+    "spa": "clasificar",
+    "eng": [
+      "to classify",
+      "to sort"
+    ]
+  },
+  {
+    "index": 339,
+    "spa": "perdonar",
+    "eng": [
+      "to forgive",
+      "to pardon"
+    ]
+  },
+  {
+    "index": 340,
+    "spa": "apartar",
+    "eng": [
+      "to move away",
+      "to separate"
+    ]
+  },
+  {
+    "index": 867,
+    "spa": "agradecer",
+    "eng": [
+      "to thank",
+      "be grateful for"
+    ]
+  },
+  {
+    "index": 976,
+    "spa": "deducir",
+    "eng": [
+      "to deduce",
+      "infer"
+    ]
+  },
+  {
+    "index": 341,
+    "spa": "soñar",
+    "eng": [
+      "to dream"
+    ]
+  },
+  {
+    "index": 342,
+    "spa": "gozar",
+    "eng": [
+      "to enjoy"
+    ]
+  },
+  {
+    "index": 343,
+    "spa": "designar",
+    "eng": [
+      "to designate",
+      "to appoint"
+    ]
+  },
+  {
+    "index": 868,
+    "spa": "envolver",
+    "eng": [
+      "to wrap",
+      "involve"
+    ]
+  },
+  {
+    "index": 977,
+    "spa": "concebir",
+    "eng": [
+      "to conceive",
+      "imagine"
+    ]
+  },
+  {
+    "index": 344,
+    "spa": "profundizar",
+    "eng": [
+      "to deepen",
+      "to go deeper into"
+    ]
+  },
+  {
+    "index": 345,
+    "spa": "quemar",
+    "eng": [
+      "to burn"
+    ]
+  },
+  {
+    "index": 346,
+    "spa": "criticar",
+    "eng": [
+      "to criticize"
+    ]
+  },
+  {
+    "index": 347,
+    "spa": "reparar",
+    "eng": [
+      "to repair",
+      "to fix"
+    ]
+  },
+  {
+    "index": 978,
+    "spa": "hervir",
+    "eng": [
+      "to boil"
+    ]
+  },
+  {
+    "index": 348,
+    "spa": "desempeñar",
+    "eng": [
+      "to perform",
+      "to carry out"
+    ]
+  },
+  {
+    "index": 979,
+    "spa": "reconstruir",
+    "eng": [
+      "to reconstruct",
+      "rebuild"
+    ]
+  },
+  {
+    "index": 349,
+    "spa": "explotar",
+    "eng": [
+      "to exploit",
+      "to explode"
+    ]
+  },
+  {
+    "index": 980,
+    "spa": "interrumpir",
+    "eng": [
+      "to interrupt"
+    ]
+  },
+  {
+    "index": 350,
+    "spa": "brindar",
+    "eng": [
+      "to offer",
+      "to give",
+      "to toast"
+    ]
+  },
+  {
+    "index": 981,
+    "spa": "difundir",
+    "eng": [
+      "to spread",
+      "disseminate"
+    ]
+  },
+  {
+    "index": 351,
+    "spa": "aspirar",
+    "eng": [
+      "to aspire",
+      "to vacuum"
+    ]
+  },
+  {
+    "index": 352,
+    "spa": "conllevar",
+    "eng": [
+      "to entail",
+      "to involve"
+    ]
+  },
+  {
+    "index": 353,
+    "spa": "sospechar",
+    "eng": [
+      "to suspect"
+    ]
+  },
+  {
+    "index": 354,
+    "spa": "arrastrar",
+    "eng": [
+      "to drag",
+      "to pull"
+    ]
+  },
+  {
+    "index": 355,
+    "spa": "originar",
+    "eng": [
+      "to originate",
+      "to cause"
+    ]
+  },
+  {
+    "index": 982,
+    "spa": "repartir",
+    "eng": [
+      "to distribute",
+      "hand out"
+    ]
+  },
+  {
+    "index": 356,
+    "spa": "prolongar",
+    "eng": [
+      "to prolong",
+      "to extend"
+    ]
+  },
+  {
+    "index": 357,
+    "spa": "conversar",
+    "eng": [
+      "to converse",
+      "to talk"
+    ]
+  },
+  {
+    "index": 869,
+    "spa": "retener",
+    "eng": [
+      "to retain",
+      "hold back"
+    ]
+  },
+  {
+    "index": 358,
+    "spa": "descartar",
+    "eng": [
+      "to discard",
+      "to rule out"
+    ]
+  },
+  {
+    "index": 359,
+    "spa": "gastar",
+    "eng": [
+      "to spend",
+      "to waste"
+    ]
+  },
+  {
+    "index": 360,
+    "spa": "ajustar",
+    "eng": [
+      "to adjust",
+      "to tighten"
+    ]
+  },
+  {
+    "index": 361,
+    "spa": "replicar",
+    "eng": [
+      "to reply",
+      "to replicate"
+    ]
+  },
+  {
+    "index": 362,
+    "spa": "aliviar",
+    "eng": [
+      "to relieve",
+      "to ease"
+    ]
+  },
+  {
+    "index": 363,
+    "spa": "contratar",
+    "eng": [
+      "to hire",
+      "to contract"
+    ]
+  },
+  {
+    "index": 364,
+    "spa": "forzar",
+    "eng": [
+      "to force"
+    ]
+  },
+  {
+    "index": 365,
+    "spa": "proyectar",
+    "eng": [
+      "to project",
+      "to plan"
+    ]
+  },
+  {
+    "index": 366,
+    "spa": "anotar",
+    "eng": [
+      "to note down",
+      "to score"
+    ]
+  },
+  {
+    "index": 367,
+    "spa": "centrar",
+    "eng": [
+      "to focus",
+      "to center"
+    ]
+  },
+  {
+    "index": 368,
+    "spa": "adivinar",
+    "eng": [
+      "to guess",
+      "to predict"
+    ]
+  },
+  {
+    "index": 369,
+    "spa": "verificar",
+    "eng": [
+      "to verify",
+      "to check"
+    ]
+  },
+  {
+    "index": 870,
+    "spa": "descender",
+    "eng": [
+      "to descend",
+      "go down"
+    ]
+  },
+  {
+    "index": 370,
+    "spa": "optar",
+    "eng": [
+      "to choose",
+      "to opt"
+    ]
+  },
+  {
+    "index": 371,
+    "spa": "procurar",
+    "eng": [
+      "to try",
+      "to make sure"
+    ]
+  },
+  {
+    "index": 372,
+    "spa": "pesar",
+    "eng": [
+      "to weigh",
+      "to regret"
+    ]
+  },
+  {
+    "index": 871,
+    "spa": "comprometer",
+    "eng": [
+      "to compromise",
+      "commit"
+    ]
+  },
+  {
+    "index": 373,
+    "spa": "dotar",
+    "eng": [
+      "to equip",
+      "to provide"
+    ]
+  },
+  {
+    "index": 374,
+    "spa": "estallar",
+    "eng": [
+      "to burst",
+      "to explode"
+    ]
+  },
+  {
+    "index": 983,
+    "spa": "suprimir",
+    "eng": [
+      "to suppress",
+      "delete"
+    ]
+  },
+  {
+    "index": 375,
+    "spa": "molestar",
+    "eng": [
+      "to bother",
+      "to annoy"
+    ]
+  },
+  {
+    "index": 376,
+    "spa": "inaugurar",
+    "eng": [
+      "to inaugurate",
+      "to open"
+    ]
+  },
+  {
+    "index": 377,
+    "spa": "vigilar",
+    "eng": [
+      "to watch",
+      "to guard"
+    ]
+  },
+  {
+    "index": 378,
+    "spa": "rodar",
+    "eng": [
+      "to roll",
+      "to shoot a film"
+    ]
+  },
+  {
+    "index": 872,
+    "spa": "acoger",
+    "eng": [
+      "to welcome",
+      "receive"
+    ]
+  },
+  {
+    "index": 379,
+    "spa": "entrevistar",
+    "eng": [
+      "to interview"
+    ]
+  },
+  {
+    "index": 380,
+    "spa": "vengar",
+    "eng": [
+      "to avenge"
+    ]
+  },
+  {
+    "index": 381,
+    "spa": "pelear",
+    "eng": [
+      "to fight",
+      "to argue"
+    ]
+  },
+  {
+    "index": 382,
+    "spa": "librar",
+    "eng": [
+      "to free",
+      "to fight"
+    ]
+  },
+  {
+    "index": 383,
+    "spa": "secar",
+    "eng": [
+      "to dry"
+    ]
+  },
+  {
+    "index": 384,
+    "spa": "encerrar",
+    "eng": [
+      "to lock up",
+      "to enclose"
+    ]
+  },
+  {
+    "index": 385,
+    "spa": "involucrar",
+    "eng": [
+      "to involve"
+    ]
+  },
+  {
+    "index": 386,
+    "spa": "derrotar",
+    "eng": [
+      "to defeat"
+    ]
+  },
+  {
+    "index": 387,
+    "spa": "armar",
+    "eng": [
+      "to arm",
+      "to assemble"
+    ]
+  },
+  {
+    "index": 873,
+    "spa": "atrever",
+    "eng": [
+      "to dare"
+    ]
+  },
+  {
+    "index": 388,
+    "spa": "cesar",
+    "eng": [
+      "to cease",
+      "to stop"
+    ]
+  },
+  {
+    "index": 389,
+    "spa": "encabezar",
+    "eng": [
+      "to lead",
+      "to head"
+    ]
+  },
+  {
+    "index": 390,
+    "spa": "resaltar",
+    "eng": [
+      "to highlight",
+      "to emphasize"
+    ]
+  },
+  {
+    "index": 984,
+    "spa": "prescindir",
+    "eng": [
+      "to do without",
+      "dispense with"
+    ]
+  },
+  {
+    "index": 391,
+    "spa": "protestar",
+    "eng": [
+      "to protest"
+    ]
+  },
+  {
+    "index": 392,
+    "spa": "beneficiar",
+    "eng": [
+      "to benefit"
+    ]
+  },
+  {
+    "index": 393,
+    "spa": "acelerar",
+    "eng": [
+      "to accelerate",
+      "to speed up"
+    ]
+  },
+  {
+    "index": 394,
+    "spa": "constatar",
+    "eng": [
+      "to confirm",
+      "to verify"
+    ]
+  },
+  {
+    "index": 395,
+    "spa": "conectar",
+    "eng": [
+      "to connect"
+    ]
+  },
+  {
+    "index": 396,
+    "spa": "presionar",
+    "eng": [
+      "to press",
+      "to pressure"
+    ]
+  },
+  {
+    "index": 397,
+    "spa": "avisar",
+    "eng": [
+      "to warn",
+      "to inform"
+    ]
+  },
+  {
+    "index": 985,
+    "spa": "proseguir",
+    "eng": [
+      "to continue",
+      "proceed"
+    ]
+  },
+  {
+    "index": 398,
+    "spa": "asomar",
+    "eng": [
+      "to appear",
+      "to peek out"
+    ]
+  },
+  {
+    "index": 399,
+    "spa": "transportar",
+    "eng": [
+      "to transport",
+      "to carry"
+    ]
+  },
+  {
+    "index": 400,
+    "spa": "expulsar",
+    "eng": [
+      "to expel",
+      "to kick out"
+    ]
+  },
+  {
+    "index": 401,
+    "spa": "rallar",
+    "eng": [
+      "to grate"
+    ]
+  },
+  {
+    "index": 986,
+    "spa": "prohibir",
+    "eng": [
+      "to prohibit",
+      "forbid"
+    ]
+  },
+  {
+    "index": 402,
+    "spa": "experimentar",
+    "eng": [
+      "to experience",
+      "to experiment"
+    ]
+  },
+  {
+    "index": 987,
+    "spa": "regir",
+    "eng": [
+      "to govern",
+      "rule"
+    ]
+  },
+  {
+    "index": 403,
+    "spa": "imitar",
+    "eng": [
+      "to imitate"
+    ]
+  },
+  {
+    "index": 404,
+    "spa": "grabar",
+    "eng": [
+      "to record",
+      "to engrave"
+    ]
+  },
+  {
+    "index": 988,
+    "spa": "hundir",
+    "eng": [
+      "to sink"
+    ]
+  },
+  {
+    "index": 405,
+    "spa": "tapar",
+    "eng": [
+      "to cover"
+    ]
+  },
+  {
+    "index": 406,
+    "spa": "comportar",
+    "eng": [
+      "to entail",
+      "to involve"
+    ]
+  },
+  {
+    "index": 407,
+    "spa": "murmurar",
+    "eng": [
+      "to murmur",
+      "to whisper"
+    ]
+  },
+  {
+    "index": 408,
+    "spa": "alzar",
+    "eng": [
+      "to raise",
+      "to lift"
+    ]
+  },
+  {
+    "index": 409,
+    "spa": "potenciar",
+    "eng": [
+      "to strengthen",
+      "to promote"
+    ]
+  },
+  {
+    "index": 410,
+    "spa": "extrañar",
+    "eng": [
+      "to miss",
+      "to surprise"
+    ]
+  },
+  {
+    "index": 411,
+    "spa": "calmar",
+    "eng": [
+      "to calm"
+    ]
+  },
+  {
+    "index": 412,
+    "spa": "puntualizar",
+    "eng": [
+      "to specify",
+      "to point out"
+    ]
+  },
+  {
+    "index": 989,
+    "spa": "distribuir",
+    "eng": [
+      "to distribute"
+    ]
+  },
+  {
+    "index": 413,
+    "spa": "enfriar",
+    "eng": [
+      "to cool down"
+    ]
+  },
+  {
+    "index": 414,
+    "spa": "castigar",
+    "eng": [
+      "to punish"
+    ]
+  },
+  {
+    "index": 990,
+    "spa": "eludir",
+    "eng": [
+      "to elude",
+      "avoid"
+    ]
+  },
+  {
+    "index": 415,
+    "spa": "ahorrar",
+    "eng": [
+      "to save (money",
+      "time"
+    ]
+  },
+  {
+    "index": 991,
+    "spa": "aludir",
+    "eng": [
+      "to allude",
+      "refer"
+    ]
+  },
+  {
+    "index": 416,
+    "spa": "apagar",
+    "eng": [
+      "to turn off",
+      "to extinguish"
+    ]
+  },
+  {
+    "index": 417,
+    "spa": "combinar",
+    "eng": [
+      "to combine"
+    ]
+  },
+  {
+    "index": 992,
+    "spa": "resumir",
+    "eng": [
+      "to summarize"
+    ]
+  },
+  {
+    "index": 874,
+    "spa": "cocer",
+    "eng": [
+      "to cook",
+      "boil"
+    ]
+  },
+  {
+    "index": 418,
+    "spa": "disputar",
+    "eng": [
+      "to dispute",
+      "to contest"
+    ]
+  },
+  {
+    "index": 419,
+    "spa": "calentar",
+    "eng": [
+      "to heat"
+    ]
+  },
+  {
+    "index": 420,
+    "spa": "circular",
+    "eng": [
+      "to circulate"
+    ]
+  },
+  {
+    "index": 421,
+    "spa": "arrojar",
+    "eng": [
+      "to throw",
+      "to fling"
+    ]
+  },
+  {
+    "index": 422,
+    "spa": "regalar",
+    "eng": [
+      "to give (a gift"
+    ]
+  },
+  {
+    "index": 423,
+    "spa": "restar",
+    "eng": [
+      "to subtract",
+      "to diminish"
+    ]
+  },
+  {
+    "index": 424,
+    "spa": "acomodar",
+    "eng": [
+      "to accommodate",
+      "to arrange"
+    ]
+  },
+  {
+    "index": 425,
+    "spa": "diseñar",
+    "eng": [
+      "to design"
+    ]
+  },
+  {
+    "index": 426,
+    "spa": "encantar",
+    "eng": [
+      "to love",
+      "to enchant"
+    ]
+  },
+  {
+    "index": 427,
+    "spa": "secuestrar",
+    "eng": [
+      "to kidnap"
+    ]
+  },
+  {
+    "index": 428,
+    "spa": "abrazar",
+    "eng": [
+      "to hug",
+      "to embrace"
+    ]
+  },
+  {
+    "index": 429,
+    "spa": "industrializar",
+    "eng": [
+      "to industrialize"
+    ]
+  },
+  {
+    "index": 430,
+    "spa": "narrar",
+    "eng": [
+      "to narrate",
+      "to tell"
+    ]
+  },
+  {
+    "index": 431,
+    "spa": "explorar",
+    "eng": [
+      "to explore"
+    ]
+  },
+  {
+    "index": 993,
+    "spa": "suscribir",
+    "eng": [
+      "to subscribe"
+    ]
+  },
+  {
+    "index": 432,
+    "spa": "relatar",
+    "eng": [
+      "to recount",
+      "to tell"
+    ]
+  },
+  {
+    "index": 433,
+    "spa": "reformar",
+    "eng": [
+      "to reform"
+    ]
+  },
+  {
+    "index": 434,
+    "spa": "enterrar",
+    "eng": [
+      "to bury"
+    ]
+  },
+  {
+    "index": 435,
+    "spa": "velar",
+    "eng": [
+      "to watch over",
+      "to stay awake"
+    ]
+  },
+  {
+    "index": 875,
+    "spa": "restablecer",
+    "eng": [
+      "to restore",
+      "reestablish"
+    ]
+  },
+  {
+    "index": 436,
+    "spa": "coordinar",
+    "eng": [
+      "to coordinate"
+    ]
+  },
+  {
+    "index": 994,
+    "spa": "batir",
+    "eng": [
+      "to beat",
+      "whisk"
+    ]
+  },
+  {
+    "index": 437,
+    "spa": "cultivar",
+    "eng": [
+      "to cultivate"
+    ]
+  },
+  {
+    "index": 438,
+    "spa": "sembrar",
+    "eng": [
+      "to sow",
+      "to plant"
+    ]
+  },
+  {
+    "index": 995,
+    "spa": "exhibir",
+    "eng": [
+      "to exhibit",
+      "display"
+    ]
+  },
+  {
+    "index": 439,
+    "spa": "tragar",
+    "eng": [
+      "to swallow"
+    ]
+  },
+  {
+    "index": 440,
+    "spa": "aproximar",
+    "eng": [
+      "to bring closer",
+      "to approach"
+    ]
+  },
+  {
+    "index": 441,
+    "spa": "contrarrestar",
+    "eng": [
+      "to counteract"
+    ]
+  },
+  {
+    "index": 442,
+    "spa": "aconsejar",
+    "eng": [
+      "to advise"
+    ]
+  },
+  {
+    "index": 443,
+    "spa": "multiplicar",
+    "eng": [
+      "to multiply"
+    ]
+  },
+  {
+    "index": 444,
+    "spa": "acariciar",
+    "eng": [
+      "to caress"
+    ]
+  },
+  {
+    "index": 445,
+    "spa": "abundar",
+    "eng": [
+      "to abound",
+      "to be abundant"
+    ]
+  },
+  {
+    "index": 446,
+    "spa": "asociar",
+    "eng": [
+      "to associate"
+    ]
+  },
+  {
+    "index": 447,
+    "spa": "bañar",
+    "eng": [
+      "to bathe"
+    ]
+  },
+  {
+    "index": 448,
+    "spa": "pisar",
+    "eng": [
+      "to step on"
+    ]
+  },
+  {
+    "index": 449,
+    "spa": "ratificar",
+    "eng": [
+      "to ratify"
+    ]
+  },
+  {
+    "index": 450,
+    "spa": "habitar",
+    "eng": [
+      "to inhabit"
+    ]
+  },
+  {
+    "index": 451,
+    "spa": "quejar",
+    "eng": [
+      "to complain"
+    ]
+  },
+  {
+    "index": 452,
+    "spa": "reemplazar",
+    "eng": [
+      "to replace"
+    ]
+  },
+  {
+    "index": 996,
+    "spa": "concernir",
+    "eng": [
+      "to concern",
+      "affect"
+    ]
+  },
+  {
+    "index": 453,
+    "spa": "triunfar",
+    "eng": [
+      "to triumph",
+      "to succeed"
+    ]
+  },
+  {
+    "index": 454,
+    "spa": "oscilar",
+    "eng": [
+      "to oscillate",
+      "to swing"
+    ]
+  },
+  {
+    "index": 455,
+    "spa": "dictar",
+    "eng": [
+      "to dictate"
+    ]
+  },
+  {
+    "index": 456,
+    "spa": "encarar",
+    "eng": [
+      "to confront",
+      "to face"
+    ]
+  },
+  {
+    "index": 457,
+    "spa": "desviar",
+    "eng": [
+      "to divert",
+      "to deviate"
+    ]
+  },
+  {
+    "index": 458,
+    "spa": "agarrar",
+    "eng": [
+      "to grab"
+    ]
+  },
+  {
+    "index": 459,
+    "spa": "dialogar",
+    "eng": [
+      "to converse",
+      "to dialogue"
+    ]
+  },
+  {
+    "index": 460,
+    "spa": "propiciar",
+    "eng": [
+      "to foster",
+      "to promote"
+    ]
+  },
+  {
+    "index": 461,
+    "spa": "cazar",
+    "eng": [
+      "to hunt"
+    ]
+  },
+  {
+    "index": 462,
+    "spa": "estrenar",
+    "eng": [
+      "to debut",
+      "to use for the first time"
+    ]
+  },
+  {
+    "index": 876,
+    "spa": "esclarecer",
+    "eng": [
+      "to clarify",
+      "shed light"
+    ]
+  },
+  {
+    "index": 463,
+    "spa": "acumular",
+    "eng": [
+      "to accumulate"
+    ]
+  },
+  {
+    "index": 464,
+    "spa": "sentenciar",
+    "eng": [
+      "to sentence",
+      "to declare"
+    ]
+  },
+  {
+    "index": 997,
+    "spa": "persistir",
+    "eng": [
+      "to persist"
+    ]
+  },
+  {
+    "index": 465,
+    "spa": "depositar",
+    "eng": [
+      "to deposit"
+    ]
+  },
+  {
+    "index": 466,
+    "spa": "equivocar",
+    "eng": [
+      "to make a mistake"
+    ]
+  },
+  {
+    "index": 467,
+    "spa": "arriesgar",
+    "eng": [
+      "to risk"
+    ]
+  },
+  {
+    "index": 468,
+    "spa": "rezar",
+    "eng": [
+      "to pray"
+    ]
+  },
+  {
+    "index": 469,
+    "spa": "inclinar",
+    "eng": [
+      "to tilt",
+      "to lean"
+    ]
+  },
+  {
+    "index": 470,
+    "spa": "admirar",
+    "eng": [
+      "to admire"
+    ]
+  },
+  {
+    "index": 471,
+    "spa": "ligar",
+    "eng": [
+      "to tie",
+      "to flirt"
+    ]
+  },
+  {
+    "index": 472,
+    "spa": "paliar",
+    "eng": [
+      "to alleviate",
+      "to ease"
+    ]
+  },
+  {
+    "index": 473,
+    "spa": "iluminar",
+    "eng": [
+      "to illuminate",
+      "to light up"
+    ]
+  },
+  {
+    "index": 474,
+    "spa": "conciliar",
+    "eng": [
+      "to reconcile"
+    ]
+  },
+  {
+    "index": 475,
+    "spa": "recalcar",
+    "eng": [
+      "to emphasize",
+      "to stress"
+    ]
+  },
+  {
+    "index": 476,
+    "spa": "animar",
+    "eng": [
+      "to encourage",
+      "to cheer up"
+    ]
+  },
+  {
+    "index": 998,
+    "spa": "conferir",
+    "eng": [
+      "to confer",
+      "bestow"
+    ]
+  },
+  {
+    "index": 477,
+    "spa": "lamentar",
+    "eng": [
+      "to regret",
+      "to lament"
+    ]
+  },
+  {
+    "index": 478,
+    "spa": "reanudar",
+    "eng": [
+      "to resume"
+    ]
+  },
+  {
+    "index": 479,
+    "spa": "agrupar",
+    "eng": [
+      "to group",
+      "to gather"
+    ]
+  },
+  {
+    "index": 480,
+    "spa": "presenciar",
+    "eng": [
+      "to witness",
+      "to be present at"
+    ]
+  },
+  {
+    "index": 877,
+    "spa": "disolver",
+    "eng": [
+      "to dissolve"
+    ]
+  },
+  {
+    "index": 481,
+    "spa": "tranquilizar",
+    "eng": [
+      "to reassure",
+      "to calm down"
+    ]
+  },
+  {
+    "index": 482,
+    "spa": "educar",
+    "eng": [
+      "to educate",
+      "to raise"
+    ]
+  },
+  {
+    "index": 483,
+    "spa": "rebajar",
+    "eng": [
+      "to reduce",
+      "to lower"
+    ]
+  },
+  {
+    "index": 484,
+    "spa": "aislar",
+    "eng": [
+      "to isolate"
+    ]
+  },
+  {
+    "index": 485,
+    "spa": "dibujar",
+    "eng": [
+      "to draw"
+    ]
+  },
+  {
+    "index": 878,
+    "spa": "absorber",
+    "eng": [
+      "to absorb"
+    ]
+  },
+  {
+    "index": 999,
+    "spa": "asentir",
+    "eng": [
+      "to agree",
+      "assent"
+    ]
+  },
+  {
+    "index": 486,
+    "spa": "motivar",
+    "eng": [
+      "to motivate"
+    ]
+  },
+  {
+    "index": 487,
+    "spa": "trazar",
+    "eng": [
+      "to trace",
+      "to draw"
+    ]
+  },
+  {
+    "index": 488,
+    "spa": "sobrar",
+    "eng": [
+      "to be left over"
+    ]
+  },
+  {
+    "index": 1000,
+    "spa": "imprimir",
+    "eng": [
+      "to print"
+    ]
+  },
+  {
+    "index": 489,
+    "spa": "entrenar",
+    "eng": [
+      "to train"
+    ]
+  },
+  {
+    "index": 1001,
+    "spa": "excluir",
+    "eng": [
+      "to exclude"
+    ]
+  },
+  {
+    "index": 490,
+    "spa": "tornar",
+    "eng": [
+      "to become",
+      "to turn"
+    ]
+  },
+  {
+    "index": 491,
+    "spa": "sacrificar",
+    "eng": [
+      "to sacrifice"
+    ]
+  },
+  {
+    "index": 492,
+    "spa": "colgar",
+    "eng": [
+      "to hang"
+    ]
+  },
+  {
+    "index": 493,
+    "spa": "manipular",
+    "eng": [
+      "to manipulate"
+    ]
+  },
+  {
+    "index": 494,
+    "spa": "asustar",
+    "eng": [
+      "to scare",
+      "to frighten"
+    ]
+  },
+  {
+    "index": 495,
+    "spa": "violar",
+    "eng": [
+      "to violate",
+      "to rape"
+    ]
+  },
+  {
+    "index": 496,
+    "spa": "apretar",
+    "eng": [
+      "to press",
+      "to tighten"
+    ]
+  },
+  {
+    "index": 497,
+    "spa": "fallar",
+    "eng": [
+      "to fail"
+    ]
+  },
+  {
+    "index": 498,
+    "spa": "reposar",
+    "eng": [
+      "to rest"
+    ]
+  },
+  {
+    "index": 499,
+    "spa": "implantar",
+    "eng": [
+      "to implant",
+      "to establish"
+    ]
+  },
+  {
+    "index": 1002,
+    "spa": "transcurrir",
+    "eng": [
+      "to elapse",
+      "pass"
+    ]
+  },
+  {
+    "index": 500,
+    "spa": "atar",
+    "eng": [
+      "to tie"
+    ]
+  },
+  {
+    "index": 501,
+    "spa": "juntar",
+    "eng": [
+      "to join"
+    ]
+  },
+  {
+    "index": 502,
+    "spa": "adecuar",
+    "eng": [
+      "to adapt"
+    ]
+  },
+  {
+    "index": 503,
+    "spa": "datar",
+    "eng": [
+      "to date"
+    ]
+  },
+  {
+    "index": 504,
+    "spa": "anular",
+    "eng": [
+      "to cancel"
+    ]
+  },
+  {
+    "index": 505,
+    "spa": "contrastar",
+    "eng": [
+      "to contrast"
+    ]
+  },
+  {
+    "index": 506,
+    "spa": "enamorar",
+    "eng": [
+      "to make someone fall in love"
+    ]
+  },
+  {
+    "index": 507,
+    "spa": "temblar",
+    "eng": [
+      "to tremble"
+    ]
+  },
+  {
+    "index": 508,
+    "spa": "agotar",
+    "eng": [
+      "to exhaust"
+    ]
+  },
+  {
+    "index": 879,
+    "spa": "joder",
+    "eng": [
+      "to annoy",
+      "bother"
+    ]
+  },
+  {
+    "index": 509,
+    "spa": "doblar",
+    "eng": [
+      "to fold"
+    ]
+  },
+  {
+    "index": 510,
+    "spa": "recobrar",
+    "eng": [
+      "to recover"
+    ]
+  },
+  {
+    "index": 511,
+    "spa": "almorzar",
+    "eng": [
+      "to have lunch"
+    ]
+  },
+  {
+    "index": 512,
+    "spa": "rogar",
+    "eng": [
+      "to beg"
+    ]
+  },
+  {
+    "index": 513,
+    "spa": "autorizar",
+    "eng": [
+      "to authorize"
+    ]
+  },
+  {
+    "index": 514,
+    "spa": "empujar",
+    "eng": [
+      "to push"
+    ]
+  },
+  {
+    "index": 1003,
+    "spa": "debatir",
+    "eng": [
+      "to debate",
+      "discuss"
+    ]
+  },
+  {
+    "index": 1004,
+    "spa": "predecir",
+    "eng": [
+      "to predict"
+    ]
+  },
+  {
+    "index": 515,
+    "spa": "culminar",
+    "eng": [
+      "to culminate"
+    ]
+  },
+  {
+    "index": 516,
+    "spa": "flotar",
+    "eng": [
+      "to float"
+    ]
+  },
+  {
+    "index": 517,
+    "spa": "redactar",
+    "eng": [
+      "to draft"
+    ]
+  },
+  {
+    "index": 518,
+    "spa": "enfatizar",
+    "eng": [
+      "to emphasize"
+    ]
+  },
+  {
+    "index": 519,
+    "spa": "demandar",
+    "eng": [
+      "to demand"
+    ]
+  },
+  {
+    "index": 880,
+    "spa": "retroceder",
+    "eng": [
+      "to go back",
+      "retreat"
+    ]
+  },
+  {
+    "index": 520,
+    "spa": "acostumbrar",
+    "eng": [
+      "to get used to"
+    ]
+  },
+  {
+    "index": 521,
+    "spa": "retrasar",
+    "eng": [
+      "to delay"
+    ]
+  },
+  {
+    "index": 522,
+    "spa": "asimilar",
+    "eng": [
+      "to assimilate"
+    ]
+  },
+  {
+    "index": 523,
+    "spa": "remontar",
+    "eng": [
+      "to overcome"
+    ]
+  },
+  {
+    "index": 524,
+    "spa": "dañar",
+    "eng": [
+      "to damage"
+    ]
+  },
+  {
+    "index": 881,
+    "spa": "enriquecer",
+    "eng": [
+      "to enrich"
+    ]
+  },
+  {
+    "index": 525,
+    "spa": "descifrar",
+    "eng": [
+      "to decipher"
+    ]
+  },
+  {
+    "index": 526,
+    "spa": "articular",
+    "eng": [
+      "to articulate"
+    ]
+  },
+  {
+    "index": 527,
+    "spa": "perjudicar",
+    "eng": [
+      "to harm"
+    ]
+  },
+  {
+    "index": 528,
+    "spa": "alegar",
+    "eng": [
+      "to allege"
+    ]
+  },
+  {
+    "index": 1005,
+    "spa": "inscribir",
+    "eng": [
+      "to enroll",
+      "register"
+    ]
+  },
+  {
+    "index": 529,
+    "spa": "estribar",
+    "eng": [
+      "to be based on"
+    ]
+  },
+  {
+    "index": 1006,
+    "spa": "convivir",
+    "eng": [
+      "to coexist",
+      "live together"
+    ]
+  },
+  {
+    "index": 530,
+    "spa": "movilizar",
+    "eng": [
+      "to mobilize"
+    ]
+  },
+  {
+    "index": 531,
+    "spa": "evidenciar",
+    "eng": [
+      "to evidence"
+    ]
+  },
+  {
+    "index": 532,
+    "spa": "cuestionar",
+    "eng": [
+      "to question"
+    ]
+  },
+  {
+    "index": 533,
+    "spa": "reservar",
+    "eng": [
+      "to reserve"
+    ]
+  },
+  {
+    "index": 534,
+    "spa": "aguardar",
+    "eng": [
+      "to await"
+    ]
+  },
+  {
+    "index": 882,
+    "spa": "entrever",
+    "eng": [
+      "to glimpse",
+      "suspect"
+    ]
+  },
+  {
+    "index": 883,
+    "spa": "proveer",
+    "eng": [
+      "to provide",
+      "supply"
+    ]
+  },
+  {
+    "index": 535,
+    "spa": "restaurar",
+    "eng": [
+      "to restore"
+    ]
+  },
+  {
+    "index": 536,
+    "spa": "proclamar",
+    "eng": [
+      "to proclaim"
+    ]
+  },
+  {
+    "index": 537,
+    "spa": "sujetar",
+    "eng": [
+      "to hold"
+    ]
+  },
+  {
+    "index": 538,
+    "spa": "accionar",
+    "eng": [
+      "to activate"
+    ]
+  },
+  {
+    "index": 539,
+    "spa": "cancelar",
+    "eng": [
+      "to cancel"
+    ]
+  },
+  {
+    "index": 540,
+    "spa": "refugiar",
+    "eng": [
+      "to shelter"
+    ]
+  },
+  {
+    "index": 541,
+    "spa": "felicitar",
+    "eng": [
+      "to congratulate"
+    ]
+  },
+  {
+    "index": 1007,
+    "spa": "reprimir",
+    "eng": [
+      "to repress",
+      "suppress"
+    ]
+  },
+  {
+    "index": 542,
+    "spa": "retornar",
+    "eng": [
+      "to return"
+    ]
+  },
+  {
+    "index": 543,
+    "spa": "ilustrar",
+    "eng": [
+      "to illustrate"
+    ]
+  },
+  {
+    "index": 544,
+    "spa": "derribar",
+    "eng": [
+      "to knock down"
+    ]
+  },
+  {
+    "index": 545,
+    "spa": "liquidar",
+    "eng": [
+      "to liquidate"
+    ]
+  },
+  {
+    "index": 546,
+    "spa": "torear",
+    "eng": [
+      "to bullfight"
+    ]
+  },
+  {
+    "index": 547,
+    "spa": "configurar",
+    "eng": [
+      "to configure"
+    ]
+  },
+  {
+    "index": 1008,
+    "spa": "inducir",
+    "eng": [
+      "to induce",
+      "lead"
+    ]
+  },
+  {
+    "index": 548,
+    "spa": "aseverar",
+    "eng": [
+      "to assert"
+    ]
+  },
+  {
+    "index": 549,
+    "spa": "guiar",
+    "eng": [
+      "to guide"
+    ]
+  },
+  {
+    "index": 550,
+    "spa": "capturar",
+    "eng": [
+      "to capture"
+    ]
+  },
+  {
+    "index": 551,
+    "spa": "dificultar",
+    "eng": [
+      "to hinder"
+    ]
+  },
+  {
+    "index": 552,
+    "spa": "condicionar",
+    "eng": [
+      "to condition"
+    ]
+  },
+  {
+    "index": 553,
+    "spa": "tolerar",
+    "eng": [
+      "to tolerate"
+    ]
+  },
+  {
+    "index": 554,
+    "spa": "predominar",
+    "eng": [
+      "to predominate"
+    ]
+  },
+  {
+    "index": 1009,
+    "spa": "dimitir",
+    "eng": [
+      "to resign"
+    ]
+  },
+  {
+    "index": 555,
+    "spa": "almacenar",
+    "eng": [
+      "to store"
+    ]
+  },
+  {
+    "index": 556,
+    "spa": "acentuar",
+    "eng": [
+      "to accentuate"
+    ]
+  },
+  {
+    "index": 557,
+    "spa": "erradicar",
+    "eng": [
+      "to eradicate"
+    ]
+  },
+  {
+    "index": 558,
+    "spa": "arbitrar",
+    "eng": [
+      "to arbitrate"
+    ]
+  },
+  {
+    "index": 559,
+    "spa": "programar",
+    "eng": [
+      "to schedule"
+    ]
+  },
+  {
+    "index": 560,
+    "spa": "nadar",
+    "eng": [
+      "to swim"
+    ]
+  },
+  {
+    "index": 561,
+    "spa": "sustentar",
+    "eng": [
+      "to sustain"
+    ]
+  },
+  {
+    "index": 1010,
+    "spa": "remitir",
+    "eng": [
+      "to remit",
+      "send"
+    ]
+  },
+  {
+    "index": 562,
+    "spa": "intercambiar",
+    "eng": [
+      "to exchange"
+    ]
+  },
+  {
+    "index": 563,
+    "spa": "burlar",
+    "eng": [
+      "to mock"
+    ]
+  },
+  {
+    "index": 564,
+    "spa": "indagar",
+    "eng": [
+      "to inquire"
+    ]
+  },
+  {
+    "index": 565,
+    "spa": "infectar",
+    "eng": [
+      "to infect"
+    ]
+  },
+  {
+    "index": 566,
+    "spa": "arrebatar",
+    "eng": [
+      "to snatch"
+    ]
+  },
+  {
+    "index": 1011,
+    "spa": "ingerir",
+    "eng": [
+      "to ingest",
+      "consume"
+    ]
+  },
+  {
+    "index": 567,
+    "spa": "suministrar",
+    "eng": [
+      "to supply"
+    ]
+  },
+  {
+    "index": 568,
+    "spa": "interrogar",
+    "eng": [
+      "to interrogate"
+    ]
+  },
+  {
+    "index": 1012,
+    "spa": "invadir",
+    "eng": [
+      "to invade"
+    ]
+  },
+  {
+    "index": 569,
+    "spa": "atrapar",
+    "eng": [
+      "to catch"
+    ]
+  },
+  {
+    "index": 570,
+    "spa": "consolar",
+    "eng": [
+      "to comfort"
+    ]
+  },
+  {
+    "index": 571,
+    "spa": "pescar",
+    "eng": [
+      "to fish"
+    ]
+  },
+  {
+    "index": 1013,
+    "spa": "sacudir",
+    "eng": [
+      "to shake"
+    ]
+  },
+  {
+    "index": 572,
+    "spa": "suscitar",
+    "eng": [
+      "to provoke"
+    ]
+  },
+  {
+    "index": 573,
+    "spa": "navegar",
+    "eng": [
+      "to sail"
+    ]
+  },
+  {
+    "index": 1014,
+    "spa": "presumir",
+    "eng": [
+      "to presume",
+      "show off"
+    ]
+  },
+  {
+    "index": 574,
+    "spa": "argumentar",
+    "eng": [
+      "to argue"
+    ]
+  },
+  {
+    "index": 1015,
+    "spa": "lucir",
+    "eng": [
+      "to shine",
+      "look good"
+    ]
+  },
+  {
+    "index": 1016,
+    "spa": "seducir",
+    "eng": [
+      "to seduce"
+    ]
+  },
+  {
+    "index": 575,
+    "spa": "exportar",
+    "eng": [
+      "to export"
+    ]
+  },
+  {
+    "index": 576,
+    "spa": "editar",
+    "eng": [
+      "to edit"
+    ]
+  },
+  {
+    "index": 577,
+    "spa": "complicar",
+    "eng": [
+      "to complicate"
+    ]
+  },
+  {
+    "index": 578,
+    "spa": "gestionar",
+    "eng": [
+      "to manage"
+    ]
+  },
+  {
+    "index": 579,
+    "spa": "albergar",
+    "eng": [
+      "to shelter"
+    ]
+  },
+  {
+    "index": 580,
+    "spa": "despejar",
+    "eng": [
+      "to clear"
+    ]
+  },
+  {
+    "index": 581,
+    "spa": "modernizar",
+    "eng": [
+      "to modernize"
+    ]
+  },
+  {
+    "index": 582,
+    "spa": "inspirar",
+    "eng": [
+      "to inspire"
+    ]
+  },
+  {
+    "index": 583,
+    "spa": "evocar",
+    "eng": [
+      "to evoke"
+    ]
+  },
+  {
+    "index": 584,
+    "spa": "copiar",
+    "eng": [
+      "to copy"
+    ]
+  },
+  {
+    "index": 884,
+    "spa": "remover",
+    "eng": [
+      "to remove",
+      "stir"
+    ]
+  },
+  {
+    "index": 585,
+    "spa": "procesar",
+    "eng": [
+      "to process"
+    ]
+  },
+  {
+    "index": 586,
+    "spa": "desatar",
+    "eng": [
+      "to untie"
+    ]
+  },
+  {
+    "index": 587,
+    "spa": "remediar",
+    "eng": [
+      "to remedy"
+    ]
+  },
+  {
+    "index": 588,
+    "spa": "alegrar",
+    "eng": [
+      "to cheer up"
+    ]
+  },
+  {
+    "index": 589,
+    "spa": "pactar",
+    "eng": [
+      "to agree"
+    ]
+  },
+  {
+    "index": 885,
+    "spa": "acometer",
+    "eng": [
+      "to undertake",
+      "attack"
+    ]
+  },
+  {
+    "index": 590,
+    "spa": "retomar",
+    "eng": [
+      "to resume"
+    ]
+  },
+  {
+    "index": 591,
+    "spa": "meditar",
+    "eng": [
+      "to meditate"
+    ]
+  },
+  {
+    "index": 592,
+    "spa": "rectificar",
+    "eng": [
+      "to rectify"
+    ]
+  },
+  {
+    "index": 886,
+    "spa": "comparecer",
+    "eng": [
+      "to appear in court",
+      "attend formally"
+    ]
+  },
+  {
+    "index": 593,
+    "spa": "quebrar",
+    "eng": [
+      "to break"
+    ]
+  },
+  {
+    "index": 887,
+    "spa": "apetecer",
+    "eng": [
+      "to crave",
+      "feel like"
+    ]
+  },
+  {
+    "index": 594,
+    "spa": "rellenar",
+    "eng": [
+      "to fill"
+    ]
+  },
+  {
+    "index": 595,
+    "spa": "emocionar",
+    "eng": [
+      "to excite"
+    ]
+  },
+  {
+    "index": 596,
+    "spa": "promocionar",
+    "eng": [
+      "to promote"
+    ]
+  },
+  {
+    "index": 597,
+    "spa": "frustrar",
+    "eng": [
+      "to frustrate"
+    ]
+  },
+  {
+    "index": 1017,
+    "spa": "revivir",
+    "eng": [
+      "to revive",
+      "relive"
+    ]
+  },
+  {
+    "index": 598,
+    "spa": "perfeccionar",
+    "eng": [
+      "to perfect"
+    ]
+  },
+  {
+    "index": 599,
+    "spa": "brillar",
+    "eng": [
+      "to shine"
+    ]
+  },
+  {
+    "index": 600,
+    "spa": "chocar",
+    "eng": [
+      "to crash"
+    ]
+  },
+  {
+    "index": 601,
+    "spa": "ensayar",
+    "eng": [
+      "to rehearse"
+    ]
+  },
+  {
+    "index": 602,
+    "spa": "ocasionar",
+    "eng": [
+      "to cause"
+    ]
+  },
+  {
+    "index": 1018,
+    "spa": "incidir",
+    "eng": [
+      "to influence",
+      "affect"
+    ]
+  },
+  {
+    "index": 603,
+    "spa": "entrañar",
+    "eng": [
+      "to entail"
+    ]
+  },
+  {
+    "index": 604,
+    "spa": "anticipar",
+    "eng": [
+      "to anticipate"
+    ]
+  },
+  {
+    "index": 605,
+    "spa": "implementar",
+    "eng": [
+      "to implement"
+    ]
+  },
+  {
+    "index": 606,
+    "spa": "apresurar",
+    "eng": [
+      "to hurry"
+    ]
+  },
+  {
+    "index": 607,
+    "spa": "descargar",
+    "eng": [
+      "to unload/download"
+    ]
+  },
+  {
+    "index": 608,
+    "spa": "fracasar",
+    "eng": [
+      "to fail"
+    ]
+  },
+  {
+    "index": 609,
+    "spa": "asentar",
+    "eng": [
+      "to settle"
+    ]
+  },
+  {
+    "index": 610,
+    "spa": "recrear",
+    "eng": [
+      "to recreate"
+    ]
+  },
+  {
+    "index": 888,
+    "spa": "acontecer",
+    "eng": [
+      "to happen",
+      "occur"
+    ]
+  },
+  {
+    "index": 611,
+    "spa": "encarnar",
+    "eng": [
+      "to embody"
+    ]
+  },
+  {
+    "index": 612,
+    "spa": "rematar",
+    "eng": [
+      "to finish off"
+    ]
+  },
+  {
+    "index": 613,
+    "spa": "colar",
+    "eng": [
+      "to strain/filter"
+    ]
+  },
+  {
+    "index": 1019,
+    "spa": "diferir",
+    "eng": [
+      "to differ",
+      "defer"
+    ]
+  },
+  {
+    "index": 614,
+    "spa": "neutralizar",
+    "eng": [
+      "to neutralize"
+    ]
+  },
+  {
+    "index": 889,
+    "spa": "ofender",
+    "eng": [
+      "to offend"
+    ]
+  },
+  {
+    "index": 615,
+    "spa": "bloquear",
+    "eng": [
+      "to block"
+    ]
+  },
+  {
+    "index": 616,
+    "spa": "traspasar",
+    "eng": [
+      "to transfer/pass through"
+    ]
+  },
+  {
+    "index": 617,
+    "spa": "respaldar",
+    "eng": [
+      "to back/support"
+    ]
+  },
+  {
+    "index": 618,
+    "spa": "susurrar",
+    "eng": [
+      "to whisper"
+    ]
+  },
+  {
+    "index": 619,
+    "spa": "agitar",
+    "eng": [
+      "to shake"
+    ]
+  },
+  {
+    "index": 620,
+    "spa": "plantar",
+    "eng": [
+      "to plant"
+    ]
+  },
+  {
+    "index": 1020,
+    "spa": "impartir",
+    "eng": [
+      "to impart",
+      "give"
+    ]
+  },
+  {
+    "index": 890,
+    "spa": "morder",
+    "eng": [
+      "to bite"
+    ]
+  },
+  {
+    "index": 891,
+    "spa": "moler",
+    "eng": [
+      "to grind",
+      "mill"
+    ]
+  },
+  {
+    "index": 621,
+    "spa": "sancionar",
+    "eng": [
+      "to sanction"
+    ]
+  },
+  {
+    "index": 1021,
+    "spa": "desmentir",
+    "eng": [
+      "to deny",
+      "refute"
+    ]
+  },
+  {
+    "index": 622,
+    "spa": "insertar",
+    "eng": [
+      "to insert"
+    ]
+  },
+  {
+    "index": 623,
+    "spa": "abonar",
+    "eng": [
+      "to pay/fertilize"
+    ]
+  },
+  {
+    "index": 624,
+    "spa": "apoderar",
+    "eng": [
+      "to empower"
+    ]
+  },
+  {
+    "index": 625,
+    "spa": "alternar",
+    "eng": [
+      "to alternate"
+    ]
+  },
+  {
+    "index": 626,
+    "spa": "estrechar",
+    "eng": [
+      "to narrow"
+    ]
+  },
+  {
+    "index": 627,
+    "spa": "minimizar",
+    "eng": [
+      "to minimize"
+    ]
+  },
+  {
+    "index": 1022,
+    "spa": "evadir",
+    "eng": [
+      "to evade",
+      "avoid"
+    ]
+  },
+  {
+    "index": 628,
+    "spa": "disfrazar",
+    "eng": [
+      "to disguise"
+    ]
+  },
+  {
+    "index": 629,
+    "spa": "equilibrar",
+    "eng": [
+      "to balance"
+    ]
+  },
+  {
+    "index": 630,
+    "spa": "hornear",
+    "eng": [
+      "to bake"
+    ]
+  },
+  {
+    "index": 631,
+    "spa": "planear",
+    "eng": [
+      "to plan"
+    ]
+  },
+  {
+    "index": 632,
+    "spa": "igualar",
+    "eng": [
+      "to equalize"
+    ]
+  },
+  {
+    "index": 633,
+    "spa": "recortar",
+    "eng": [
+      "to trim"
+    ]
+  },
+  {
+    "index": 634,
+    "spa": "ahogar",
+    "eng": [
+      "to drown"
+    ]
+  },
+  {
+    "index": 892,
+    "spa": "entretener",
+    "eng": [
+      "to entertain"
+    ]
+  },
+  {
+    "index": 635,
+    "spa": "recaudar",
+    "eng": [
+      "to collect/raise funds"
+    ]
+  },
+  {
+    "index": 893,
+    "spa": "complacer",
+    "eng": [
+      "to please"
+    ]
+  },
+  {
+    "index": 636,
+    "spa": "mediar",
+    "eng": [
+      "to mediate"
+    ]
+  },
+  {
+    "index": 637,
+    "spa": "vaciar",
+    "eng": [
+      "to empty"
+    ]
+  },
+  {
+    "index": 894,
+    "spa": "emerger",
+    "eng": [
+      "to emerge"
+    ]
+  },
+  {
+    "index": 638,
+    "spa": "encarcelar",
+    "eng": [
+      "to imprison"
+    ]
+  },
+  {
+    "index": 639,
+    "spa": "adjudicar",
+    "eng": [
+      "to award"
+    ]
+  },
+  {
+    "index": 895,
+    "spa": "coser",
+    "eng": [
+      "to sew"
+    ]
+  },
+  {
+    "index": 640,
+    "spa": "apostar",
+    "eng": [
+      "to bet"
+    ]
+  },
+  {
+    "index": 641,
+    "spa": "reventar",
+    "eng": [
+      "to burst"
+    ]
+  },
+  {
+    "index": 642,
+    "spa": "filmar",
+    "eng": [
+      "to film"
+    ]
+  },
+  {
+    "index": 643,
+    "spa": "asignar",
+    "eng": [
+      "to assign"
+    ]
+  },
+  {
+    "index": 644,
+    "spa": "ostentar",
+    "eng": [
+      "to hold/boast"
+    ]
+  },
+  {
+    "index": 645,
+    "spa": "obrar",
+    "eng": [
+      "to act/work"
+    ]
+  },
+  {
+    "index": 646,
+    "spa": "planificar",
+    "eng": [
+      "to plan"
+    ]
+  },
+  {
+    "index": 647,
+    "spa": "reivindicar",
+    "eng": [
+      "to reclaim/demand"
+    ]
+  },
+  {
+    "index": 648,
+    "spa": "paralizar",
+    "eng": [
+      "to paralyze"
+    ]
+  },
+  {
+    "index": 1023,
+    "spa": "sumir",
+    "eng": [
+      "to plunge",
+      "sink"
+    ]
+  },
+  {
+    "index": 896,
+    "spa": "atener",
+    "eng": [
+      "to abide by",
+      "adhere"
+    ]
+  },
+  {
+    "index": 649,
+    "spa": "orinar",
+    "eng": [
+      "to urinate"
+    ]
+  },
+  {
+    "index": 650,
+    "spa": "despegar",
+    "eng": [
+      "to take off"
+    ]
+  },
+  {
+    "index": 651,
+    "spa": "sintetizar",
+    "eng": [
+      "to synthesize"
+    ]
+  },
+  {
+    "index": 652,
+    "spa": "afeitar",
+    "eng": [
+      "to shave"
+    ]
+  },
+  {
+    "index": 653,
+    "spa": "canalizar",
+    "eng": [
+      "to channel"
+    ]
+  },
+  {
+    "index": 654,
+    "spa": "desvelar",
+    "eng": [
+      "to reveal/stay awake"
+    ]
+  },
+  {
+    "index": 1024,
+    "spa": "restringir",
+    "eng": [
+      "to restrict",
+      "limit"
+    ]
+  },
+  {
+    "index": 655,
+    "spa": "especificar",
+    "eng": [
+      "to specify"
+    ]
+  },
+  {
+    "index": 656,
+    "spa": "embarcar",
+    "eng": [
+      "to embark"
+    ]
+  },
+  {
+    "index": 657,
+    "spa": "resucitar",
+    "eng": [
+      "to resurrect"
+    ]
+  },
+  {
+    "index": 658,
+    "spa": "decretar",
+    "eng": [
+      "to decree"
+    ]
+  },
+  {
+    "index": 659,
+    "spa": "deslizar",
+    "eng": [
+      "to slide"
+    ]
+  },
+  {
+    "index": 660,
+    "spa": "encaminar",
+    "eng": [
+      "to direct/set on a path"
+    ]
+  },
+  {
+    "index": 1025,
+    "spa": "transferir",
+    "eng": [
+      "to transfer"
+    ]
+  },
+  {
+    "index": 1026,
+    "spa": "concurrir",
+    "eng": [
+      "to concur",
+      "attend"
+    ]
+  },
+  {
+    "index": 661,
+    "spa": "aplazar",
+    "eng": [
+      "to postpone"
+    ]
+  },
+  {
+    "index": 662,
+    "spa": "apelar",
+    "eng": [
+      "to appeal"
+    ]
+  },
+  {
+    "index": 897,
+    "spa": "prender",
+    "eng": [
+      "to catch",
+      "arrest",
+      "turn on"
+    ]
+  },
+  {
+    "index": 898,
+    "spa": "encoger",
+    "eng": [
+      "to shrink"
+    ]
+  },
+  {
+    "index": 663,
+    "spa": "odiar",
+    "eng": [
+      "to hate"
+    ]
+  },
+  {
+    "index": 1027,
+    "spa": "relucir",
+    "eng": [
+      "to shine",
+      "sparkle"
+    ]
+  },
+  {
+    "index": 899,
+    "spa": "prevalecer",
+    "eng": [
+      "to prevail"
+    ]
+  },
+  {
+    "index": 664,
+    "spa": "activar",
+    "eng": [
+      "to activate"
+    ]
+  },
+  {
+    "index": 665,
+    "spa": "desencadenar",
+    "eng": [
+      "to unleash"
+    ]
+  },
+  {
+    "index": 666,
+    "spa": "esforzar",
+    "eng": [
+      "to strive"
+    ]
+  },
+  {
+    "index": 667,
+    "spa": "sobrepasar",
+    "eng": [
+      "to exceed"
+    ]
+  },
+  {
+    "index": 900,
+    "spa": "trascender",
+    "eng": [
+      "to transcend"
+    ]
+  },
+  {
+    "index": 668,
+    "spa": "fundamentar",
+    "eng": [
+      "to base/found"
+    ]
+  },
+  {
+    "index": 1028,
+    "spa": "fundir",
+    "eng": [
+      "to melt",
+      "fuse"
+    ]
+  },
+  {
+    "index": 669,
+    "spa": "complementar",
+    "eng": [
+      "to complement"
+    ]
+  },
+  {
+    "index": 1029,
+    "spa": "sumergir",
+    "eng": [
+      "to submerge",
+      "immerse"
+    ]
+  },
+  {
+    "index": 670,
+    "spa": "desplegar",
+    "eng": [
+      "to deploy/unfold"
+    ]
+  },
+  {
+    "index": 671,
+    "spa": "alquilar",
+    "eng": [
+      "to rent"
+    ]
+  },
+  {
+    "index": 1030,
+    "spa": "discurrir",
+    "eng": [
+      "to reflect",
+      "pass by"
+    ]
+  },
+  {
+    "index": 672,
+    "spa": "posibilitar",
+    "eng": [
+      "to enable"
+    ]
+  },
+  {
+    "index": 673,
+    "spa": "estirar",
+    "eng": [
+      "to stretch"
+    ]
+  },
+  {
+    "index": 901,
+    "spa": "atañer",
+    "eng": [
+      "to concern",
+      "pertain"
+    ]
+  },
+  {
+    "index": 674,
+    "spa": "alentar",
+    "eng": [
+      "to encourage"
+    ]
+  },
+  {
+    "index": 675,
+    "spa": "desayunar",
+    "eng": [
+      "to have breakfast"
+    ]
+  },
+  {
+    "index": 676,
+    "spa": "transitar",
+    "eng": [
+      "to transit"
+    ]
+  },
+  {
+    "index": 677,
+    "spa": "fotografiar",
+    "eng": [
+      "to photograph"
+    ]
+  },
+  {
+    "index": 678,
+    "spa": "agravar",
+    "eng": [
+      "to worsen/aggravate"
+    ]
+  },
+  {
+    "index": 679,
+    "spa": "reinar",
+    "eng": [
+      "to reign"
+    ]
+  },
+  {
+    "index": 680,
+    "spa": "charlar",
+    "eng": [
+      "to chat"
+    ]
+  },
+  {
+    "index": 1031,
+    "spa": "destituir",
+    "eng": [
+      "to dismiss",
+      "remove from office"
+    ]
+  },
+  {
+    "index": 681,
+    "spa": "festejar",
+    "eng": [
+      "to celebrate"
+    ]
+  },
+  {
+    "index": 682,
+    "spa": "perpetuar",
+    "eng": [
+      "to perpetuate"
+    ]
+  },
+  {
+    "index": 683,
+    "spa": "estrellar",
+    "eng": [
+      "to crash"
+    ]
+  },
+  {
+    "index": 684,
+    "spa": "impresionar",
+    "eng": [
+      "to impress"
+    ]
+  },
+  {
+    "index": 685,
+    "spa": "debilitar",
+    "eng": [
+      "to weaken"
+    ]
+  },
+  {
+    "index": 686,
+    "spa": "suspirar",
+    "eng": [
+      "to sigh"
+    ]
+  },
+  {
+    "index": 687,
+    "spa": "alargar",
+    "eng": [
+      "to lengthen"
+    ]
+  },
+  {
+    "index": 688,
+    "spa": "desnudar",
+    "eng": [
+      "to undress"
+    ]
+  },
+  {
+    "index": 689,
+    "spa": "congelar",
+    "eng": [
+      "to freeze"
+    ]
+  },
+  {
+    "index": 1032,
+    "spa": "incurrir",
+    "eng": [
+      "to incur",
+      "commit"
+    ]
+  },
+  {
+    "index": 690,
+    "spa": "protagonizar",
+    "eng": [
+      "to star/play the leading role"
+    ]
+  },
+  {
+    "index": 1033,
+    "spa": "subsistir",
+    "eng": [
+      "to subsist",
+      "survive"
+    ]
+  },
+  {
+    "index": 691,
+    "spa": "clavar",
+    "eng": [
+      "to nail"
+    ]
+  },
+  {
+    "index": 902,
+    "spa": "preceder",
+    "eng": [
+      "to precede"
+    ]
+  },
+  {
+    "index": 692,
+    "spa": "acertar",
+    "eng": [
+      "to get right"
+    ]
+  },
+  {
+    "index": 693,
+    "spa": "poblar",
+    "eng": [
+      "to populate"
+    ]
+  },
+  {
+    "index": 694,
+    "spa": "desembocar",
+    "eng": [
+      "to flow into/lead to"
+    ]
+  },
+  {
+    "index": 695,
+    "spa": "lesionar",
+    "eng": [
+      "to injure"
+    ]
+  },
+  {
+    "index": 1034,
+    "spa": "aplaudir",
+    "eng": [
+      "to applaud",
+      "clap"
+    ]
+  },
+  {
+    "index": 696,
+    "spa": "regar",
+    "eng": [
+      "to water"
+    ]
+  },
+  {
+    "index": 697,
+    "spa": "entablar",
+    "eng": [
+      "to initiate"
+    ]
+  },
+  {
+    "index": 1035,
+    "spa": "contradecir",
+    "eng": [
+      "to contradict"
+    ]
+  },
+  {
+    "index": 698,
+    "spa": "actualizar",
+    "eng": [
+      "to update"
+    ]
+  },
+  {
+    "index": 699,
+    "spa": "unificar",
+    "eng": [
+      "to unify"
+    ]
+  },
+  {
+    "index": 700,
+    "spa": "enfocar",
+    "eng": [
+      "to focus"
+    ]
+  },
+  {
+    "index": 701,
+    "spa": "perfilar",
+    "eng": [
+      "to outline/profile"
+    ]
+  },
+  {
+    "index": 702,
+    "spa": "instar",
+    "eng": [
+      "to urge"
+    ]
+  },
+  {
+    "index": 703,
+    "spa": "ejercitar",
+    "eng": [
+      "to exercise"
+    ]
+  },
+  {
+    "index": 704,
+    "spa": "reactivar",
+    "eng": [
+      "to reactivate"
+    ]
+  },
+  {
+    "index": 705,
+    "spa": "plasmar",
+    "eng": [
+      "to express/embody"
+    ]
+  },
+  {
+    "index": 1036,
+    "spa": "revertir",
+    "eng": [
+      "to revert"
+    ]
+  },
+  {
+    "index": 706,
+    "spa": "privatizar",
+    "eng": [
+      "to privatize"
+    ]
+  },
+  {
+    "index": 707,
+    "spa": "relajar",
+    "eng": [
+      "to relax"
+    ]
+  },
+  {
+    "index": 708,
+    "spa": "rozar",
+    "eng": [
+      "to graze/touch lightly"
+    ]
+  },
+  {
+    "index": 709,
+    "spa": "posar",
+    "eng": [
+      "to pose"
+    ]
+  },
+  {
+    "index": 710,
+    "spa": "tostar",
+    "eng": [
+      "to toast"
+    ]
+  },
+  {
+    "index": 711,
+    "spa": "percatar",
+    "eng": [
+      "to notice"
+    ]
+  },
+  {
+    "index": 712,
+    "spa": "empeñar",
+    "eng": [
+      "to pawn"
+    ]
+  },
+  {
+    "index": 713,
+    "spa": "vislumbrar",
+    "eng": [
+      "to glimpse"
+    ]
+  },
+  {
+    "index": 714,
+    "spa": "evolucionar",
+    "eng": [
+      "to evolve"
+    ]
+  },
+  {
+    "index": 1037,
+    "spa": "escurrir",
+    "eng": [
+      "to drain",
+      "drip"
+    ]
+  },
+  {
+    "index": 715,
+    "spa": "rondar",
+    "eng": [
+      "to patrol/hover around"
+    ]
+  },
+  {
+    "index": 716,
+    "spa": "internar",
+    "eng": [
+      "to intern/admit"
+    ]
+  },
+  {
+    "index": 717,
+    "spa": "indignar",
+    "eng": [
+      "to outrage"
+    ]
+  },
+  {
+    "index": 1038,
+    "spa": "revestir",
+    "eng": [
+      "to cover",
+      "coat"
+    ]
+  },
+  {
+    "index": 718,
+    "spa": "acarrear",
+    "eng": [
+      "to carry/lead to"
+    ]
+  },
+  {
+    "index": 1039,
+    "spa": "expandir",
+    "eng": [
+      "to expand"
+    ]
+  },
+  {
+    "index": 1040,
+    "spa": "fluir",
+    "eng": [
+      "to flow"
+    ]
+  },
+  {
+    "index": 719,
+    "spa": "delimitar",
+    "eng": [
+      "to delimit"
+    ]
+  },
+  {
+    "index": 720,
+    "spa": "volcar",
+    "eng": [
+      "to overturn"
+    ]
+  },
+  {
+    "index": 721,
+    "spa": "precipitar",
+    "eng": [
+      "to hasten"
+    ]
+  },
+  {
+    "index": 722,
+    "spa": "repasar",
+    "eng": [
+      "to review"
+    ]
+  },
+  {
+    "index": 723,
+    "spa": "empatar",
+    "eng": [
+      "to tie/draw"
+    ]
+  },
+  {
+    "index": 1041,
+    "spa": "discernir",
+    "eng": [
+      "to discern"
+    ]
+  },
+  {
+    "index": 724,
+    "spa": "solventar",
+    "eng": [
+      "to solve"
+    ]
+  },
+  {
+    "index": 1042,
+    "spa": "fingir",
+    "eng": [
+      "to pretend",
+      "fake"
+    ]
+  },
+  {
+    "index": 725,
+    "spa": "aplastar",
+    "eng": [
+      "to crush"
+    ]
+  },
+  {
+    "index": 726,
+    "spa": "fiar",
+    "eng": [
+      "to trust/sell on credit"
+    ]
+  },
+  {
+    "index": 727,
+    "spa": "progresar",
+    "eng": [
+      "to progress"
+    ]
+  },
+  {
+    "index": 728,
+    "spa": "traicionar",
+    "eng": [
+      "to betray"
+    ]
+  },
+  {
+    "index": 903,
+    "spa": "recomponer",
+    "eng": [
+      "to recompose",
+      "mend"
+    ]
+  },
+  {
+    "index": 729,
+    "spa": "consagrar",
+    "eng": [
+      "to consecrate"
+    ]
+  },
+  {
+    "index": 730,
+    "spa": "intensificar",
+    "eng": [
+      "to intensify"
+    ]
+  },
+  {
+    "index": 731,
+    "spa": "vomitar",
+    "eng": [
+      "to vomit"
+    ]
+  },
+  {
+    "index": 732,
+    "spa": "confeccionar",
+    "eng": [
+      "to make/manufacture"
+    ]
+  },
+  {
+    "index": 733,
+    "spa": "simbolizar",
+    "eng": [
+      "to symbolize"
+    ]
+  },
+  {
+    "index": 734,
+    "spa": "sortear",
+    "eng": [
+      "to raffle/navigate"
+    ]
+  },
+  {
+    "index": 735,
+    "spa": "matizar",
+    "eng": [
+      "to nuance/qualify"
+    ]
+  },
+  {
+    "index": 736,
+    "spa": "desentrañar",
+    "eng": [
+      "to unravel"
+    ]
+  },
+  {
+    "index": 737,
+    "spa": "diagnosticar",
+    "eng": [
+      "to diagnose"
+    ]
+  },
+  {
+    "index": 1043,
+    "spa": "suplir",
+    "eng": [
+      "to supply",
+      "replace"
+    ]
+  },
+  {
+    "index": 738,
+    "spa": "despojar",
+    "eng": [
+      "to deprive/strip"
+    ]
+  },
+  {
+    "index": 1044,
+    "spa": "entreabrir",
+    "eng": [
+      "to half-open",
+      "open slightly"
+    ]
+  },
+  {
+    "index": 739,
+    "spa": "liderar",
+    "eng": [
+      "to lead"
+    ]
+  },
+  {
+    "index": 740,
+    "spa": "acatar",
+    "eng": [
+      "to comply with"
+    ]
+  },
+  {
+    "index": 741,
+    "spa": "reafirmar",
+    "eng": [
+      "to reaffirm"
+    ]
+  },
+  {
+    "index": 742,
+    "spa": "postular",
+    "eng": [
+      "to nominate/apply"
+    ]
+  },
+  {
+    "index": 904,
+    "spa": "yacer",
+    "eng": [
+      "to lie down"
+    ]
+  },
+  {
+    "index": 743,
+    "spa": "reportar",
+    "eng": [
+      "to report"
+    ]
+  },
+  {
+    "index": 905,
+    "spa": "verter",
+    "eng": [
+      "to pour",
+      "spill"
+    ]
+  },
+  {
+    "index": 744,
+    "spa": "atentar",
+    "eng": [
+      "to attempt/attack"
+    ]
+  },
+  {
+    "index": 745,
+    "spa": "privar",
+    "eng": [
+      "to deprive"
+    ]
+  },
+  {
+    "index": 906,
+    "spa": "recaer",
+    "eng": [
+      "to relapse",
+      "fall again"
+    ]
+  },
+  {
+    "index": 907,
+    "spa": "subyacer",
+    "eng": [
+      "to underlie"
+    ]
+  },
+  {
+    "index": 908,
+    "spa": "presuponer",
+    "eng": [
+      "to presuppose",
+      "assume"
+    ]
+  },
+  {
+    "index": 1045,
+    "spa": "intuir",
+    "eng": [
+      "to intuit",
+      "sense"
+    ]
+  },
+  {
+    "index": 909,
+    "spa": "sustraer",
+    "eng": [
+      "to subtract",
+      "remove"
+    ]
+  },
+  {
+    "index": 746,
+    "spa": "acotar",
+    "eng": [
+      "to delimit/narrow down"
+    ]
+  },
+  {
+    "index": 747,
+    "spa": "derrocar",
+    "eng": [
+      "to overthrow"
+    ]
+  },
+  {
+    "index": 748,
+    "spa": "visualizar",
+    "eng": [
+      "to visualize"
+    ]
+  },
+  {
+    "index": 749,
+    "spa": "contentar",
+    "eng": [
+      "to please/satisfy"
+    ]
+  },
+  {
+    "index": 750,
+    "spa": "recabar",
+    "eng": [
+      "to gather/collect"
+    ]
+  },
+  {
+    "index": 751,
+    "spa": "brotar",
+    "eng": [
+      "to sprout/emerge"
+    ]
+  },
+  {
+    "index": 752,
+    "spa": "entusiasmar",
+    "eng": [
+      "to excite/enthuse"
+    ]
+  },
+  {
+    "index": 1046,
+    "spa": "interferir",
+    "eng": [
+      "to interfere"
+    ]
+  },
+  {
+    "index": 753,
+    "spa": "estabilizar",
+    "eng": [
+      "to stabilize"
+    ]
+  },
+  {
+    "index": 754,
+    "spa": "emigrar",
+    "eng": [
+      "to emigrate"
+    ]
+  },
+  {
+    "index": 755,
+    "spa": "dilucidar",
+    "eng": [
+      "to clarify"
+    ]
+  },
+  {
+    "index": 756,
+    "spa": "simplificar",
+    "eng": [
+      "to simplify"
+    ]
+  },
+  {
+    "index": 757,
+    "spa": "asombrar",
+    "eng": [
+      "to amaze"
+    ]
+  },
+  {
+    "index": 758,
+    "spa": "encajar",
+    "eng": [
+      "to fit"
+    ]
+  },
+  {
+    "index": 759,
+    "spa": "afianzar",
+    "eng": [
+      "to strengthen"
+    ]
+  },
+  {
+    "index": 760,
+    "spa": "reprochar",
+    "eng": [
+      "to reproach"
+    ]
+  },
+  {
+    "index": 761,
+    "spa": "replantear",
+    "eng": [
+      "to reconsider"
+    ]
+  },
+  {
+    "index": 910,
+    "spa": "abstener",
+    "eng": [
+      "to abstain"
+    ]
+  },
+  {
+    "index": 762,
+    "spa": "desalojar",
+    "eng": [
+      "to evict"
+    ]
+  },
+  {
+    "index": 763,
+    "spa": "tumbar",
+    "eng": [
+      "to knock down"
+    ]
+  },
+  {
+    "index": 764,
+    "spa": "cooperar",
+    "eng": [
+      "to cooperate"
+    ]
+  },
+  {
+    "index": 765,
+    "spa": "razonar",
+    "eng": [
+      "to reason"
+    ]
+  },
+  {
+    "index": 766,
+    "spa": "aterrizar",
+    "eng": [
+      "to land"
+    ]
+  },
+  {
+    "index": 767,
+    "spa": "devorar",
+    "eng": [
+      "to devour"
+    ]
+  },
+  {
+    "index": 1047,
+    "spa": "inquirir",
+    "eng": [
+      "to inquire"
+    ]
+  },
+  {
+    "index": 768,
+    "spa": "debutar",
+    "eng": [
+      "to debut"
+    ]
+  },
+  {
+    "index": 1048,
+    "spa": "persuadir",
+    "eng": [
+      "to persuade"
+    ]
+  },
+  {
+    "index": 769,
+    "spa": "exagerar",
+    "eng": [
+      "to exaggerate"
+    ]
+  },
+  {
+    "index": 770,
+    "spa": "contactar",
+    "eng": [
+      "to contact"
+    ]
+  },
+  {
+    "index": 1049,
+    "spa": "nutrir",
+    "eng": [
+      "to nourish"
+    ]
+  },
+  {
+    "index": 911,
+    "spa": "exceder",
+    "eng": [
+      "to exceed"
+    ]
+  },
+  {
+    "index": 771,
+    "spa": "resignar",
+    "eng": [
+      "to resign"
+    ]
+  },
+  {
+    "index": 912,
+    "spa": "reaparecer",
+    "eng": [
+      "to reappear"
+    ]
+  },
+  {
+    "index": 772,
+    "spa": "portar",
+    "eng": [
+      "to carry"
+    ]
+  },
+  {
+    "index": 773,
+    "spa": "disipar",
+    "eng": [
+      "to dispel"
+    ]
+  },
+  {
+    "index": 1050,
+    "spa": "sobresalir",
+    "eng": [
+      "to stand out",
+      "excel"
+    ]
+  },
+  {
+    "index": 774,
+    "spa": "insultar",
+    "eng": [
+      "to insult"
+    ]
+  },
+  {
+    "index": 913,
+    "spa": "revolver",
+    "eng": [
+      "to stir",
+      "scramble"
+    ]
+  },
+  {
+    "index": 775,
+    "spa": "enlazar",
+    "eng": [
+      "to link"
+    ]
+  },
+  {
+    "index": 776,
+    "spa": "adornar",
+    "eng": [
+      "to decorate"
+    ]
+  },
+  {
+    "index": 777,
+    "spa": "duplicar",
+    "eng": [
+      "to duplicate"
+    ]
+  },
+  {
+    "index": 778,
+    "spa": "atajar",
+    "eng": [
+      "to intercept"
+    ]
+  },
+  {
+    "index": 779,
+    "spa": "perpetrar",
+    "eng": [
+      "to perpetrate"
+    ]
+  },
+  {
+    "index": 914,
+    "spa": "abastecer",
+    "eng": [
+      "to supply",
+      "provide"
+    ]
+  },
+  {
+    "index": 780,
+    "spa": "enmarcar",
+    "eng": [
+      "to frame"
+    ]
+  },
+  {
+    "index": 781,
+    "spa": "formalizar",
+    "eng": [
+      "to formalize"
+    ]
+  },
+  {
+    "index": 915,
+    "spa": "barrer",
+    "eng": [
+      "to sweep"
+    ]
+  },
+  {
+    "index": 782,
+    "spa": "englobar",
+    "eng": [
+      "to encompass"
+    ]
+  },
+  {
+    "index": 783,
+    "spa": "edificar",
+    "eng": [
+      "to build"
+    ]
+  },
+  {
+    "index": 784,
+    "spa": "desmontar",
+    "eng": [
+      "to dismantle"
+    ]
+  },
+  {
+    "index": 916,
+    "spa": "rehacer",
+    "eng": [
+      "to re-do"
+    ]
+  },
+  {
+    "index": 785,
+    "spa": "mojar",
+    "eng": [
+      "to wet"
+    ]
+  },
+  {
+    "index": 786,
+    "spa": "conmemorar",
+    "eng": [
+      "to commemorate"
+    ]
+  },
+  {
+    "index": 787,
+    "spa": "clarificar",
+    "eng": [
+      "to clarify"
+    ]
+  },
+  {
+    "index": 788,
+    "spa": "agilizar",
+    "eng": [
+      "to expedite"
+    ]
+  },
+  {
+    "index": 789,
+    "spa": "comercializar",
+    "eng": [
+      "to commercialize"
+    ]
+  },
+  {
+    "index": 1051,
+    "spa": "confluir",
+    "eng": [
+      "to converge",
+      "flow together"
+    ]
+  },
+  {
+    "index": 1052,
+    "spa": "abatir",
+    "eng": [
+      "to knock down",
+      "depress"
+    ]
+  },
+  {
+    "index": 790,
+    "spa": "salvaguardar",
+    "eng": [
+      "to safeguard"
+    ]
+  },
+  {
+    "index": 791,
+    "spa": "escalar",
+    "eng": [
+      "to climb"
+    ]
+  }
+]
