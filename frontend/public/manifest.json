@@ -1,0 +1,30 @@
+{
+  "name": "Spanish Quest - Master Spanish Through Epic Adventures",
+  "short_name": "Spanish Quest",
+  "description": "Embark on an epic journey to master Spanish! Battle with warrior avatars, complete quests, earn rewards, and level up your language skills.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#00ff00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/mango_logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/mango_logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "games"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}
+

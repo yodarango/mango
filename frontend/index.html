@@ -6,9 +6,12 @@
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="/mango_logo.webp" />
     <link rel="apple-touch-icon" href="/mango_logo.webp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/mango_logo.webp" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/mango_logo.webp" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/mango_logo.webp" />
 
-    <!-- Viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- Primary Meta Tags -->
     <title>Spanish Quest - Master Spanish Through Epic Adventures</title>
@@ -64,8 +67,9 @@
       content="https://mango.shrood.app/mango_logo.webp"
     />
 
-    <!-- Additional Meta Tags for Marketing -->
+    <!-- PWA & Mobile Meta Tags -->
     <meta name="theme-color" content="#00ff00" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
@@ -75,6 +79,18 @@
     <meta name="application-name" content="Spanish Quest" />
     <meta name="msapplication-TileColor" content="#1a1a1a" />
     <meta name="msapplication-TileImage" content="/mango_logo.webp" />
+    <meta name="msapplication-config" content="none" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- iOS Splash Screens -->
+    <link rel="apple-touch-startup-image" href="/mango_splash.webp" />
+
+    <!-- Prevent auto-zoom on input focus (iOS) -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://mango.shrood.app/" />
