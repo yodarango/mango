@@ -24,7 +24,7 @@ type User struct {
 	Name     string `json:"name"`
 	Password string `json:"-"` // Never send password in JSON
 	Role     string `json:"role"`
-	Class 		int `json:"class"`
+	Class    *int   `json:"class,omitempty"`
 }
 
 type Avatar struct {
@@ -961,7 +961,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user User
-	err := db.QueryRow("SELECT id, name, role, class FROM users WHERE LOWER(name) = LOWER(?) AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role, &user.Class)
+	var class sql.NullInt64
+	err := db.QueryRow("SELECT id, name, role, class FROM users WHERE LOWER(name) = LOWER(?) AND password = ?", req.Name, req.Password).Scan(&user.ID, &user.Name, &user.Role, &class)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
@@ -969,6 +970,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		return
+	}
+
+	// Convert sql.NullInt64 to *int
+	if class.Valid {
+		classValue := int(class.Int64)
+		user.Class = &classValue
 	}
 
 	token, err := generateToken(user.ID, user.Name)
@@ -1200,9 +1207,15 @@ func getStudents(w http.ResponseWriter, r *http.Request) {
 	var students []User
 	for rows.Next() {
 		var student User
-		if err := rows.Scan(&student.ID, &student.Name, &student.Role, &student.Class); err != nil {
+		var class sql.NullInt64
+		if err := rows.Scan(&student.ID, &student.Name, &student.Role, &class); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+		// Convert sql.NullInt64 to *int
+		if class.Valid {
+			classValue := int(class.Int64)
+			student.Class = &classValue
 		}
 		students = append(students, student)
 	}
@@ -1715,8 +1728,9 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		AssignmentID  string `json:"assignmentId"`
-		CoinsReceived int    `json:"coinsReceived"`
+		AssignmentID  string                   `json:"assignmentId"`
+		CoinsReceived int                      `json:"coinsReceived"`
+		UserAnswers   []map[string]interface{} `json:"userAnswers,omitempty"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -1748,12 +1762,63 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update assignment as completed and set coins_received
-	_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
-		WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, req.AssignmentID, claims.UserID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	// If userAnswers are provided, update the assignment data with user answers
+	if req.UserAnswers != nil && len(req.UserAnswers) > 0 {
+		// Get current assignment data
+		var currentData sql.NullString
+		err = tx.QueryRow(`SELECT data FROM assignments WHERE assignment_id = ? AND user_id = ?`,
+			req.AssignmentID, claims.UserID).Scan(&currentData)
+		if err != nil {
+			http.Error(w, "Assignment not found", http.StatusNotFound)
+			return
+		}
+
+		// Parse existing data (quiz questions)
+		var quizData []map[string]interface{}
+		if currentData.Valid && currentData.String != "" {
+			if err := json.Unmarshal([]byte(currentData.String), &quizData); err != nil {
+				http.Error(w, "Error parsing assignment data", http.StatusInternalServerError)
+				return
+			}
+		}
+
+		// Add userAnswer field to each question
+		for i := range quizData {
+			// Find matching user answer by question ID
+			for _, userAnswer := range req.UserAnswers {
+				if questionID, ok := quizData[i]["id"]; ok {
+					if userAnswerID, ok := userAnswer["questionId"]; ok {
+						if questionID == userAnswerID {
+							quizData[i]["userAnswer"] = userAnswer["userAnswer"]
+							break
+						}
+					}
+				}
+			}
+		}
+
+		// Convert back to JSON
+		updatedData, err := json.Marshal(quizData)
+		if err != nil {
+			http.Error(w, "Error encoding updated data", http.StatusInternalServerError)
+			return
+		}
+
+		// Update assignment with new data, mark as completed, and set coins_received
+		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, data = ?
+			WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, string(updatedData), req.AssignmentID, claims.UserID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// No user answers provided, just mark as completed
+		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
+			WHERE assignment_id = ? AND user_id = ?`, req.CoinsReceived, req.AssignmentID, claims.UserID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	// Add coins to avatar

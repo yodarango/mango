@@ -199,6 +199,12 @@ function Quiz() {
 
     setResults(resultsData);
 
+    // Prepare user answers for backend storage
+    const userAnswersForBackend = questionResults.map((result) => ({
+      questionId: result.questionId,
+      userAnswer: result.userAnswer,
+    }));
+
     // Submit to backend
     try {
       const token = localStorage.getItem("token");
@@ -211,6 +217,7 @@ function Quiz() {
         body: JSON.stringify({
           assignmentId: assignmentId, // Use the assignmentId from URL params
           coinsReceived: totalCoins,
+          userAnswers: userAnswersForBackend, // Include user answers
         }),
       });
 
