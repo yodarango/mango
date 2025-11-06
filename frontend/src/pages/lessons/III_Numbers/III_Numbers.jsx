@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import NumbersQuiz from "./III_NumbersQuizz";
 import "./III_Numbers.css";
 
 function IIINumbers() {
@@ -55,13 +54,6 @@ function IIINumbers() {
           )}
         </button>
       </div>
-
-      <NumbersQuiz
-        isOpen={showQuiz}
-        onClose={handleCloseQuiz}
-        assignmentId='1000'
-      />
-
       <div className='numbers-content'>
         {/* Introduction */}
         <div className='intro-section'>

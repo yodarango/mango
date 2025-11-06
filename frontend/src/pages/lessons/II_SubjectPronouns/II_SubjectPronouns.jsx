@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import SubjectPronounsQuiz from "./II_SubjectPronounsQuiz";
 import "./II_SubjectPronouns.css";
 
 function IISubjectPronouns() {
@@ -53,12 +52,6 @@ function IISubjectPronouns() {
           )}
         </button>
       </div>
-
-      <SubjectPronounsQuiz
-        isOpen={showQuiz}
-        onClose={handleCloseQuiz}
-        assignmentId='2000'
-      />
 
       {/* Introduction */}
       <div className='intro-section'>
