@@ -1481,6 +1481,212 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Create daily vocabulary assignments
+func createDailyVocabAssignments(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		ClassNum  int    `json:"classNum"`
+		WordCount int    `json:"wordCount"`
+		WordWorth int    `json:"wordWorth"`
+		WordType  string `json:"wordType"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate input
+	if req.ClassNum != 2 && req.ClassNum != 3 {
+		http.Error(w, "Invalid class number. Must be 2 or 3", http.StatusBadRequest)
+		return
+	}
+
+	if req.WordType != "nouns" && req.WordType != "verbs" {
+		http.Error(w, "Invalid word type. Must be 'nouns' or 'verbs'", http.StatusBadRequest)
+		return
+	}
+
+	if req.WordCount < 1 || req.WordCount > 100 {
+		http.Error(w, "Word count must be between 1 and 100", http.StatusBadRequest)
+		return
+	}
+
+	// Determine vocab file path
+	classFolder := "II"
+	if req.ClassNum == 3 {
+		classFolder = "III"
+	}
+	vocabFilePath := fmt.Sprintf("class_content/%s/daily_vocab_%s.json", classFolder, req.WordType)
+
+	// Read vocab file
+	vocabData, err := os.ReadFile(vocabFilePath)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error reading vocab file: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	var vocabWords []map[string]interface{}
+	if err := json.Unmarshal(vocabData, &vocabWords); err != nil {
+		http.Error(w, fmt.Sprintf("Error parsing vocab file: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// Find the starting index (first word with used: null)
+	startIndex := -1
+	for i, word := range vocabWords {
+		if word["used"] == nil {
+			startIndex = i
+			break
+		}
+	}
+
+	if startIndex == -1 {
+		http.Error(w, "No unused words available in vocab file", http.StatusBadRequest)
+		return
+	}
+
+	// Check if we have enough words
+	if startIndex+req.WordCount > len(vocabWords) {
+		http.Error(w, fmt.Sprintf("Not enough unused words. Only %d words available", len(vocabWords)-startIndex), http.StatusBadRequest)
+		return
+	}
+
+	// Get the words to use
+	wordsToUse := vocabWords[startIndex : startIndex+req.WordCount]
+
+	// Generate quiz data
+	quizData := make([]map[string]interface{}, 0, req.WordCount)
+	for _, word := range wordsToUse {
+		engWord := word["eng"].(string)
+		spaWord := word["spa"].(string)
+
+		// Generate random alphanumeric ID
+		questionID := generateRandomID(8)
+
+		quizData = append(quizData, map[string]interface{}{
+			"id":           questionID,
+			"type":         "typed",
+			"question":     fmt.Sprintf("How do you say '%s' in Spanish?", engWord),
+			"answer":       []string{spaWord},
+			"correct":      0,
+			"coins_worth":  req.WordWorth,
+			"time_alloted": 20,
+			"userAnswer":   nil,
+		})
+	}
+
+	// Convert quiz data to JSON
+	quizDataJSON, err := json.Marshal(quizData)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error creating quiz data: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// Get students in the class
+	rows, err := db.Query("SELECT id FROM users WHERE class = ? AND role = 'student'", req.ClassNum)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error fetching students: %v", err), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var studentIDs []int
+	for rows.Next() {
+		var studentID int
+		if err := rows.Scan(&studentID); err != nil {
+			http.Error(w, fmt.Sprintf("Error reading student data: %v", err), http.StatusInternalServerError)
+			return
+		}
+		studentIDs = append(studentIDs, studentID)
+	}
+
+	if len(studentIDs) == 0 {
+		http.Error(w, "No students found in the selected class", http.StatusBadRequest)
+		return
+	}
+
+	// Set due date to today at 3pm
+	now := time.Now()
+	dueDate := time.Date(now.Year(), now.Month(), now.Day(), 15, 0, 0, 0, now.Location())
+
+	// Calculate total coins
+	totalCoins := req.WordCount * req.WordWorth
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Insert assignment for each student
+	for _, studentID := range studentIDs {
+		_, err := tx.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, coins_received, data)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			totalCoins, "1005", studentID, 0, "daily vocab", dueDate, 0, string(quizDataJSON))
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error creating assignment for student %d: %v", studentID, err), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Commit transaction
+	if err := tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Update vocab file with today's date
+	todayDate := now.Format("Jan 2, 2006")
+	for i := startIndex; i < startIndex+req.WordCount; i++ {
+		vocabWords[i]["used"] = todayDate
+	}
+
+	// Write updated vocab file
+	updatedVocabData, err := json.MarshalIndent(vocabWords, "", "  ")
+	if err != nil {
+		// Log error but don't fail the request since assignments were created
+		fmt.Printf("Error marshaling updated vocab data: %v\n", err)
+	} else {
+		if err := os.WriteFile(vocabFilePath, updatedVocabData, 0644); err != nil {
+			// Log error but don't fail the request since assignments were created
+			fmt.Printf("Error writing updated vocab file: %v\n", err)
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":            true,
+		"assignmentsCreated": len(studentIDs),
+		"wordsUsed":          req.WordCount,
+	})
+}
+
+// Helper function to generate random alphanumeric ID
+func generateRandomID(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
 // Get single assignment by assignment_id for student
 func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -3025,6 +3231,7 @@ func main() {
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")
+	api.HandleFunc("/assignments/daily-vocab", createDailyVocabAssignments).Methods("POST")
 	api.HandleFunc("/assignments/student/{assignmentId}", getStudentAssignment).Methods("GET")
 	api.HandleFunc("/assignments/admin/all", getAllAssignments).Methods("GET")
 	api.HandleFunc("/assignments/admin/{id}", getAssignmentByID).Methods("GET")

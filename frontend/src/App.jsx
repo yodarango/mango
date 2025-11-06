@@ -15,6 +15,7 @@ import CreateNotifications from "./pages/CreateNotifications";
 import CreateAssignment from "./pages/CreateAssignment";
 import AdminAssignments from "./pages/AdminAssignments";
 import ViewAssignment from "./pages/ViewAssignment";
+import CreateDailyWords from "./pages/CreateDailyWords";
 import AdminMessages from "./pages/AdminMessages";
 import Games from "./pages/Games";
 import CreateGame from "./pages/CreateGame";
@@ -182,6 +183,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ViewAssignment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/assignments/create-daily-words'
+            element={
+              <ProtectedRoute>
+                <CreateDailyWords />
               </ProtectedRoute>
             }
           />

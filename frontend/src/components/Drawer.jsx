@@ -129,6 +129,15 @@ function Drawer({ isOpen, onClose }) {
                 </Link>
 
                 <Link
+                  to='/admin/assignments/create-daily-words'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-book'></i>
+                  <span>Create Daily Words</span>
+                </Link>
+
+                <Link
                   to='/admin/messages'
                   className='drawer-link admin-link'
                   onClick={onClose}
