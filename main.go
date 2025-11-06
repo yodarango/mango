@@ -1729,7 +1729,7 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 
 	// Fetch assignment by assignment_id and user_id
 	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
-		FROM assignments WHERE assignment_id = ? AND user_id = ?`, assignmentID, claims.UserID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
+		FROM assignments WHERE id = ?`, assignmentID, claims.UserID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
 		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
 
 	if err != nil {
@@ -1960,6 +1960,8 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		AssignmentID  string                   `json:"assignmentId"`
 		CoinsReceived int                      `json:"coinsReceived"`
 		UserAnswers   []map[string]interface{} `json:"userAnswers,omitempty"`
+		AssetID       *int                     `json:"assetId,omitempty"`
+		XPGain        int                      `json:"xpGain,omitempty"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -1995,8 +1997,8 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	if req.UserAnswers != nil && len(req.UserAnswers) > 0 {
 		// Get current assignment data
 		var currentData sql.NullString
-		err = tx.QueryRow(`SELECT data FROM assignments WHERE assignment_id = ? AND user_id = ?`,
-			req.AssignmentID, claims.UserID).Scan(&currentData)
+		err = tx.QueryRow(`SELECT data FROM assignments WHERE id = ?`,
+			req.AssignmentID).Scan(&currentData)
 		if err != nil {
 			http.Error(w, "Assignment not found", http.StatusNotFound)
 			return
@@ -2058,6 +2060,53 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Handle asset XP update if asset was selected
+	var assetLeveledUp bool
+	var newLevel int
+	if req.AssetID != nil && req.XPGain > 0 {
+		// Get current asset data
+		var currentXP, xpRequired, level, attack, defense, healing, cost int
+		err = tx.QueryRow(`SELECT COALESCE(xp, 0), COALESCE(xp_required, 100), level, attack, defense, healing, cost
+			FROM assets WHERE id = ? AND avatar_id = ?`, *req.AssetID, avatarID).Scan(&currentXP, &xpRequired, &level, &attack, &defense, &healing, &cost)
+		if err != nil {
+			// Asset not found or doesn't belong to user - just log and continue
+			log.Printf("Warning: Asset %d not found or doesn't belong to avatar %d: %v", *req.AssetID, avatarID, err)
+		} else {
+			// Add XP
+			newXP := currentXP + req.XPGain
+
+			// Check if leveled up
+			if newXP >= xpRequired {
+				assetLeveledUp = true
+				newLevel = level + 1
+
+				// Calculate overage XP
+				overageXP := newXP - xpRequired
+
+				// Update stats based on new level
+				newAttack := attack * newLevel
+				newDefense := defense * newLevel
+				newHealing := healing * newLevel
+				newCost := cost * newLevel
+
+				// Update asset with new level and stats
+				_, err = tx.Exec(`UPDATE assets SET level = ?, attack = ?, defense = ?, healing = ?, cost = ?, xp = ?
+					WHERE id = ?`, newLevel, newAttack, newDefense, newHealing, newCost, overageXP, *req.AssetID)
+				if err != nil {
+					http.Error(w, fmt.Sprintf("Error leveling up asset: %v", err), http.StatusInternalServerError)
+					return
+				}
+			} else {
+				// Just update XP
+				_, err = tx.Exec(`UPDATE assets SET xp = ? WHERE id = ?`, newXP, *req.AssetID)
+				if err != nil {
+					http.Error(w, fmt.Sprintf("Error updating asset XP: %v", err), http.StatusInternalServerError)
+					return
+				}
+			}
+		}
+	}
+
 	// Commit transaction
 	if err = tx.Commit(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -2065,9 +2114,11 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := map[string]interface{}{
-		"success": true,
-		"message": "Assignment submitted successfully",
-		"coins":   newCoins,
+		"success":        true,
+		"message":        "Assignment submitted successfully",
+		"coins":          newCoins,
+		"assetLeveledUp": assetLeveledUp,
+		"newLevel":       newLevel,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

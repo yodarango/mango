@@ -553,3 +553,137 @@
     justify-content: center;
   }
 }
+
+/* Asset Selection */
+.asset-selection {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(0, 255, 0, 0.05);
+  border: 2px solid #00ff00;
+  border-radius: 12px;
+}
+
+.asset-selection p {
+  color: #00ff00;
+  margin-bottom: 1rem;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.asset-card {
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.asset-card:hover {
+  border-color: #00ff00;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
+}
+
+.asset-card.selected {
+  border-color: #00ff00;
+  background: linear-gradient(135deg, #1a3a1a, #254525);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.asset-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.asset-info {
+  color: #fff;
+}
+
+.asset-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #00ff00;
+  margin-bottom: 0.25rem;
+}
+
+.asset-level {
+  font-size: 0.8rem;
+  color: #ff9500;
+  margin-bottom: 0.25rem;
+}
+
+.asset-xp {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.selected-note {
+  color: #00ff00 !important;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.selected-note i {
+  color: #00ff00;
+}
+
+/* Level Up Banner */
+.level-up-banner {
+  background: linear-gradient(135deg, #ff9500, #ffb84d);
+  border: 3px solid #ffcc00;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  animation: levelUpPulse 1s ease-in-out infinite;
+}
+
+.level-up-banner i {
+  font-size: 2rem;
+  color: #fff;
+  animation: starSpin 2s linear infinite;
+}
+
+.level-up-banner h3 {
+  color: #000;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes levelUpPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 149, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 149, 0, 0.8);
+  }
+}
+
+@keyframes starSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

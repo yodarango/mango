@@ -23,7 +23,7 @@ function AssignmentsClassThree() {
         const data = await response.json();
         // Filter out completed assignments
         const unfinished = data.filter((a) => !a.completed);
-        setAssignments(unfinished);
+        setAssignments(data);
       }
     } catch (error) {
       console.error("Error fetching assignments:", error);
@@ -113,7 +113,7 @@ function AssignmentsClassThree() {
             return (
               <Link
                 key={assignment.id}
-                to={`/assignments/quiz/${assignment.assignmentId}`}
+                to={`/assignments/quiz/${assignment.id}`}
                 className='assignment-link'
               >
                 <i className='fa-solid fa-file-lines'></i>

@@ -16,6 +16,62 @@ function Quiz() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [assets, setAssets] = useState([]);
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [avatarId, setAvatarId] = useState(null);
+
+  // Fetch user's assets
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+        // Get all avatars and find the one for the logged-in user
+        const avatarResponse = await fetch("/api/avatars", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!avatarResponse.ok) {
+          throw new Error("Failed to fetch avatars");
+        }
+
+        const avatars = await avatarResponse.json();
+
+        // Find the avatar that belongs to the logged-in user
+        const userAvatar = avatars.find((a) => a.userId === user.id);
+
+        if (userAvatar) {
+          setAvatarId(userAvatar.id);
+
+          // Fetch assets for this avatar
+          const assetsResponse = await fetch(
+            `/api/avatars/${userAvatar.id}/assets`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (assetsResponse.ok) {
+            const assetsData = await assetsResponse.json();
+            // Filter only warrior status assets (owned by user)
+            const ownedAssets = assetsData.filter(
+              (asset) => asset.status === "warrior"
+            );
+            setAssets(ownedAssets);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching assets:", err);
+      }
+    };
+
+    fetchAssets();
+  }, []);
 
   // Fetch assignment data
   useEffect(() => {
@@ -247,6 +303,11 @@ function Quiz() {
       userAnswer: result.userAnswer,
     }));
 
+    // Calculate success rate for XP
+    const correctAnswers = questionResults.filter((r) => r.isCorrect).length;
+    const successRate = (correctAnswers / questions.length) * 100;
+    const xpGain = Math.floor(successRate / 2); // XP gain is half of success rate
+
     // Submit to backend
     try {
       const token = localStorage.getItem("token");
@@ -260,6 +321,8 @@ function Quiz() {
           assignmentId: assignmentId, // Use the assignmentId from URL params
           coinsReceived: totalCoins,
           userAnswers: userAnswersForBackend, // Include user answers
+          assetId: selectedAsset?.id, // Include selected asset ID
+          xpGain: xpGain, // Include XP gain
         }),
       });
 
@@ -269,6 +332,16 @@ function Quiz() {
           "Assignment submitted successfully. New coins:",
           data.coins
         );
+
+        // Update results with asset leveling info if available
+        if (data.assetLeveledUp) {
+          setResults({
+            ...resultsData,
+            assetLeveledUp: true,
+            assetName: selectedAsset?.name,
+            newLevel: data.newLevel,
+          });
+        }
       }
     } catch (error) {
       console.error("Error submitting assignment:", error);
@@ -352,6 +425,41 @@ function Quiz() {
                 <strong>You cannot pause</strong> once you start
               </li>
             </ul>
+
+            {assets.length > 0 && (
+              <div className='asset-selection'>
+                <p>
+                  <strong>Select a warrior to gain XP:</strong>
+                </p>
+                <div className='asset-grid'>
+                  {assets.map((asset) => (
+                    <div
+                      key={asset.id}
+                      className={`asset-card ${
+                        selectedAsset?.id === asset.id ? "selected" : ""
+                      }`}
+                      onClick={() => setSelectedAsset(asset)}
+                    >
+                      <img src={asset.thumbnail} alt={asset.name} />
+                      <div className='asset-info'>
+                        <div className='asset-name'>{asset.name}</div>
+                        <div className='asset-level'>Lvl {asset.level}</div>
+                        <div className='asset-xp'>
+                          {asset.xp || 0} / {asset.xpRequired || 100} XP
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {selectedAsset && (
+                  <p className='selected-note'>
+                    <i className='fa-solid fa-check-circle'></i>{" "}
+                    {selectedAsset.name} will gain XP based on your performance
+                  </p>
+                )}
+              </div>
+            )}
+
             <p className='warning-note'>
               <i className='fa-solid fa-exclamation-triangle'></i> Make sure
               you're ready before starting!
@@ -487,6 +595,16 @@ function Quiz() {
               <div className='score-label'>coins earned</div>
             </div>
           </div>
+
+          {results.assetLeveledUp && (
+            <div className='level-up-banner'>
+              <i className='fa-solid fa-star'></i>
+              <h3>
+                {results.assetName} leveled up to Level {results.newLevel}!
+              </h3>
+              <i className='fa-solid fa-star'></i>
+            </div>
+          )}
 
           <div className='results-details'>
             <h3>
