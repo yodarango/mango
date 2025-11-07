@@ -24,6 +24,35 @@ I am Spanish teacher of thrid grade and this is my teaching outline below. I wan
 4. Appicica il outline in un nuovo proggeto di agument e crea un video
 5. Include il video nel compoenent di react
 
+### Come preparare le domande per una lessione
+
+#### query per NotebookLM
+
+I have an app that takes in an array of object types:
+A. multiple choice question:
+{
+"id": "a7b3c9d2",
+"type": "multiple" ,
+"question": "What is the capital of Spain?",
+"answer": ["Madrid", "Barcelona", "Valencia", "Seville"],
+"correct": 0 (index of the correct answer),
+"coins_worth": 10,
+"time_alloted": 30
+}
+
+B. The user inputs the answer
+{
+"id": "x4y8z1w5",
+"type": "input",
+"question": "How do you say 'hello' in Spanish?",
+"answer": "hola" (expectedanswer),
+"correct": null,
+"coins_worth": 5,
+"time_alloted": 20
+}
+
+based on this lesson, create 10 questions for the students. 5 input and five typed. Randomly mix them in one array. time_alloted for multiple choice shold be 20 and 30 for typed. coins worth for multiple choice should be 50 and 100 for typed
+
 ### Come se preparare daily vocab:
 
 1. `sync_test.sh`

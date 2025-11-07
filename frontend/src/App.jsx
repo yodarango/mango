@@ -29,6 +29,7 @@ import CreateBattle from "./pages/CreateBattle";
 import EditBattle from "./pages/EditBattle";
 import AdminBattle from "./pages/AdminBattle";
 import EditAvatar from "./pages/EditAvatar";
+import CreateStoreItems from "./pages/CreateStoreItems";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Drawer from "./components/Drawer";
 import "./App.css";
@@ -299,6 +300,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <EditAvatar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-store-items'
+            element={
+              <ProtectedRoute>
+                <CreateStoreItems />
               </ProtectedRoute>
             }
           />

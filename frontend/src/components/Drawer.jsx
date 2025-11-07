@@ -172,6 +172,15 @@ function Drawer({ isOpen, onClose }) {
                   <i className='fa-solid fa-swords'></i>
                   <span>Create Battle</span>
                 </Link>
+
+                <Link
+                  to='/admin/create-store-items'
+                  className='drawer-link admin-link'
+                  onClick={onClose}
+                >
+                  <i className='fa-solid fa-store'></i>
+                  <span>Create Store Items</span>
+                </Link>
               </>
             )}
           </nav>

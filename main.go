@@ -4,10 +4,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -3217,6 +3220,164 @@ func updateBattle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Upload store images and compress them
+func uploadStoreImages(w http.ResponseWriter, r *http.Request) {
+	// Parse multipart form (max 50MB)
+	err := r.ParseMultipartForm(50 << 20)
+	if err != nil {
+		http.Error(w, "Failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	// Get folder path
+	folderPath := r.FormValue("folderPath")
+	if folderPath == "" {
+		http.Error(w, "Folder path is required", http.StatusBadRequest)
+		return
+	}
+
+	// Get uploaded files
+	files := r.MultipartForm.File["images"]
+	if len(files) == 0 {
+		http.Error(w, "No images uploaded", http.StatusBadRequest)
+		return
+	}
+
+	// Build target directory path
+	targetDir := filepath.Join("frontend", "src", "assets", "store", folderPath)
+
+	// Create directory if it doesn't exist
+	err = os.MkdirAll(targetDir, 0755)
+	if err != nil {
+		http.Error(w, "Failed to create directory: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Save uploaded files
+	var savedFiles []string
+	for _, fileHeader := range files {
+		// Open uploaded file
+		file, err := fileHeader.Open()
+		if err != nil {
+			http.Error(w, "Failed to open uploaded file: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer file.Close()
+
+		// Create destination file
+		destPath := filepath.Join(targetDir, fileHeader.Filename)
+		destFile, err := os.Create(destPath)
+		if err != nil {
+			http.Error(w, "Failed to create file: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer destFile.Close()
+
+		// Copy file content
+		_, err = io.Copy(destFile, file)
+		if err != nil {
+			http.Error(w, "Failed to save file: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		savedFiles = append(savedFiles, fileHeader.Filename)
+	}
+
+	// Run compress_images.sh script
+	scriptPath := "./compress_images.sh"
+	cmd := exec.Command("bash", scriptPath)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("Compression script error: %s\nOutput: %s", err.Error(), string(output))
+		http.Error(w, "Failed to compress images: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("Compression output: %s", string(output))
+
+	// Return success with saved filenames (converted to .webp)
+	webpFiles := make([]string, len(savedFiles))
+	for i, filename := range savedFiles {
+		// Remove original extension and add .webp
+		ext := filepath.Ext(filename)
+		baseName := strings.TrimSuffix(filename, ext)
+		webpFiles[i] = baseName + ".webp"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"files":   webpFiles,
+		"message": "Images uploaded and compressed successfully",
+	})
+}
+
+// Insert store items into database
+func insertStoreItems(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Files     []string `json:"files"`
+		Type      string   `json:"type"`
+		Folder    string   `json:"folder"`
+		AdhFrom   int      `json:"adhFrom"`
+		AdhPlus   int      `json:"adhPlus"`
+		IsLocked  int      `json:"isLocked"`
+		Cost      int      `json:"cost"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate required fields
+	if len(req.Files) == 0 {
+		http.Error(w, "Files array is required", http.StatusBadRequest)
+		return
+	}
+	if req.Type == "" {
+		http.Error(w, "Type is required", http.StatusBadRequest)
+		return
+	}
+	if req.Folder == "" {
+		http.Error(w, "Folder is required", http.StatusBadRequest)
+		return
+	}
+
+	// Convert files array to JSON string
+	filesJSON, err := json.Marshal(req.Files)
+	if err != nil {
+		http.Error(w, "Failed to encode files", http.StatusInternalServerError)
+		return
+	}
+
+	// Run insert_store_items.sh script
+	scriptPath := "./insert_store_items.sh"
+	cmd := exec.Command("bash", scriptPath,
+		"--files", string(filesJSON),
+		"--type", req.Type,
+		"--folder", req.Folder,
+		"--adh-from", fmt.Sprintf("%d", req.AdhFrom),
+		"--adh-plus", fmt.Sprintf("%d", req.AdhPlus),
+		"--is-locked", fmt.Sprintf("%d", req.IsLocked),
+		"--cost", fmt.Sprintf("%d", req.Cost),
+	)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("Insert script error: %s\nOutput: %s", err.Error(), string(output))
+		http.Error(w, "Failed to insert items: "+err.Error()+"\nOutput: "+string(output), http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("Insert output: %s", string(output))
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": "Store items inserted successfully",
+	})
+}
+
 // WebSocket handler
 func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Get token from query parameter (WebSocket can't use Authorization header in browser)
@@ -3388,6 +3549,10 @@ func main() {
 	api.HandleFunc("/battles/{id}/stop", stopBattle).Methods("POST")
 	api.HandleFunc("/battles/submit-answer", submitAnswer).Methods("POST")
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
+
+	// Admin store management routes
+	api.HandleFunc("/admin/upload-store-images", uploadStoreImages).Methods("POST")
+	api.HandleFunc("/admin/insert-store-items", insertStoreItems).Methods("POST")
 
 	// Serve static files from the frontend build
 	staticPath := os.Getenv("STATIC_PATH")
