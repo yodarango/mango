@@ -88,6 +88,7 @@ type StoreItem struct {
 	Stamina        int    `json:"stamina"`
 	AvailableUnits int    `json:"availableUnits"`
 	Description    string `json:"description"`
+	IsLocked       bool   `json:"isLocked"`
 }
 
 type LoginRequest struct {
@@ -1217,6 +1218,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 			ability,
 			health,
 			stamina,
+			is_locked,
 			COUNT(*) as available_units
 		FROM assets
 		WHERE status = 'store' AND avatar_id IS NULL
@@ -1233,7 +1235,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 		var item StoreItem
 		if err := rows.Scan(&item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
 			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability,
-			&item.Health, &item.Stamina, &item.AvailableUnits); err != nil {
+			&item.Health, &item.Stamina, &item.IsLocked, &item.AvailableUnits); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
