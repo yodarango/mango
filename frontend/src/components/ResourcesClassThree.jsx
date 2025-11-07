@@ -22,6 +22,19 @@ function ResourcesClassThree() {
           </div>
           <i className='fa-solid fa-chevron-right'></i>
         </Link>
+        <Link
+          to='/assignments/direct-object-pronouns'
+          className='resource-link'
+        >
+          <i className='fa-solid fa-arrows-turn-right'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>Direct Object Pronouns</span>
+            <span className='resource-description'>
+              Master the "shortcut" pronouns: me, te, lo, la, nos, os, los, las
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
       </div>
     </div>
   );

@@ -22,6 +22,19 @@ function ResourcesClassTwo() {
           </div>
           <i className='fa-solid fa-chevron-right'></i>
         </Link>
+
+        <Link to='/assignments/ser-conjugation' className='resource-link'>
+          <i className='fa-solid fa-key'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>
+              Ser Conjugation - Identity Words
+            </span>
+            <span className='resource-description'>
+              Learn the six forms of "ser" (to be) with interactive exercises
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
       </div>
     </div>
   );

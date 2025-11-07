@@ -9,6 +9,8 @@ import Messages from "./pages/Messages";
 import Assignments from "./pages/Assignments";
 import IIINumbers from "./pages/lessons/III_Numbers/III_Numbers";
 import IISubjectPronouns from "./pages/lessons/II_SubjectPronouns/II_SubjectPronouns";
+import IIPronounsIdentifyingThePerson from "./pages/lessons/II_PronounsIdentifyingThePerson/II_PronounsIdentifyingThePerson";
+import IIIPronounsOfDirectObject from "./pages/lessons/III_PronounsOfDirectObject/III_PronounsOfDirectObject";
 import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
@@ -135,6 +137,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <IISubjectPronouns />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments/ser-conjugation'
+            element={
+              <ProtectedRoute>
+                <IIPronounsIdentifyingThePerson />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments/direct-object-pronouns'
+            element={
+              <ProtectedRoute>
+                <IIIPronounsOfDirectObject />
               </ProtectedRoute>
             }
           />
