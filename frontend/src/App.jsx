@@ -11,6 +11,8 @@ import IIINumbers from "./pages/lessons/III_Numbers/III_Numbers";
 import IISubjectPronouns from "./pages/lessons/II_SubjectPronouns/II_SubjectPronouns";
 import IIPronounsIdentifyingThePerson from "./pages/lessons/II_PronounsIdentifyingThePerson/II_PronounsIdentifyingThePerson";
 import IIIPronounsOfDirectObject from "./pages/lessons/III_PronounsOfDirectObject/III_PronounsOfDirectObject";
+import { IIIDailyVocab } from "./pages/IIIDailyVocab";
+import { IIDailyVocab } from "./pages/IIDailyVocab";
 import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
@@ -153,6 +155,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <IIIPronounsOfDirectObject />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments/daily-vocab-iii'
+            element={
+              <ProtectedRoute>
+                <IIIDailyVocab />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assignments/daily-vocab-ii'
+            element={
+              <ProtectedRoute>
+                <IIDailyVocab />
               </ProtectedRoute>
             }
           />

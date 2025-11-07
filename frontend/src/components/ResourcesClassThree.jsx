@@ -12,6 +12,16 @@ function ResourcesClassThree() {
       </div>
 
       <div className='resources-list'>
+        <Link to='/assignments/daily-vocab-iii' className='resource-link'>
+          <i className='fa-solid fa-arrows-turn-right'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>Daily Vocab</span>
+            <span className='resource-description'>
+              Learn today's daily words
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
         <Link
           to='/assignments/direct-object-pronouns'
           className='resource-link'

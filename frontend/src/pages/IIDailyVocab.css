@@ -1,0 +1,166 @@
+/* Main container */
+.daily-vocab-ii {
+  div {
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--charcoal-dark);
+  }
+
+  /* Take the Quiz link */
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent-green);
+    color: var(--charcoal-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 255, 65, 0.3);
+  }
+
+  a:hover {
+    background: var(--accent-yellow);
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+  }
+
+  a i {
+    font-size: 1.2rem;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(
+      135deg,
+      var(--charcoal-medium),
+      var(--charcoal-light)
+    );
+    border-radius: 16px;
+    border: 3px solid var(--accent-green);
+  }
+
+  header h1 {
+    font-family: "MedievalSharp", cursive;
+    color: var(--accent-yellow);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  header h1 i {
+    color: var(--accent-green);
+    margin-right: 1rem;
+  }
+
+  header p {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  /* Vocab Section */
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Vocab cards */
+  section > div {
+    width: 100%;
+    background: var(--charcoal-medium);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 3px solid var(--accent-green);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  section > div:nth-child(2) {
+    border-color: var(--accent-orange);
+  }
+
+  section > div:nth-child(3) {
+    border-color: var(--accent-yellow);
+  }
+
+  section > div:nth-child(4) {
+    border-color: #3498db;
+  }
+
+  section > div:nth-child(5) {
+    border-color: #9b59b6;
+  }
+
+  section > div:nth-child(6) {
+    border-color: #e74c3c;
+  }
+
+  section > div p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  section > div strong {
+    color: var(--accent-yellow);
+    font-size: 1.3rem;
+    font-family: "MedievalSharp", cursive;
+  }
+
+  section > div ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  section > div li {
+    background: var(--charcoal-light);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    color: white;
+    font-size: 1rem;
+    border-left: 4px solid var(--accent-green);
+    transition: all 0.3s ease;
+  }
+
+  section > div li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    div {
+      padding: 1rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+    }
+
+    header p {
+      font-size: 1rem;
+    }
+
+    section > div {
+      padding: 1rem;
+    }
+
+    section > div p {
+      font-size: 1rem;
+    }
+
+    section > div strong {
+      font-size: 1.2rem;
+    }
+  }
+}

@@ -12,6 +12,16 @@ function ResourcesClassTwo() {
       </div>
 
       <div className='resources-list'>
+        <Link to='/assignments/daily-vocab-ii' className='resource-link'>
+          <i className='fa-solid fa-arrows-turn-right'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>Daily Vocab</span>
+            <span className='resource-description'>
+              Learn today's daily words
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
         <Link to='/assignments/ser-conjugation' className='resource-link'>
           <i className='fa-solid fa-key'></i>
           <div className='resource-info'>
