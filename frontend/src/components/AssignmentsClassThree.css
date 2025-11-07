@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: #00ff00;
+  color: white;
 }
 
 .assignments-class-container .completed-badge {

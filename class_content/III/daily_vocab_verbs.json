@@ -1,6314 +1,6314 @@
 [
   {
+    "eng": "to owe, must, should",
     "index": 792,
     "spa": "deber",
-    "eng": "to owe, must, should",
-    "used": null
+    "used": "Nov 7, 2025"
   },
   {
+    "eng": "to seem, appear",
     "index": 793,
     "spa": "parecer",
-    "eng": "to seem, appear",
-    "used": null
+    "used": "Nov 7, 2025"
   },
   {
+    "eng": "to arrive, to reach",
     "index": 1,
     "spa": "llegar",
-    "eng": "to arrive, to reach",
-    "used": null
+    "used": "Nov 7, 2025"
   },
   {
+    "eng": "to try, to treat",
     "index": 2,
     "spa": "tratar",
-    "eng": "to try, to treat",
     "used": null
   },
   {
+    "eng": "to speak, to talk",
     "index": 3,
     "spa": "hablar",
-    "eng": "to speak, to talk",
     "used": null
   },
   {
+    "eng": "to leave, to allow, to let",
     "index": 4,
     "spa": "dejar",
-    "eng": "to leave, to allow, to let",
     "used": null
   },
   {
+    "eng": "to pass, to happen, to spend (time",
     "index": 5,
     "spa": "pasar",
-    "eng": "to pass, to happen, to spend (time",
     "used": null
   },
   {
+    "eng": "to carry, to take, to wear",
     "index": 6,
     "spa": "llevar",
-    "eng": "to carry, to take, to wear",
     "used": null
   },
   {
+    "eng": "to exist",
     "index": 917,
     "spa": "existir",
-    "eng": "to exist",
     "used": null
   },
   {
+    "eng": "to know, to meet",
     "index": 794,
     "spa": "conocer",
-    "eng": "to know, to meet",
     "used": null
   },
   {
+    "eng": "to take, to drink",
     "index": 7,
     "spa": "tomar",
-    "eng": "to take, to drink",
     "used": null
   },
   {
+    "eng": "to find, to encounter",
     "index": 8,
     "spa": "encontrar",
-    "eng": "to find, to encounter",
     "used": null
   },
   {
+    "eng": "to create",
     "index": 9,
     "spa": "crear",
-    "eng": "to create",
     "used": null
   },
   {
+    "eng": "to avoid, to prevent",
     "index": 10,
     "spa": "evitar",
-    "eng": "to avoid, to prevent",
     "used": null
   },
   {
+    "eng": "to stay, to remain, to be left",
     "index": 11,
     "spa": "quedar",
-    "eng": "to stay, to remain, to be left",
     "used": null
   },
   {
+    "eng": "to carry out, to perform, to achieve",
     "index": 12,
     "spa": "realizar",
-    "eng": "to carry out, to perform, to achieve",
     "used": null
   },
   {
+    "eng": "to permit, allow",
     "index": 918,
     "spa": "permitir",
-    "eng": "to permit, allow",
     "used": null
   },
   {
+    "eng": "to result, to turn out",
     "index": 13,
     "spa": "resultar",
-    "eng": "to result, to turn out",
     "used": null
   },
   {
+    "eng": "to live",
     "index": 919,
     "spa": "vivir",
-    "eng": "to live",
     "used": null
   },
   {
+    "eng": "to search, to look for",
     "index": 14,
     "spa": "buscar",
-    "eng": "to search, to look for",
     "used": null
   },
   {
+    "eng": "to enter, to go in",
     "index": 15,
     "spa": "entrar",
-    "eng": "to enter, to go in",
     "used": null
   },
   {
+    "eng": "to consider",
     "index": 16,
     "spa": "considerar",
-    "eng": "to consider",
     "used": null
   },
   {
+    "eng": "to point out, to indicate",
     "index": 17,
     "spa": "señalar",
-    "eng": "to point out, to indicate",
     "used": null
   },
   {
+    "eng": "to present, to introduce",
     "index": 18,
     "spa": "presentar",
-    "eng": "to present, to introduce",
     "used": null
   },
   {
+    "eng": "to lose",
     "index": 795,
     "spa": "perder",
-    "eng": "to lose",
     "used": null
   },
   {
+    "eng": "to appear, show up",
     "index": 796,
     "spa": "aparecer",
-    "eng": "to appear, show up",
     "used": null
   },
   {
+    "eng": "to work",
     "index": 19,
     "spa": "trabajar",
-    "eng": "to work",
     "used": null
   },
   {
+    "eng": "to obtain, get",
     "index": 797,
     "spa": "obtener",
-    "eng": "to obtain, get",
     "used": null
   },
   {
+    "eng": "to achieve, to manage to",
     "index": 20,
     "spa": "lograr",
-    "eng": "to achieve, to manage to",
     "used": null
   },
   {
+    "eng": "to wait, to hope, to expect",
     "index": 21,
     "spa": "esperar",
-    "eng": "to wait, to hope, to expect",
     "used": null
   },
   {
+    "eng": "to affirm, to assert, to state",
     "index": 22,
     "spa": "afirmar",
-    "eng": "to affirm, to assert, to state",
     "used": null
   },
   {
+    "eng": "to ask",
     "index": 23,
     "spa": "preguntar",
-    "eng": "to ask",
     "used": null
   },
   {
+    "eng": "to win, to earn, to gain",
     "index": 24,
     "spa": "ganar",
-    "eng": "to win, to earn, to gain",
     "used": null
   },
   {
+    "eng": "to call, to name",
     "index": 25,
     "spa": "llamar",
-    "eng": "to call, to name",
     "used": null
   },
   {
+    "eng": "to occur, happen",
     "index": 920,
     "spa": "ocurrir",
-    "eng": "to occur, happen",
     "used": null
   },
   {
+    "eng": "to change",
     "index": 26,
     "spa": "cambiar",
-    "eng": "to change",
     "used": null
   },
   {
+    "eng": "to mean, to signify",
     "index": 27,
     "spa": "significar",
-    "eng": "to mean, to signify",
     "used": null
   },
   {
+    "eng": "to like, to be pleasing",
     "index": 28,
     "spa": "gustar",
-    "eng": "to like, to be pleasing",
     "used": null
   },
   {
+    "eng": "to establish",
     "index": 798,
     "spa": "establecer",
-    "eng": "to establish",
     "used": null
   },
   {
+    "eng": "to fulfill, accomplish",
     "index": 921,
     "spa": "cumplir",
-    "eng": "to fulfill, accomplish",
     "used": null
   },
   {
+    "eng": "to explain",
     "index": 29,
     "spa": "explicar",
-    "eng": "to explain",
     "used": null
   },
   {
+    "eng": "to reach, to catch up, to achieve",
     "index": 30,
     "spa": "alcanzar",
-    "eng": "to reach, to catch up, to achieve",
     "used": null
   },
   {
+    "eng": "to pay",
     "index": 31,
     "spa": "pagar",
-    "eng": "to pay",
     "used": null
   },
   {
+    "eng": "to believe",
     "index": 799,
     "spa": "creer",
-    "eng": "to believe",
     "used": null
   },
   {
+    "eng": "to eat",
     "index": 800,
     "spa": "comer",
-    "eng": "to eat",
     "used": null
   },
   {
+    "eng": "to look at, to watch",
     "index": 32,
     "spa": "mirar",
-    "eng": "to look at, to watch",
     "used": null
   },
   {
+    "eng": "to take out, to remove",
     "index": 33,
     "spa": "sacar",
-    "eng": "to take out, to remove",
     "used": null
   },
   {
+    "eng": "to open",
     "index": 922,
     "spa": "abrir",
-    "eng": "to open",
     "used": null
   },
   {
+    "eng": "to assure, to secure, to ensure",
     "index": 34,
     "spa": "asegurar",
-    "eng": "to assure, to secure, to ensure",
     "used": null
   },
   {
+    "eng": "to use, to utilize",
     "index": 35,
     "spa": "utilizar",
-    "eng": "to use, to utilize",
     "used": null
   },
   {
+    "eng": "to offer",
     "index": 801,
     "spa": "ofrecer",
-    "eng": "to offer",
     "used": null
   },
   {
+    "eng": "to receive",
     "index": 923,
     "spa": "recibir",
-    "eng": "to receive",
     "used": null
   },
   {
+    "eng": "to constitute",
     "index": 924,
     "spa": "constituir",
-    "eng": "to constitute",
     "used": null
   },
   {
+    "eng": "to write",
     "index": 925,
     "spa": "escribir",
-    "eng": "to write",
     "used": null
   },
   {
+    "eng": "to inform, to report",
     "index": 36,
     "spa": "informar",
-    "eng": "to inform, to report",
     "used": null
   },
   {
+    "eng": "to need",
     "index": 37,
     "spa": "necesitar",
-    "eng": "to need",
     "used": null
   },
   {
+    "eng": "to refer",
     "index": 926,
     "spa": "referir",
-    "eng": "to refer",
     "used": null
   },
   {
+    "eng": "to declare, to state",
     "index": 38,
     "spa": "declarar",
-    "eng": "to declare, to state",
     "used": null
   },
   {
+    "eng": "to represent",
     "index": 39,
     "spa": "representar",
-    "eng": "to represent",
     "used": null
   },
   {
+    "eng": "to usually do, to tend to",
     "index": 802,
     "spa": "soler",
-    "eng": "to usually do, to tend to",
     "used": null
   },
   {
+    "eng": "to express, to show, to state",
     "index": 40,
     "spa": "manifestar",
-    "eng": "to express, to show, to state",
     "used": null
   },
   {
+    "eng": "to correspond",
     "index": 803,
     "spa": "corresponder",
-    "eng": "to correspond",
     "used": null
   },
   {
+    "eng": "to forget",
     "index": 41,
     "spa": "olvidar",
-    "eng": "to forget",
     "used": null
   },
   {
+    "eng": "to decide",
     "index": 927,
     "spa": "decidir",
-    "eng": "to decide",
     "used": null
   },
   {
+    "eng": "to finish, to end",
     "index": 42,
     "spa": "acabar",
-    "eng": "to finish, to end",
     "used": null
   },
   {
+    "eng": "to announce",
     "index": 43,
     "spa": "anunciar",
-    "eng": "to announce",
     "used": null
   },
   {
+    "eng": "to recognize",
     "index": 804,
     "spa": "reconocer",
-    "eng": "to recognize",
     "used": null
   },
   {
+    "eng": "to intend, pretend, claim",
     "index": 805,
     "spa": "pretender",
-    "eng": "to intend, pretend, claim",
     "used": null
   },
   {
+    "eng": "to add",
     "index": 928,
     "spa": "añadir",
-    "eng": "to add",
     "used": null
   },
   {
+    "eng": "to accept",
     "index": 44,
     "spa": "aceptar",
-    "eng": "to accept",
     "used": null
   },
   {
+    "eng": "to consist of",
     "index": 929,
     "spa": "consistir",
-    "eng": "to consist of",
     "used": null
   },
   {
+    "eng": "to indicate, to point out",
     "index": 45,
     "spa": "indicar",
-    "eng": "to indicate, to point out",
     "used": null
   },
   {
+    "eng": "to help",
     "index": 46,
     "spa": "ayudar",
-    "eng": "to help",
     "used": null
   },
   {
+    "eng": "to understand",
     "index": 806,
     "spa": "comprender",
-    "eng": "to understand",
     "used": null
   },
   {
+    "eng": "to finish, to end",
     "index": 47,
     "spa": "terminar",
-    "eng": "to finish, to end",
     "used": null
   },
   {
+    "eng": "to listen",
     "index": 48,
     "spa": "escuchar",
-    "eng": "to listen",
     "used": null
   },
   {
+    "eng": "to matter, to import",
     "index": 49,
     "spa": "importar",
-    "eng": "to matter, to import",
     "used": null
   },
   {
+    "eng": "to improve, to get better",
     "index": 50,
     "spa": "mejorar",
-    "eng": "to improve, to get better",
     "used": null
   },
   {
+    "eng": "to buy",
     "index": 51,
     "spa": "comprar",
-    "eng": "to buy",
     "used": null
   },
   {
+    "eng": "to reduce",
     "index": 930,
     "spa": "reducir",
-    "eng": "to reduce",
     "used": null
   },
   {
+    "eng": "to defend",
     "index": 807,
     "spa": "defender",
-    "eng": "to defend",
     "used": null
   },
   {
+    "eng": "to study",
     "index": 52,
     "spa": "estudiar",
-    "eng": "to study",
     "used": null
   },
   {
+    "eng": "to develop",
     "index": 53,
     "spa": "desarrollar",
-    "eng": "to develop",
     "used": null
   },
   {
+    "eng": "to form, to shape",
     "index": 54,
     "spa": "formar",
-    "eng": "to form, to shape",
     "used": null
   },
   {
+    "eng": "to sit, to seat",
     "index": 55,
     "spa": "sentar",
-    "eng": "to sit, to seat",
     "used": null
   },
   {
+    "eng": "to respond, answer",
     "index": 808,
     "spa": "responder",
-    "eng": "to respond, answer",
     "used": null
   },
   {
+    "eng": "to require",
     "index": 931,
     "spa": "requerir",
-    "eng": "to require",
     "used": null
   },
   {
+    "eng": "to depend",
     "index": 809,
     "spa": "depender",
-    "eng": "to depend",
     "used": null
   },
   {
+    "eng": "to apply",
     "index": 56,
     "spa": "aplicar",
-    "eng": "to apply",
     "used": null
   },
   {
+    "eng": "to kill",
     "index": 57,
     "spa": "matar",
-    "eng": "to kill",
     "used": null
   },
   {
+    "eng": "to participate",
     "index": 58,
     "spa": "participar",
-    "eng": "to participate",
     "used": null
   },
   {
+    "eng": "to lift, to raise",
     "index": 59,
     "spa": "levantar",
-    "eng": "to lift, to raise",
     "used": null
   },
   {
+    "eng": "to act, to perform",
     "index": 60,
     "spa": "actuar",
-    "eng": "to act, to perform",
     "used": null
   },
   {
+    "eng": "to happen, succeed/follow",
     "index": 810,
     "spa": "suceder",
-    "eng": "to happen, succeed/follow",
     "used": null
   },
   {
+    "eng": "to abandon, to leave",
     "index": 61,
     "spa": "abandonar",
-    "eng": "to abandon, to leave",
     "used": null
   },
   {
+    "eng": "to try, to attempt",
     "index": 62,
     "spa": "intentar",
-    "eng": "to try, to attempt",
     "used": null
   },
   {
+    "eng": "to continue",
     "index": 63,
     "spa": "continuar",
-    "eng": "to continue",
     "used": null
   },
   {
+    "eng": "to observe",
     "index": 64,
     "spa": "observar",
-    "eng": "to observe",
     "used": null
   },
   {
+    "eng": "to face, to confront",
     "index": 65,
     "spa": "enfrentar",
-    "eng": "to face, to confront",
     "used": null
   },
   {
+    "eng": "to verify, to check, to confirm",
     "index": 66,
     "spa": "comprobar",
-    "eng": "to verify, to check, to confirm",
     "used": null
   },
   {
+    "eng": "to recover, to get back",
     "index": 67,
     "spa": "recuperar",
-    "eng": "to recover, to get back",
     "used": null
   },
   {
+    "eng": "to demonstrate, to show",
     "index": 68,
     "spa": "demostrar",
-    "eng": "to demonstrate, to show",
     "used": null
   },
   {
+    "eng": "to use",
     "index": 69,
     "spa": "usar",
-    "eng": "to use",
     "used": null
   },
   {
+    "eng": "to possess, own",
     "index": 811,
     "spa": "poseer",
-    "eng": "to possess, own",
     "used": null
   },
   {
+    "eng": "to increase, to raise",
     "index": 70,
     "spa": "aumentar",
-    "eng": "to increase, to raise",
     "used": null
   },
   {
+    "eng": "to comment, to remark",
     "index": 71,
     "spa": "comentar",
-    "eng": "to comment, to remark",
     "used": null
   },
   {
+    "eng": "to add",
     "index": 72,
     "spa": "agregar",
-    "eng": "to add",
     "used": null
   },
   {
+    "eng": "to initiate, to start",
     "index": 73,
     "spa": "iniciar",
-    "eng": "to initiate, to start",
     "used": null
   },
   {
+    "eng": "to throw, to pour, to expel",
     "index": 74,
     "spa": "echar",
-    "eng": "to throw, to pour, to expel",
     "used": null
   },
   {
+    "eng": "to overcome, to surpass",
     "index": 75,
     "spa": "superar",
-    "eng": "to overcome, to surpass",
     "used": null
   },
   {
+    "eng": "to sell",
     "index": 812,
     "spa": "vender",
-    "eng": "to sell",
     "used": null
   },
   {
+    "eng": "to discover",
     "index": 932,
     "spa": "descubrir",
-    "eng": "to discover",
     "used": null
   },
   {
+    "eng": "to demand",
     "index": 933,
     "spa": "exigir",
-    "eng": "to demand",
     "used": null
   },
   {
+    "eng": "to place, to put",
     "index": 76,
     "spa": "colocar",
-    "eng": "to place, to put",
     "used": null
   },
   {
+    "eng": "to touch, to play (an instrument",
     "index": 77,
     "spa": "tocar",
-    "eng": "to touch, to play (an instrument",
     "used": null
   },
   {
+    "eng": "to determine, to establish",
     "index": 78,
     "spa": "determinar",
-    "eng": "to determine, to establish",
     "used": null
   },
   {
+    "eng": "to put, insert",
     "index": 813,
     "spa": "meter",
-    "eng": "to put, insert",
     "used": null
   },
   {
+    "eng": "to interest",
     "index": 79,
     "spa": "interesar",
-    "eng": "to interest",
     "used": null
   },
   {
+    "eng": "to go up, to climb, to upload",
     "index": 934,
     "spa": "subir",
-    "eng": "to go up, to climb, to upload",
     "used": null
   },
   {
+    "eng": "to control, to monitor",
     "index": 80,
     "spa": "controlar",
-    "eng": "to control, to monitor",
     "used": null
   },
   {
+    "eng": "to run",
     "index": 814,
     "spa": "correr",
-    "eng": "to run",
     "used": null
   },
   {
+    "eng": "to lack, to miss",
     "index": 81,
     "spa": "faltar",
-    "eng": "to lack, to miss",
     "used": null
   },
   {
+    "eng": "to go down, to lower, to download",
     "index": 82,
     "spa": "bajar",
-    "eng": "to go down, to lower, to download",
     "used": null
   },
   {
+    "eng": "to define",
     "index": 935,
     "spa": "definir",
-    "eng": "to define",
     "used": null
   },
   {
+    "eng": "to imply, to involve",
     "index": 83,
     "spa": "implicar",
-    "eng": "to imply, to involve",
     "used": null
   },
   {
+    "eng": "to express",
     "index": 84,
     "spa": "expresar",
-    "eng": "to express",
     "used": null
   },
   {
+    "eng": "to direct, manage",
     "index": 936,
     "spa": "dirigir",
-    "eng": "to direct, manage",
     "used": null
   },
   {
+    "eng": "to occupy, to take up",
     "index": 85,
     "spa": "ocupar",
-    "eng": "to occupy, to take up",
     "used": null
   },
   {
+    "eng": "to prepare",
     "index": 86,
     "spa": "preparar",
-    "eng": "to prepare",
     "used": null
   },
   {
+    "eng": "to contain",
     "index": 815,
     "spa": "contener",
-    "eng": "to contain",
     "used": null
   },
   {
+    "eng": "to imagine",
     "index": 87,
     "spa": "imaginar",
-    "eng": "to imagine",
     "used": null
   },
   {
+    "eng": "to cover",
     "index": 937,
     "spa": "cubrir",
-    "eng": "to cover",
     "used": null
   },
   {
+    "eng": "to wish, to desire",
     "index": 88,
     "spa": "desear",
-    "eng": "to wish, to desire",
     "used": null
   },
   {
+    "eng": "to remove, to take away",
     "index": 89,
     "spa": "quitar",
-    "eng": "to remove, to take away",
     "used": null
   },
   {
+    "eng": "to save, to rescue",
     "index": 90,
     "spa": "salvar",
-    "eng": "to save, to rescue",
     "used": null
   },
   {
+    "eng": "to break",
     "index": 816,
     "spa": "romper",
-    "eng": "to break",
     "used": null
   },
   {
+    "eng": "to affect",
     "index": 91,
     "spa": "afectar",
-    "eng": "to affect",
     "used": null
   },
   {
+    "eng": "to return, to go back",
     "index": 92,
     "spa": "regresar",
-    "eng": "to return, to go back",
     "used": null
   },
   {
+    "eng": "to analyze",
     "index": 93,
     "spa": "analizar",
-    "eng": "to analyze",
     "used": null
   },
   {
+    "eng": "to answer, to reply",
     "index": 94,
     "spa": "contestar",
-    "eng": "to answer, to reply",
     "used": null
   },
   {
+    "eng": "to deliver, to hand over",
     "index": 95,
     "spa": "entregar",
-    "eng": "to deliver, to hand over",
     "used": null
   },
   {
+    "eng": "to bring closer, to approach",
     "index": 96,
     "spa": "acercar",
-    "eng": "to bring closer, to approach",
     "used": null
   },
   {
+    "eng": "to be born",
     "index": 817,
     "spa": "nacer",
-    "eng": "to be born",
     "used": null
   },
   {
+    "eng": "to visit",
     "index": 97,
     "spa": "visitar",
-    "eng": "to visit",
     "used": null
   },
   {
+    "eng": "to learn",
     "index": 818,
     "spa": "aprender",
-    "eng": "to learn",
     "used": null
   },
   {
+    "eng": "to attend to, assist",
     "index": 819,
     "spa": "atender",
-    "eng": "to attend to, assist",
     "used": null
   },
   {
+    "eng": "to impose",
     "index": 820,
     "spa": "imponer",
-    "eng": "to impose",
     "used": null
   },
   {
+    "eng": "to arrange, dispose",
     "index": 821,
     "spa": "disponer",
-    "eng": "to arrange, dispose",
     "used": null
   },
   {
+    "eng": "to be enough, to suffice",
     "index": 98,
     "spa": "bastar",
-    "eng": "to be enough, to suffice",
     "used": null
   },
   {
+    "eng": "to belong",
     "index": 822,
     "spa": "pertenecer",
-    "eng": "to belong",
     "used": null
   },
   {
+    "eng": "to pick up, collect",
     "index": 823,
     "spa": "recoger",
-    "eng": "to pick up, collect",
     "used": null
   },
   {
+    "eng": "to eliminate, to remove",
     "index": 99,
     "spa": "eliminar",
-    "eng": "to eliminate, to remove",
     "used": null
   },
   {
+    "eng": "to highlight, to emphasize",
     "index": 100,
     "spa": "destacar",
-    "eng": "to highlight, to emphasize",
     "used": null
   },
   {
+    "eng": "to protect",
     "index": 824,
     "spa": "proteger",
-    "eng": "to protect",
     "used": null
   },
   {
+    "eng": "to suffer",
     "index": 938,
     "spa": "sufrir",
-    "eng": "to suffer",
     "used": null
   },
   {
+    "eng": "to celebrate",
     "index": 101,
     "spa": "celebrar",
-    "eng": "to celebrate",
     "used": null
   },
   {
+    "eng": "to withdraw, to remove",
     "index": 102,
     "spa": "retirar",
-    "eng": "to withdraw, to remove",
     "used": null
   },
   {
+    "eng": "to propose, to suggest, to raise (an issue",
     "index": 103,
     "spa": "plantear",
-    "eng": "to propose, to suggest, to raise (an issue",
     "used": null
   },
   {
+    "eng": "to assume, take on",
     "index": 939,
     "spa": "asumir",
-    "eng": "to assume, take on",
     "used": null
   },
   {
+    "eng": "to support, to back",
     "index": 104,
     "spa": "apoyar",
-    "eng": "to support, to back",
     "used": null
   },
   {
+    "eng": "to quote, to cite, to summon",
     "index": 105,
     "spa": "citar",
-    "eng": "to quote, to cite, to summon",
     "used": null
   },
   {
+    "eng": "to provoke, to cause",
     "index": 106,
     "spa": "provocar",
-    "eng": "to provoke, to cause",
     "used": null
   },
   {
+    "eng": "to drink",
     "index": 825,
     "spa": "beber",
-    "eng": "to drink",
     "used": null
   },
   {
+    "eng": "to take advantage of, to make the most of",
     "index": 107,
     "spa": "aprovechar",
-    "eng": "to take advantage of, to make the most of",
     "used": null
   },
   {
+    "eng": "to stop",
     "index": 108,
     "spa": "parar",
-    "eng": "to stop",
     "used": null
   },
   {
+    "eng": "to convince",
     "index": 826,
     "spa": "convencer",
-    "eng": "to convince",
     "used": null
   },
   {
+    "eng": "to gather, reunite",
     "index": 940,
     "spa": "reunir",
-    "eng": "to gather, reunite",
     "used": null
   },
   {
+    "eng": "to guarantee, to ensure",
     "index": 109,
     "spa": "garantizar",
-    "eng": "to guarantee, to ensure",
     "used": null
   },
   {
+    "eng": "to carry out, to execute",
     "index": 110,
     "spa": "efectuar",
-    "eng": "to carry out, to execute",
     "used": null
   },
   {
+    "eng": "to relate, to connect",
     "index": 111,
     "spa": "relacionar",
-    "eng": "to relate, to connect",
     "used": null
   },
   {
+    "eng": "to insist",
     "index": 941,
     "spa": "insistir",
-    "eng": "to insist",
     "used": null
   },
   {
+    "eng": "to facilitate, to provide",
     "index": 112,
     "spa": "facilitar",
-    "eng": "to facilitate, to provide",
     "used": null
   },
   {
+    "eng": "to deserve",
     "index": 827,
     "spa": "merecer",
-    "eng": "to deserve",
     "used": null
   },
   {
+    "eng": "to modify, to change",
     "index": 113,
     "spa": "modificar",
-    "eng": "to modify, to change",
     "used": null
   },
   {
+    "eng": "to place, to locate",
     "index": 114,
     "spa": "situar",
-    "eng": "to place, to locate",
     "used": null
   },
   {
+    "eng": "to identify",
     "index": 115,
     "spa": "identificar",
-    "eng": "to identify",
     "used": null
   },
   {
+    "eng": "to cry",
     "index": 116,
     "spa": "llorar",
-    "eng": "to cry",
     "used": null
   },
   {
+    "eng": "to order, to arrange",
     "index": 117,
     "spa": "ordenar",
-    "eng": "to order, to arrange",
     "used": null
   },
   {
+    "eng": "to force, to oblige",
     "index": 118,
     "spa": "obligar",
-    "eng": "to force, to oblige",
     "used": null
   },
   {
+    "eng": "to organize",
     "index": 119,
     "spa": "organizar",
-    "eng": "to organize",
     "used": null
   },
   {
+    "eng": "to escape",
     "index": 120,
     "spa": "escapar",
-    "eng": "to escape",
     "used": null
   },
   {
+    "eng": "to unite, join",
     "index": 942,
     "spa": "unir",
-    "eng": "to unite, join",
     "used": null
   },
   {
+    "eng": "to exercise, practice",
     "index": 828,
     "spa": "ejercer",
-    "eng": "to exercise, practice",
     "used": null
   },
   {
+    "eng": "to cut",
     "index": 121,
     "spa": "cortar",
-    "eng": "to cut",
     "used": null
   },
   {
+    "eng": "to confirm",
     "index": 122,
     "spa": "confirmar",
-    "eng": "to confirm",
     "used": null
   },
   {
+    "eng": "to incorporate, to include",
     "index": 123,
     "spa": "incorporar",
-    "eng": "to incorporate, to include",
     "used": null
   },
   {
+    "eng": "to arise, emerge",
     "index": 943,
     "spa": "surgir",
-    "eng": "to arise, emerge",
     "used": null
   },
   {
+    "eng": "to combat, fight",
     "index": 944,
     "spa": "combatir",
-    "eng": "to combat, fight",
     "used": null
   },
   {
+    "eng": "to send",
     "index": 124,
     "spa": "enviar",
-    "eng": "to send",
     "used": null
   },
   {
+    "eng": "to publish",
     "index": 125,
     "spa": "publicar",
-    "eng": "to publish",
     "used": null
   },
   {
+    "eng": "to negotiate",
     "index": 126,
     "spa": "negociar",
-    "eng": "to negotiate",
     "used": null
   },
   {
+    "eng": "to remain, stay",
     "index": 829,
     "spa": "permanecer",
-    "eng": "to remain, stay",
     "used": null
   },
   {
+    "eng": "to attend, assist",
     "index": 945,
     "spa": "asistir",
-    "eng": "to attend, assist",
     "used": null
   },
   {
+    "eng": "to adopt",
     "index": 127,
     "spa": "adoptar",
-    "eng": "to adopt",
     "used": null
   },
   {
+    "eng": "to contemplate, to consider",
     "index": 128,
     "spa": "contemplar",
-    "eng": "to contemplate, to consider",
     "used": null
   },
   {
+    "eng": "to find, to discover",
     "index": 129,
     "spa": "hallar",
-    "eng": "to find, to discover",
     "used": null
   },
   {
+    "eng": "to fight, to struggle",
     "index": 130,
     "spa": "luchar",
-    "eng": "to fight, to struggle",
     "used": null
   },
   {
+    "eng": "to tend, stretch out",
     "index": 830,
     "spa": "tender",
-    "eng": "to tend, stretch out",
     "used": null
   },
   {
+    "eng": "to discuss, argue",
     "index": 946,
     "spa": "discutir",
-    "eng": "to discuss, argue",
     "used": null
   },
   {
+    "eng": "to preserve, to conserve",
     "index": 131,
     "spa": "conservar",
-    "eng": "to preserve, to conserve",
     "used": null
   },
   {
+    "eng": "to accompany",
     "index": 132,
     "spa": "acompañar",
-    "eng": "to accompany",
     "used": null
   },
   {
+    "eng": "to dedicate, to devote",
     "index": 133,
     "spa": "dedicar",
-    "eng": "to dedicate, to devote",
     "used": null
   },
   {
+    "eng": "to go, attend",
     "index": 947,
     "spa": "acudir",
-    "eng": "to go, attend",
     "used": null
   },
   {
+    "eng": "to walk",
     "index": 134,
     "spa": "caminar",
-    "eng": "to walk",
     "used": null
   },
   {
+    "eng": "to reflect",
     "index": 135,
     "spa": "reflejar",
-    "eng": "to reflect",
     "used": null
   },
   {
+    "eng": "to sing",
     "index": 136,
     "spa": "cantar",
-    "eng": "to sing",
     "used": null
   },
   {
+    "eng": "to interpret, to perform",
     "index": 137,
     "spa": "interpretar",
-    "eng": "to interpret, to perform",
     "used": null
   },
   {
+    "eng": "to access, agree",
     "index": 831,
     "spa": "acceder",
-    "eng": "to access, agree",
     "used": null
   },
   {
+    "eng": "to marry",
     "index": 138,
     "spa": "casar",
-    "eng": "to marry",
     "used": null
   },
   {
+    "eng": "to communicate",
     "index": 139,
     "spa": "comunicar",
-    "eng": "to communicate",
     "used": null
   },
   {
+    "eng": "to estimate, to appreciate",
     "index": 140,
     "spa": "estimar",
-    "eng": "to estimate, to appreciate",
     "used": null
   },
   {
+    "eng": "to clarify, to clear up",
     "index": 141,
     "spa": "aclarar",
-    "eng": "to clarify, to clear up",
     "used": null
   },
   {
+    "eng": "to endure, to tolerate",
     "index": 142,
     "spa": "soportar",
-    "eng": "to endure, to tolerate",
     "used": null
   },
   {
+    "eng": "to function, to work",
     "index": 143,
     "spa": "funcionar",
-    "eng": "to function, to work",
     "used": null
   },
   {
+    "eng": "to try, to test",
     "index": 144,
     "spa": "probar",
-    "eng": "to try, to test",
     "used": null
   },
   {
+    "eng": "to hide, to conceal",
     "index": 145,
     "spa": "ocultar",
-    "eng": "to hide, to conceal",
     "used": null
   },
   {
+    "eng": "to throw, to launch",
     "index": 146,
     "spa": "lanzar",
-    "eng": "to throw, to launch",
     "used": null
   },
   {
+    "eng": "to disappear",
     "index": 832,
     "spa": "desaparecer",
-    "eng": "to disappear",
     "used": null
   },
   {
+    "eng": "to resort to, recur",
     "index": 948,
     "spa": "recurrir",
-    "eng": "to resort to, recur",
     "used": null
   },
   {
+    "eng": "to justify",
     "index": 147,
     "spa": "justificar",
-    "eng": "to justify",
     "used": null
   },
   {
+    "eng": "to travel",
     "index": 148,
     "spa": "viajar",
-    "eng": "to travel",
     "used": null
   },
   {
+    "eng": "to expand, to enlarge",
     "index": 149,
     "spa": "ampliar",
-    "eng": "to expand, to enlarge",
     "used": null
   },
   {
+    "eng": "to set, to fix",
     "index": 150,
     "spa": "fijar",
-    "eng": "to set, to fix",
     "used": null
   },
   {
+    "eng": "to request, to apply for",
     "index": 151,
     "spa": "solicitar",
-    "eng": "to request, to apply for",
     "used": null
   },
   {
+    "eng": "to promote",
     "index": 833,
     "spa": "promover",
-    "eng": "to promote",
     "used": null
   },
   {
+    "eng": "to share",
     "index": 949,
     "spa": "compartir",
-    "eng": "to share",
     "used": null
   },
   {
+    "eng": "to appreciate, to value",
     "index": 152,
     "spa": "apreciar",
-    "eng": "to appreciate, to value",
     "used": null
   },
   {
+    "eng": "to wake up",
     "index": 153,
     "spa": "despertar",
-    "eng": "to wake up",
     "used": null
   },
   {
+    "eng": "to grade, to qualify",
     "index": 154,
     "spa": "calificar",
-    "eng": "to grade, to qualify",
     "used": null
   },
   {
+    "eng": "to advance, to move forward",
     "index": 155,
     "spa": "avanzar",
-    "eng": "to advance, to move forward",
     "used": null
   },
   {
+    "eng": "to characterize",
     "index": 156,
     "spa": "caracterizar",
-    "eng": "to characterize",
     "used": null
   },
   {
+    "eng": "to defeat, overcome",
     "index": 834,
     "spa": "vencer",
-    "eng": "to defeat, overcome",
     "used": null
   },
   {
+    "eng": "to shout, to scream",
     "index": 157,
     "spa": "gritar",
-    "eng": "to shout, to scream",
     "used": null
   },
   {
+    "eng": "to appear, to figure",
     "index": 158,
     "spa": "figurar",
-    "eng": "to appear, to figure",
     "used": null
   },
   {
+    "eng": "to keep, to save",
     "index": 159,
     "spa": "guardar",
-    "eng": "to keep, to save",
     "used": null
   },
   {
+    "eng": "to separate",
     "index": 160,
     "spa": "separar",
-    "eng": "to separate",
     "used": null
   },
   {
+    "eng": "to transform",
     "index": 161,
     "spa": "transformar",
-    "eng": "to transform",
     "used": null
   },
   {
+    "eng": "to approve, to pass",
     "index": 162,
     "spa": "aprobar",
-    "eng": "to approve, to pass",
     "used": null
   },
   {
+    "eng": "to worry",
     "index": 163,
     "spa": "preocupar",
-    "eng": "to worry",
     "used": null
   },
   {
+    "eng": "to enjoy",
     "index": 164,
     "spa": "disfrutar",
-    "eng": "to enjoy",
     "used": null
   },
   {
+    "eng": "to base",
     "index": 165,
     "spa": "basar",
-    "eng": "to base",
     "used": null
   },
   {
+    "eng": "to lend",
     "index": 166,
     "spa": "prestar",
-    "eng": "to lend",
     "used": null
   },
   {
+    "eng": "to grow",
     "index": 835,
     "spa": "crecer",
-    "eng": "to grow",
     "used": null
   },
   {
+    "eng": "to judge",
     "index": 167,
     "spa": "juzgar",
-    "eng": "to judge",
     "used": null
   },
   {
+    "eng": "to destroy",
     "index": 950,
     "spa": "destruir",
-    "eng": "to destroy",
     "used": null
   },
   {
+    "eng": "to respect",
     "index": 168,
     "spa": "respetar",
-    "eng": "to respect",
     "used": null
   },
   {
+    "eng": "to teach, to show",
     "index": 169,
     "spa": "enseñar",
-    "eng": "to teach, to show",
     "used": null
   },
   {
+    "eng": "to integrate",
     "index": 170,
     "spa": "integrar",
-    "eng": "to integrate",
     "used": null
   },
   {
+    "eng": "to last",
     "index": 171,
     "spa": "durar",
-    "eng": "to last",
     "used": null
   },
   {
+    "eng": "to investigate",
     "index": 172,
     "spa": "investigar",
-    "eng": "to investigate",
     "used": null
   },
   {
+    "eng": "to mention",
     "index": 173,
     "spa": "mencionar",
-    "eng": "to mention",
     "used": null
   },
   {
+    "eng": "to cross",
     "index": 174,
     "spa": "cruzar",
-    "eng": "to cross",
     "used": null
   },
   {
+    "eng": "to reveal",
     "index": 175,
     "spa": "revelar",
-    "eng": "to reveal",
     "used": null
   },
   {
+    "eng": "to travel through, go across",
     "index": 836,
     "spa": "recorrer",
-    "eng": "to travel through, go across",
     "used": null
   },
   {
+    "eng": "to submit, subdue",
     "index": 837,
     "spa": "someter",
-    "eng": "to submit, subdue",
     "used": null
   },
   {
+    "eng": "to generate",
     "index": 176,
     "spa": "generar",
-    "eng": "to generate",
     "used": null
   },
   {
+    "eng": "to substitute, replace",
     "index": 951,
     "spa": "sustituir",
-    "eng": "to substitute, replace",
     "used": null
   },
   {
+    "eng": "to consist of, to be recorded",
     "index": 177,
     "spa": "constar",
-    "eng": "to consist of, to be recorded",
     "used": null
   },
   {
+    "eng": "to handle, to drive",
     "index": 178,
     "spa": "manejar",
-    "eng": "to handle, to drive",
     "used": null
   },
   {
+    "eng": "to notice, to note",
     "index": 179,
     "spa": "notar",
-    "eng": "to notice, to note",
     "used": null
   },
   {
+    "eng": "to throw, to pull",
     "index": 180,
     "spa": "tirar",
-    "eng": "to throw, to pull",
     "used": null
   },
   {
+    "eng": "to face, to confront",
     "index": 181,
     "spa": "afrontar",
-    "eng": "to face, to confront",
     "used": null
   },
   {
+    "eng": "to transfer, to move",
     "index": 182,
     "spa": "trasladar",
-    "eng": "to transfer, to move",
     "used": null
   },
   {
+    "eng": "to extend",
     "index": 838,
     "spa": "extender",
-    "eng": "to extend",
     "used": null
   },
   {
+    "eng": "to solve",
     "index": 183,
     "spa": "solucionar",
-    "eng": "to solve",
     "used": null
   },
   {
+    "eng": "to call, to name",
     "index": 184,
     "spa": "denominar",
-    "eng": "to call, to name",
     "used": null
   },
   {
+    "eng": "to charge, to collect",
     "index": 185,
     "spa": "cobrar",
-    "eng": "to charge, to collect",
     "used": null
   },
   {
+    "eng": "to install",
     "index": 186,
     "spa": "instalar",
-    "eng": "to install",
     "used": null
   },
   {
+    "eng": "to contribute",
     "index": 952,
     "spa": "contribuir",
-    "eng": "to contribute",
     "used": null
   },
   {
+    "eng": "to leave, divide",
     "index": 953,
     "spa": "partir",
-    "eng": "to leave, divide",
     "used": null
   },
   {
+    "eng": "to admit",
     "index": 954,
     "spa": "admitir",
-    "eng": "to admit",
     "used": null
   },
   {
+    "eng": "to resign, to give up",
     "index": 187,
     "spa": "renunciar",
-    "eng": "to resign, to give up",
     "used": null
   },
   {
+    "eng": "to fill",
     "index": 188,
     "spa": "llenar",
-    "eng": "to fill",
     "used": null
   },
   {
+    "eng": "to develop, to elaborate",
     "index": 189,
     "spa": "elaborar",
-    "eng": "to develop, to elaborate",
     "used": null
   },
   {
+    "eng": "to sign",
     "index": 190,
     "spa": "firmar",
-    "eng": "to sign",
     "used": null
   },
   {
+    "eng": "to march, to go",
     "index": 191,
     "spa": "marchar",
-    "eng": "to march, to go",
     "used": null
   },
   {
+    "eng": "to name, to appoint",
     "index": 192,
     "spa": "nombrar",
-    "eng": "to name, to appoint",
     "used": null
   },
   {
+    "eng": "to increase",
     "index": 193,
     "spa": "incrementar",
-    "eng": "to increase",
     "used": null
   },
   {
+    "eng": "to employ, to use",
     "index": 194,
     "spa": "emplear",
-    "eng": "to employ, to use",
     "used": null
   },
   {
+    "eng": "to aim, to point, to write down",
     "index": 195,
     "spa": "apuntar",
-    "eng": "to aim, to point, to write down",
     "used": null
   },
   {
+    "eng": "to return something",
     "index": 839,
     "spa": "devolver",
-    "eng": "to return something",
     "used": null
   },
   {
+    "eng": "to coincide, agree",
     "index": 955,
     "spa": "coincidir",
-    "eng": "to coincide, agree",
     "used": null
   },
   {
+    "eng": "to diminish, decrease",
     "index": 956,
     "spa": "disminuir",
-    "eng": "to diminish, decrease",
     "used": null
   },
   {
+    "eng": "to lack",
     "index": 840,
     "spa": "carecer",
-    "eng": "to lack",
     "used": null
   },
   {
+    "eng": "to complete",
     "index": 196,
     "spa": "completar",
-    "eng": "to complete",
     "used": null
   },
   {
+    "eng": "to dance",
     "index": 197,
     "spa": "bailar",
-    "eng": "to dance",
     "used": null
   },
   {
+    "eng": "to underline, to emphasize",
     "index": 198,
     "spa": "subrayar",
-    "eng": "to underline, to emphasize",
     "used": null
   },
   {
+    "eng": "to take care of",
     "index": 199,
     "spa": "cuidar",
-    "eng": "to take care of",
     "used": null
   },
   {
+    "eng": "to raise, to elevate",
     "index": 200,
     "spa": "elevar",
-    "eng": "to raise, to elevate",
     "used": null
   },
   {
+    "eng": "to proceed",
     "index": 841,
     "spa": "proceder",
-    "eng": "to proceed",
     "used": null
   },
   {
+    "eng": "to specify, to need",
     "index": 201,
     "spa": "precisar",
-    "eng": "to specify, to need",
     "used": null
   },
   {
+    "eng": "to mark, to dial, to score",
     "index": 202,
     "spa": "marcar",
-    "eng": "to mark, to dial, to score",
     "used": null
   },
   {
+    "eng": "to vote",
     "index": 203,
     "spa": "votar",
-    "eng": "to vote",
     "used": null
   },
   {
+    "eng": "to govern, to rule",
     "index": 204,
     "spa": "gobernar",
-    "eng": "to govern, to rule",
     "used": null
   },
   {
+    "eng": "to transmit, broadcast",
     "index": 957,
     "spa": "transmitir",
-    "eng": "to transmit, broadcast",
     "used": null
   },
   {
+    "eng": "to provide, to supply",
     "index": 205,
     "spa": "proporcionar",
-    "eng": "to provide, to supply",
     "used": null
   },
   {
+    "eng": "to take, catch",
     "index": 842,
     "spa": "coger",
-    "eng": "to take, catch",
     "used": null
   },
   {
+    "eng": "to accuse, to charge",
     "index": 206,
     "spa": "acusar",
-    "eng": "to accuse, to charge",
     "used": null
   },
   {
+    "eng": "to describe",
     "index": 958,
     "spa": "describir",
-    "eng": "to describe",
     "used": null
   },
   {
+    "eng": "to surprise",
     "index": 843,
     "spa": "sorprender",
-    "eng": "to surprise",
     "used": null
   },
   {
+    "eng": "to add, to amount to",
     "index": 207,
     "spa": "sumar",
-    "eng": "to add, to amount to",
     "used": null
   },
   {
+    "eng": "to board, to tackle, to approach",
     "index": 208,
     "spa": "abordar",
-    "eng": "to board, to tackle, to approach",
     "used": null
   },
   {
+    "eng": "to finish, to end",
     "index": 209,
     "spa": "finalizar",
-    "eng": "to finish, to end",
     "used": null
   },
   {
+    "eng": "to detect, to spot",
     "index": 210,
     "spa": "detectar",
-    "eng": "to detect, to spot",
     "used": null
   },
   {
+    "eng": "to perceive",
     "index": 959,
     "spa": "percibir",
-    "eng": "to perceive",
     "used": null
   },
   {
+    "eng": "to compose, fix",
     "index": 844,
     "spa": "componer",
-    "eng": "to compose, fix",
     "used": null
   },
   {
+    "eng": "to adapt, to adjust",
     "index": 211,
     "spa": "adaptar",
-    "eng": "to adapt, to adjust",
     "used": null
   },
   {
+    "eng": "to send, to command",
     "index": 212,
     "spa": "mandar",
-    "eng": "to send, to command",
     "used": null
   },
   {
+    "eng": "to assign, to allocate, to send",
     "index": 213,
     "spa": "destinar",
-    "eng": "to assign, to allocate, to send",
     "used": null
   },
   {
+    "eng": "to expose, exhibit",
     "index": 845,
     "spa": "exponer",
-    "eng": "to expose, exhibit",
     "used": null
   },
   {
+    "eng": "to confuse",
     "index": 960,
     "spa": "confundir",
-    "eng": "to confuse",
     "used": null
   },
   {
+    "eng": "to survive",
     "index": 961,
     "spa": "sobrevivir",
-    "eng": "to survive",
     "used": null
   },
   {
+    "eng": "to prevent",
     "index": 962,
     "spa": "prevenir",
-    "eng": "to prevent",
     "used": null
   },
   {
+    "eng": "to review, to check, to revise",
     "index": 214,
     "spa": "revisar",
-    "eng": "to review, to check, to revise",
     "used": null
   },
   {
+    "eng": "to consult, to check with",
     "index": 215,
     "spa": "consultar",
-    "eng": "to consult, to check with",
     "used": null
   },
   {
+    "eng": "to sound, to ring",
     "index": 216,
     "spa": "sonar",
-    "eng": "to sound, to ring",
     "used": null
   },
   {
+    "eng": "to resist",
     "index": 963,
     "spa": "resistir",
-    "eng": "to resist",
     "used": null
   },
   {
+    "eng": "to murder, to assassinate",
     "index": 217,
     "spa": "asesinar",
-    "eng": "to murder, to assassinate",
     "used": null
   },
   {
+    "eng": "to contribute, to provide",
     "index": 218,
     "spa": "aportar",
-    "eng": "to contribute, to provide",
     "used": null
   },
   {
+    "eng": "to evaluate, to assess",
     "index": 219,
     "spa": "evaluar",
-    "eng": "to evaluate, to assess",
     "used": null
   },
   {
+    "eng": "to reside, live",
     "index": 964,
     "spa": "residir",
-    "eng": "to reside, live",
     "used": null
   },
   {
+    "eng": "to reject, to turn down",
     "index": 220,
     "spa": "rechazar",
-    "eng": "to reject, to turn down",
     "used": null
   },
   {
+    "eng": "to surround, to encircle",
     "index": 221,
     "spa": "rodear",
-    "eng": "to surround, to encircle",
     "used": null
   },
   {
+    "eng": "to pronounce, to declare",
     "index": 222,
     "spa": "pronunciar",
-    "eng": "to pronounce, to declare",
     "used": null
   },
   {
+    "eng": "to report, to denounce",
     "index": 223,
     "spa": "denunciar",
-    "eng": "to report, to denounce",
     "used": null
   },
   {
+    "eng": "to agree, to remember",
     "index": 224,
     "spa": "acordar",
-    "eng": "to agree, to remember",
     "used": null
   },
   {
+    "eng": "to smoke",
     "index": 225,
     "spa": "fumar",
-    "eng": "to smoke",
     "used": null
   },
   {
+    "eng": "to exclaim, to shout",
     "index": 226,
     "spa": "exclamar",
-    "eng": "to exclaim, to shout",
     "used": null
   },
   {
+    "eng": "to preside over, chair",
     "index": 965,
     "spa": "presidir",
-    "eng": "to preside over, chair",
     "used": null
   },
   {
+    "eng": "to find out, to inquire",
     "index": 227,
     "spa": "averiguar",
-    "eng": "to find out, to inquire",
     "used": null
   },
   {
+    "eng": "to jump, to leap",
     "index": 228,
     "spa": "saltar",
-    "eng": "to jump, to leap",
     "used": null
   },
   {
+    "eng": "to ride, to mount, to assemble",
     "index": 229,
     "spa": "montar",
-    "eng": "to ride, to mount, to assemble",
     "used": null
   },
   {
+    "eng": "to condemn, to convict",
     "index": 230,
     "spa": "condenar",
-    "eng": "to condemn, to convict",
     "used": null
   },
   {
+    "eng": "to record, to register, to search",
     "index": 231,
     "spa": "registrar",
-    "eng": "to record, to register, to search",
     "used": null
   },
   {
+    "eng": "to compare",
     "index": 232,
     "spa": "comparar",
-    "eng": "to compare",
     "used": null
   },
   {
+    "eng": "to yield, give in",
     "index": 846,
     "spa": "ceder",
-    "eng": "to yield, give in",
     "used": null
   },
   {
+    "eng": "nonstandard verb — see ‘respetar’",
     "index": 233,
     "spa": "respectar",
-    "eng": "nonstandard verb — see ‘respetar’",
     "used": null
   },
   {
+    "eng": "to clean",
     "index": 234,
     "spa": "limpiar",
-    "eng": "to clean",
     "used": null
   },
   {
+    "eng": "to move away, to distance",
     "index": 235,
     "spa": "alejar",
-    "eng": "to move away, to distance",
     "used": null
   },
   {
+    "eng": "to fix, to arrange",
     "index": 236,
     "spa": "arreglar",
-    "eng": "to fix, to arrange",
     "used": null
   },
   {
+    "eng": "to grant, concede",
     "index": 847,
     "spa": "conceder",
-    "eng": "to grant, concede",
     "used": null
   },
   {
+    "eng": "to wash",
     "index": 237,
     "spa": "lavar",
-    "eng": "to wash",
     "used": null
   },
   {
+    "eng": "to title, to headline",
     "index": 238,
     "spa": "titular",
-    "eng": "to title, to headline",
     "used": null
   },
   {
+    "eng": "to find out, to inform — often used reflexively",
     "index": 239,
     "spa": "enterar",
-    "eng": "to find out, to inform — often used reflexively",
     "used": null
   },
   {
+    "eng": "to cross, to go through",
     "index": 240,
     "spa": "atravesar",
-    "eng": "to cross, to go through",
     "used": null
   },
   {
+    "eng": "to emit, issue",
     "index": 966,
     "spa": "emitir",
-    "eng": "to emit, issue",
     "used": null
   },
   {
+    "eng": "to practice",
     "index": 241,
     "spa": "practicar",
-    "eng": "to practice",
     "used": null
   },
   {
+    "eng": "to execute, to carry out",
     "index": 242,
     "spa": "ejecutar",
-    "eng": "to execute, to carry out",
     "used": null
   },
   {
+    "eng": "to collaborate, to contribute",
     "index": 243,
     "spa": "colaborar",
-    "eng": "to collaborate, to contribute",
     "used": null
   },
   {
+    "eng": "to attribute",
     "index": 967,
     "spa": "atribuir",
-    "eng": "to attribute",
     "used": null
   },
   {
+    "eng": "to invest, invert",
     "index": 968,
     "spa": "invertir",
-    "eng": "to invest, invert",
     "used": null
   },
   {
+    "eng": "to dominate, to master",
     "index": 244,
     "spa": "dominar",
-    "eng": "to dominate, to master",
     "used": null
   },
   {
+    "eng": "to reinforce, to strengthen",
     "index": 245,
     "spa": "reforzar",
-    "eng": "to reinforce, to strengthen",
     "used": null
   },
   {
+    "eng": "to limit, to restrict",
     "index": 246,
     "spa": "limitar",
-    "eng": "to limit, to restrict",
     "used": null
   },
   {
+    "eng": "to love",
     "index": 247,
     "spa": "amar",
-    "eng": "to love",
     "used": null
   },
   {
+    "eng": "to finance, to fund",
     "index": 248,
     "spa": "financiar",
-    "eng": "to finance, to fund",
     "used": null
   },
   {
+    "eng": "to free, to liberate",
     "index": 249,
     "spa": "liberar",
-    "eng": "to free, to liberate",
     "used": null
   },
   {
+    "eng": "to brake, to slow down, to stop",
     "index": 250,
     "spa": "frenar",
-    "eng": "to brake, to slow down, to stop",
     "used": null
   },
   {
+    "eng": "to attack",
     "index": 251,
     "spa": "atacar",
-    "eng": "to attack",
     "used": null
   },
   {
+    "eng": "to suggest",
     "index": 969,
     "spa": "sugerir",
-    "eng": "to suggest",
     "used": null
   },
   {
+    "eng": "to grant, to award",
     "index": 252,
     "spa": "otorgar",
-    "eng": "to grant, to award",
     "used": null
   },
   {
+    "eng": "to value, to assess",
     "index": 253,
     "spa": "valorar",
-    "eng": "to value, to assess",
     "used": null
   },
   {
+    "eng": "to rest, to relax",
     "index": 254,
     "spa": "descansar",
-    "eng": "to rest, to relax",
     "used": null
   },
   {
+    "eng": "to enter, to join, to deposit",
     "index": 255,
     "spa": "ingresar",
-    "eng": "to enter, to join, to deposit",
     "used": null
   },
   {
+    "eng": "to have dinner",
     "index": 256,
     "spa": "cenar",
-    "eng": "to have dinner",
     "used": null
   },
   {
+    "eng": "to capture, to grasp",
     "index": 257,
     "spa": "captar",
-    "eng": "to capture, to grasp",
     "used": null
   },
   {
+    "eng": "to injure, hurt",
     "index": 970,
     "spa": "herir",
-    "eng": "to injure, hurt",
     "used": null
   },
   {
+    "eng": "to undertake, start",
     "index": 848,
     "spa": "emprender",
-    "eng": "to undertake, start",
     "used": null
   },
   {
+    "eng": "to recommend, to advise",
     "index": 258,
     "spa": "recomendar",
-    "eng": "to recommend, to advise",
     "used": null
   },
   {
+    "eng": "to operate",
     "index": 259,
     "spa": "operar",
-    "eng": "to operate",
     "used": null
   },
   {
+    "eng": "to fly",
     "index": 260,
     "spa": "volar",
-    "eng": "to fly",
     "used": null
   },
   {
+    "eng": "to reiterate, to repeat",
     "index": 261,
     "spa": "reiterar",
-    "eng": "to reiterate, to repeat",
     "used": null
   },
   {
+    "eng": "to heal, to cure",
     "index": 262,
     "spa": "curar",
-    "eng": "to heal, to cure",
     "used": null
   },
   {
+    "eng": "to favor",
     "index": 849,
     "spa": "favorecer",
-    "eng": "to favor",
     "used": null
   },
   {
+    "eng": "to promote, to boost, to propel",
     "index": 263,
     "spa": "impulsar",
-    "eng": "to promote, to boost, to propel",
     "used": null
   },
   {
+    "eng": "to give an opinion, to think",
     "index": 264,
     "spa": "opinar",
-    "eng": "to give an opinion, to think",
     "used": null
   },
   {
+    "eng": "to cook",
     "index": 265,
     "spa": "cocinar",
-    "eng": "to cook",
     "used": null
   },
   {
+    "eng": "to generalize",
     "index": 266,
     "spa": "generalizar",
-    "eng": "to generalize",
     "used": null
   },
   {
+    "eng": "to lie in, to be rooted in — often used with ‘en’",
     "index": 267,
     "spa": "radicar",
-    "eng": "to lie in, to be rooted in — often used with ‘en’",
     "used": null
   },
   {
+    "eng": "to greet, to salute",
     "index": 268,
     "spa": "saludar",
-    "eng": "to greet, to salute",
     "used": null
   },
   {
+    "eng": "to consolidate, to strengthen",
     "index": 269,
     "spa": "consolidar",
-    "eng": "to consolidate, to strengthen",
     "used": null
   },
   {
+    "eng": "to cause",
     "index": 270,
     "spa": "causar",
-    "eng": "to cause",
     "used": null
   },
   {
+    "eng": "to paint",
     "index": 271,
     "spa": "pintar",
-    "eng": "to paint",
     "used": null
   },
   {
+    "eng": "to examine, to inspect",
     "index": 272,
     "spa": "examinar",
-    "eng": "to examine, to inspect",
     "used": null
   },
   {
+    "eng": "to detach, release",
     "index": 850,
     "spa": "desprender",
-    "eng": "to detach, release",
     "used": null
   },
   {
+    "eng": "to vary, to change",
     "index": 273,
     "spa": "variar",
-    "eng": "to vary, to change",
     "used": null
   },
   {
+    "eng": "to calculate, to estimate",
     "index": 274,
     "spa": "calcular",
-    "eng": "to calculate, to estimate",
     "used": null
   },
   {
+    "eng": "to invite",
     "index": 275,
     "spa": "invitar",
-    "eng": "to invite",
     "used": null
   },
   {
+    "eng": "to sting, to bite, to chop, to snack on",
     "index": 276,
     "spa": "picar",
-    "eng": "to sting, to bite, to chop, to snack on",
     "used": null
   },
   {
+    "eng": "to breathe",
     "index": 277,
     "spa": "respirar",
-    "eng": "to breathe",
     "used": null
   },
   {
+    "eng": "to be equivalent",
     "index": 851,
     "spa": "equivaler",
-    "eng": "to be equivalent",
     "used": null
   },
   {
+    "eng": "to convene, to call, to summon",
     "index": 278,
     "spa": "convocar",
-    "eng": "to convene, to call, to summon",
     "used": null
   },
   {
+    "eng": "to commit",
     "index": 852,
     "spa": "cometer",
-    "eng": "to commit",
     "used": null
   },
   {
+    "eng": "to mix",
     "index": 279,
     "spa": "mezclar",
-    "eng": "to mix",
     "used": null
   },
   {
+    "eng": "to specify, to settle, to materialize",
     "index": 280,
     "spa": "concretar",
-    "eng": "to specify, to settle, to materialize",
     "used": null
   },
   {
+    "eng": "to suspend, fail an exam",
     "index": 853,
     "spa": "suspender",
-    "eng": "to suspend, fail an exam",
     "used": null
   },
   {
+    "eng": "to originate, come from",
     "index": 971,
     "spa": "provenir",
-    "eng": "to originate, come from",
     "used": null
   },
   {
+    "eng": "to pass away, die",
     "index": 854,
     "spa": "fallecer",
-    "eng": "to pass away, die",
     "used": null
   },
   {
+    "eng": "to swear, to take an oath",
     "index": 281,
     "spa": "jurar",
-    "eng": "to swear, to take an oath",
     "used": null
   },
   {
+    "eng": "to strengthen",
     "index": 855,
     "spa": "fortalecer",
-    "eng": "to strengthen",
     "used": null
   },
   {
+    "eng": "to hurt, ache",
     "index": 856,
     "spa": "doler",
-    "eng": "to hurt, ache",
     "used": null
   },
   {
+    "eng": "to cover, to span, to include",
     "index": 282,
     "spa": "abarcar",
-    "eng": "to cover, to span, to include",
     "used": null
   },
   {
+    "eng": "to consume",
     "index": 972,
     "spa": "consumir",
-    "eng": "to consume",
     "used": null
   },
   {
+    "eng": "to deceive, to trick, to cheat",
     "index": 283,
     "spa": "engañar",
-    "eng": "to deceive, to trick, to cheat",
     "used": null
   },
   {
+    "eng": "to start up, to pull out, to tear off",
     "index": 284,
     "spa": "arrancar",
-    "eng": "to start up, to pull out, to tear off",
     "used": null
   },
   {
+    "eng": "to advance, to overtake, to bring forward",
     "index": 285,
     "spa": "adelantar",
-    "eng": "to advance, to overtake, to bring forward",
     "used": null
   },
   {
+    "eng": "to concentrate, to focus",
     "index": 286,
     "spa": "concentrar",
-    "eng": "to concentrate, to focus",
     "used": null
   },
   {
+    "eng": "to locate, to place",
     "index": 287,
     "spa": "ubicar",
-    "eng": "to locate, to place",
     "used": null
   },
   {
+    "eng": "to claim, to demand, to complain",
     "index": 288,
     "spa": "reclamar",
-    "eng": "to claim, to demand, to complain",
     "used": null
   },
   {
+    "eng": "to formulate, to pose (a question",
     "index": 289,
     "spa": "formular",
-    "eng": "to formulate, to pose (a question",
     "used": null
   },
   {
+    "eng": "to hide",
     "index": 857,
     "spa": "esconder",
-    "eng": "to hide",
     "used": null
   },
   {
+    "eng": "to promise",
     "index": 858,
     "spa": "prometer",
-    "eng": "to promise",
     "used": null
   },
   {
+    "eng": "to make up, to form, to comply",
     "index": 290,
     "spa": "conformar",
-    "eng": "to make up, to form, to comply",
     "used": null
   },
   {
+    "eng": "to stimulate, to encourage",
     "index": 291,
     "spa": "estimular",
-    "eng": "to stimulate, to encourage",
     "used": null
   },
   {
+    "eng": "to choose",
     "index": 859,
     "spa": "escoger",
-    "eng": "to choose",
     "used": null
   },
   {
+    "eng": "to penetrate, to go into",
     "index": 292,
     "spa": "penetrar",
-    "eng": "to penetrate, to go into",
     "used": null
   },
   {
+    "eng": "to preserve, to protect",
     "index": 293,
     "spa": "preservar",
-    "eng": "to preserve, to protect",
     "used": null
   },
   {
+    "eng": "to confess, to admit",
     "index": 294,
     "spa": "confesar",
-    "eng": "to confess, to admit",
     "used": null
   },
   {
+    "eng": "to manufacture, to make",
     "index": 295,
     "spa": "fabricar",
-    "eng": "to manufacture, to make",
     "used": null
   },
   {
+    "eng": "to steal, to rob",
     "index": 296,
     "spa": "robar",
-    "eng": "to steal, to rob",
     "used": null
   },
   {
+    "eng": "to kiss",
     "index": 297,
     "spa": "besar",
-    "eng": "to kiss",
     "used": null
   },
   {
+    "eng": "to endure, to tolerate, to hold on",
     "index": 298,
     "spa": "aguantar",
-    "eng": "to endure, to tolerate, to hold on",
     "used": null
   },
   {
+    "eng": "to select, to choose",
     "index": 299,
     "spa": "seleccionar",
-    "eng": "to select, to choose",
     "used": null
   },
   {
+    "eng": "to feed, to nourish",
     "index": 300,
     "spa": "alimentar",
-    "eng": "to feed, to nourish",
     "used": null
   },
   {
+    "eng": "to tire, to get tired",
     "index": 301,
     "spa": "cansar",
-    "eng": "to tire, to get tired",
     "used": null
   },
   {
+    "eng": "to lay down, to put to bed",
     "index": 302,
     "spa": "acostar",
-    "eng": "to lay down, to put to bed",
     "used": null
   },
   {
+    "eng": "to oppose",
     "index": 860,
     "spa": "oponer",
-    "eng": "to oppose",
     "used": null
   },
   {
+    "eng": "to move, to displace",
     "index": 303,
     "spa": "desplazar",
-    "eng": "to move, to displace",
     "used": null
   },
   {
+    "eng": "to encourage, to promote",
     "index": 304,
     "spa": "fomentar",
-    "eng": "to encourage, to promote",
     "used": null
   },
   {
+    "eng": "to alter, to upset",
     "index": 305,
     "spa": "alterar",
-    "eng": "to alter, to upset",
     "used": null
   },
   {
+    "eng": "to fear",
     "index": 861,
     "spa": "temer",
-    "eng": "to fear",
     "used": null
   },
   {
+    "eng": "to reproduce, replicate",
     "index": 973,
     "spa": "reproducir",
-    "eng": "to reproduce, replicate",
     "used": null
   },
   {
+    "eng": "to conquer, to win over",
     "index": 306,
     "spa": "conquistar",
-    "eng": "to conquer, to win over",
     "used": null
   },
   {
+    "eng": "to put in charge, to order",
     "index": 307,
     "spa": "encargar",
-    "eng": "to put in charge, to order",
     "used": null
   },
   {
+    "eng": "to load, to charge",
     "index": 308,
     "spa": "cargar",
-    "eng": "to load, to charge",
     "used": null
   },
   {
+    "eng": "to shoot, to fire",
     "index": 309,
     "spa": "disparar",
-    "eng": "to shoot, to fire",
     "used": null
   },
   {
+    "eng": "to erase, to delete",
     "index": 310,
     "spa": "borrar",
-    "eng": "to erase, to delete",
     "used": null
   },
   {
+    "eng": "to hit, to stick, to glue",
     "index": 311,
     "spa": "pegar",
-    "eng": "to hit, to stick, to glue",
     "used": null
   },
   {
+    "eng": "to threaten",
     "index": 312,
     "spa": "amenazar",
-    "eng": "to threaten",
     "used": null
   },
   {
+    "eng": "to obey",
     "index": 862,
     "spa": "obedecer",
-    "eng": "to obey",
     "used": null
   },
   {
+    "eng": "to invent, to make up",
     "index": 313,
     "spa": "inventar",
-    "eng": "to invent, to make up",
     "used": null
   },
   {
+    "eng": "to doubt",
     "index": 314,
     "spa": "dudar",
-    "eng": "to doubt",
     "used": null
   },
   {
+    "eng": "to be quiet, to silence",
     "index": 315,
     "spa": "callar",
-    "eng": "to be quiet, to silence",
     "used": null
   },
   {
+    "eng": "to stroll, to take a walk",
     "index": 316,
     "spa": "pasear",
-    "eng": "to stroll, to take a walk",
     "used": null
   },
   {
+    "eng": "to let go, to release",
     "index": 317,
     "spa": "soltar",
-    "eng": "to let go, to release",
     "used": null
   },
   {
+    "eng": "to trust, to confide",
     "index": 318,
     "spa": "confiar",
-    "eng": "to trust, to confide",
     "used": null
   },
   {
+    "eng": "to delay, to take time",
     "index": 319,
     "spa": "tardar",
-    "eng": "to delay, to take time",
     "used": null
   },
   {
+    "eng": "to rescue, to recover",
     "index": 320,
     "spa": "rescatar",
-    "eng": "to rescue, to recover",
     "used": null
   },
   {
+    "eng": "to guide, to orient",
     "index": 321,
     "spa": "orientar",
-    "eng": "to guide, to orient",
     "used": null
   },
   {
+    "eng": "to reflect, to think over",
     "index": 322,
     "spa": "reflexionar",
-    "eng": "to reflect, to think over",
     "used": null
   },
   {
+    "eng": "to manage, to administer",
     "index": 323,
     "spa": "administrar",
-    "eng": "to manage, to administer",
     "used": null
   },
   {
+    "eng": "to derive, to result in",
     "index": 324,
     "spa": "derivar",
-    "eng": "to derive, to result in",
     "used": null
   },
   {
+    "eng": "to hit, to strike",
     "index": 325,
     "spa": "golpear",
-    "eng": "to hit, to strike",
     "used": null
   },
   {
+    "eng": "to turn on, ignite",
     "index": 863,
     "spa": "encender",
-    "eng": "to turn on, ignite",
     "used": null
   },
   {
+    "eng": "to suffer, endure",
     "index": 864,
     "spa": "padecer",
-    "eng": "to suffer, endure",
     "used": null
   },
   {
+    "eng": "to ascend, promote",
     "index": 865,
     "spa": "ascender",
-    "eng": "to ascend, promote",
     "used": null
   },
   {
+    "eng": "to link, to connect",
     "index": 326,
     "spa": "vincular",
-    "eng": "to link, to connect",
     "used": null
   },
   {
+    "eng": "to ignore, to not know",
     "index": 327,
     "spa": "ignorar",
-    "eng": "to ignore, to not know",
     "used": null
   },
   {
+    "eng": "to turn, to spin",
     "index": 328,
     "spa": "girar",
-    "eng": "to turn, to spin",
     "used": null
   },
   {
+    "eng": "to specialize",
     "index": 329,
     "spa": "especializar",
-    "eng": "to specialize",
     "used": null
   },
   {
+    "eng": "to pursue, chase",
     "index": 974,
     "spa": "perseguir",
-    "eng": "to pursue, chase",
     "used": null
   },
   {
+    "eng": "to hide, to conceal",
     "index": 330,
     "spa": "disimular",
-    "eng": "to hide, to conceal",
     "used": null
   },
   {
+    "eng": "to regulate, to control",
     "index": 331,
     "spa": "regular",
-    "eng": "to regulate, to control",
     "used": null
   },
   {
+    "eng": "to differentiate, to distinguish",
     "index": 332,
     "spa": "diferenciar",
-    "eng": "to differentiate, to distinguish",
     "used": null
   },
   {
+    "eng": "to divide",
     "index": 975,
     "spa": "dividir",
-    "eng": "to divide",
     "used": null
   },
   {
+    "eng": "to renew, to renovate",
     "index": 333,
     "spa": "renovar",
-    "eng": "to renew, to renovate",
     "used": null
   },
   {
+    "eng": "to not know, ignore",
     "index": 866,
     "spa": "desconocer",
-    "eng": "to not know, ignore",
     "used": null
   },
   {
+    "eng": "to found, to establish",
     "index": 334,
     "spa": "fundar",
-    "eng": "to found, to establish",
     "used": null
   },
   {
+    "eng": "to compensate, to make up for",
     "index": 335,
     "spa": "compensar",
-    "eng": "to compensate, to make up for",
     "used": null
   },
   {
+    "eng": "to locate, to find",
     "index": 336,
     "spa": "localizar",
-    "eng": "to locate, to find",
     "used": null
   },
   {
+    "eng": "to react",
     "index": 337,
     "spa": "reaccionar",
-    "eng": "to react",
     "used": null
   },
   {
+    "eng": "to classify, to sort",
     "index": 338,
     "spa": "clasificar",
-    "eng": "to classify, to sort",
     "used": null
   },
   {
+    "eng": "to forgive, to pardon",
     "index": 339,
     "spa": "perdonar",
-    "eng": "to forgive, to pardon",
     "used": null
   },
   {
+    "eng": "to move away, to separate",
     "index": 340,
     "spa": "apartar",
-    "eng": "to move away, to separate",
     "used": null
   },
   {
+    "eng": "to thank, be grateful for",
     "index": 867,
     "spa": "agradecer",
-    "eng": "to thank, be grateful for",
     "used": null
   },
   {
+    "eng": "to deduce, infer",
     "index": 976,
     "spa": "deducir",
-    "eng": "to deduce, infer",
     "used": null
   },
   {
+    "eng": "to dream",
     "index": 341,
     "spa": "soñar",
-    "eng": "to dream",
     "used": null
   },
   {
+    "eng": "to enjoy",
     "index": 342,
     "spa": "gozar",
-    "eng": "to enjoy",
     "used": null
   },
   {
+    "eng": "to designate, to appoint",
     "index": 343,
     "spa": "designar",
-    "eng": "to designate, to appoint",
     "used": null
   },
   {
+    "eng": "to wrap, involve",
     "index": 868,
     "spa": "envolver",
-    "eng": "to wrap, involve",
     "used": null
   },
   {
+    "eng": "to conceive, imagine",
     "index": 977,
     "spa": "concebir",
-    "eng": "to conceive, imagine",
     "used": null
   },
   {
+    "eng": "to deepen, to go deeper into",
     "index": 344,
     "spa": "profundizar",
-    "eng": "to deepen, to go deeper into",
     "used": null
   },
   {
+    "eng": "to burn",
     "index": 345,
     "spa": "quemar",
-    "eng": "to burn",
     "used": null
   },
   {
+    "eng": "to criticize",
     "index": 346,
     "spa": "criticar",
-    "eng": "to criticize",
     "used": null
   },
   {
+    "eng": "to repair, to fix",
     "index": 347,
     "spa": "reparar",
-    "eng": "to repair, to fix",
     "used": null
   },
   {
+    "eng": "to boil",
     "index": 978,
     "spa": "hervir",
-    "eng": "to boil",
     "used": null
   },
   {
+    "eng": "to perform, to carry out",
     "index": 348,
     "spa": "desempeñar",
-    "eng": "to perform, to carry out",
     "used": null
   },
   {
+    "eng": "to reconstruct, rebuild",
     "index": 979,
     "spa": "reconstruir",
-    "eng": "to reconstruct, rebuild",
     "used": null
   },
   {
+    "eng": "to exploit, to explode",
     "index": 349,
     "spa": "explotar",
-    "eng": "to exploit, to explode",
     "used": null
   },
   {
+    "eng": "to interrupt",
     "index": 980,
     "spa": "interrumpir",
-    "eng": "to interrupt",
     "used": null
   },
   {
+    "eng": "to offer, to give, to toast",
     "index": 350,
     "spa": "brindar",
-    "eng": "to offer, to give, to toast",
     "used": null
   },
   {
+    "eng": "to spread, disseminate",
     "index": 981,
     "spa": "difundir",
-    "eng": "to spread, disseminate",
     "used": null
   },
   {
+    "eng": "to aspire, to vacuum",
     "index": 351,
     "spa": "aspirar",
-    "eng": "to aspire, to vacuum",
     "used": null
   },
   {
+    "eng": "to entail, to involve",
     "index": 352,
     "spa": "conllevar",
-    "eng": "to entail, to involve",
     "used": null
   },
   {
+    "eng": "to suspect",
     "index": 353,
     "spa": "sospechar",
-    "eng": "to suspect",
     "used": null
   },
   {
+    "eng": "to drag, to pull",
     "index": 354,
     "spa": "arrastrar",
-    "eng": "to drag, to pull",
     "used": null
   },
   {
+    "eng": "to originate, to cause",
     "index": 355,
     "spa": "originar",
-    "eng": "to originate, to cause",
     "used": null
   },
   {
+    "eng": "to distribute, hand out",
     "index": 982,
     "spa": "repartir",
-    "eng": "to distribute, hand out",
     "used": null
   },
   {
+    "eng": "to prolong, to extend",
     "index": 356,
     "spa": "prolongar",
-    "eng": "to prolong, to extend",
     "used": null
   },
   {
+    "eng": "to converse, to talk",
     "index": 357,
     "spa": "conversar",
-    "eng": "to converse, to talk",
     "used": null
   },
   {
+    "eng": "to retain, hold back",
     "index": 869,
     "spa": "retener",
-    "eng": "to retain, hold back",
     "used": null
   },
   {
+    "eng": "to discard, to rule out",
     "index": 358,
     "spa": "descartar",
-    "eng": "to discard, to rule out",
     "used": null
   },
   {
+    "eng": "to spend, to waste",
     "index": 359,
     "spa": "gastar",
-    "eng": "to spend, to waste",
     "used": null
   },
   {
+    "eng": "to adjust, to tighten",
     "index": 360,
     "spa": "ajustar",
-    "eng": "to adjust, to tighten",
     "used": null
   },
   {
+    "eng": "to reply, to replicate",
     "index": 361,
     "spa": "replicar",
-    "eng": "to reply, to replicate",
     "used": null
   },
   {
+    "eng": "to relieve, to ease",
     "index": 362,
     "spa": "aliviar",
-    "eng": "to relieve, to ease",
     "used": null
   },
   {
+    "eng": "to hire, to contract",
     "index": 363,
     "spa": "contratar",
-    "eng": "to hire, to contract",
     "used": null
   },
   {
+    "eng": "to force",
     "index": 364,
     "spa": "forzar",
-    "eng": "to force",
     "used": null
   },
   {
+    "eng": "to project, to plan",
     "index": 365,
     "spa": "proyectar",
-    "eng": "to project, to plan",
     "used": null
   },
   {
+    "eng": "to note down, to score",
     "index": 366,
     "spa": "anotar",
-    "eng": "to note down, to score",
     "used": null
   },
   {
+    "eng": "to focus, to center",
     "index": 367,
     "spa": "centrar",
-    "eng": "to focus, to center",
     "used": null
   },
   {
+    "eng": "to guess, to predict",
     "index": 368,
     "spa": "adivinar",
-    "eng": "to guess, to predict",
     "used": null
   },
   {
+    "eng": "to verify, to check",
     "index": 369,
     "spa": "verificar",
-    "eng": "to verify, to check",
     "used": null
   },
   {
+    "eng": "to descend, go down",
     "index": 870,
     "spa": "descender",
-    "eng": "to descend, go down",
     "used": null
   },
   {
+    "eng": "to choose, to opt",
     "index": 370,
     "spa": "optar",
-    "eng": "to choose, to opt",
     "used": null
   },
   {
+    "eng": "to try, to make sure",
     "index": 371,
     "spa": "procurar",
-    "eng": "to try, to make sure",
     "used": null
   },
   {
+    "eng": "to weigh, to regret",
     "index": 372,
     "spa": "pesar",
-    "eng": "to weigh, to regret",
     "used": null
   },
   {
+    "eng": "to compromise, commit",
     "index": 871,
     "spa": "comprometer",
-    "eng": "to compromise, commit",
     "used": null
   },
   {
+    "eng": "to equip, to provide",
     "index": 373,
     "spa": "dotar",
-    "eng": "to equip, to provide",
     "used": null
   },
   {
+    "eng": "to burst, to explode",
     "index": 374,
     "spa": "estallar",
-    "eng": "to burst, to explode",
     "used": null
   },
   {
+    "eng": "to suppress, delete",
     "index": 983,
     "spa": "suprimir",
-    "eng": "to suppress, delete",
     "used": null
   },
   {
+    "eng": "to bother, to annoy",
     "index": 375,
     "spa": "molestar",
-    "eng": "to bother, to annoy",
     "used": null
   },
   {
+    "eng": "to inaugurate, to open",
     "index": 376,
     "spa": "inaugurar",
-    "eng": "to inaugurate, to open",
     "used": null
   },
   {
+    "eng": "to watch, to guard",
     "index": 377,
     "spa": "vigilar",
-    "eng": "to watch, to guard",
     "used": null
   },
   {
+    "eng": "to roll, to shoot a film",
     "index": 378,
     "spa": "rodar",
-    "eng": "to roll, to shoot a film",
     "used": null
   },
   {
+    "eng": "to welcome, receive",
     "index": 872,
     "spa": "acoger",
-    "eng": "to welcome, receive",
     "used": null
   },
   {
+    "eng": "to interview",
     "index": 379,
     "spa": "entrevistar",
-    "eng": "to interview",
     "used": null
   },
   {
+    "eng": "to avenge",
     "index": 380,
     "spa": "vengar",
-    "eng": "to avenge",
     "used": null
   },
   {
+    "eng": "to fight, to argue",
     "index": 381,
     "spa": "pelear",
-    "eng": "to fight, to argue",
     "used": null
   },
   {
+    "eng": "to free, to fight",
     "index": 382,
     "spa": "librar",
-    "eng": "to free, to fight",
     "used": null
   },
   {
+    "eng": "to dry",
     "index": 383,
     "spa": "secar",
-    "eng": "to dry",
     "used": null
   },
   {
+    "eng": "to lock up, to enclose",
     "index": 384,
     "spa": "encerrar",
-    "eng": "to lock up, to enclose",
     "used": null
   },
   {
+    "eng": "to involve",
     "index": 385,
     "spa": "involucrar",
-    "eng": "to involve",
     "used": null
   },
   {
+    "eng": "to defeat",
     "index": 386,
     "spa": "derrotar",
-    "eng": "to defeat",
     "used": null
   },
   {
+    "eng": "to arm, to assemble",
     "index": 387,
     "spa": "armar",
-    "eng": "to arm, to assemble",
     "used": null
   },
   {
+    "eng": "to dare",
     "index": 873,
     "spa": "atrever",
-    "eng": "to dare",
     "used": null
   },
   {
+    "eng": "to cease, to stop",
     "index": 388,
     "spa": "cesar",
-    "eng": "to cease, to stop",
     "used": null
   },
   {
+    "eng": "to lead, to head",
     "index": 389,
     "spa": "encabezar",
-    "eng": "to lead, to head",
     "used": null
   },
   {
+    "eng": "to highlight, to emphasize",
     "index": 390,
     "spa": "resaltar",
-    "eng": "to highlight, to emphasize",
     "used": null
   },
   {
+    "eng": "to do without, dispense with",
     "index": 984,
     "spa": "prescindir",
-    "eng": "to do without, dispense with",
     "used": null
   },
   {
+    "eng": "to protest",
     "index": 391,
     "spa": "protestar",
-    "eng": "to protest",
     "used": null
   },
   {
+    "eng": "to benefit",
     "index": 392,
     "spa": "beneficiar",
-    "eng": "to benefit",
     "used": null
   },
   {
+    "eng": "to accelerate, to speed up",
     "index": 393,
     "spa": "acelerar",
-    "eng": "to accelerate, to speed up",
     "used": null
   },
   {
+    "eng": "to confirm, to verify",
     "index": 394,
     "spa": "constatar",
-    "eng": "to confirm, to verify",
     "used": null
   },
   {
+    "eng": "to connect",
     "index": 395,
     "spa": "conectar",
-    "eng": "to connect",
     "used": null
   },
   {
+    "eng": "to press, to pressure",
     "index": 396,
     "spa": "presionar",
-    "eng": "to press, to pressure",
     "used": null
   },
   {
+    "eng": "to warn, to inform",
     "index": 397,
     "spa": "avisar",
-    "eng": "to warn, to inform",
     "used": null
   },
   {
+    "eng": "to continue, proceed",
     "index": 985,
     "spa": "proseguir",
-    "eng": "to continue, proceed",
     "used": null
   },
   {
+    "eng": "to appear, to peek out",
     "index": 398,
     "spa": "asomar",
-    "eng": "to appear, to peek out",
     "used": null
   },
   {
+    "eng": "to transport, to carry",
     "index": 399,
     "spa": "transportar",
-    "eng": "to transport, to carry",
     "used": null
   },
   {
+    "eng": "to expel, to kick out",
     "index": 400,
     "spa": "expulsar",
-    "eng": "to expel, to kick out",
     "used": null
   },
   {
+    "eng": "to grate",
     "index": 401,
     "spa": "rallar",
-    "eng": "to grate",
     "used": null
   },
   {
+    "eng": "to prohibit, forbid",
     "index": 986,
     "spa": "prohibir",
-    "eng": "to prohibit, forbid",
     "used": null
   },
   {
+    "eng": "to experience, to experiment",
     "index": 402,
     "spa": "experimentar",
-    "eng": "to experience, to experiment",
     "used": null
   },
   {
+    "eng": "to govern, rule",
     "index": 987,
     "spa": "regir",
-    "eng": "to govern, rule",
     "used": null
   },
   {
+    "eng": "to imitate",
     "index": 403,
     "spa": "imitar",
-    "eng": "to imitate",
     "used": null
   },
   {
+    "eng": "to record, to engrave",
     "index": 404,
     "spa": "grabar",
-    "eng": "to record, to engrave",
     "used": null
   },
   {
+    "eng": "to sink",
     "index": 988,
     "spa": "hundir",
-    "eng": "to sink",
     "used": null
   },
   {
+    "eng": "to cover",
     "index": 405,
     "spa": "tapar",
-    "eng": "to cover",
     "used": null
   },
   {
+    "eng": "to entail, to involve",
     "index": 406,
     "spa": "comportar",
-    "eng": "to entail, to involve",
     "used": null
   },
   {
+    "eng": "to murmur, to whisper",
     "index": 407,
     "spa": "murmurar",
-    "eng": "to murmur, to whisper",
     "used": null
   },
   {
+    "eng": "to raise, to lift",
     "index": 408,
     "spa": "alzar",
-    "eng": "to raise, to lift",
     "used": null
   },
   {
+    "eng": "to strengthen, to promote",
     "index": 409,
     "spa": "potenciar",
-    "eng": "to strengthen, to promote",
     "used": null
   },
   {
+    "eng": "to miss, to surprise",
     "index": 410,
     "spa": "extrañar",
-    "eng": "to miss, to surprise",
     "used": null
   },
   {
+    "eng": "to calm",
     "index": 411,
     "spa": "calmar",
-    "eng": "to calm",
     "used": null
   },
   {
+    "eng": "to specify, to point out",
     "index": 412,
     "spa": "puntualizar",
-    "eng": "to specify, to point out",
     "used": null
   },
   {
+    "eng": "to distribute",
     "index": 989,
     "spa": "distribuir",
-    "eng": "to distribute",
     "used": null
   },
   {
+    "eng": "to cool down",
     "index": 413,
     "spa": "enfriar",
-    "eng": "to cool down",
     "used": null
   },
   {
+    "eng": "to punish",
     "index": 414,
     "spa": "castigar",
-    "eng": "to punish",
     "used": null
   },
   {
+    "eng": "to elude, avoid",
     "index": 990,
     "spa": "eludir",
-    "eng": "to elude, avoid",
     "used": null
   },
   {
+    "eng": "to save (money, time",
     "index": 415,
     "spa": "ahorrar",
-    "eng": "to save (money, time",
     "used": null
   },
   {
+    "eng": "to allude, refer",
     "index": 991,
     "spa": "aludir",
-    "eng": "to allude, refer",
     "used": null
   },
   {
+    "eng": "to turn off, to extinguish",
     "index": 416,
     "spa": "apagar",
-    "eng": "to turn off, to extinguish",
     "used": null
   },
   {
+    "eng": "to combine",
     "index": 417,
     "spa": "combinar",
-    "eng": "to combine",
     "used": null
   },
   {
+    "eng": "to summarize",
     "index": 992,
     "spa": "resumir",
-    "eng": "to summarize",
     "used": null
   },
   {
+    "eng": "to cook, boil",
     "index": 874,
     "spa": "cocer",
-    "eng": "to cook, boil",
     "used": null
   },
   {
+    "eng": "to dispute, to contest",
     "index": 418,
     "spa": "disputar",
-    "eng": "to dispute, to contest",
     "used": null
   },
   {
+    "eng": "to heat",
     "index": 419,
     "spa": "calentar",
-    "eng": "to heat",
     "used": null
   },
   {
+    "eng": "to circulate",
     "index": 420,
     "spa": "circular",
-    "eng": "to circulate",
     "used": null
   },
   {
+    "eng": "to throw, to fling",
     "index": 421,
     "spa": "arrojar",
-    "eng": "to throw, to fling",
     "used": null
   },
   {
+    "eng": "to give (a gift",
     "index": 422,
     "spa": "regalar",
-    "eng": "to give (a gift",
     "used": null
   },
   {
+    "eng": "to subtract, to diminish",
     "index": 423,
     "spa": "restar",
-    "eng": "to subtract, to diminish",
     "used": null
   },
   {
+    "eng": "to accommodate, to arrange",
     "index": 424,
     "spa": "acomodar",
-    "eng": "to accommodate, to arrange",
     "used": null
   },
   {
+    "eng": "to design",
     "index": 425,
     "spa": "diseñar",
-    "eng": "to design",
     "used": null
   },
   {
+    "eng": "to love, to enchant",
     "index": 426,
     "spa": "encantar",
-    "eng": "to love, to enchant",
     "used": null
   },
   {
+    "eng": "to kidnap",
     "index": 427,
     "spa": "secuestrar",
-    "eng": "to kidnap",
     "used": null
   },
   {
+    "eng": "to hug, to embrace",
     "index": 428,
     "spa": "abrazar",
-    "eng": "to hug, to embrace",
     "used": null
   },
   {
+    "eng": "to industrialize",
     "index": 429,
     "spa": "industrializar",
-    "eng": "to industrialize",
     "used": null
   },
   {
+    "eng": "to narrate, to tell",
     "index": 430,
     "spa": "narrar",
-    "eng": "to narrate, to tell",
     "used": null
   },
   {
+    "eng": "to explore",
     "index": 431,
     "spa": "explorar",
-    "eng": "to explore",
     "used": null
   },
   {
+    "eng": "to subscribe",
     "index": 993,
     "spa": "suscribir",
-    "eng": "to subscribe",
     "used": null
   },
   {
+    "eng": "to recount, to tell",
     "index": 432,
     "spa": "relatar",
-    "eng": "to recount, to tell",
     "used": null
   },
   {
+    "eng": "to reform",
     "index": 433,
     "spa": "reformar",
-    "eng": "to reform",
     "used": null
   },
   {
+    "eng": "to bury",
     "index": 434,
     "spa": "enterrar",
-    "eng": "to bury",
     "used": null
   },
   {
+    "eng": "to watch over, to stay awake",
     "index": 435,
     "spa": "velar",
-    "eng": "to watch over, to stay awake",
     "used": null
   },
   {
+    "eng": "to restore, reestablish",
     "index": 875,
     "spa": "restablecer",
-    "eng": "to restore, reestablish",
     "used": null
   },
   {
+    "eng": "to coordinate",
     "index": 436,
     "spa": "coordinar",
-    "eng": "to coordinate",
     "used": null
   },
   {
+    "eng": "to beat, whisk",
     "index": 994,
     "spa": "batir",
-    "eng": "to beat, whisk",
     "used": null
   },
   {
+    "eng": "to cultivate",
     "index": 437,
     "spa": "cultivar",
-    "eng": "to cultivate",
     "used": null
   },
   {
+    "eng": "to sow, to plant",
     "index": 438,
     "spa": "sembrar",
-    "eng": "to sow, to plant",
     "used": null
   },
   {
+    "eng": "to exhibit, display",
     "index": 995,
     "spa": "exhibir",
-    "eng": "to exhibit, display",
     "used": null
   },
   {
+    "eng": "to swallow",
     "index": 439,
     "spa": "tragar",
-    "eng": "to swallow",
     "used": null
   },
   {
+    "eng": "to bring closer, to approach",
     "index": 440,
     "spa": "aproximar",
-    "eng": "to bring closer, to approach",
     "used": null
   },
   {
+    "eng": "to counteract",
     "index": 441,
     "spa": "contrarrestar",
-    "eng": "to counteract",
     "used": null
   },
   {
+    "eng": "to advise",
     "index": 442,
     "spa": "aconsejar",
-    "eng": "to advise",
     "used": null
   },
   {
+    "eng": "to multiply",
     "index": 443,
     "spa": "multiplicar",
-    "eng": "to multiply",
     "used": null
   },
   {
+    "eng": "to caress",
     "index": 444,
     "spa": "acariciar",
-    "eng": "to caress",
     "used": null
   },
   {
+    "eng": "to abound, to be abundant",
     "index": 445,
     "spa": "abundar",
-    "eng": "to abound, to be abundant",
     "used": null
   },
   {
+    "eng": "to associate",
     "index": 446,
     "spa": "asociar",
-    "eng": "to associate",
     "used": null
   },
   {
+    "eng": "to bathe",
     "index": 447,
     "spa": "bañar",
-    "eng": "to bathe",
     "used": null
   },
   {
+    "eng": "to step on",
     "index": 448,
     "spa": "pisar",
-    "eng": "to step on",
     "used": null
   },
   {
+    "eng": "to ratify",
     "index": 449,
     "spa": "ratificar",
-    "eng": "to ratify",
     "used": null
   },
   {
+    "eng": "to inhabit",
     "index": 450,
     "spa": "habitar",
-    "eng": "to inhabit",
     "used": null
   },
   {
+    "eng": "to complain",
     "index": 451,
     "spa": "quejar",
-    "eng": "to complain",
     "used": null
   },
   {
+    "eng": "to replace",
     "index": 452,
     "spa": "reemplazar",
-    "eng": "to replace",
     "used": null
   },
   {
+    "eng": "to concern, affect",
     "index": 996,
     "spa": "concernir",
-    "eng": "to concern, affect",
     "used": null
   },
   {
+    "eng": "to triumph, to succeed",
     "index": 453,
     "spa": "triunfar",
-    "eng": "to triumph, to succeed",
     "used": null
   },
   {
+    "eng": "to oscillate, to swing",
     "index": 454,
     "spa": "oscilar",
-    "eng": "to oscillate, to swing",
     "used": null
   },
   {
+    "eng": "to dictate",
     "index": 455,
     "spa": "dictar",
-    "eng": "to dictate",
     "used": null
   },
   {
+    "eng": "to confront, to face",
     "index": 456,
     "spa": "encarar",
-    "eng": "to confront, to face",
     "used": null
   },
   {
+    "eng": "to divert, to deviate",
     "index": 457,
     "spa": "desviar",
-    "eng": "to divert, to deviate",
     "used": null
   },
   {
+    "eng": "to grab",
     "index": 458,
     "spa": "agarrar",
-    "eng": "to grab",
     "used": null
   },
   {
+    "eng": "to converse, to dialogue",
     "index": 459,
     "spa": "dialogar",
-    "eng": "to converse, to dialogue",
     "used": null
   },
   {
+    "eng": "to foster, to promote",
     "index": 460,
     "spa": "propiciar",
-    "eng": "to foster, to promote",
     "used": null
   },
   {
+    "eng": "to hunt",
     "index": 461,
     "spa": "cazar",
-    "eng": "to hunt",
     "used": null
   },
   {
+    "eng": "to debut, to use for the first time",
     "index": 462,
     "spa": "estrenar",
-    "eng": "to debut, to use for the first time",
     "used": null
   },
   {
+    "eng": "to clarify, shed light",
     "index": 876,
     "spa": "esclarecer",
-    "eng": "to clarify, shed light",
     "used": null
   },
   {
+    "eng": "to accumulate",
     "index": 463,
     "spa": "acumular",
-    "eng": "to accumulate",
     "used": null
   },
   {
+    "eng": "to sentence, to declare",
     "index": 464,
     "spa": "sentenciar",
-    "eng": "to sentence, to declare",
     "used": null
   },
   {
+    "eng": "to persist",
     "index": 997,
     "spa": "persistir",
-    "eng": "to persist",
     "used": null
   },
   {
+    "eng": "to deposit",
     "index": 465,
     "spa": "depositar",
-    "eng": "to deposit",
     "used": null
   },
   {
+    "eng": "to make a mistake",
     "index": 466,
     "spa": "equivocar",
-    "eng": "to make a mistake",
     "used": null
   },
   {
+    "eng": "to risk",
     "index": 467,
     "spa": "arriesgar",
-    "eng": "to risk",
     "used": null
   },
   {
+    "eng": "to pray",
     "index": 468,
     "spa": "rezar",
-    "eng": "to pray",
     "used": null
   },
   {
+    "eng": "to tilt, to lean",
     "index": 469,
     "spa": "inclinar",
-    "eng": "to tilt, to lean",
     "used": null
   },
   {
+    "eng": "to admire",
     "index": 470,
     "spa": "admirar",
-    "eng": "to admire",
     "used": null
   },
   {
+    "eng": "to tie, to flirt",
     "index": 471,
     "spa": "ligar",
-    "eng": "to tie, to flirt",
     "used": null
   },
   {
+    "eng": "to alleviate, to ease",
     "index": 472,
     "spa": "paliar",
-    "eng": "to alleviate, to ease",
     "used": null
   },
   {
+    "eng": "to illuminate, to light up",
     "index": 473,
     "spa": "iluminar",
-    "eng": "to illuminate, to light up",
     "used": null
   },
   {
+    "eng": "to reconcile",
     "index": 474,
     "spa": "conciliar",
-    "eng": "to reconcile",
     "used": null
   },
   {
+    "eng": "to emphasize, to stress",
     "index": 475,
     "spa": "recalcar",
-    "eng": "to emphasize, to stress",
     "used": null
   },
   {
+    "eng": "to encourage, to cheer up",
     "index": 476,
     "spa": "animar",
-    "eng": "to encourage, to cheer up",
     "used": null
   },
   {
+    "eng": "to confer, bestow",
     "index": 998,
     "spa": "conferir",
-    "eng": "to confer, bestow",
     "used": null
   },
   {
+    "eng": "to regret, to lament",
     "index": 477,
     "spa": "lamentar",
-    "eng": "to regret, to lament",
     "used": null
   },
   {
+    "eng": "to resume",
     "index": 478,
     "spa": "reanudar",
-    "eng": "to resume",
     "used": null
   },
   {
+    "eng": "to group, to gather",
     "index": 479,
     "spa": "agrupar",
-    "eng": "to group, to gather",
     "used": null
   },
   {
+    "eng": "to witness, to be present at",
     "index": 480,
     "spa": "presenciar",
-    "eng": "to witness, to be present at",
     "used": null
   },
   {
+    "eng": "to dissolve",
     "index": 877,
     "spa": "disolver",
-    "eng": "to dissolve",
     "used": null
   },
   {
+    "eng": "to reassure, to calm down",
     "index": 481,
     "spa": "tranquilizar",
-    "eng": "to reassure, to calm down",
     "used": null
   },
   {
+    "eng": "to educate, to raise",
     "index": 482,
     "spa": "educar",
-    "eng": "to educate, to raise",
     "used": null
   },
   {
+    "eng": "to reduce, to lower",
     "index": 483,
     "spa": "rebajar",
-    "eng": "to reduce, to lower",
     "used": null
   },
   {
+    "eng": "to isolate",
     "index": 484,
     "spa": "aislar",
-    "eng": "to isolate",
     "used": null
   },
   {
+    "eng": "to draw",
     "index": 485,
     "spa": "dibujar",
-    "eng": "to draw",
     "used": null
   },
   {
+    "eng": "to absorb",
     "index": 878,
     "spa": "absorber",
-    "eng": "to absorb",
     "used": null
   },
   {
+    "eng": "to agree, assent",
     "index": 999,
     "spa": "asentir",
-    "eng": "to agree, assent",
     "used": null
   },
   {
+    "eng": "to motivate",
     "index": 486,
     "spa": "motivar",
-    "eng": "to motivate",
     "used": null
   },
   {
+    "eng": "to trace, to draw",
     "index": 487,
     "spa": "trazar",
-    "eng": "to trace, to draw",
     "used": null
   },
   {
+    "eng": "to be left over",
     "index": 488,
     "spa": "sobrar",
-    "eng": "to be left over",
     "used": null
   },
   {
+    "eng": "to print",
     "index": 1000,
     "spa": "imprimir",
-    "eng": "to print",
     "used": null
   },
   {
+    "eng": "to train",
     "index": 489,
     "spa": "entrenar",
-    "eng": "to train",
     "used": null
   },
   {
+    "eng": "to exclude",
     "index": 1001,
     "spa": "excluir",
-    "eng": "to exclude",
     "used": null
   },
   {
+    "eng": "to become, to turn",
     "index": 490,
     "spa": "tornar",
-    "eng": "to become, to turn",
     "used": null
   },
   {
+    "eng": "to sacrifice",
     "index": 491,
     "spa": "sacrificar",
-    "eng": "to sacrifice",
     "used": null
   },
   {
+    "eng": "to hang",
     "index": 492,
     "spa": "colgar",
-    "eng": "to hang",
     "used": null
   },
   {
+    "eng": "to manipulate",
     "index": 493,
     "spa": "manipular",
-    "eng": "to manipulate",
     "used": null
   },
   {
+    "eng": "to scare, to frighten",
     "index": 494,
     "spa": "asustar",
-    "eng": "to scare, to frighten",
     "used": null
   },
   {
+    "eng": "to violate, to rape",
     "index": 495,
     "spa": "violar",
-    "eng": "to violate, to rape",
     "used": null
   },
   {
+    "eng": "to press, to tighten",
     "index": 496,
     "spa": "apretar",
-    "eng": "to press, to tighten",
     "used": null
   },
   {
+    "eng": "to fail",
     "index": 497,
     "spa": "fallar",
-    "eng": "to fail",
     "used": null
   },
   {
+    "eng": "to rest",
     "index": 498,
     "spa": "reposar",
-    "eng": "to rest",
     "used": null
   },
   {
+    "eng": "to implant, to establish",
     "index": 499,
     "spa": "implantar",
-    "eng": "to implant, to establish",
     "used": null
   },
   {
+    "eng": "to elapse, pass",
     "index": 1002,
     "spa": "transcurrir",
-    "eng": "to elapse, pass",
     "used": null
   },
   {
+    "eng": "to tie",
     "index": 500,
     "spa": "atar",
-    "eng": "to tie",
     "used": null
   },
   {
+    "eng": "to join",
     "index": 501,
     "spa": "juntar",
-    "eng": "to join",
     "used": null
   },
   {
+    "eng": "to adapt",
     "index": 502,
     "spa": "adecuar",
-    "eng": "to adapt",
     "used": null
   },
   {
+    "eng": "to date",
     "index": 503,
     "spa": "datar",
-    "eng": "to date",
     "used": null
   },
   {
+    "eng": "to cancel",
     "index": 504,
     "spa": "anular",
-    "eng": "to cancel",
     "used": null
   },
   {
+    "eng": "to contrast",
     "index": 505,
     "spa": "contrastar",
-    "eng": "to contrast",
     "used": null
   },
   {
+    "eng": "to make someone fall in love",
     "index": 506,
     "spa": "enamorar",
-    "eng": "to make someone fall in love",
     "used": null
   },
   {
+    "eng": "to tremble",
     "index": 507,
     "spa": "temblar",
-    "eng": "to tremble",
     "used": null
   },
   {
+    "eng": "to exhaust",
     "index": 508,
     "spa": "agotar",
-    "eng": "to exhaust",
     "used": null
   },
   {
+    "eng": "to annoy, bother",
     "index": 879,
     "spa": "joder",
-    "eng": "to annoy, bother",
     "used": null
   },
   {
+    "eng": "to fold",
     "index": 509,
     "spa": "doblar",
-    "eng": "to fold",
     "used": null
   },
   {
+    "eng": "to recover",
     "index": 510,
     "spa": "recobrar",
-    "eng": "to recover",
     "used": null
   },
   {
+    "eng": "to have lunch",
     "index": 511,
     "spa": "almorzar",
-    "eng": "to have lunch",
     "used": null
   },
   {
+    "eng": "to beg",
     "index": 512,
     "spa": "rogar",
-    "eng": "to beg",
     "used": null
   },
   {
+    "eng": "to authorize",
     "index": 513,
     "spa": "autorizar",
-    "eng": "to authorize",
     "used": null
   },
   {
+    "eng": "to push",
     "index": 514,
     "spa": "empujar",
-    "eng": "to push",
     "used": null
   },
   {
+    "eng": "to debate, discuss",
     "index": 1003,
     "spa": "debatir",
-    "eng": "to debate, discuss",
     "used": null
   },
   {
+    "eng": "to predict",
     "index": 1004,
     "spa": "predecir",
-    "eng": "to predict",
     "used": null
   },
   {
+    "eng": "to culminate",
     "index": 515,
     "spa": "culminar",
-    "eng": "to culminate",
     "used": null
   },
   {
+    "eng": "to float",
     "index": 516,
     "spa": "flotar",
-    "eng": "to float",
     "used": null
   },
   {
+    "eng": "to draft",
     "index": 517,
     "spa": "redactar",
-    "eng": "to draft",
     "used": null
   },
   {
+    "eng": "to emphasize",
     "index": 518,
     "spa": "enfatizar",
-    "eng": "to emphasize",
     "used": null
   },
   {
+    "eng": "to demand",
     "index": 519,
     "spa": "demandar",
-    "eng": "to demand",
     "used": null
   },
   {
+    "eng": "to go back, retreat",
     "index": 880,
     "spa": "retroceder",
-    "eng": "to go back, retreat",
     "used": null
   },
   {
+    "eng": "to get used to",
     "index": 520,
     "spa": "acostumbrar",
-    "eng": "to get used to",
     "used": null
   },
   {
+    "eng": "to delay",
     "index": 521,
     "spa": "retrasar",
-    "eng": "to delay",
     "used": null
   },
   {
+    "eng": "to assimilate",
     "index": 522,
     "spa": "asimilar",
-    "eng": "to assimilate",
     "used": null
   },
   {
+    "eng": "to overcome",
     "index": 523,
     "spa": "remontar",
-    "eng": "to overcome",
     "used": null
   },
   {
+    "eng": "to damage",
     "index": 524,
     "spa": "dañar",
-    "eng": "to damage",
     "used": null
   },
   {
+    "eng": "to enrich",
     "index": 881,
     "spa": "enriquecer",
-    "eng": "to enrich",
     "used": null
   },
   {
+    "eng": "to decipher",
     "index": 525,
     "spa": "descifrar",
-    "eng": "to decipher",
     "used": null
   },
   {
+    "eng": "to articulate",
     "index": 526,
     "spa": "articular",
-    "eng": "to articulate",
     "used": null
   },
   {
+    "eng": "to harm",
     "index": 527,
     "spa": "perjudicar",
-    "eng": "to harm",
     "used": null
   },
   {
+    "eng": "to allege",
     "index": 528,
     "spa": "alegar",
-    "eng": "to allege",
     "used": null
   },
   {
+    "eng": "to enroll, register",
     "index": 1005,
     "spa": "inscribir",
-    "eng": "to enroll, register",
     "used": null
   },
   {
+    "eng": "to be based on",
     "index": 529,
     "spa": "estribar",
-    "eng": "to be based on",
     "used": null
   },
   {
+    "eng": "to coexist, live together",
     "index": 1006,
     "spa": "convivir",
-    "eng": "to coexist, live together",
     "used": null
   },
   {
+    "eng": "to mobilize",
     "index": 530,
     "spa": "movilizar",
-    "eng": "to mobilize",
     "used": null
   },
   {
+    "eng": "to evidence",
     "index": 531,
     "spa": "evidenciar",
-    "eng": "to evidence",
     "used": null
   },
   {
+    "eng": "to question",
     "index": 532,
     "spa": "cuestionar",
-    "eng": "to question",
     "used": null
   },
   {
+    "eng": "to reserve",
     "index": 533,
     "spa": "reservar",
-    "eng": "to reserve",
     "used": null
   },
   {
+    "eng": "to await",
     "index": 534,
     "spa": "aguardar",
-    "eng": "to await",
     "used": null
   },
   {
+    "eng": "to glimpse, suspect",
     "index": 882,
     "spa": "entrever",
-    "eng": "to glimpse, suspect",
     "used": null
   },
   {
+    "eng": "to provide, supply",
     "index": 883,
     "spa": "proveer",
-    "eng": "to provide, supply",
     "used": null
   },
   {
+    "eng": "to restore",
     "index": 535,
     "spa": "restaurar",
-    "eng": "to restore",
     "used": null
   },
   {
+    "eng": "to proclaim",
     "index": 536,
     "spa": "proclamar",
-    "eng": "to proclaim",
     "used": null
   },
   {
+    "eng": "to hold",
     "index": 537,
     "spa": "sujetar",
-    "eng": "to hold",
     "used": null
   },
   {
+    "eng": "to activate",
     "index": 538,
     "spa": "accionar",
-    "eng": "to activate",
     "used": null
   },
   {
+    "eng": "to cancel",
     "index": 539,
     "spa": "cancelar",
-    "eng": "to cancel",
     "used": null
   },
   {
+    "eng": "to shelter",
     "index": 540,
     "spa": "refugiar",
-    "eng": "to shelter",
     "used": null
   },
   {
+    "eng": "to congratulate",
     "index": 541,
     "spa": "felicitar",
-    "eng": "to congratulate",
     "used": null
   },
   {
+    "eng": "to repress, suppress",
     "index": 1007,
     "spa": "reprimir",
-    "eng": "to repress, suppress",
     "used": null
   },
   {
+    "eng": "to return",
     "index": 542,
     "spa": "retornar",
-    "eng": "to return",
     "used": null
   },
   {
+    "eng": "to illustrate",
     "index": 543,
     "spa": "ilustrar",
-    "eng": "to illustrate",
     "used": null
   },
   {
+    "eng": "to knock down",
     "index": 544,
     "spa": "derribar",
-    "eng": "to knock down",
     "used": null
   },
   {
+    "eng": "to liquidate",
     "index": 545,
     "spa": "liquidar",
-    "eng": "to liquidate",
     "used": null
   },
   {
+    "eng": "to bullfight",
     "index": 546,
     "spa": "torear",
-    "eng": "to bullfight",
     "used": null
   },
   {
+    "eng": "to configure",
     "index": 547,
     "spa": "configurar",
-    "eng": "to configure",
     "used": null
   },
   {
+    "eng": "to induce, lead",
     "index": 1008,
     "spa": "inducir",
-    "eng": "to induce, lead",
     "used": null
   },
   {
+    "eng": "to assert",
     "index": 548,
     "spa": "aseverar",
-    "eng": "to assert",
     "used": null
   },
   {
+    "eng": "to guide",
     "index": 549,
     "spa": "guiar",
-    "eng": "to guide",
     "used": null
   },
   {
+    "eng": "to capture",
     "index": 550,
     "spa": "capturar",
-    "eng": "to capture",
     "used": null
   },
   {
+    "eng": "to hinder",
     "index": 551,
     "spa": "dificultar",
-    "eng": "to hinder",
     "used": null
   },
   {
+    "eng": "to condition",
     "index": 552,
     "spa": "condicionar",
-    "eng": "to condition",
     "used": null
   },
   {
+    "eng": "to tolerate",
     "index": 553,
     "spa": "tolerar",
-    "eng": "to tolerate",
     "used": null
   },
   {
+    "eng": "to predominate",
     "index": 554,
     "spa": "predominar",
-    "eng": "to predominate",
     "used": null
   },
   {
+    "eng": "to resign",
     "index": 1009,
     "spa": "dimitir",
-    "eng": "to resign",
     "used": null
   },
   {
+    "eng": "to store",
     "index": 555,
     "spa": "almacenar",
-    "eng": "to store",
     "used": null
   },
   {
+    "eng": "to accentuate",
     "index": 556,
     "spa": "acentuar",
-    "eng": "to accentuate",
     "used": null
   },
   {
+    "eng": "to eradicate",
     "index": 557,
     "spa": "erradicar",
-    "eng": "to eradicate",
     "used": null
   },
   {
+    "eng": "to arbitrate",
     "index": 558,
     "spa": "arbitrar",
-    "eng": "to arbitrate",
     "used": null
   },
   {
+    "eng": "to schedule",
     "index": 559,
     "spa": "programar",
-    "eng": "to schedule",
     "used": null
   },
   {
+    "eng": "to swim",
     "index": 560,
     "spa": "nadar",
-    "eng": "to swim",
     "used": null
   },
   {
+    "eng": "to sustain",
     "index": 561,
     "spa": "sustentar",
-    "eng": "to sustain",
     "used": null
   },
   {
+    "eng": "to remit, send",
     "index": 1010,
     "spa": "remitir",
-    "eng": "to remit, send",
     "used": null
   },
   {
+    "eng": "to exchange",
     "index": 562,
     "spa": "intercambiar",
-    "eng": "to exchange",
     "used": null
   },
   {
+    "eng": "to mock",
     "index": 563,
     "spa": "burlar",
-    "eng": "to mock",
     "used": null
   },
   {
+    "eng": "to inquire",
     "index": 564,
     "spa": "indagar",
-    "eng": "to inquire",
     "used": null
   },
   {
+    "eng": "to infect",
     "index": 565,
     "spa": "infectar",
-    "eng": "to infect",
     "used": null
   },
   {
+    "eng": "to snatch",
     "index": 566,
     "spa": "arrebatar",
-    "eng": "to snatch",
     "used": null
   },
   {
+    "eng": "to ingest, consume",
     "index": 1011,
     "spa": "ingerir",
-    "eng": "to ingest, consume",
     "used": null
   },
   {
+    "eng": "to supply",
     "index": 567,
     "spa": "suministrar",
-    "eng": "to supply",
     "used": null
   },
   {
+    "eng": "to interrogate",
     "index": 568,
     "spa": "interrogar",
-    "eng": "to interrogate",
     "used": null
   },
   {
+    "eng": "to invade",
     "index": 1012,
     "spa": "invadir",
-    "eng": "to invade",
     "used": null
   },
   {
+    "eng": "to catch",
     "index": 569,
     "spa": "atrapar",
-    "eng": "to catch",
     "used": null
   },
   {
+    "eng": "to comfort",
     "index": 570,
     "spa": "consolar",
-    "eng": "to comfort",
     "used": null
   },
   {
+    "eng": "to fish",
     "index": 571,
     "spa": "pescar",
-    "eng": "to fish",
     "used": null
   },
   {
+    "eng": "to shake",
     "index": 1013,
     "spa": "sacudir",
-    "eng": "to shake",
     "used": null
   },
   {
+    "eng": "to provoke",
     "index": 572,
     "spa": "suscitar",
-    "eng": "to provoke",
     "used": null
   },
   {
+    "eng": "to sail",
     "index": 573,
     "spa": "navegar",
-    "eng": "to sail",
     "used": null
   },
   {
+    "eng": "to presume, show off",
     "index": 1014,
     "spa": "presumir",
-    "eng": "to presume, show off",
     "used": null
   },
   {
+    "eng": "to argue",
     "index": 574,
     "spa": "argumentar",
-    "eng": "to argue",
     "used": null
   },
   {
+    "eng": "to shine, look good",
     "index": 1015,
     "spa": "lucir",
-    "eng": "to shine, look good",
     "used": null
   },
   {
+    "eng": "to seduce",
     "index": 1016,
     "spa": "seducir",
-    "eng": "to seduce",
     "used": null
   },
   {
+    "eng": "to export",
     "index": 575,
     "spa": "exportar",
-    "eng": "to export",
     "used": null
   },
   {
+    "eng": "to edit",
     "index": 576,
     "spa": "editar",
-    "eng": "to edit",
     "used": null
   },
   {
+    "eng": "to complicate",
     "index": 577,
     "spa": "complicar",
-    "eng": "to complicate",
     "used": null
   },
   {
+    "eng": "to manage",
     "index": 578,
     "spa": "gestionar",
-    "eng": "to manage",
     "used": null
   },
   {
+    "eng": "to shelter",
     "index": 579,
     "spa": "albergar",
-    "eng": "to shelter",
     "used": null
   },
   {
+    "eng": "to clear",
     "index": 580,
     "spa": "despejar",
-    "eng": "to clear",
     "used": null
   },
   {
+    "eng": "to modernize",
     "index": 581,
     "spa": "modernizar",
-    "eng": "to modernize",
     "used": null
   },
   {
+    "eng": "to inspire",
     "index": 582,
     "spa": "inspirar",
-    "eng": "to inspire",
     "used": null
   },
   {
+    "eng": "to evoke",
     "index": 583,
     "spa": "evocar",
-    "eng": "to evoke",
     "used": null
   },
   {
+    "eng": "to copy",
     "index": 584,
     "spa": "copiar",
-    "eng": "to copy",
     "used": null
   },
   {
+    "eng": "to remove, stir",
     "index": 884,
     "spa": "remover",
-    "eng": "to remove, stir",
     "used": null
   },
   {
+    "eng": "to process",
     "index": 585,
     "spa": "procesar",
-    "eng": "to process",
     "used": null
   },
   {
+    "eng": "to untie",
     "index": 586,
     "spa": "desatar",
-    "eng": "to untie",
     "used": null
   },
   {
+    "eng": "to remedy",
     "index": 587,
     "spa": "remediar",
-    "eng": "to remedy",
     "used": null
   },
   {
+    "eng": "to cheer up",
     "index": 588,
     "spa": "alegrar",
-    "eng": "to cheer up",
     "used": null
   },
   {
+    "eng": "to agree",
     "index": 589,
     "spa": "pactar",
-    "eng": "to agree",
     "used": null
   },
   {
+    "eng": "to undertake, attack",
     "index": 885,
     "spa": "acometer",
-    "eng": "to undertake, attack",
     "used": null
   },
   {
+    "eng": "to resume",
     "index": 590,
     "spa": "retomar",
-    "eng": "to resume",
     "used": null
   },
   {
+    "eng": "to meditate",
     "index": 591,
     "spa": "meditar",
-    "eng": "to meditate",
     "used": null
   },
   {
+    "eng": "to rectify",
     "index": 592,
     "spa": "rectificar",
-    "eng": "to rectify",
     "used": null
   },
   {
+    "eng": "to appear in court, attend formally",
     "index": 886,
     "spa": "comparecer",
-    "eng": "to appear in court, attend formally",
     "used": null
   },
   {
+    "eng": "to break",
     "index": 593,
     "spa": "quebrar",
-    "eng": "to break",
     "used": null
   },
   {
+    "eng": "to crave, feel like",
     "index": 887,
     "spa": "apetecer",
-    "eng": "to crave, feel like",
     "used": null
   },
   {
+    "eng": "to fill",
     "index": 594,
     "spa": "rellenar",
-    "eng": "to fill",
     "used": null
   },
   {
+    "eng": "to excite",
     "index": 595,
     "spa": "emocionar",
-    "eng": "to excite",
     "used": null
   },
   {
+    "eng": "to promote",
     "index": 596,
     "spa": "promocionar",
-    "eng": "to promote",
     "used": null
   },
   {
+    "eng": "to frustrate",
     "index": 597,
     "spa": "frustrar",
-    "eng": "to frustrate",
     "used": null
   },
   {
+    "eng": "to revive, relive",
     "index": 1017,
     "spa": "revivir",
-    "eng": "to revive, relive",
     "used": null
   },
   {
+    "eng": "to perfect",
     "index": 598,
     "spa": "perfeccionar",
-    "eng": "to perfect",
     "used": null
   },
   {
+    "eng": "to shine",
     "index": 599,
     "spa": "brillar",
-    "eng": "to shine",
     "used": null
   },
   {
+    "eng": "to crash",
     "index": 600,
     "spa": "chocar",
-    "eng": "to crash",
     "used": null
   },
   {
+    "eng": "to rehearse",
     "index": 601,
     "spa": "ensayar",
-    "eng": "to rehearse",
     "used": null
   },
   {
+    "eng": "to cause",
     "index": 602,
     "spa": "ocasionar",
-    "eng": "to cause",
     "used": null
   },
   {
+    "eng": "to influence, affect",
     "index": 1018,
     "spa": "incidir",
-    "eng": "to influence, affect",
     "used": null
   },
   {
+    "eng": "to entail",
     "index": 603,
     "spa": "entrañar",
-    "eng": "to entail",
     "used": null
   },
   {
+    "eng": "to anticipate",
     "index": 604,
     "spa": "anticipar",
-    "eng": "to anticipate",
     "used": null
   },
   {
+    "eng": "to implement",
     "index": 605,
     "spa": "implementar",
-    "eng": "to implement",
     "used": null
   },
   {
+    "eng": "to hurry",
     "index": 606,
     "spa": "apresurar",
-    "eng": "to hurry",
     "used": null
   },
   {
+    "eng": "to unload/download",
     "index": 607,
     "spa": "descargar",
-    "eng": "to unload/download",
     "used": null
   },
   {
+    "eng": "to fail",
     "index": 608,
     "spa": "fracasar",
-    "eng": "to fail",
     "used": null
   },
   {
+    "eng": "to settle",
     "index": 609,
     "spa": "asentar",
-    "eng": "to settle",
     "used": null
   },
   {
+    "eng": "to recreate",
     "index": 610,
     "spa": "recrear",
-    "eng": "to recreate",
     "used": null
   },
   {
+    "eng": "to happen, occur",
     "index": 888,
     "spa": "acontecer",
-    "eng": "to happen, occur",
     "used": null
   },
   {
+    "eng": "to embody",
     "index": 611,
     "spa": "encarnar",
-    "eng": "to embody",
     "used": null
   },
   {
+    "eng": "to finish off",
     "index": 612,
     "spa": "rematar",
-    "eng": "to finish off",
     "used": null
   },
   {
+    "eng": "to strain/filter",
     "index": 613,
     "spa": "colar",
-    "eng": "to strain/filter",
     "used": null
   },
   {
+    "eng": "to differ, defer",
     "index": 1019,
     "spa": "diferir",
-    "eng": "to differ, defer",
     "used": null
   },
   {
+    "eng": "to neutralize",
     "index": 614,
     "spa": "neutralizar",
-    "eng": "to neutralize",
     "used": null
   },
   {
+    "eng": "to offend",
     "index": 889,
     "spa": "ofender",
-    "eng": "to offend",
     "used": null
   },
   {
+    "eng": "to block",
     "index": 615,
     "spa": "bloquear",
-    "eng": "to block",
     "used": null
   },
   {
+    "eng": "to transfer/pass through",
     "index": 616,
     "spa": "traspasar",
-    "eng": "to transfer/pass through",
     "used": null
   },
   {
+    "eng": "to back/support",
     "index": 617,
     "spa": "respaldar",
-    "eng": "to back/support",
     "used": null
   },
   {
+    "eng": "to whisper",
     "index": 618,
     "spa": "susurrar",
-    "eng": "to whisper",
     "used": null
   },
   {
+    "eng": "to shake",
     "index": 619,
     "spa": "agitar",
-    "eng": "to shake",
     "used": null
   },
   {
+    "eng": "to plant",
     "index": 620,
     "spa": "plantar",
-    "eng": "to plant",
     "used": null
   },
   {
+    "eng": "to impart, give",
     "index": 1020,
     "spa": "impartir",
-    "eng": "to impart, give",
     "used": null
   },
   {
+    "eng": "to bite",
     "index": 890,
     "spa": "morder",
-    "eng": "to bite",
     "used": null
   },
   {
+    "eng": "to grind, mill",
     "index": 891,
     "spa": "moler",
-    "eng": "to grind, mill",
     "used": null
   },
   {
+    "eng": "to sanction",
     "index": 621,
     "spa": "sancionar",
-    "eng": "to sanction",
     "used": null
   },
   {
+    "eng": "to deny, refute",
     "index": 1021,
     "spa": "desmentir",
-    "eng": "to deny, refute",
     "used": null
   },
   {
+    "eng": "to insert",
     "index": 622,
     "spa": "insertar",
-    "eng": "to insert",
     "used": null
   },
   {
+    "eng": "to pay/fertilize",
     "index": 623,
     "spa": "abonar",
-    "eng": "to pay/fertilize",
     "used": null
   },
   {
+    "eng": "to empower",
     "index": 624,
     "spa": "apoderar",
-    "eng": "to empower",
     "used": null
   },
   {
+    "eng": "to alternate",
     "index": 625,
     "spa": "alternar",
-    "eng": "to alternate",
     "used": null
   },
   {
+    "eng": "to narrow",
     "index": 626,
     "spa": "estrechar",
-    "eng": "to narrow",
     "used": null
   },
   {
+    "eng": "to minimize",
     "index": 627,
     "spa": "minimizar",
-    "eng": "to minimize",
     "used": null
   },
   {
+    "eng": "to evade, avoid",
     "index": 1022,
     "spa": "evadir",
-    "eng": "to evade, avoid",
     "used": null
   },
   {
+    "eng": "to disguise",
     "index": 628,
     "spa": "disfrazar",
-    "eng": "to disguise",
     "used": null
   },
   {
+    "eng": "to balance",
     "index": 629,
     "spa": "equilibrar",
-    "eng": "to balance",
     "used": null
   },
   {
+    "eng": "to bake",
     "index": 630,
     "spa": "hornear",
-    "eng": "to bake",
     "used": null
   },
   {
+    "eng": "to plan",
     "index": 631,
     "spa": "planear",
-    "eng": "to plan",
     "used": null
   },
   {
+    "eng": "to equalize",
     "index": 632,
     "spa": "igualar",
-    "eng": "to equalize",
     "used": null
   },
   {
+    "eng": "to trim",
     "index": 633,
     "spa": "recortar",
-    "eng": "to trim",
     "used": null
   },
   {
+    "eng": "to drown",
     "index": 634,
     "spa": "ahogar",
-    "eng": "to drown",
     "used": null
   },
   {
+    "eng": "to entertain",
     "index": 892,
     "spa": "entretener",
-    "eng": "to entertain",
     "used": null
   },
   {
+    "eng": "to collect/raise funds",
     "index": 635,
     "spa": "recaudar",
-    "eng": "to collect/raise funds",
     "used": null
   },
   {
+    "eng": "to please",
     "index": 893,
     "spa": "complacer",
-    "eng": "to please",
     "used": null
   },
   {
+    "eng": "to mediate",
     "index": 636,
     "spa": "mediar",
-    "eng": "to mediate",
     "used": null
   },
   {
+    "eng": "to empty",
     "index": 637,
     "spa": "vaciar",
-    "eng": "to empty",
     "used": null
   },
   {
+    "eng": "to emerge",
     "index": 894,
     "spa": "emerger",
-    "eng": "to emerge",
     "used": null
   },
   {
+    "eng": "to imprison",
     "index": 638,
     "spa": "encarcelar",
-    "eng": "to imprison",
     "used": null
   },
   {
+    "eng": "to award",
     "index": 639,
     "spa": "adjudicar",
-    "eng": "to award",
     "used": null
   },
   {
+    "eng": "to sew",
     "index": 895,
     "spa": "coser",
-    "eng": "to sew",
     "used": null
   },
   {
+    "eng": "to bet",
     "index": 640,
     "spa": "apostar",
-    "eng": "to bet",
     "used": null
   },
   {
+    "eng": "to burst",
     "index": 641,
     "spa": "reventar",
-    "eng": "to burst",
     "used": null
   },
   {
+    "eng": "to film",
     "index": 642,
     "spa": "filmar",
-    "eng": "to film",
     "used": null
   },
   {
+    "eng": "to assign",
     "index": 643,
     "spa": "asignar",
-    "eng": "to assign",
     "used": null
   },
   {
+    "eng": "to hold/boast",
     "index": 644,
     "spa": "ostentar",
-    "eng": "to hold/boast",
     "used": null
   },
   {
+    "eng": "to act/work",
     "index": 645,
     "spa": "obrar",
-    "eng": "to act/work",
     "used": null
   },
   {
+    "eng": "to plan",
     "index": 646,
     "spa": "planificar",
-    "eng": "to plan",
     "used": null
   },
   {
+    "eng": "to reclaim/demand",
     "index": 647,
     "spa": "reivindicar",
-    "eng": "to reclaim/demand",
     "used": null
   },
   {
+    "eng": "to paralyze",
     "index": 648,
     "spa": "paralizar",
-    "eng": "to paralyze",
     "used": null
   },
   {
+    "eng": "to plunge, sink",
     "index": 1023,
     "spa": "sumir",
-    "eng": "to plunge, sink",
     "used": null
   },
   {
+    "eng": "to abide by, adhere",
     "index": 896,
     "spa": "atener",
-    "eng": "to abide by, adhere",
     "used": null
   },
   {
+    "eng": "to urinate",
     "index": 649,
     "spa": "orinar",
-    "eng": "to urinate",
     "used": null
   },
   {
+    "eng": "to take off",
     "index": 650,
     "spa": "despegar",
-    "eng": "to take off",
     "used": null
   },
   {
+    "eng": "to synthesize",
     "index": 651,
     "spa": "sintetizar",
-    "eng": "to synthesize",
     "used": null
   },
   {
+    "eng": "to shave",
     "index": 652,
     "spa": "afeitar",
-    "eng": "to shave",
     "used": null
   },
   {
+    "eng": "to channel",
     "index": 653,
     "spa": "canalizar",
-    "eng": "to channel",
     "used": null
   },
   {
+    "eng": "to reveal/stay awake",
     "index": 654,
     "spa": "desvelar",
-    "eng": "to reveal/stay awake",
     "used": null
   },
   {
+    "eng": "to restrict, limit",
     "index": 1024,
     "spa": "restringir",
-    "eng": "to restrict, limit",
     "used": null
   },
   {
+    "eng": "to specify",
     "index": 655,
     "spa": "especificar",
-    "eng": "to specify",
     "used": null
   },
   {
+    "eng": "to embark",
     "index": 656,
     "spa": "embarcar",
-    "eng": "to embark",
     "used": null
   },
   {
+    "eng": "to resurrect",
     "index": 657,
     "spa": "resucitar",
-    "eng": "to resurrect",
     "used": null
   },
   {
+    "eng": "to decree",
     "index": 658,
     "spa": "decretar",
-    "eng": "to decree",
     "used": null
   },
   {
+    "eng": "to slide",
     "index": 659,
     "spa": "deslizar",
-    "eng": "to slide",
     "used": null
   },
   {
+    "eng": "to direct/set on a path",
     "index": 660,
     "spa": "encaminar",
-    "eng": "to direct/set on a path",
     "used": null
   },
   {
+    "eng": "to transfer",
     "index": 1025,
     "spa": "transferir",
-    "eng": "to transfer",
     "used": null
   },
   {
+    "eng": "to concur, attend",
     "index": 1026,
     "spa": "concurrir",
-    "eng": "to concur, attend",
     "used": null
   },
   {
+    "eng": "to postpone",
     "index": 661,
     "spa": "aplazar",
-    "eng": "to postpone",
     "used": null
   },
   {
+    "eng": "to appeal",
     "index": 662,
     "spa": "apelar",
-    "eng": "to appeal",
     "used": null
   },
   {
+    "eng": "to catch, arrest, turn on",
     "index": 897,
     "spa": "prender",
-    "eng": "to catch, arrest, turn on",
     "used": null
   },
   {
+    "eng": "to shrink",
     "index": 898,
     "spa": "encoger",
-    "eng": "to shrink",
     "used": null
   },
   {
+    "eng": "to hate",
     "index": 663,
     "spa": "odiar",
-    "eng": "to hate",
     "used": null
   },
   {
+    "eng": "to shine, sparkle",
     "index": 1027,
     "spa": "relucir",
-    "eng": "to shine, sparkle",
     "used": null
   },
   {
+    "eng": "to prevail",
     "index": 899,
     "spa": "prevalecer",
-    "eng": "to prevail",
     "used": null
   },
   {
+    "eng": "to activate",
     "index": 664,
     "spa": "activar",
-    "eng": "to activate",
     "used": null
   },
   {
+    "eng": "to unleash",
     "index": 665,
     "spa": "desencadenar",
-    "eng": "to unleash",
     "used": null
   },
   {
+    "eng": "to strive",
     "index": 666,
     "spa": "esforzar",
-    "eng": "to strive",
     "used": null
   },
   {
+    "eng": "to exceed",
     "index": 667,
     "spa": "sobrepasar",
-    "eng": "to exceed",
     "used": null
   },
   {
+    "eng": "to transcend",
     "index": 900,
     "spa": "trascender",
-    "eng": "to transcend",
     "used": null
   },
   {
+    "eng": "to base/found",
     "index": 668,
     "spa": "fundamentar",
-    "eng": "to base/found",
     "used": null
   },
   {
+    "eng": "to melt, fuse",
     "index": 1028,
     "spa": "fundir",
-    "eng": "to melt, fuse",
     "used": null
   },
   {
+    "eng": "to complement",
     "index": 669,
     "spa": "complementar",
-    "eng": "to complement",
     "used": null
   },
   {
+    "eng": "to submerge, immerse",
     "index": 1029,
     "spa": "sumergir",
-    "eng": "to submerge, immerse",
     "used": null
   },
   {
+    "eng": "to deploy/unfold",
     "index": 670,
     "spa": "desplegar",
-    "eng": "to deploy/unfold",
     "used": null
   },
   {
+    "eng": "to rent",
     "index": 671,
     "spa": "alquilar",
-    "eng": "to rent",
     "used": null
   },
   {
+    "eng": "to reflect, pass by",
     "index": 1030,
     "spa": "discurrir",
-    "eng": "to reflect, pass by",
     "used": null
   },
   {
+    "eng": "to enable",
     "index": 672,
     "spa": "posibilitar",
-    "eng": "to enable",
     "used": null
   },
   {
+    "eng": "to stretch",
     "index": 673,
     "spa": "estirar",
-    "eng": "to stretch",
     "used": null
   },
   {
+    "eng": "to concern, pertain",
     "index": 901,
     "spa": "atañer",
-    "eng": "to concern, pertain",
     "used": null
   },
   {
+    "eng": "to encourage",
     "index": 674,
     "spa": "alentar",
-    "eng": "to encourage",
     "used": null
   },
   {
+    "eng": "to have breakfast",
     "index": 675,
     "spa": "desayunar",
-    "eng": "to have breakfast",
     "used": null
   },
   {
+    "eng": "to transit",
     "index": 676,
     "spa": "transitar",
-    "eng": "to transit",
     "used": null
   },
   {
+    "eng": "to photograph",
     "index": 677,
     "spa": "fotografiar",
-    "eng": "to photograph",
     "used": null
   },
   {
+    "eng": "to worsen/aggravate",
     "index": 678,
     "spa": "agravar",
-    "eng": "to worsen/aggravate",
     "used": null
   },
   {
+    "eng": "to reign",
     "index": 679,
     "spa": "reinar",
-    "eng": "to reign",
     "used": null
   },
   {
+    "eng": "to chat",
     "index": 680,
     "spa": "charlar",
-    "eng": "to chat",
     "used": null
   },
   {
+    "eng": "to dismiss, remove from office",
     "index": 1031,
     "spa": "destituir",
-    "eng": "to dismiss, remove from office",
     "used": null
   },
   {
+    "eng": "to celebrate",
     "index": 681,
     "spa": "festejar",
-    "eng": "to celebrate",
     "used": null
   },
   {
+    "eng": "to perpetuate",
     "index": 682,
     "spa": "perpetuar",
-    "eng": "to perpetuate",
     "used": null
   },
   {
+    "eng": "to crash",
     "index": 683,
     "spa": "estrellar",
-    "eng": "to crash",
     "used": null
   },
   {
+    "eng": "to impress",
     "index": 684,
     "spa": "impresionar",
-    "eng": "to impress",
     "used": null
   },
   {
+    "eng": "to weaken",
     "index": 685,
     "spa": "debilitar",
-    "eng": "to weaken",
     "used": null
   },
   {
+    "eng": "to sigh",
     "index": 686,
     "spa": "suspirar",
-    "eng": "to sigh",
     "used": null
   },
   {
+    "eng": "to lengthen",
     "index": 687,
     "spa": "alargar",
-    "eng": "to lengthen",
     "used": null
   },
   {
+    "eng": "to undress",
     "index": 688,
     "spa": "desnudar",
-    "eng": "to undress",
     "used": null
   },
   {
+    "eng": "to freeze",
     "index": 689,
     "spa": "congelar",
-    "eng": "to freeze",
     "used": null
   },
   {
+    "eng": "to incur, commit",
     "index": 1032,
     "spa": "incurrir",
-    "eng": "to incur, commit",
     "used": null
   },
   {
+    "eng": "to star/play the leading role",
     "index": 690,
     "spa": "protagonizar",
-    "eng": "to star/play the leading role",
     "used": null
   },
   {
+    "eng": "to subsist, survive",
     "index": 1033,
     "spa": "subsistir",
-    "eng": "to subsist, survive",
     "used": null
   },
   {
+    "eng": "to nail",
     "index": 691,
     "spa": "clavar",
-    "eng": "to nail",
     "used": null
   },
   {
+    "eng": "to precede",
     "index": 902,
     "spa": "preceder",
-    "eng": "to precede",
     "used": null
   },
   {
+    "eng": "to get right",
     "index": 692,
     "spa": "acertar",
-    "eng": "to get right",
     "used": null
   },
   {
+    "eng": "to populate",
     "index": 693,
     "spa": "poblar",
-    "eng": "to populate",
     "used": null
   },
   {
+    "eng": "to flow into/lead to",
     "index": 694,
     "spa": "desembocar",
-    "eng": "to flow into/lead to",
     "used": null
   },
   {
+    "eng": "to injure",
     "index": 695,
     "spa": "lesionar",
-    "eng": "to injure",
     "used": null
   },
   {
+    "eng": "to applaud, clap",
     "index": 1034,
     "spa": "aplaudir",
-    "eng": "to applaud, clap",
     "used": null
   },
   {
+    "eng": "to water",
     "index": 696,
     "spa": "regar",
-    "eng": "to water",
     "used": null
   },
   {
+    "eng": "to initiate",
     "index": 697,
     "spa": "entablar",
-    "eng": "to initiate",
     "used": null
   },
   {
+    "eng": "to contradict",
     "index": 1035,
     "spa": "contradecir",
-    "eng": "to contradict",
     "used": null
   },
   {
+    "eng": "to update",
     "index": 698,
     "spa": "actualizar",
-    "eng": "to update",
     "used": null
   },
   {
+    "eng": "to unify",
     "index": 699,
     "spa": "unificar",
-    "eng": "to unify",
     "used": null
   },
   {
+    "eng": "to focus",
     "index": 700,
     "spa": "enfocar",
-    "eng": "to focus",
     "used": null
   },
   {
+    "eng": "to outline/profile",
     "index": 701,
     "spa": "perfilar",
-    "eng": "to outline/profile",
     "used": null
   },
   {
+    "eng": "to urge",
     "index": 702,
     "spa": "instar",
-    "eng": "to urge",
     "used": null
   },
   {
+    "eng": "to exercise",
     "index": 703,
     "spa": "ejercitar",
-    "eng": "to exercise",
     "used": null
   },
   {
+    "eng": "to reactivate",
     "index": 704,
     "spa": "reactivar",
-    "eng": "to reactivate",
     "used": null
   },
   {
+    "eng": "to express/embody",
     "index": 705,
     "spa": "plasmar",
-    "eng": "to express/embody",
     "used": null
   },
   {
+    "eng": "to revert",
     "index": 1036,
     "spa": "revertir",
-    "eng": "to revert",
     "used": null
   },
   {
+    "eng": "to privatize",
     "index": 706,
     "spa": "privatizar",
-    "eng": "to privatize",
     "used": null
   },
   {
+    "eng": "to relax",
     "index": 707,
     "spa": "relajar",
-    "eng": "to relax",
     "used": null
   },
   {
+    "eng": "to graze/touch lightly",
     "index": 708,
     "spa": "rozar",
-    "eng": "to graze/touch lightly",
     "used": null
   },
   {
+    "eng": "to pose",
     "index": 709,
     "spa": "posar",
-    "eng": "to pose",
     "used": null
   },
   {
+    "eng": "to toast",
     "index": 710,
     "spa": "tostar",
-    "eng": "to toast",
     "used": null
   },
   {
+    "eng": "to notice",
     "index": 711,
     "spa": "percatar",
-    "eng": "to notice",
     "used": null
   },
   {
+    "eng": "to pawn",
     "index": 712,
     "spa": "empeñar",
-    "eng": "to pawn",
     "used": null
   },
   {
+    "eng": "to glimpse",
     "index": 713,
     "spa": "vislumbrar",
-    "eng": "to glimpse",
     "used": null
   },
   {
+    "eng": "to evolve",
     "index": 714,
     "spa": "evolucionar",
-    "eng": "to evolve",
     "used": null
   },
   {
+    "eng": "to drain, drip",
     "index": 1037,
     "spa": "escurrir",
-    "eng": "to drain, drip",
     "used": null
   },
   {
+    "eng": "to patrol/hover around",
     "index": 715,
     "spa": "rondar",
-    "eng": "to patrol/hover around",
     "used": null
   },
   {
+    "eng": "to intern/admit",
     "index": 716,
     "spa": "internar",
-    "eng": "to intern/admit",
     "used": null
   },
   {
+    "eng": "to outrage",
     "index": 717,
     "spa": "indignar",
-    "eng": "to outrage",
     "used": null
   },
   {
+    "eng": "to cover, coat",
     "index": 1038,
     "spa": "revestir",
-    "eng": "to cover, coat",
     "used": null
   },
   {
+    "eng": "to carry/lead to",
     "index": 718,
     "spa": "acarrear",
-    "eng": "to carry/lead to",
     "used": null
   },
   {
+    "eng": "to expand",
     "index": 1039,
     "spa": "expandir",
-    "eng": "to expand",
     "used": null
   },
   {
+    "eng": "to flow",
     "index": 1040,
     "spa": "fluir",
-    "eng": "to flow",
     "used": null
   },
   {
+    "eng": "to delimit",
     "index": 719,
     "spa": "delimitar",
-    "eng": "to delimit",
     "used": null
   },
   {
+    "eng": "to overturn",
     "index": 720,
     "spa": "volcar",
-    "eng": "to overturn",
     "used": null
   },
   {
+    "eng": "to hasten",
     "index": 721,
     "spa": "precipitar",
-    "eng": "to hasten",
     "used": null
   },
   {
+    "eng": "to review",
     "index": 722,
     "spa": "repasar",
-    "eng": "to review",
     "used": null
   },
   {
+    "eng": "to tie/draw",
     "index": 723,
     "spa": "empatar",
-    "eng": "to tie/draw",
     "used": null
   },
   {
+    "eng": "to discern",
     "index": 1041,
     "spa": "discernir",
-    "eng": "to discern",
     "used": null
   },
   {
+    "eng": "to solve",
     "index": 724,
     "spa": "solventar",
-    "eng": "to solve",
     "used": null
   },
   {
+    "eng": "to pretend, fake",
     "index": 1042,
     "spa": "fingir",
-    "eng": "to pretend, fake",
     "used": null
   },
   {
+    "eng": "to crush",
     "index": 725,
     "spa": "aplastar",
-    "eng": "to crush",
     "used": null
   },
   {
+    "eng": "to trust/sell on credit",
     "index": 726,
     "spa": "fiar",
-    "eng": "to trust/sell on credit",
     "used": null
   },
   {
+    "eng": "to progress",
     "index": 727,
     "spa": "progresar",
-    "eng": "to progress",
     "used": null
   },
   {
+    "eng": "to betray",
     "index": 728,
     "spa": "traicionar",
-    "eng": "to betray",
     "used": null
   },
   {
+    "eng": "to recompose, mend",
     "index": 903,
     "spa": "recomponer",
-    "eng": "to recompose, mend",
     "used": null
   },
   {
+    "eng": "to consecrate",
     "index": 729,
     "spa": "consagrar",
-    "eng": "to consecrate",
     "used": null
   },
   {
+    "eng": "to intensify",
     "index": 730,
     "spa": "intensificar",
-    "eng": "to intensify",
     "used": null
   },
   {
+    "eng": "to vomit",
     "index": 731,
     "spa": "vomitar",
-    "eng": "to vomit",
     "used": null
   },
   {
+    "eng": "to make/manufacture",
     "index": 732,
     "spa": "confeccionar",
-    "eng": "to make/manufacture",
     "used": null
   },
   {
+    "eng": "to symbolize",
     "index": 733,
     "spa": "simbolizar",
-    "eng": "to symbolize",
     "used": null
   },
   {
+    "eng": "to raffle/navigate",
     "index": 734,
     "spa": "sortear",
-    "eng": "to raffle/navigate",
     "used": null
   },
   {
+    "eng": "to nuance/qualify",
     "index": 735,
     "spa": "matizar",
-    "eng": "to nuance/qualify",
     "used": null
   },
   {
+    "eng": "to unravel",
     "index": 736,
     "spa": "desentrañar",
-    "eng": "to unravel",
     "used": null
   },
   {
+    "eng": "to diagnose",
     "index": 737,
     "spa": "diagnosticar",
-    "eng": "to diagnose",
     "used": null
   },
   {
+    "eng": "to supply, replace",
     "index": 1043,
     "spa": "suplir",
-    "eng": "to supply, replace",
     "used": null
   },
   {
+    "eng": "to deprive/strip",
     "index": 738,
     "spa": "despojar",
-    "eng": "to deprive/strip",
     "used": null
   },
   {
+    "eng": "to half-open, open slightly",
     "index": 1044,
     "spa": "entreabrir",
-    "eng": "to half-open, open slightly",
     "used": null
   },
   {
+    "eng": "to lead",
     "index": 739,
     "spa": "liderar",
-    "eng": "to lead",
     "used": null
   },
   {
+    "eng": "to comply with",
     "index": 740,
     "spa": "acatar",
-    "eng": "to comply with",
     "used": null
   },
   {
+    "eng": "to reaffirm",
     "index": 741,
     "spa": "reafirmar",
-    "eng": "to reaffirm",
     "used": null
   },
   {
+    "eng": "to nominate/apply",
     "index": 742,
     "spa": "postular",
-    "eng": "to nominate/apply",
     "used": null
   },
   {
+    "eng": "to lie down",
     "index": 904,
     "spa": "yacer",
-    "eng": "to lie down",
     "used": null
   },
   {
+    "eng": "to report",
     "index": 743,
     "spa": "reportar",
-    "eng": "to report",
     "used": null
   },
   {
+    "eng": "to pour, spill",
     "index": 905,
     "spa": "verter",
-    "eng": "to pour, spill",
     "used": null
   },
   {
+    "eng": "to attempt/attack",
     "index": 744,
     "spa": "atentar",
-    "eng": "to attempt/attack",
     "used": null
   },
   {
+    "eng": "to deprive",
     "index": 745,
     "spa": "privar",
-    "eng": "to deprive",
     "used": null
   },
   {
+    "eng": "to relapse, fall again",
     "index": 906,
     "spa": "recaer",
-    "eng": "to relapse, fall again",
     "used": null
   },
   {
+    "eng": "to underlie",
     "index": 907,
     "spa": "subyacer",
-    "eng": "to underlie",
     "used": null
   },
   {
+    "eng": "to presuppose, assume",
     "index": 908,
     "spa": "presuponer",
-    "eng": "to presuppose, assume",
     "used": null
   },
   {
+    "eng": "to intuit, sense",
     "index": 1045,
     "spa": "intuir",
-    "eng": "to intuit, sense",
     "used": null
   },
   {
+    "eng": "to subtract, remove",
     "index": 909,
     "spa": "sustraer",
-    "eng": "to subtract, remove",
     "used": null
   },
   {
+    "eng": "to delimit/narrow down",
     "index": 746,
     "spa": "acotar",
-    "eng": "to delimit/narrow down",
     "used": null
   },
   {
+    "eng": "to overthrow",
     "index": 747,
     "spa": "derrocar",
-    "eng": "to overthrow",
     "used": null
   },
   {
+    "eng": "to visualize",
     "index": 748,
     "spa": "visualizar",
-    "eng": "to visualize",
     "used": null
   },
   {
+    "eng": "to please/satisfy",
     "index": 749,
     "spa": "contentar",
-    "eng": "to please/satisfy",
     "used": null
   },
   {
+    "eng": "to gather/collect",
     "index": 750,
     "spa": "recabar",
-    "eng": "to gather/collect",
     "used": null
   },
   {
+    "eng": "to sprout/emerge",
     "index": 751,
     "spa": "brotar",
-    "eng": "to sprout/emerge",
     "used": null
   },
   {
+    "eng": "to excite/enthuse",
     "index": 752,
     "spa": "entusiasmar",
-    "eng": "to excite/enthuse",
     "used": null
   },
   {
+    "eng": "to interfere",
     "index": 1046,
     "spa": "interferir",
-    "eng": "to interfere",
     "used": null
   },
   {
+    "eng": "to stabilize",
     "index": 753,
     "spa": "estabilizar",
-    "eng": "to stabilize",
     "used": null
   },
   {
+    "eng": "to emigrate",
     "index": 754,
     "spa": "emigrar",
-    "eng": "to emigrate",
     "used": null
   },
   {
+    "eng": "to clarify",
     "index": 755,
     "spa": "dilucidar",
-    "eng": "to clarify",
     "used": null
   },
   {
+    "eng": "to simplify",
     "index": 756,
     "spa": "simplificar",
-    "eng": "to simplify",
     "used": null
   },
   {
+    "eng": "to amaze",
     "index": 757,
     "spa": "asombrar",
-    "eng": "to amaze",
     "used": null
   },
   {
+    "eng": "to fit",
     "index": 758,
     "spa": "encajar",
-    "eng": "to fit",
     "used": null
   },
   {
+    "eng": "to strengthen",
     "index": 759,
     "spa": "afianzar",
-    "eng": "to strengthen",
     "used": null
   },
   {
+    "eng": "to reproach",
     "index": 760,
     "spa": "reprochar",
-    "eng": "to reproach",
     "used": null
   },
   {
+    "eng": "to reconsider",
     "index": 761,
     "spa": "replantear",
-    "eng": "to reconsider",
     "used": null
   },
   {
+    "eng": "to abstain",
     "index": 910,
     "spa": "abstener",
-    "eng": "to abstain",
     "used": null
   },
   {
+    "eng": "to evict",
     "index": 762,
     "spa": "desalojar",
-    "eng": "to evict",
     "used": null
   },
   {
+    "eng": "to knock down",
     "index": 763,
     "spa": "tumbar",
-    "eng": "to knock down",
     "used": null
   },
   {
+    "eng": "to cooperate",
     "index": 764,
     "spa": "cooperar",
-    "eng": "to cooperate",
     "used": null
   },
   {
+    "eng": "to reason",
     "index": 765,
     "spa": "razonar",
-    "eng": "to reason",
     "used": null
   },
   {
+    "eng": "to land",
     "index": 766,
     "spa": "aterrizar",
-    "eng": "to land",
     "used": null
   },
   {
+    "eng": "to devour",
     "index": 767,
     "spa": "devorar",
-    "eng": "to devour",
     "used": null
   },
   {
+    "eng": "to inquire",
     "index": 1047,
     "spa": "inquirir",
-    "eng": "to inquire",
     "used": null
   },
   {
+    "eng": "to debut",
     "index": 768,
     "spa": "debutar",
-    "eng": "to debut",
     "used": null
   },
   {
+    "eng": "to persuade",
     "index": 1048,
     "spa": "persuadir",
-    "eng": "to persuade",
     "used": null
   },
   {
+    "eng": "to exaggerate",
     "index": 769,
     "spa": "exagerar",
-    "eng": "to exaggerate",
     "used": null
   },
   {
+    "eng": "to contact",
     "index": 770,
     "spa": "contactar",
-    "eng": "to contact",
     "used": null
   },
   {
+    "eng": "to nourish",
     "index": 1049,
     "spa": "nutrir",
-    "eng": "to nourish",
     "used": null
   },
   {
+    "eng": "to exceed",
     "index": 911,
     "spa": "exceder",
-    "eng": "to exceed",
     "used": null
   },
   {
+    "eng": "to resign",
     "index": 771,
     "spa": "resignar",
-    "eng": "to resign",
     "used": null
   },
   {
+    "eng": "to reappear",
     "index": 912,
     "spa": "reaparecer",
-    "eng": "to reappear",
     "used": null
   },
   {
+    "eng": "to carry",
     "index": 772,
     "spa": "portar",
-    "eng": "to carry",
     "used": null
   },
   {
+    "eng": "to dispel",
     "index": 773,
     "spa": "disipar",
-    "eng": "to dispel",
     "used": null
   },
   {
+    "eng": "to stand out, excel",
     "index": 1050,
     "spa": "sobresalir",
-    "eng": "to stand out, excel",
     "used": null
   },
   {
+    "eng": "to insult",
     "index": 774,
     "spa": "insultar",
-    "eng": "to insult",
     "used": null
   },
   {
+    "eng": "to stir, scramble",
     "index": 913,
     "spa": "revolver",
-    "eng": "to stir, scramble",
     "used": null
   },
   {
+    "eng": "to link",
     "index": 775,
     "spa": "enlazar",
-    "eng": "to link",
     "used": null
   },
   {
+    "eng": "to decorate",
     "index": 776,
     "spa": "adornar",
-    "eng": "to decorate",
     "used": null
   },
   {
+    "eng": "to duplicate",
     "index": 777,
     "spa": "duplicar",
-    "eng": "to duplicate",
     "used": null
   },
   {
+    "eng": "to intercept",
     "index": 778,
     "spa": "atajar",
-    "eng": "to intercept",
     "used": null
   },
   {
+    "eng": "to perpetrate",
     "index": 779,
     "spa": "perpetrar",
-    "eng": "to perpetrate",
     "used": null
   },
   {
+    "eng": "to supply, provide",
     "index": 914,
     "spa": "abastecer",
-    "eng": "to supply, provide",
     "used": null
   },
   {
+    "eng": "to frame",
     "index": 780,
     "spa": "enmarcar",
-    "eng": "to frame",
     "used": null
   },
   {
+    "eng": "to formalize",
     "index": 781,
     "spa": "formalizar",
-    "eng": "to formalize",
     "used": null
   },
   {
+    "eng": "to sweep",
     "index": 915,
     "spa": "barrer",
-    "eng": "to sweep",
     "used": null
   },
   {
+    "eng": "to encompass",
     "index": 782,
     "spa": "englobar",
-    "eng": "to encompass",
     "used": null
   },
   {
+    "eng": "to build",
     "index": 783,
     "spa": "edificar",
-    "eng": "to build",
     "used": null
   },
   {
+    "eng": "to dismantle",
     "index": 784,
     "spa": "desmontar",
-    "eng": "to dismantle",
     "used": null
   },
   {
+    "eng": "to re-do",
     "index": 916,
     "spa": "rehacer",
-    "eng": "to re-do",
     "used": null
   },
   {
+    "eng": "to wet",
     "index": 785,
     "spa": "mojar",
-    "eng": "to wet",
     "used": null
   },
   {
+    "eng": "to commemorate",
     "index": 786,
     "spa": "conmemorar",
-    "eng": "to commemorate",
     "used": null
   },
   {
+    "eng": "to clarify",
     "index": 787,
     "spa": "clarificar",
-    "eng": "to clarify",
     "used": null
   },
   {
+    "eng": "to expedite",
     "index": 788,
     "spa": "agilizar",
-    "eng": "to expedite",
     "used": null
   },
   {
+    "eng": "to commercialize",
     "index": 789,
     "spa": "comercializar",
-    "eng": "to commercialize",
     "used": null
   },
   {
+    "eng": "to converge, flow together",
     "index": 1051,
     "spa": "confluir",
-    "eng": "to converge, flow together",
     "used": null
   },
   {
+    "eng": "to knock down, depress",
     "index": 1052,
     "spa": "abatir",
-    "eng": "to knock down, depress",
     "used": null
   },
   {
+    "eng": "to safeguard",
     "index": 790,
     "spa": "salvaguardar",
-    "eng": "to safeguard",
     "used": null
   },
   {
+    "eng": "to climb",
     "index": 791,
     "spa": "escalar",
-    "eng": "to climb",
     "used": null
   }
 ]

@@ -22,7 +22,8 @@ function ResourcesClassTwo() {
           </div>
           <i className='fa-solid fa-chevron-right'></i>
         </Link>
-        <Link to='/assignments/ser-conjugation' className='resource-link'>
+        {/* they are not ready yet */}
+        {/* <Link to='/assignments/ser-conjugation' className='resource-link'>
           <i className='fa-solid fa-key'></i>
           <div className='resource-info'>
             <span className='resource-name'>
@@ -33,7 +34,7 @@ function ResourcesClassTwo() {
             </span>
           </div>
           <i className='fa-solid fa-chevron-right'></i>
-        </Link>
+        </Link> */}
         <Link to='/assignments/subject-pronouns' className='resource-link'>
           <i className='fa-solid fa-user-group'></i>
           <div className='resource-info'>

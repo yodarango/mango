@@ -92,7 +92,7 @@ function AssignmentsClassThree() {
             const timeRemaining = getTimeRemaining(assignment.dueDate);
             const isExpired = timeRemaining === "expired";
 
-            if (isExpired) {
+            if (isExpired && !assignment.completed) {
               return (
                 <div key={assignment.id} className='assignment-link expired'>
                   <i className='fa-solid fa-file-lines'></i>

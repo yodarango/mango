@@ -28,7 +28,7 @@ I am Spanish teacher of thrid grade and this is my teaching outline below. I wan
 
 #### query per NotebookLM
 
-I have an app that takes in an array of object types:
+I am a teacher of spanish for 5th grade students and I have a quizzing app that takes in an array of object types for quizes like so:
 A. multiple choice question:
 {
 "id": "a7b3c9d2",
@@ -51,7 +51,7 @@ B. The user inputs the answer
 "time_alloted": 20
 }
 
-based on this lesson, create 10 questions for the students. 5 input and five typed. Randomly mix them in one array. time_alloted for multiple choice shold be 20 and 30 for typed. coins worth for multiple choice should be 50 and 100 for typed
+based on this lesson, create 10 questions for the 5ht grade students. 5 input and five typed. Randomly mix them in one array. time_alloted for multiple choice should be **\_\_\_\_** and **\_\_\_\_** for typed. coins worth for multiple choice should be 50 and 100 for typed
 
 ### Come se preparare daily vocab:
 

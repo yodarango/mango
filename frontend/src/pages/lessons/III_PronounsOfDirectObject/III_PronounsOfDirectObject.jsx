@@ -128,6 +128,10 @@ function IIIPronounsOfDirectObject() {
 
   return (
     <div className='dop-container'>
+      {/* link */}
+      <Link className={`take-quiz-btn`} to='/assignments'>
+        Take Quiz
+      </Link>
       {/* Header */}
       <div className='dop-header'>
         <h1>

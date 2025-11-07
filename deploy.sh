@@ -29,8 +29,6 @@ else
     exit 1
 fi
 
-echo "Syncing db..."
-./sync_db.sh
 
 echo "Backing up db..."
 # Sync the database

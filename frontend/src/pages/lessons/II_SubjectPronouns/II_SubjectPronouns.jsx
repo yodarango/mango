@@ -11,7 +11,7 @@ function IISubjectPronouns() {
           </h1>
           <p className='subtitle'>Learn who's who in Spanish! 🌟</p>
         </div>
-        <Link to='/assignments/quiz/1004' className={`take-quiz-btn`}>
+        <Link to='/assignments' className={`take-quiz-btn`}>
           Take Quiz
         </Link>
       </div>
