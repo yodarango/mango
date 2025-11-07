@@ -68,6 +68,7 @@ type Asset struct {
 	Description   string `json:"description"`
 	XP            int    `json:"xp"`
 	XPRequired    int    `json:"xpRequired"`
+	IsLocked      bool   `json:"isLocked"`
 }
 
 type StoreItem struct {
@@ -338,6 +339,13 @@ func initDB() {
 	if err != nil {
 		// Log error but don't fail
 		log.Printf("Warning: Could not update xp_required values: %v", err)
+	}
+
+	// Add is_locked column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN is_locked INTEGER DEFAULT 0`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
 	}
 
 	// Remove available_units column if it exists (migration)
@@ -628,11 +636,11 @@ func initDB() {
 			// Create 3 random warriors for this avatar
 			for j := 0; j < 3; j++ {
 				asset := generateRandomAsset(int(avatarID), "warrior")
-				_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 					asset.AvatarID, asset.Status, asset.Type, asset.Name, asset.Thumbnail, asset.Attack, asset.Defense,
 					asset.Healing, asset.Power, asset.Endurance, asset.Level, asset.Cost,
-					asset.Ability, asset.Health, asset.Stamina)
+					asset.Ability, asset.Health, asset.Stamina, 0)
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -648,11 +656,11 @@ func initDB() {
 			mascot.Level = rand.Intn(5) + 5 // Level 5-10
 			mascot.Cost = mascot.Level * 20
 
-			_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 				mascot.AvatarID, mascot.Status, mascot.Type, mascot.Name, mascot.Thumbnail, mascot.Attack, mascot.Defense,
 				mascot.Healing, mascot.Power, mascot.Endurance, mascot.Level, mascot.Cost,
-				mascot.Ability, mascot.Health, mascot.Stamina)
+				mascot.Ability, mascot.Health, mascot.Stamina, 0)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -901,7 +909,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
 
-	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100)
+	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0)
 		FROM assets WHERE avatar_id = ? ORDER BY status, level DESC`, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -912,13 +920,15 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	var assets []Asset
 	for rows.Next() {
 		var asset Asset
+		var isLockedInt int
 		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired); err != nil {
+			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		asset.IsLocked = isLockedInt == 1
 		assets = append(assets, asset)
 	}
 
@@ -932,11 +942,12 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 	assetID := vars["id"]
 
 	var asset Asset
-	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100)
+	var isLockedInt int
+	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0)
 		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired)
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -946,6 +957,8 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+
+	asset.IsLocked = isLockedInt == 1
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(asset)

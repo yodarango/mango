@@ -3,7 +3,7 @@ INSERT INTO assets (
   status, type, name, thumbnail,
   attack, defense, healing,
   power, endurance, level, required_level,
-  cost, ability, health, stamina
+  cost, ability, health, stamina, is_locked
 )
 -- or
 SELECT
@@ -11,7 +11,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -24,7 +24,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -37,7 +37,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -50,7 +50,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -63,7 +63,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -76,7 +76,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -89,7 +89,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -102,7 +102,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,
@@ -115,7 +115,7 @@ SELECT
   v.attack, v.defense, v.healing,
   0, 5, 1, 1,
   CAST(((v.attack + v.defense + v.healing) / 3.0) * 11 AS INTEGER),
-  '', 100, 100
+  '', 100, 100, 0
 FROM (SELECT
         (ABS(RANDOM()) % 6) + 5 AS attack,
         (ABS(RANDOM()) % 6) + 5 AS defense,

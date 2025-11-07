@@ -12,7 +12,9 @@ function StoreItemCard({
   const [showDetails, setShowDetails] = useState(false);
   const canAfford = userCoins >= item.cost || alwasyActive;
   const meetsLevelRequirement = userLevel >= item.requiredLevel;
-  const isLocked = !meetsLevelRequirement;
+  const isLocked =
+    (item.isLocked && !alwasyActive) ||
+    (!meetsLevelRequirement && !alwasyActive);
   const overallPower = item.attack + item.defense + item.healing;
 
   const handleCardClick = (e) => {

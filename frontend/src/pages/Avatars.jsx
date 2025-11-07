@@ -70,7 +70,7 @@ function Avatars() {
   }
 
   return (
-    <div className='page'>
+    <div className='page avatars-grid-323jf'>
       <h2>Student Avatars</h2>
       <p className='subtitle'>Meet the heroes of Spanish Quest!</p>
 
