@@ -100,6 +100,17 @@ function IIPronounsIdentifyingThePerson() {
         </div>
       </div>
 
+      {/* instructional video */}
+      <div className='iframe-video-238'>
+        <iframe
+          src='https://drive.google.com/file/d/1p6Z0LQZu8Z238qhQEP3tajEdl7e5Sewt/preview'
+          width='640'
+          height='360'
+          allow='autoplay; fullscreen'
+          allowfullscreen
+        ></iframe>
+      </div>
+
       {/* Introduction */}
       <div className='intro-section'>
         <h2>🎯 Goal</h2>

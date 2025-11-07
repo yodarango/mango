@@ -12,25 +12,24 @@ function ResourcesClassTwo() {
       </div>
 
       <div className='resources-list'>
-        <Link to='/assignments/subject-pronouns' className='resource-link'>
-          <i className='fa-solid fa-user-group'></i>
-          <div className='resource-info'>
-            <span className='resource-name'>Subject Pronouns</span>
-            <span className='resource-description'>
-              Learn about Spanish subject pronouns (yo, tú, él, ella, etc.)
-            </span>
-          </div>
-          <i className='fa-solid fa-chevron-right'></i>
-        </Link>
-
         <Link to='/assignments/ser-conjugation' className='resource-link'>
           <i className='fa-solid fa-key'></i>
           <div className='resource-info'>
             <span className='resource-name'>
-              Ser Conjugation - Identity Words
+              2. Ser Conjugation - Identity Words
             </span>
             <span className='resource-description'>
               Learn the six forms of "ser" (to be) with interactive exercises
+            </span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
+        <Link to='/assignments/subject-pronouns' className='resource-link'>
+          <i className='fa-solid fa-user-group'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>1. Subject Pronouns</span>
+            <span className='resource-description'>
+              Learn about Spanish subject pronouns (yo, tú, él, ella, etc.)
             </span>
           </div>
           <i className='fa-solid fa-chevron-right'></i>
