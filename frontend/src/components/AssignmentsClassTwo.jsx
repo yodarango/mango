@@ -22,8 +22,8 @@ function AssignmentsClassTwo() {
       if (response.ok) {
         const data = await response.json();
         // Filter out completed assignments
-        const unfinished = data.filter((a) => !a.completed);
-        setAssignments(unfinished);
+
+        setAssignments(data);
       }
     } catch (error) {
       console.error("Error fetching assignments:", error);
@@ -92,7 +92,7 @@ function AssignmentsClassTwo() {
             const timeRemaining = getTimeRemaining(assignment.dueDate);
             const isExpired = timeRemaining === "expired";
 
-            if (isExpired) {
+            if (isExpired && !assignment.completed) {
               return (
                 <div key={assignment.id} className='assignment-link expired'>
                   <i className='fa-solid fa-file-lines'></i>

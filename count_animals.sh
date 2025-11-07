@@ -18,7 +18,7 @@ echo "| Prefix | Count | Animals |"
 echo "|--------|-------|---------|"
 
 # Count by prefix
-for prefix in air big feline insect reptile sea; do
+for prefix in air big feline insect reptile sea farm; do
     count=$(ls -1 "$ANIMALS_DIR/${prefix}_"*.png 2>/dev/null | wc -l | tr -d ' ')
     if [ "$count" -gt 0 ]; then
         # Get list of animals (remove prefix and .png extension)
@@ -44,6 +44,7 @@ feline_count=$(ls -1 "$ANIMALS_DIR/feline_"*.png 2>/dev/null | wc -l | tr -d ' '
 insect_count=$(ls -1 "$ANIMALS_DIR/insect_"*.png 2>/dev/null | wc -l | tr -d ' ')
 reptile_count=$(ls -1 "$ANIMALS_DIR/reptile_"*.png 2>/dev/null | wc -l | tr -d ' ')
 sea_count=$(ls -1 "$ANIMALS_DIR/sea_"*.png 2>/dev/null | wc -l | tr -d ' ')
+farm_count=$(ls -1 "$ANIMALS_DIR/farm_"*.png 2>/dev/null | wc -l | tr -d ' ')
 other_count=$(ls -1 "$ANIMALS_DIR"/*.png 2>/dev/null | xargs -n1 basename | grep -v '_' | wc -l | tr -d ' ')
 
 echo "- 🦅 **Air animals**: $air_count"
@@ -52,6 +53,7 @@ echo "- 🐱 **Felines**: $feline_count"
 echo "- 🐜 **Insects**: $insect_count"
 echo "- 🦎 **Reptiles**: $reptile_count"
 echo "- 🐠 **Sea creatures**: $sea_count"
+echo "- 🌽 **Farm animals**: $farm_count"
 if [ "$other_count" -gt 0 ]; then
     other_animals=$(ls -1 "$ANIMALS_DIR"/*.png 2>/dev/null | xargs -n1 basename | grep -v '_' | sed 's/.png//g' | tr '\n' ', ' | sed 's/, $//')
     echo "- 🐍 **Other**: $other_count ($other_animals)"
