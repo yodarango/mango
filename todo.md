@@ -1,0 +1,7 @@
+- quando si generi un daily vocab, chiedi il LLM di mettere il titolo in ogni sezione (verbi o soggetti)
+- chiedi il LLM di mettere il articolo con i soggetti
+- Metti tutte le parole passati in un json file per future classi
+- non ridiggere a /assignments una volta che un daily vocab sia creato
+- rimuovere i doppi filtri da /admin/assignments e lasciare solo il pulsante o la carta
+- aggiungere _expired_ ai filtri di admin/assignments
+- aggiungere _class_ ai filtri di admin/assignments e farli accumulativi, cioe piu di un filtro alla volta
