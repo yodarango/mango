@@ -5,11 +5,14 @@ function StoreItemCard({
   item,
   userCoins,
   userLevel,
+  userAvatarId,
   purchasing,
   onPurchase,
   alwasyActive,
 }) {
   const [showDetails, setShowDetails] = useState(false);
+  const [requesting, setRequesting] = useState(false);
+
   const canAfford = userCoins >= item.cost || alwasyActive;
   const meetsLevelRequirement = userLevel >= item.requiredLevel;
   const isLocked =
@@ -17,9 +20,14 @@ function StoreItemCard({
     (!meetsLevelRequirement && !alwasyActive);
   const overallPower = item.attack + item.defense + item.healing;
 
+  // Check if item is locked by someone else
+  const isLockedByOther =
+    item.isLockedBy && item.isLockedBy > 0 && item.isLockedBy !== userAvatarId;
+  const isUnlockedForUser = item.isUnlockedFor === userAvatarId;
+
   const handleCardClick = (e) => {
     // Don't open popup if clicking the purchase button
-    if (e.target.closest(".purchase-btn")) {
+    if (e.target.closest(".purchase-btn") || e.target.closest(".request-btn")) {
       return;
     }
     setShowDetails(true);
@@ -32,6 +40,39 @@ function StoreItemCard({
   const handlePurchaseClick = (e) => {
     e.stopPropagation();
     onPurchase(item.name, item.cost, item.requiredLevel);
+  };
+
+  const handleRequestAccess = async (e) => {
+    e.stopPropagation();
+    setRequesting(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const requestResponse = await fetch("/api/assets/request-access", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          assetId: item.id,
+        }),
+      });
+
+      const data = await requestResponse.json();
+
+      if (requestResponse.ok && data.success) {
+        alert("Access request sent successfully!");
+      } else {
+        alert(data.message || "Failed to send access request");
+      }
+    } catch (error) {
+      console.error("Error requesting access:", error);
+      alert("Error requesting access");
+    } finally {
+      setRequesting(false);
+    }
   };
 
   return (
@@ -71,29 +112,48 @@ function StoreItemCard({
 
           {onPurchase && (
             <div className='store-item-footer'>
-              <button
-                className={`purchase-btn ${
-                  isLocked && canAfford ? "btn-locked-yellow" : ""
-                }`}
-                onClick={handlePurchaseClick}
-                disabled={isLocked || !canAfford || purchasing === item.name}
-              >
-                {purchasing === item.name ? (
-                  <>
-                    <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                    Purchasing...
-                  </>
-                ) : isLocked ? (
-                  <>
-                    <i className='fa-solid fa-lock'></i> Level{" "}
-                    {item.requiredLevel}
-                  </>
-                ) : (
-                  <>
-                    <i className='fa-solid fa-cart-shopping'></i> Purchase
-                  </>
-                )}
-              </button>
+              {isLockedByOther && !isUnlockedForUser ? (
+                <button
+                  className='request-btn'
+                  onClick={handleRequestAccess}
+                  disabled={requesting}
+                >
+                  {requesting ? (
+                    <>
+                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                      Requesting...
+                    </>
+                  ) : (
+                    <>
+                      <i className='fa-solid fa-key'></i> Request Access
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  className={`purchase-btn ${
+                    isLocked && canAfford ? "btn-locked-yellow" : ""
+                  }`}
+                  onClick={handlePurchaseClick}
+                  disabled={isLocked || !canAfford || purchasing === item.name}
+                >
+                  {purchasing === item.name ? (
+                    <>
+                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                      Purchasing...
+                    </>
+                  ) : isLocked ? (
+                    <>
+                      <i className='fa-solid fa-lock'></i> Level{" "}
+                      {item.requiredLevel}
+                    </>
+                  ) : (
+                    <>
+                      <i className='fa-solid fa-cart-shopping'></i> Purchase
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -209,6 +269,7 @@ function StoreItemCard({
                   <span className='ability-name'>{item.ability}</span>
                 </div>
               )}
+
               {onPurchase && (
                 <div className='popup-footer'>
                   <div className='item-stock'>
@@ -222,31 +283,50 @@ function StoreItemCard({
                     <span className='price-label'>coins</span>
                   </div>
 
-                  <button
-                    className={`purchase-btn ${
-                      isLocked && canAfford ? "btn-locked-yellow" : ""
-                    }`}
-                    onClick={handlePurchaseClick}
-                    disabled={
-                      isLocked || !canAfford || purchasing === item.name
-                    }
-                  >
-                    {purchasing === item.name ? (
-                      <>
-                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                        Purchasing...
-                      </>
-                    ) : isLocked ? (
-                      <>
-                        <i className='fa-solid fa-lock'></i> Locked until level{" "}
-                        {item.requiredLevel}
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa-solid fa-cart-shopping'></i> Purchase
-                      </>
-                    )}
-                  </button>
+                  {isLockedByOther && !isUnlockedForUser ? (
+                    <button
+                      className='request-btn'
+                      onClick={handleRequestAccess}
+                      disabled={requesting}
+                    >
+                      {requesting ? (
+                        <>
+                          <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                          Requesting...
+                        </>
+                      ) : (
+                        <>
+                          <i className='fa-solid fa-key'></i> Request Access
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      className={`purchase-btn ${
+                        isLocked && canAfford ? "btn-locked-yellow" : ""
+                      }`}
+                      onClick={handlePurchaseClick}
+                      disabled={
+                        isLocked || !canAfford || purchasing === item.name
+                      }
+                    >
+                      {purchasing === item.name ? (
+                        <>
+                          <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                          Purchasing...
+                        </>
+                      ) : isLocked ? (
+                        <>
+                          <i className='fa-solid fa-lock'></i> Locked until
+                          level {item.requiredLevel}
+                        </>
+                      ) : (
+                        <>
+                          <i className='fa-solid fa-cart-shopping'></i> Purchase
+                        </>
+                      )}
+                    </button>
+                  )}
                 </div>
               )}
             </div>

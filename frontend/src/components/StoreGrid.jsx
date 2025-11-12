@@ -6,6 +6,7 @@ function StoreGrid({
   items,
   userCoins,
   userLevel,
+  userAvatarId,
   purchasing,
   onPurchase,
   alwasyActive,
@@ -167,6 +168,7 @@ function StoreGrid({
               userCoins={userCoins}
               alwasyActive={alwasyActive}
               userLevel={userLevel}
+              userAvatarId={userAvatarId}
               purchasing={purchasing}
               onPurchase={onPurchase}
             />

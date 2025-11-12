@@ -72,9 +72,12 @@ type Asset struct {
 	XP            int    `json:"xp"`
 	XPRequired    int    `json:"xpRequired"`
 	IsLocked      bool   `json:"isLocked"`
+	IsLockedBy    *int   `json:"isLockedBy,omitempty"`
+	IsUnlockedFor *int   `json:"isUnlockedFor,omitempty"`
 }
 
 type StoreItem struct {
+	ID             int    `json:"id"`
 	Type           string `json:"type"`
 	Name           string `json:"name"`
 	Thumbnail      string `json:"thumbnail"`
@@ -92,6 +95,8 @@ type StoreItem struct {
 	AvailableUnits int    `json:"availableUnits"`
 	Description    string `json:"description"`
 	IsLocked       bool   `json:"isLocked"`
+	IsLockedBy     *int   `json:"isLockedBy,omitempty"`
+	IsUnlockedFor  *int   `json:"isUnlockedFor,omitempty"`
 }
 
 type LoginRequest struct {
@@ -343,6 +348,20 @@ func initDB() {
 	if err != nil {
 		// Log error but don't fail
 		log.Printf("Warning: Could not update xp_required values: %v", err)
+	}
+
+	// Add is_locked_by column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN is_locked_by INTEGER DEFAULT NULL`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Add is_unlocked_for column if it doesn't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN is_unlocked_for INTEGER DEFAULT NULL`)
+	if err != nil {
+		// Column might already exist, which is fine
+		// SQLite will error if column exists, but we can ignore it
 	}
 
 	// Add is_locked column if it doesn't exist (migration)
@@ -913,7 +932,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	avatarID := vars["id"]
 
-	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0)
+	rows, err := db.Query(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), is_locked_by, is_unlocked_for
 		FROM assets WHERE avatar_id = ? ORDER BY status, level DESC`, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -928,7 +947,7 @@ func getAssets(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt); err != nil {
+			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -947,11 +966,11 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 
 	var asset Asset
 	var isLockedInt int
-	err := db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0)
+	err := db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
 		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
 		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
 		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
-		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt)
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -966,6 +985,238 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(asset)
+}
+
+// Request access to a clocked asset
+func requestAssetAccess(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		AssetID int `json:"assetId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get the asset details
+	var asset Asset
+	var isLockedInt int
+	err = db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
+		FROM assets WHERE id = ?`, req.AssetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Asset not found", http.StatusNotFound)
+		return
+	}
+
+	// Check if asset is locked by someone
+	if asset.IsLockedBy == nil || *asset.IsLockedBy == 0 {
+		http.Error(w, "Asset is not clocked by anyone", http.StatusBadRequest)
+		return
+	}
+
+	// Get the requesting user's avatar name
+	var requesterAvatarName string
+	err = db.QueryRow(`SELECT a.name FROM avatars a WHERE a.user_id = ?`, claims.UserID).Scan(&requesterAvatarName)
+	if err != nil {
+		http.Error(w, "Could not find requester avatar", http.StatusInternalServerError)
+		return
+	}
+
+	// Get the owner's user ID
+	var ownerUserID int
+	err = db.QueryRow(`SELECT a.user_id FROM avatars a WHERE a.id = ?`, *asset.IsLockedBy).Scan(&ownerUserID)
+	if err != nil {
+		http.Error(w, "Could not find asset owner", http.StatusInternalServerError)
+		return
+	}
+
+	// Create notification for the owner
+	title := "Asset Access Request"
+	message := fmt.Sprintf("**%s** has requested access to purchase an asset from your kingdom **%s**.\n\n[View Asset Details](/assets/%d/request?requesterId=%d)",
+		requesterAvatarName, asset.Name, asset.ID, claims.UserID)
+
+	_, err = db.Exec("INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)",
+		ownerUserID, title, message)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Send WebSocket notification
+	notifyUser(ownerUserID, "new_notification", map[string]interface{}{
+		"title":   title,
+		"message": message,
+	})
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": "Access request sent successfully",
+	})
+}
+
+// Approve asset access request
+func approveAssetAccess(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	assetID := vars["id"]
+
+	var req struct {
+		RequesterID int `json:"requesterId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get the asset and verify ownership
+	var asset Asset
+	var isLockedInt int
+	err = db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
+		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
+
+	if err != nil {
+		http.Error(w, "Asset not found", http.StatusNotFound)
+		return
+	}
+
+	// Verify the current user owns this asset (their avatar ID matches is_locked_by)
+	var userAvatarID int
+	err = db.QueryRow(`SELECT id FROM avatars WHERE user_id = ?`, claims.UserID).Scan(&userAvatarID)
+	if err != nil {
+		http.Error(w, "Could not find user avatar", http.StatusInternalServerError)
+		return
+	}
+
+	if asset.IsLockedBy == nil || *asset.IsLockedBy != userAvatarID {
+		http.Error(w, "You do not own this asset", http.StatusForbidden)
+		return
+	}
+
+	// Get requester's avatar ID
+	var requesterAvatarID int
+	err = db.QueryRow(`SELECT id FROM avatars WHERE user_id = ?`, req.RequesterID).Scan(&requesterAvatarID)
+	if err != nil {
+		http.Error(w, "Could not find requester avatar", http.StatusInternalServerError)
+		return
+	}
+
+	// Update asset to unlock for requester
+	_, err = db.Exec(`UPDATE assets SET is_unlocked_for = ? WHERE id = ?`, requesterAvatarID, assetID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Send notification to requester
+	title := "Asset Access Approved"
+	message := fmt.Sprintf("Your request to purchase **%s** has been approved! You can now purchase this asset from the store.", asset.Name)
+
+	_, err = db.Exec("INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)",
+		req.RequesterID, title, message)
+	if err != nil {
+		log.Printf("Error creating notification: %v", err)
+	}
+
+	// Send WebSocket notification
+	notifyUser(req.RequesterID, "new_notification", map[string]interface{}{
+		"title":   title,
+		"message": message,
+	})
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": "Access approved successfully",
+	})
+}
+
+// Deny asset access request
+func denyAssetAccess(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	assetID := vars["id"]
+
+	var req struct {
+		RequesterID int `json:"requesterId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get the asset and verify ownership
+	var asset Asset
+	var isLockedInt int
+	err = db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
+		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
+
+	if err != nil {
+		http.Error(w, "Asset not found", http.StatusNotFound)
+		return
+	}
+
+	// Verify the current user owns this asset
+	var userAvatarID int
+	err = db.QueryRow(`SELECT id FROM avatars WHERE user_id = ?`, claims.UserID).Scan(&userAvatarID)
+	if err != nil {
+		http.Error(w, "Could not find user avatar", http.StatusInternalServerError)
+		return
+	}
+
+	if asset.IsLockedBy == nil || *asset.IsLockedBy != userAvatarID {
+		http.Error(w, "You do not own this asset", http.StatusForbidden)
+		return
+	}
+
+	// Send notification to requester
+	title := "Asset Access Denied"
+	message := fmt.Sprintf("Your request to purchase **%s** has been denied.", asset.Name)
+
+	_, err = db.Exec("INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)",
+		req.RequesterID, title, message)
+	if err != nil {
+		log.Printf("Error creating notification: %v", err)
+	}
+
+	// Send WebSocket notification
+	notifyUser(req.RequesterID, "new_notification", map[string]interface{}{
+		"title":   title,
+		"message": message,
+	})
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": "Access denied",
+	})
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
@@ -1129,16 +1380,54 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get asset details from the requested name
+	// Find an available asset of this name in the store
+	// Priority: 1) Asset unlocked for this user, 2) Asset not locked by anyone
+	var purchasedAssetID int
 	var assetCost int
 	var assetName string
-	err = tx.QueryRow(`SELECT cost, name FROM assets WHERE name = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetName).Scan(&assetCost, &assetName)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			http.Error(w, "Asset not found or out of stock", http.StatusNotFound)
-		} else {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+	var isLockedBy *int
+	var isUnlockedFor *int
+
+	// First try to find an asset that is unlocked specifically for this user
+	err = tx.QueryRow(`SELECT id, cost, name, is_locked_by, is_unlocked_for
+		FROM assets
+		WHERE name = ? AND avatar_id IS NULL AND status = 'store'
+		AND (is_unlocked_for = ? OR is_unlocked_for IS NULL)
+		LIMIT 1`, req.AssetName, avatarID).Scan(&purchasedAssetID, &assetCost, &assetName, &isLockedBy, &isUnlockedFor)
+
+	if err == sql.ErrNoRows {
+		// No asset unlocked for this user, try to find one that's not locked at all
+		err = tx.QueryRow(`SELECT id, cost, name, is_locked_by, is_unlocked_for
+			FROM assets
+			WHERE name = ? AND avatar_id IS NULL AND status = 'store'
+			AND (is_locked_by IS NULL OR is_locked_by = 0)
+			LIMIT 1`, req.AssetName).Scan(&purchasedAssetID, &assetCost, &assetName, &isLockedBy, &isUnlockedFor)
+
+		if err != nil {
+			if err == sql.ErrNoRows {
+				// Check if there are any assets of this name that are locked by others
+				var lockedCount int
+				tx.QueryRow(`SELECT COUNT(*) FROM assets WHERE name = ? AND avatar_id IS NULL AND status = 'store' AND is_locked_by != ?`, req.AssetName, avatarID).Scan(&lockedCount)
+
+				if lockedCount > 0 {
+					response := PurchaseResponse{
+						Success: false,
+						Message: "This asset is locked by another user. Request access to purchase it.",
+						Coins:   coins,
+					}
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(response)
+					return
+				}
+
+				http.Error(w, "Asset not found or out of stock", http.StatusNotFound)
+			} else {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			return
 		}
+	} else if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -1154,24 +1443,6 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Find the first available asset of this name in the store
-	var purchasedAssetID int
-	err = tx.QueryRow(`SELECT id FROM assets WHERE name = ? AND avatar_id IS NULL AND status = 'store' LIMIT 1`, req.AssetName).Scan(&purchasedAssetID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			response := PurchaseResponse{
-				Success: false,
-				Message: "Item is out of stock",
-				Coins:   coins,
-			}
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(response)
-		} else {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-		return
-	}
-
 	// Deduct coins
 	newCoins := coins - assetCost
 	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
@@ -1180,8 +1451,8 @@ func purchaseAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update the asset: assign it to the avatar and change status to warrior
-	_, err = tx.Exec("UPDATE assets SET avatar_id = ?, status = 'warrior' WHERE id = ?", avatarID, purchasedAssetID)
+	// Update the asset: assign it to the avatar, change status to warrior, and reset clocking fields
+	_, err = tx.Exec("UPDATE assets SET avatar_id = ?, status = 'warrior', is_locked_by = NULL, is_unlocked_for = NULL WHERE id = ?", avatarID, purchasedAssetID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -1207,6 +1478,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	// Group by name and get one representative item per name with count
 	rows, err := db.Query(`
 		SELECT
+			MIN(id) as id,
 			type,
 			name,
 			thumbnail,
@@ -1222,11 +1494,13 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 			health,
 			stamina,
 			is_locked,
+			MAX(is_locked_by) as is_locked_by,
+			MAX(is_unlocked_for) as is_unlocked_for,
 			COUNT(*) as available_units
 		FROM assets
 		WHERE status = 'store' AND avatar_id IS NULL
 		GROUP BY name
-		ORDER BY cost`)
+		ORDER BY name`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -1236,9 +1510,9 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	var items []StoreItem
 	for rows.Next() {
 		var item StoreItem
-		if err := rows.Scan(&item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
+		if err := rows.Scan(&item.ID, &item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
 			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability,
-			&item.Health, &item.Stamina, &item.IsLocked, &item.AvailableUnits); err != nil {
+			&item.Health, &item.Stamina, &item.IsLocked, &item.IsLockedBy, &item.IsUnlockedFor, &item.AvailableUnits); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -3510,6 +3784,9 @@ func main() {
 	api.HandleFunc("/avatars/{id}", getAvatar).Methods("GET")
 	api.HandleFunc("/avatars/{id}", updateAvatar).Methods("PUT")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
+	api.HandleFunc("/assets/request-access", requestAssetAccess).Methods("POST")
+	api.HandleFunc("/assets/{id}/approve", approveAssetAccess).Methods("POST")
+	api.HandleFunc("/assets/{id}/deny", denyAssetAccess).Methods("POST")
 	api.HandleFunc("/assets/{id}", getAsset).Methods("GET")
 	api.HandleFunc("/store", getStoreItems).Methods("GET")
 	api.HandleFunc("/store/purchase", purchaseAsset).Methods("POST")

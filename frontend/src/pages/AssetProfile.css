@@ -1,0 +1,268 @@
+.asset-profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.asset-profile-card {
+  background: var(--charcoal-medium);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 3px solid var(--accent-green);
+  padding: 2rem;
+}
+
+.asset-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--charcoal-light);
+}
+
+.asset-profile-header h1 {
+  color: var(--accent-green);
+  font-size: 2rem;
+  margin: 0;
+  font-family: var(--medieval-font);
+}
+
+.asset-type {
+  background: var(--charcoal-light);
+  color: var(--accent-yellow);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 2px solid var(--accent-yellow);
+}
+
+.asset-profile-image {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 2rem;
+  background: var(--charcoal-dark);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--charcoal-light);
+}
+
+.asset-profile-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.asset-profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--charcoal-dark);
+  border-radius: 8px;
+  border: 2px solid var(--charcoal-light);
+  transition: all 0.3s ease;
+}
+
+.stat-row:hover {
+  border-color: var(--accent-green);
+  transform: translateX(5px);
+}
+
+.stat-row i {
+  color: var(--accent-green);
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.stat-label {
+  color: var(--text-light);
+  font-weight: 600;
+  flex: 1;
+}
+
+.stat-value {
+  color: var(--accent-yellow);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.stat-row.total-power {
+  background: var(--charcoal-light);
+  border-color: var(--accent-green);
+  font-size: 1.1rem;
+}
+
+.stat-row.total-power i {
+  color: var(--accent-yellow);
+}
+
+.stat-row.total-power .stat-value {
+  font-size: 1.3rem;
+}
+
+.asset-ability {
+  background: var(--charcoal-dark);
+  border: 2px solid var(--accent-orange);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.asset-ability i {
+  color: var(--accent-orange);
+  font-size: 1.2rem;
+}
+
+.ability-label {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.ability-name {
+  color: var(--accent-yellow);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.approval-section {
+  background: var(--charcoal-dark);
+  border: 2px solid var(--accent-orange);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.requester-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+  font-size: 1.1rem;
+}
+
+.requester-info i {
+  color: var(--accent-orange);
+  font-size: 1.3rem;
+}
+
+.requester-info strong {
+  color: var(--accent-green);
+}
+
+.approval-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.approve-btn,
+.deny-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid;
+}
+
+.approve-btn {
+  background: var(--charcoal-light);
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.approve-btn:hover {
+  background: var(--accent-green);
+  color: var(--charcoal-dark);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.4);
+}
+
+.deny-btn {
+  background: var(--charcoal-light);
+  color: #ff4444;
+  border-color: #ff4444;
+}
+
+.deny-btn:hover {
+  background: #ff4444;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+}
+
+.approve-btn:disabled,
+.deny-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.approve-btn:disabled:hover,
+.deny-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: var(--text-light);
+}
+
+.loading i,
+.error i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+  color: var(--accent-green);
+}
+
+.error i {
+  color: var(--accent-orange);
+}
+
+@media (max-width: 768px) {
+  .asset-profile-container {
+    padding: 1rem;
+  }
+
+  .asset-profile-card {
+    padding: 1.5rem;
+  }
+
+  .asset-profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .asset-profile-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .approval-buttons {
+    flex-direction: column;
+  }
+}
+

@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useNotifications } from "./components/NotificationProvider";
 import Avatars from "./pages/Avatars";
 import AvatarProfile from "./pages/AvatarProfile";
+import AssetProfile from "./pages/AssetProfile";
 import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
@@ -100,6 +101,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AvatarProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/assets/:id/request'
+            element={
+              <ProtectedRoute>
+                <AssetProfile />
               </ProtectedRoute>
             }
           />

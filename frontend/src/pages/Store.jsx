@@ -7,6 +7,7 @@ function Store() {
   const [loading, setLoading] = useState(true);
   const [userCoins, setUserCoins] = useState(0);
   const [userLevel, setUserLevel] = useState(0);
+  const [userAvatarId, setUserAvatarId] = useState(null);
   const [purchasing, setPurchasing] = useState(null);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ function Store() {
       if (userAvatar) {
         setUserCoins(userAvatar.coins || 0);
         setUserLevel(userAvatar.level || 1);
+        setUserAvatarId(userAvatar.id);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -138,6 +140,7 @@ function Store() {
         items={items}
         userCoins={userCoins}
         userLevel={userLevel}
+        userAvatarId={userAvatarId}
         purchasing={purchasing}
         onPurchase={handlePurchase}
       />
