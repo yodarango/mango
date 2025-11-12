@@ -21,9 +21,13 @@ function AssignmentsClassTwo() {
 
       if (response.ok) {
         const data = await response.json();
-        // Filter out completed assignments
-
-        setAssignments(data);
+        // Sort by due date - newest (most recent) first
+        const sorted = data.sort((a, b) => {
+          const dateA = new Date(a.dueDate);
+          const dateB = new Date(b.dueDate);
+          return dateB - dateA; // Descending order (newest first)
+        });
+        setAssignments(sorted);
       }
     } catch (error) {
       console.error("Error fetching assignments:", error);
