@@ -116,7 +116,7 @@ function StoreItemCard({
                 <button
                   className='request-btn'
                   onClick={handleRequestAccess}
-                  disabled={requesting}
+                  disabled={requesting || !canAfford}
                 >
                   {requesting ? (
                     <>

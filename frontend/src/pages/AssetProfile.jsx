@@ -8,32 +8,20 @@ function AssetProfile() {
   const requesterId = searchParams.get("requesterId");
 
   const [asset, setAsset] = useState(null);
+  const [viewType, setViewType] = useState(null);
+  const [ownerName, setOwnerName] = useState(null);
+  const [canApprove, setCanApprove] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentUserAvatarId, setCurrentUserAvatarId] = useState(null);
   const [processing, setProcessing] = useState(false);
-  const [requesterAvatar, setRequesterAvatar] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        // Fetch current user's avatar
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const avatarsResponse = await fetch("/api/avatars", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const avatars = await avatarsResponse.json();
-        const userAvatar = avatars.find((a) => a.userId === user.id);
-        if (userAvatar) {
-          setCurrentUserAvatarId(userAvatar.id);
-        }
-
-        // Fetch asset details
-        const assetResponse = await fetch(`/api/assets/${id}`, {
+        // Fetch asset details with ownership context
+        const assetResponse = await fetch(`/api/assets/${id}/request`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,16 +31,11 @@ function AssetProfile() {
           throw new Error("Failed to fetch asset details");
         }
 
-        const assetData = await assetResponse.json();
-        setAsset(assetData);
-
-        // If there's a requester, fetch their avatar details
-        if (requesterId) {
-          const requesterAvatarData = avatars.find(
-            (a) => a.id === parseInt(requesterId)
-          );
-          setRequesterAvatar(requesterAvatarData);
-        }
+        const data = await assetResponse.json();
+        setAsset(data.asset);
+        setViewType(data.viewType);
+        setOwnerName(data.ownerName);
+        setCanApprove(data.canApprove);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -159,16 +142,32 @@ function AssetProfile() {
   }
 
   const overallPower = asset.attack + asset.defense + asset.healing;
-  const isOwner = currentUserAvatarId === asset.isLockedBy;
-  const showApprovalButtons = isOwner && requesterId;
 
   return (
     <div className='asset-profile-container'>
       <div className='asset-profile-card'>
+        {/* Header with status message */}
         <div className='asset-profile-header'>
           <h1>{asset.name}</h1>
           <span className='asset-type'>{asset.type}</span>
         </div>
+
+        {/* Status banner based on viewType */}
+        {viewType === "owned" && ownerName && (
+          <div className='asset-status-banner owned'>
+            <i className='fa-solid fa-user'></i>
+            <span>
+              This asset belongs to <strong>{ownerName}</strong>
+            </span>
+          </div>
+        )}
+
+        {viewType === "unlocked" && (
+          <div className='asset-status-banner unlocked'>
+            <i className='fa-solid fa-unlock'></i>
+            <span>This asset is unlocked and available in the store</span>
+          </div>
+        )}
 
         {asset.thumbnail && (
           <div className='asset-profile-image'>
@@ -240,14 +239,11 @@ function AssetProfile() {
           </div>
         )}
 
-        {showApprovalButtons && requesterAvatar && (
+        {viewType === "approve_deny" && canApprove && requesterId && (
           <div className='approval-section'>
             <div className='requester-info'>
-              <i className='fa-solid fa-user'></i>
-              <span>
-                <strong>{requesterAvatar.name}</strong> has requested access to
-                this asset
-              </span>
+              <i className='fa-solid fa-bell'></i>
+              <span>A user has requested access to this asset</span>
             </div>
             <div className='approval-buttons'>
               <button

@@ -987,6 +987,93 @@ func getAsset(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(asset)
 }
 
+// Get asset request details - returns asset with ownership context
+func getAssetRequest(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	assetID := vars["id"]
+
+	// Get asset details
+	var asset Asset
+	var isLockedInt int
+	var avatarIDNullable *int
+	var isLockedBy *int
+	var isUnlockedFor *int
+
+	err = db.QueryRow(`SELECT id, avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), is_locked_by, is_unlocked_for
+		FROM assets WHERE id = ?`, assetID).Scan(&asset.ID, &avatarIDNullable, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+		&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+		&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+		&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &isLockedBy, &isUnlockedFor)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Asset not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	asset.IsLocked = isLockedInt == 1
+	if avatarIDNullable != nil {
+		asset.AvatarID = *avatarIDNullable
+	}
+	asset.IsLockedBy = isLockedBy
+	asset.IsUnlockedFor = isUnlockedFor
+
+	// Get current user's avatar ID
+	var userAvatarID int
+	err = db.QueryRow(`SELECT id FROM avatars WHERE user_id = ?`, claims.UserID).Scan(&userAvatarID)
+	if err != nil {
+		http.Error(w, "Could not find user avatar", http.StatusInternalServerError)
+		return
+	}
+
+	// Determine the view type and get owner info if needed
+	type AssetRequestResponse struct {
+		Asset          Asset   `json:"asset"`
+		ViewType       string  `json:"viewType"` // "approve_deny", "owned", "unlocked"
+		OwnerName      *string `json:"ownerName,omitempty"`
+		CanApprove     bool    `json:"canApprove"`
+	}
+
+	response := AssetRequestResponse{
+		Asset:      asset,
+		CanApprove: false,
+	}
+
+	// Case 1: Asset is locked by current user - show approve/deny form
+	if isLockedBy != nil && *isLockedBy == userAvatarID {
+		response.ViewType = "approve_deny"
+		response.CanApprove = true
+	} else if avatarIDNullable != nil && *avatarIDNullable > 0 {
+		// Case 2: Asset belongs to someone - show owner info
+		response.ViewType = "owned"
+
+		// Get owner's avatar name
+		var ownerName string
+		err = db.QueryRow(`SELECT a.name FROM avatars a WHERE a.id = ?`, *avatarIDNullable).Scan(&ownerName)
+		if err == nil {
+			response.OwnerName = &ownerName
+		}
+	} else if avatarIDNullable == nil && (isLockedBy == nil || *isLockedBy == 0) {
+		// Case 3: Asset is unlocked and available in store
+		response.ViewType = "unlocked"
+	} else {
+		// Default case
+		response.ViewType = "unlocked"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 // Request access to a clocked asset
 func requestAssetAccess(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -3785,6 +3872,7 @@ func main() {
 	api.HandleFunc("/avatars/{id}", updateAvatar).Methods("PUT")
 	api.HandleFunc("/avatars/{id}/assets", getAssets).Methods("GET")
 	api.HandleFunc("/assets/request-access", requestAssetAccess).Methods("POST")
+	api.HandleFunc("/assets/{id}/request", getAssetRequest).Methods("GET")
 	api.HandleFunc("/assets/{id}/approve", approveAssetAccess).Methods("POST")
 	api.HandleFunc("/assets/{id}/deny", denyAssetAccess).Methods("POST")
 	api.HandleFunc("/assets/{id}", getAsset).Methods("GET")
