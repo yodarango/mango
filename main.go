@@ -2310,6 +2310,72 @@ func updateAssignment(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Bulk update assignment due dates (admin only)
+func bulkUpdateAssignmentDueDates(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req struct {
+		AssignmentIDs []int  `json:"assignmentIds"`
+		DueDate       string `json:"dueDate"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if len(req.AssignmentIDs) == 0 {
+		http.Error(w, "No assignment IDs provided", http.StatusBadRequest)
+		return
+	}
+
+	// Parse due date
+	dueDate, err := time.Parse(time.RFC3339, req.DueDate)
+	if err != nil {
+		http.Error(w, "Invalid due date format", http.StatusBadRequest)
+		return
+	}
+
+	// Build query with placeholders
+	placeholders := make([]string, len(req.AssignmentIDs))
+	args := make([]interface{}, len(req.AssignmentIDs)+1)
+	args[0] = dueDate
+
+	for i, id := range req.AssignmentIDs {
+		placeholders[i] = "?"
+		args[i+1] = id
+	}
+
+	query := fmt.Sprintf("UPDATE assignments SET due_date = ? WHERE id IN (%s)",
+		strings.Join(placeholders, ","))
+
+	result, err := db.Exec(query, args...)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":      true,
+		"rowsAffected": rowsAffected,
+	})
+}
+
 // Delete assignment (admin only)
 func deleteAssignment(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -3892,6 +3958,7 @@ func main() {
 	api.HandleFunc("/assignments/student/{assignmentId}", getStudentAssignment).Methods("GET")
 	api.HandleFunc("/assignments/admin/all", getAllAssignments).Methods("GET")
 	api.HandleFunc("/assignments/admin/{id}", getAssignmentByID).Methods("GET")
+	api.HandleFunc("/assignments/bulk-update-due-dates", bulkUpdateAssignmentDueDates).Methods("PUT")
 	api.HandleFunc("/assignments/{id}", updateAssignment).Methods("PUT")
 	api.HandleFunc("/assignments/{id}", deleteAssignment).Methods("DELETE")
 	api.HandleFunc("/ws", handleWebSocket)

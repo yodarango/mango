@@ -6,8 +6,8 @@ function CreateDailyWords() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [selectedClass, setSelectedClass] = useState("");
-  const [wordCount, setWordCount] = useState(10);
-  const [wordWorth, setWordWorth] = useState(10);
+  const [wordCount, setWordCount] = useState(3);
+  const [wordWorth, setWordWorth] = useState(50);
   const [wordType, setWordType] = useState("nouns");
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -84,7 +84,7 @@ function CreateDailyWords() {
       alert(
         `Successfully created ${result.assignmentsCreated} assignments for ${selectedStudents.length} students!`
       );
-      navigate("/admin/assignments");
+      window.location.reload();
     } catch (error) {
       console.error("Error creating assignments:", error);
       alert("Error creating assignments: " + error.message);
@@ -108,11 +108,15 @@ function CreateDailyWords() {
   return (
     <div className='create-daily-words-container'>
       <div className='page-header'>
-        <button className='back-btn' onClick={() => navigate("/admin/assignments")}>
+        <button
+          className='back-btn'
+          onClick={() => navigate("/admin/assignments")}
+        >
           <i className='fa-solid fa-arrow-left'></i> Back
         </button>
         <h1>
-          <i className='fa-solid fa-book'></i> Create Daily Vocabulary Assignment
+          <i className='fa-solid fa-book'></i> Create Daily Vocabulary
+          Assignment
         </h1>
       </div>
 
@@ -123,7 +127,9 @@ function CreateDailyWords() {
           </h2>
           <div className='class-selection'>
             <div
-              className={`class-option ${selectedClass === "2" ? "selected" : ""}`}
+              className={`class-option ${
+                selectedClass === "2" ? "selected" : ""
+              }`}
               onClick={() => setSelectedClass("2")}
             >
               <div className='class-header'>
@@ -131,12 +137,15 @@ function CreateDailyWords() {
                 <span className='class-name'>Class 2</span>
               </div>
               <div className='student-count'>
-                {class2Students.length} student{class2Students.length !== 1 ? "s" : ""}
+                {class2Students.length} student
+                {class2Students.length !== 1 ? "s" : ""}
               </div>
             </div>
 
             <div
-              className={`class-option ${selectedClass === "3" ? "selected" : ""}`}
+              className={`class-option ${
+                selectedClass === "3" ? "selected" : ""
+              }`}
               onClick={() => setSelectedClass("3")}
             >
               <div className='class-header'>
@@ -144,7 +153,8 @@ function CreateDailyWords() {
                 <span className='class-name'>Class 3</span>
               </div>
               <div className='student-count'>
-                {class3Students.length} student{class3Students.length !== 1 ? "s" : ""}
+                {class3Students.length} student
+                {class3Students.length !== 1 ? "s" : ""}
               </div>
             </div>
           </div>
@@ -184,7 +194,10 @@ function CreateDailyWords() {
               <label>
                 <i className='fa-solid fa-language'></i> Word Type
               </label>
-              <select value={wordType} onChange={(e) => setWordType(e.target.value)}>
+              <select
+                value={wordType}
+                onChange={(e) => setWordType(e.target.value)}
+              >
                 <option value='nouns'>Nouns</option>
                 <option value='verbs'>Verbs</option>
               </select>
@@ -251,4 +264,3 @@ function CreateDailyWords() {
 }
 
 export default CreateDailyWords;
-

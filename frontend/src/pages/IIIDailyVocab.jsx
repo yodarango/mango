@@ -17,83 +17,76 @@ export const IIIDailyVocab = () => {
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
 
-      <h3>Verbs</h3>
-      <section>
-        <div>
-          <p>
-            <strong>la gente</strong> (fem., singular form) — “the people.” Tip:
-            remember: <em>la gente</em> (singular word, plural idea).
-          </p>
-          <ul>
-            <li>
-              La gente del barrio es alegre. (People in the neighborhood are
-              cheerful.)
-            </li>
-            <li>Hay poca gente hoy. (There are few people today.)</li>
-            <li>Esa gente canta muy bien. (Those people sing very well.)</li>
-          </ul>
-        </div>
-        <div>
-          <p>
-            <strong>la vida</strong> (fem.) — “the life.” Tip: “viva” sounds
-            like “live!” → think life.
-          </p>
-          <ul>
-            <li>La vida es bonita. (Life is beautiful.)</li>
-            <li>
-              Mi vida en la escuela es feliz. (My life at school is happy.)
-            </li>
-            <li>Cuida tu vida. (Take care of your life.)</li>
-          </ul>
-        </div>
-        <div>
-          <p>
-            <strong>el día</strong> (masc.) — “the day.” Tip: accent on{" "}
-            <em>í</em>. Think “day = día.”
-          </p>
-          <ul>
-            <li>El día está soleado. (The day is sunny.)</li>
-            <li>Buen día, clase. (Good day, class.)</li>
-            <li>Cada día aprendo algo. (Every day I learn something.)</li>
-          </ul>
-        </div>
-      </section>
-
       <h3>Nouns</h3>
       <section>
         <div>
           <p>
-            <strong>tratar</strong> — “to try / to treat.” Tip: pair it with{" "}
-            <em>de</em> when you try to do something.
+            <strong>el trabajo</strong> (masc.) — “the work/job.” Tip: looks
+            like “labor,” both about effort.
           </p>
           <ul>
-            <li>Quiero tratar de leer más. (I want to try to read more.)</li>
-            <li>Tratan de llegar temprano. (They try to arrive early.)</li>
-            <li>Ella me trata con respeto. (She treats me with respect.)</li>
+            <li>Tengo mucho trabajo hoy. (I have a lot of work today.)</li>
+            <li>Mi trabajo es enseñar. (My job is to teach.)</li>
+            <li>El trabajo está terminado. (The work is finished.)</li>
           </ul>
         </div>
         <div>
           <p>
-            <strong>hablar</strong> — “to speak / to talk.” Tip: looks like
-            “blah blah” → talking.
+            <strong>la llamada</strong> (fem.) — “the call.” Tip: comes from{" "}
+            <em>llamar</em> (to call) → add “-ada” = the act of calling.
           </p>
           <ul>
-            <li>¿Puedo hablar contigo? (Can I talk with you?)</li>
-            <li>Hablamos español en clase. (We speak Spanish in class.)</li>
-            <li>Él habla muy claro. (He speaks very clearly.)</li>
+            <li>Recibí una llamada de mi mamá. (I got a call from my mom.)</li>
+            <li>Haz una llamada, por favor. (Make a call, please.)</li>
+            <li>La llamada fue importante. (The call was important.)</li>
           </ul>
         </div>
         <div>
           <p>
-            <strong>dejar</strong> — “to leave / to allow / to let.” Tip:
-            “leave” something on a desk; “let” someone do something.
+            <strong>la noche</strong> (fem.) — “the night.” Tip: sounds like
+            “nocturnal,” which means “night.”
           </p>
           <ul>
-            <li>
-              Deja el cuaderno en la mesa. (Leave the notebook on the table.)
-            </li>
-            <li>¿Me dejas salir? (Will you let me go out?)</li>
-            <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
+            <li>Buenas noches. (Good night.)</li>
+            <li>La noche está tranquila. (The night is calm.)</li>
+            <li>Trabajo por la noche. (I work at night.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>pasar</strong> — “to pass / to happen / to spend (time).”
+            Tip: sounds like “pass” in English → easy!
+          </p>
+          <ul>
+            <li>¿Qué pasa? (What’s happening?)</li>
+            <li>Paso mucho tiempo leyendo. (I spend a lot of time reading.)</li>
+            <li>El autobús va a pasar. (The bus is going to pass.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>llevar</strong> — “to carry / to take / to wear.” Tip: think
+            “you carry it → you wear it.”
+          </p>
+          <ul>
+            <li>Llevo mi mochila. (I carry my backpack.)</li>
+            <li>¿Qué ropa llevas hoy? (What clothes are you wearing today?)</li>
+            <li>Llevamos comida al picnic. (We take food to the picnic.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>existir</strong> — “to exist.” Tip: looks and sounds almost
+            the same as English “exist.”
+          </p>
+          <ul>
+            <li>Dios existe. (God exists.)</li>
+            <li>¿Crees que existen los aliens? (Do you think aliens exist?)</li>
+            <li>No puede existir sin agua. (It can’t exist without water.)</li>
           </ul>
         </div>
       </section>
@@ -101,6 +94,85 @@ export const IIIDailyVocab = () => {
   );
 };
 
+// <section>
+//   <div>
+//     <p>
+//       <strong>la gente</strong> (fem., singular form) — “the people.” Tip:
+//       remember: <em>la gente</em> (singular word, plural idea).
+//     </p>
+//     <ul>
+//       <li>
+//         La gente del barrio es alegre. (People in the neighborhood are
+//         cheerful.)
+//       </li>
+//       <li>Hay poca gente hoy. (There are few people today.)</li>
+//       <li>Esa gente canta muy bien. (Those people sing very well.)</li>
+//     </ul>
+//   </div>
+//   <div>
+//     <p>
+//       <strong>la vida</strong> (fem.) — “the life.” Tip: “viva” sounds
+//       like “live!” → think life.
+//     </p>
+//     <ul>
+//       <li>La vida es bonita. (Life is beautiful.)</li>
+//       <li>
+//         Mi vida en la escuela es feliz. (My life at school is happy.)
+//       </li>
+//       <li>Cuida tu vida. (Take care of your life.)</li>
+//     </ul>
+//   </div>
+//   <div>
+//     <p>
+//       <strong>el día</strong> (masc.) — “the day.” Tip: accent on{" "}
+//       <em>í</em>. Think “day = día.”
+//     </p>
+//     <ul>
+//       <li>El día está soleado. (The day is sunny.)</li>
+//       <li>Buen día, clase. (Good day, class.)</li>
+//       <li>Cada día aprendo algo. (Every day I learn something.)</li>
+//     </ul>
+//   </div>
+// </section>
+
+// <h3>Nouns</h3>
+// <section>
+//   <div>
+//     <p>
+//       <strong>tratar</strong> — “to try / to treat.” Tip: pair it with{" "}
+//       <em>de</em> when you try to do something.
+//     </p>
+//     <ul>
+//       <li>Quiero tratar de leer más. (I want to try to read more.)</li>
+//       <li>Tratan de llegar temprano. (They try to arrive early.)</li>
+//       <li>Ella me trata con respeto. (She treats me with respect.)</li>
+//     </ul>
+//   </div>
+//   <div>
+//     <p>
+//       <strong>hablar</strong> — “to speak / to talk.” Tip: looks like
+//       “blah blah” → talking.
+//     </p>
+//     <ul>
+//       <li>¿Puedo hablar contigo? (Can I talk with you?)</li>
+//       <li>Hablamos español en clase. (We speak Spanish in class.)</li>
+//       <li>Él habla muy claro. (He speaks very clearly.)</li>
+//     </ul>
+//   </div>
+//   <div>
+//     <p>
+//       <strong>dejar</strong> — “to leave / to allow / to let.” Tip:
+//       “leave” something on a desk; “let” someone do something.
+//     </p>
+//     <ul>
+//       <li>
+//         Deja el cuaderno en la mesa. (Leave the notebook on the table.)
+//       </li>
+//       <li>¿Me dejas salir? (Will you let me go out?)</li>
+//       <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
+//     </ul>
+//   </div>
+// </section>
 // put these into json and use them for future classes
 {
   /* <section>
