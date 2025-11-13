@@ -134,6 +134,7 @@
     height: 100px;
     border-radius: 6px;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .warrior-thumb img {
@@ -264,4 +265,47 @@
   color: #fff;
   font-weight: 500;
   flex: 1;
+}
+
+/* Warrior Popup styles */
+.warrior-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.warrior-popup {
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  border: 2px solid var(--accent-orange);
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(255, 149, 0, 0.3);
+}
+
+.popup-warrior-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  border: 3px solid var(--accent-orange);
+  object-fit: cover;
+}
+
+.popup-warrior-type {
+  color: var(--accent-orange);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 0;
+  text-transform: uppercase;
 }

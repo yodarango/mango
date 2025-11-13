@@ -7,6 +7,7 @@ function Avatars() {
   const [avatarWarriors, setAvatarWarriors] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [selectedWarrior, setSelectedWarrior] = useState(null);
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const isAdmin = user && user.role === "admin";
 
@@ -73,6 +74,15 @@ function Avatars() {
 
   const closePopup = () => {
     setSelectedAvatar(null);
+  };
+
+  const handleWarriorClick = (warrior, e) => {
+    e.stopPropagation();
+    setSelectedWarrior(warrior);
+  };
+
+  const closeWarriorPopup = () => {
+    setSelectedWarrior(null);
   };
 
   const getElementColor = (element) => {
@@ -189,7 +199,11 @@ function Avatars() {
                         {/* Warriors below avatar */}
                         <div className='warriors-grid'>
                           {avatar.warriors.map((warrior) => (
-                            <div key={warrior.id} className='warrior-thumb'>
+                            <div
+                              key={warrior.id}
+                              className='warrior-thumb'
+                              onClick={(e) => handleWarriorClick(warrior, e)}
+                            >
                               <img
                                 src={warrior.thumbnail}
                                 alt={warrior.name}
@@ -278,6 +292,81 @@ function Avatars() {
                     <i className='fa-solid fa-star'></i>
                     <span className='label'>Mascot:</span>
                     <span className='value'>{selectedAvatar.mascot}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {/* Warrior Popup Portal */}
+      {selectedWarrior &&
+        createPortal(
+          <div className='warrior-popup-overlay' onClick={closeWarriorPopup}>
+            <div className='warrior-popup' onClick={(e) => e.stopPropagation()}>
+              <button className='popup-close' onClick={closeWarriorPopup}>
+                <i className='fa-solid fa-times'></i>
+              </button>
+
+              <div className='popup-content'>
+                <div className='popup-header'>
+                  <img
+                    src={selectedWarrior.thumbnail}
+                    alt={selectedWarrior.name}
+                    className='popup-warrior-image'
+                  />
+                  <div className='popup-title'>
+                    <h2>{selectedWarrior.name}</h2>
+                    <p className='popup-warrior-type'>{selectedWarrior.type}</p>
+                  </div>
+                </div>
+
+                <div className='popup-stats'>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-sword'></i>
+                    <span className='label'>Attack:</span>
+                    <span className='value'>{selectedWarrior.attack}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-shield'></i>
+                    <span className='label'>Defense:</span>
+                    <span className='value'>{selectedWarrior.defense}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-heart'></i>
+                    <span className='label'>Healing:</span>
+                    <span className='value'>{selectedWarrior.healing}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-bolt'></i>
+                    <span className='label'>Power:</span>
+                    <span className='value'>{selectedWarrior.power}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-running'></i>
+                    <span className='label'>Endurance:</span>
+                    <span className='value'>{selectedWarrior.endurance}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-chart-line'></i>
+                    <span className='label'>Level:</span>
+                    <span className='value'>{selectedWarrior.level}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-wand-magic-sparkles'></i>
+                    <span className='label'>Ability:</span>
+                    <span className='value'>{selectedWarrior.ability}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-heart-pulse'></i>
+                    <span className='label'>Health:</span>
+                    <span className='value'>{selectedWarrior.health}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-battery-full'></i>
+                    <span className='label'>Stamina:</span>
+                    <span className='value'>{selectedWarrior.stamina}</span>
                   </div>
                 </div>
               </div>
