@@ -97,8 +97,18 @@ function StoreItemCard({
 
           <div className='compact-stats'>
             <div className='compact-stat'>
-              <i className='fa-solid fa-bolt'></i>
-              <span className='compact-value'>{overallPower}</span>
+              <div className='compact-stat-sm'>
+                <i className='fa-solid fa-bolt'></i>
+                <span className='compact-value'>{overallPower}</span>
+              </div>
+              <div className='compact-stat-sm'>
+                <i className='compact-value-xp fa-solid fa-chart-line'></i>
+                <span className='compact-value-xp'>{item.xp}</span>
+              </div>
+              <div className='compact-stat-sm'>
+                <i className='compact-value-level fa-solid fa-star'></i>
+                <span className='compact-value-level'>{item.level}</span>
+              </div>
             </div>
             {onPurchase ? (
               <div className='compact-stat'>

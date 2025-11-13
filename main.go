@@ -1917,6 +1917,7 @@ func createDailyVocabAssignments(w http.ResponseWriter, r *http.Request) {
 		WordCount int    `json:"wordCount"`
 		WordWorth int    `json:"wordWorth"`
 		WordType  string `json:"wordType"`
+		Name      string `json:"name"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -2052,7 +2053,7 @@ func createDailyVocabAssignments(w http.ResponseWriter, r *http.Request) {
 	for _, studentID := range studentIDs {
 		_, err := tx.Exec(`INSERT INTO assignments (coins, assignment_id, user_id, completed, name, due_date, coins_received, data)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-			totalCoins, "1005", studentID, 0, "daily vocab", dueDate, 0, string(quizDataJSON))
+			totalCoins, "1005", studentID, 0, req.Name, dueDate, 0, string(quizDataJSON))
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error creating assignment for student %d: %v", studentID, err), http.StatusInternalServerError)
 			return

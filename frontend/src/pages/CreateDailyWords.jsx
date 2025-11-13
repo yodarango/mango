@@ -71,6 +71,9 @@ function CreateDailyWords() {
           classNum: parseInt(selectedClass),
           wordCount: parseInt(wordCount),
           wordWorth: parseInt(wordWorth),
+          name: `Daily Vocab - ${
+            wordType.charAt(0).toUpperCase() + wordType.slice(1)
+          }`,
           wordType: wordType,
         }),
       });

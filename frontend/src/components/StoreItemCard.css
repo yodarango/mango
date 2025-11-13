@@ -95,17 +95,34 @@
   font-size: 1rem;
 }
 
-.compact-stat:first-child i {
+.compact-stat i {
   color: var(--accent-yellow);
-}
-
-.compact-stat:last-child i {
-  color: var(--accent-orange);
 }
 
 .compact-value {
   font-weight: 700;
   font-size: 1.1rem;
+}
+
+.compact-stat-sm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .compact-value-xp,
+  > i.compact-value-xp {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: rgb(126, 180, 238);
+  }
+
+  .compact-value-level,
+  > i.compact-value-level {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-orange);
+  }
 }
 
 .compact-stat:first-child .compact-value {
