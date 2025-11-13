@@ -3,7 +3,7 @@
 # Usage: ./compress_images.sh [resize_width]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET_DIR="${SCRIPT_DIR}/frontend/src/assets/store/"
+TARGET_DIR="${SCRIPT_DIR}/frontend/src/assets/store"
 RESIZE_DIM="$1"
 
 find "$TARGET_DIR" -type f -name "*.png" | while read png_file; do

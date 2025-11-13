@@ -381,7 +381,7 @@
 .table-header,
 .table-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1.5fr 1.5fr 0.5fr;
+  grid-template-columns: 2fr 2fr 1.5fr 1.5fr 1.5fr 1fr;
   gap: 1rem;
   padding: 1.5rem;
   align-items: center;
@@ -391,6 +391,15 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.col-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  justify-content: flex-start;
 }
 
 .edit-due-date-btn {
@@ -446,6 +455,12 @@
   font-weight: 700;
   font-size: 0.9rem;
   text-transform: uppercase;
+}
+
+.table-header > div {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .table-row {
@@ -552,11 +567,6 @@
 }
 
 /* Actions */
-.col-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .delete-btn {
   padding: 0.5rem 1rem;
   background: transparent;
