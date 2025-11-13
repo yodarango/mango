@@ -1,170 +1,245 @@
-.avatars-grid-323jf {
-  .avatars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+.avatars-page-2en24 {
+  padding: 0 !important;
+  max-width: none !important;
+
+  .avatars-container {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  /* Avatar Card Design */
-  .avatar-card-new {
-    border-radius: 12px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     padding: 0;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    overflow: hidden;
-    border: 3px solid var(--charcoal-light);
-    position: relative;
+    background: none;
+  }
+
+  .avatar-section {
     background: var(--charcoal-medium);
-  }
-
-  .avatar-card-new:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 24px rgba(0, 255, 65, 0.4);
-    border-color: var(--accent-green);
-  }
-
-  .rank-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 0.5rem 0.75rem;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .card-thumbnail {
-    width: 100%;
-    height: 200px;
+    border-radius: 12px;
     overflow: hidden;
-    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 
-  .avatar-image {
+  /* Responsive widths */
+  @media (max-width: 600px) {
+    .avatar-section {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .avatar-section {
+      width: calc(50% - 0.75rem);
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .avatar-section {
+      width: calc(33.333% - 1rem);
+    }
+  }
+
+  /* Stats on the left */
+  .avatar-stats-container {
+    display: flex;
+    .avatar-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1.5rem 1rem;
+      min-width: 80px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      color: #888;
+      font-size: 0.75rem;
+      padding: 0;
+      border: none;
+    }
+
+    .stat-item i {
+      font-size: 1.2rem;
+      color: var(--accent-green);
+    }
+
+    .stat-item span {
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Avatar main section */
+  .avatar-main {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .avatar-thumbnail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .avatar-thumbnail img {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+
+  /* Warriors grid */
+  .warriors-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 0.5rem;
+  }
+
+  .warrior-thumb {
+    width: 100px;
+    height: 100px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .warrior-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     display: block;
   }
 
-  .card-content {
-    padding: 0;
-  }
-
-  .card-header-new {
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .student-info h3 {
-    font-family: "MedievalSharp", cursive;
-    font-size: 1.4rem;
-    margin: 0 0 0.25rem 0;
-    font-weight: bold;
-    color: var(--accent-yellow);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  }
-
-  .avatar-name-card {
-    font-size: 0.95rem;
-    font-style: italic;
-    margin: 0;
-    opacity: 0.9;
-    font-weight: 600;
-    color: var(--accent-green);
-  }
-
-  .stats-badges {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-end;
-  }
-
-  .coins-badge,
-  .warriors-badge {
-    padding: 0.4rem 0.8rem;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    white-space: nowrap;
-  }
-
-  .card-body-new {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .stat-text {
+  /* Popup styles */
+  .avatar-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
   }
 
-  .stat-text .icon {
+  .avatar-popup {
+    background: linear-gradient(135deg, #1a1a1a, #252525);
+    border: 2px solid var(--accent-green);
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 255, 0, 0.3);
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 68, 68, 0.2);
+    border: 2px solid #ff4444;
+    color: #ff4444;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .popup-close:hover {
+    background: rgba(255, 68, 68, 0.4);
+    transform: rotate(90deg);
+  }
+
+  .popup-content {
+    padding: 2rem;
+  }
+
+  .popup-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #333;
+  }
+
+  .popup-avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    border: 3px solid var(--accent-green);
+    object-fit: cover;
+  }
+
+  .popup-title h2 {
+    font-family: "MedievalSharp", cursive;
+    color: var(--accent-yellow);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+  }
+
+  .popup-avatar-name {
+    color: var(--accent-green);
+    font-style: italic;
     font-size: 1.1rem;
-    width: 24px;
+    margin: 0;
+  }
+
+  .popup-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .popup-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(0, 255, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid #333;
+  }
+
+  .popup-stat i {
+    font-size: 1.2rem;
+    color: var(--accent-green);
+    width: 30px;
     text-align: center;
-    flex-shrink: 0;
   }
 
-  .stat-text .label {
+  .popup-stat .label {
     font-weight: 600;
-    font-size: 0.85rem;
-    opacity: 0.9;
-    flex-shrink: 0;
-    color: inherit;
+    color: #888;
+    min-width: 80px;
   }
 
-  .stat-text .value {
-    font-size: 0.9rem;
+  .popup-stat .value {
+    color: #fff;
     font-weight: 500;
     flex: 1;
-  }
-
-  .stat-text.mascot-text {
-    margin-top: 0.25rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    font-weight: 600;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .avatars-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .student-info h3 {
-      font-size: 1.2rem;
-    }
-
-    .avatar-name-card {
-      font-size: 0.85rem;
-    }
-
-    .stat-text .label {
-      font-size: 0.8rem;
-    }
-
-    .stat-text .value {
-      font-size: 0.85rem;
-    }
   }
 }

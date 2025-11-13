@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { createPortal } from "react-dom";
 import "./Avatars.css";
 
 function Avatars() {
   const [avatars, setAvatars] = useState([]);
+  const [avatarWarriors, setAvatarWarriors] = useState({});
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const isAdmin = user && user.role === "admin";
 
@@ -24,6 +25,30 @@ function Avatars() {
         : (data || []).filter((avatar) => avatar.name.toLowerCase() !== "test");
 
       setAvatars(filteredData);
+
+      // Fetch warriors for each avatar
+      const warriorsMap = {};
+      await Promise.all(
+        filteredData.map(async (avatar) => {
+          try {
+            const assetsResponse = await fetch(
+              `/api/avatars/${avatar.id}/assets`
+            );
+            const assets = await assetsResponse.json();
+            warriorsMap[avatar.id] = (assets || []).filter(
+              (asset) => asset.status === "warrior"
+            );
+          } catch (err) {
+            console.error(
+              `Error fetching warriors for avatar ${avatar.id}:`,
+              err
+            );
+            warriorsMap[avatar.id] = [];
+          }
+        })
+      );
+
+      setAvatarWarriors(warriorsMap);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching avatars:", error);
@@ -31,8 +56,23 @@ function Avatars() {
     }
   };
 
-  const handleAvatarClick = (avatarId) => {
-    navigate(`/avatar/${avatarId}`);
+  const getAvatarThumbnail = (thumbnail) => {
+    // Extract the filename from the path
+    const parts = thumbnail.split("/");
+    const filename = parts[parts.length - 1];
+    // Prepend "avatar_" to the filename
+    const newFilename = `avatar_${filename}`;
+    // Reconstruct the path
+    parts[parts.length - 1] = newFilename;
+    return parts.join("/");
+  };
+
+  const handleAvatarClick = (avatar) => {
+    setSelectedAvatar(avatar);
+  };
+
+  const closePopup = () => {
+    setSelectedAvatar(null);
   };
 
   const getElementColor = (element) => {
@@ -70,130 +110,128 @@ function Avatars() {
   }
 
   return (
-    <div className='page avatars-grid-323jf'>
-      <h2>Student Avatars</h2>
-      <p className='subtitle'>Meet the heroes of Spanish Quest!</p>
+    <div className='avatars-page-2en24'>
+      <div>
+        <h2>The Kingdoms</h2>
 
-      <div className='avatars-grid'>
-        {avatars.length === 0 ? (
-          <p>No avatars found.</p>
-        ) : (
-          avatars.map((avatar) => {
-            const elementColor = getElementColor(avatar.element);
-            const textColor = getTextColor(avatar.element);
+        <div className='avatars-container'>
+          {avatars.length === 0 ? (
+            <p>No avatars found.</p>
+          ) : (
+            avatars.map((avatar) => {
+              const warriors = avatarWarriors[avatar.id] || [];
 
-            return (
-              <div
-                key={avatar.id}
-                className='avatar-card-new'
-                onClick={() => handleAvatarClick(avatar.id)}
-                style={{
-                  cursor: "pointer",
-                  background: `linear-gradient(135deg, ${elementColor} 0%, ${elementColor}dd 100%)`,
-                  color: textColor,
-                }}
-              >
-                {/* Rank Badge - only show if rank is assigned */}
-                {avatar.rank > 0 && (
-                  <div className='rank-badge'>
-                    {avatar.rank === 1 && "🥇"}
-                    {avatar.rank === 2 && "🥈"}
-                    {avatar.rank === 3 && "🥉"}
-                    {avatar.rank > 3 && `#${avatar.rank}`}
+              return (
+                <div key={avatar.id} className='avatar-section'>
+                  <div className='avatar-stats-container'>
+                    <div className='avatar-stats'>
+                      <div className='stat-item'>
+                        <i className='fa-solid fa-khanda'></i>
+                        <span>{warriors.length}</span>
+                      </div>
+                      <div className='stat-item'>
+                        <i className='fa-solid fa-coins'></i>
+                        <span>{avatar.coins}</span>
+                      </div>
+                      <div className='stat-item'>
+                        <i className='fa-solid fa-chart-line'></i>
+                        <span>Lv {avatar.level}</span>
+                      </div>
+                    </div>
+
+                    <div
+                      className='avatar-thumbnail'
+                      onClick={() => handleAvatarClick(avatar)}
+                    >
+                      <img
+                        src={getAvatarThumbnail(avatar.thumbnail)}
+                        alt={avatar.avatarName}
+                      />
+                    </div>
                   </div>
-                )}
 
-                <div className='card-thumbnail'>
+                  <div className='avatar-main'>
+                    {/* Warriors below avatar */}
+                    <div className='warriors-grid'>
+                      {warriors.map((warrior) => (
+                        <div key={warrior.id} className='warrior-thumb'>
+                          <img
+                            src={warrior.thumbnail}
+                            alt={warrior.name}
+                            title={warrior.name}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* Popup Portal */}
+      {selectedAvatar &&
+        createPortal(
+          <div className='avatar-popup-overlay' onClick={closePopup}>
+            <div className='avatar-popup' onClick={(e) => e.stopPropagation()}>
+              <button className='popup-close' onClick={closePopup}>
+                <i className='fa-solid fa-times'></i>
+              </button>
+
+              <div className='popup-content'>
+                <div className='popup-header'>
                   <img
-                    src={avatar.thumbnail}
-                    alt={avatar.avatarName}
-                    className='avatar-image'
+                    src={getAvatarThumbnail(selectedAvatar.thumbnail)}
+                    alt={selectedAvatar.avatarName}
+                    className='popup-avatar-image'
                   />
+                  <div className='popup-title'>
+                    <h2>{selectedAvatar.name}</h2>
+                    <p className='popup-avatar-name'>
+                      {selectedAvatar.avatarName}
+                    </p>
+                  </div>
                 </div>
 
-                <div className='card-content'>
-                  <div className='card-header-new'>
-                    <div className='student-info'>
-                      <h3 style={{ color: textColor }}>{avatar.name}</h3>
-                      <p
-                        className='avatar-name-card'
-                        style={{ color: textColor }}
-                      >
-                        {avatar.avatarName}
-                      </p>
-                    </div>
-                    <div className='stats-badges'>
-                      <div
-                        className='coins-badge'
-                        style={{
-                          background:
-                            textColor === "#ffffff"
-                              ? "rgba(255,255,255,0.2)"
-                              : "rgba(0,0,0,0.1)",
-                          color: textColor,
-                        }}
-                      >
-                        <i className='fa-solid fa-coins'></i> {avatar.coins}
-                      </div>
-                      <div
-                        className='warriors-badge'
-                        style={{
-                          background:
-                            textColor === "#ffffff"
-                              ? "rgba(255,255,255,0.2)"
-                              : "rgba(0,0,0,0.1)",
-                          color: textColor,
-                        }}
-                      >
-                        <i className='fa-solid fa-khanda'></i>{" "}
-                        {avatar.assetCount}
-                      </div>
-                    </div>
+                <div className='popup-stats'>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-bolt'></i>
+                    <span className='label'>Element:</span>
+                    <span className='value'>{selectedAvatar.element}</span>
                   </div>
-
-                  <div className='card-body-new'>
-                    <div className='stat-text'>
-                      <i className='icon fa-solid fa-bolt'></i>
-                      <span className='label'>Element:</span>
-                      <span className='value'>{avatar.element}</span>
-                    </div>
-
-                    <div className='stat-text'>
-                      <i className='icon fa-solid fa-wand-magic-sparkles'></i>
-                      <span className='label'>Power:</span>
-                      <span className='value'>{avatar.superPower}</span>
-                    </div>
-
-                    <div className='stat-text'>
-                      <i className='icon fa-solid fa-masks-theater'></i>
-                      <span className='label'>Type:</span>
-                      <span className='value'>{avatar.personality}</span>
-                    </div>
-
-                    <div className='stat-text'>
-                      <i className='icon fa-solid fa-triangle-exclamation'></i>
-                      <span className='label'>Weakness:</span>
-                      <span className='value'>{avatar.weakness}</span>
-                    </div>
-
-                    <div className='stat-text'>
-                      <i className='icon fa-solid fa-paw'></i>
-                      <span className='label'>Allies:</span>
-                      <span className='value'>{avatar.animalAlly}</span>
-                    </div>
-
-                    <div className='stat-text mascot-text'>
-                      <i className='icon fa-solid fa-star'></i>
-                      <span className='label'>Mascot:</span>
-                      <span className='value'>{avatar.mascot}</span>
-                    </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-wand-magic-sparkles'></i>
+                    <span className='label'>Power:</span>
+                    <span className='value'>{selectedAvatar.superPower}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-masks-theater'></i>
+                    <span className='label'>Type:</span>
+                    <span className='value'>{selectedAvatar.personality}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-triangle-exclamation'></i>
+                    <span className='label'>Weakness:</span>
+                    <span className='value'>{selectedAvatar.weakness}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-paw'></i>
+                    <span className='label'>Allies:</span>
+                    <span className='value'>{selectedAvatar.animalAlly}</span>
+                  </div>
+                  <div className='popup-stat'>
+                    <i className='fa-solid fa-star'></i>
+                    <span className='label'>Mascot:</span>
+                    <span className='value'>{selectedAvatar.mascot}</span>
                   </div>
                 </div>
               </div>
-            );
-          })
+            </div>
+          </div>,
+          document.body
         )}
-      </div>
     </div>
   );
 }
