@@ -93,6 +93,16 @@ function CreateDailyWords() {
     }
   };
 
+  useEffect(() => {
+    if (selectedClass === "2") {
+      setWordCount(2);
+      setWordWorth(75);
+    } else if (selectedClass === "3") {
+      setWordCount(3);
+      setWordWorth(50);
+    }
+  }, [selectedClass]);
+
   if (loading) {
     return (
       <div className='loading-container'>

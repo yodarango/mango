@@ -17,8 +17,66 @@ export const IIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
-
       <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
+            <strong>vida</strong> (fem.) — “life.” Tip: “¡Viva!” = alive → think
+            life.
+          </p>
+          <ul>
+            <li>La vida es buena. (Life is good.)</li>
+            <li>
+              Mi vida en la escuela es feliz. (My life at school is happy.)
+            </li>
+            <li>Cuida tu vida. (Take care of your life.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>día</strong> (masc.) — “day.” Tip: looks like “day,” but
+            with an accent: día.
+          </p>
+          <ul>
+            <li>Cada día aprendo algo. (Every day I learn something.)</li>
+            <li>El día está soleado. (The day is sunny.)</li>
+            <li>Buen día, clase. (Good day, class.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>hablar</strong> — “to speak; to talk.” Tip: think “blah
+            blah” → talking.
+          </p>
+          <ul>
+            <li>Hablamos español en clase. (We speak Spanish in class.)</li>
+            <li>¿Puedo hablar contigo? (Can I talk with you?)</li>
+            <li>Ella habla muy claro. (She speaks very clearly.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>dejar</strong> — “to leave; to allow/let.” Tip: “leave it”
+            on the desk; “let” someone do it.
+          </p>
+          <ul>
+            <li>Deja el libro aquí. (Leave the book here.)</li>
+            <li>¿Me dejas salir? (Will you let me go out?)</li>
+            <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// put this into json and use them for other classes
+{
+  /* <h3>Nouns</h3>
       <section>
         <div>
           <p>
@@ -70,12 +128,8 @@ export const IIDailyVocab = () => {
             <li>El doctor me trata bien. (The doctor treats me well.)</li>
           </ul>
         </div>
-      </section>
-    </div>
-  );
-};
-
-// put this into json and use them for other classes
+      </section> */
+}
 {
   /* <section>
   <div>

@@ -21,6 +21,87 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>hogar</strong> (masc.) — “home” (cozy family place). Tip:
+            “home” and “hogar” both start with “ho.”
+          </p>
+          <ul>
+            <li>Mi hogar es tranquilo. (My home is calm.)</li>
+            <li>Volvemos al hogar. (We go back home.)</li>
+            <li>
+              El hogar une a la familia. (Home brings the family together.)
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>pensamiento</strong> (masc.) — “thought.” Tip: comes from{" "}
+            <em>pensar</em> (to think).
+          </p>
+          <ul>
+            <li>Tuve un buen pensamiento. (I had a good thought.)</li>
+            <li>Es solo un pensamiento. (It’s just a thought.)</li>
+            <li>Comparte tu pensamiento. (Share your thought.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>dinero</strong> (masc.) — “money.” Tip: many kids know
+            “dinero” from movies.
+          </p>
+          <ul>
+            <li>No tengo dinero. (I don’t have money.)</li>
+            <li>Ahorro dinero. (I save money.)</li>
+            <li>¿Cuánto dinero cuesta? (How much money does it cost?)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>conocer</strong> — “to know/meet (people/places).” Tip:
+            conocer = meet or be familiar with.
+          </p>
+          <ul>
+            <li>Quiero conocer a tu mamá. (I want to meet your mom.)</li>
+            <li>Conozco esta ciudad. (I know this city.)</li>
+            <li>¿Conoces a Ana? (Do you know Ana?)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>tomar</strong> — “to take; to drink.” Tip: “tomar agua” =
+            drink water.
+          </p>
+          <ul>
+            <li>Tomo agua. (I drink water.)</li>
+            <li>Tomamos el bus. (We take the bus.)</li>
+            <li>¿Quieres tomar jugo? (Do you want to drink juice?)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>encontrar</strong> — “to find; to encounter.” Tip: looks
+            like “encounter.”
+          </p>
+          <ul>
+            <li>Encuentro mi lápiz. (I find my pencil.)</li>
+            <li>¿Dónde puedo encontrarlo? (Where can I find it?)</li>
+            <li>Encontramos una solución. (We found a solution.)</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// put these into json and use them for future classes
+{
+  /* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>el trabajo</strong> (masc.) — “the work/job.” Tip: looks
             like “labor,” both about effort.
           </p>
@@ -89,91 +170,89 @@ export const IIIDailyVocab = () => {
             <li>No puede existir sin agua. (It can’t exist without water.)</li>
           </ul>
         </div>
-      </section>
-    </div>
-  );
-};
+      </section> */
+}
+{
+  /* <section>
+  <div>
+    <p>
+      <strong>la gente</strong> (fem., singular form) — “the people.” Tip:
+      remember: <em>la gente</em> (singular word, plural idea).
+    </p>
+    <ul>
+      <li>
+        La gente del barrio es alegre. (People in the neighborhood are
+        cheerful.)
+      </li>
+      <li>Hay poca gente hoy. (There are few people today.)</li>
+      <li>Esa gente canta muy bien. (Those people sing very well.)</li>
+    </ul>
+  </div>
+  <div>
+    <p>
+      <strong>la vida</strong> (fem.) — “the life.” Tip: “viva” sounds
+      like “live!” → think life.
+    </p>
+    <ul>
+      <li>La vida es bonita. (Life is beautiful.)</li>
+      <li>
+        Mi vida en la escuela es feliz. (My life at school is happy.)
+      </li>
+      <li>Cuida tu vida. (Take care of your life.)</li>
+    </ul>
+  </div>
+  <div>
+    <p>
+      <strong>el día</strong> (masc.) — “the day.” Tip: accent on{" "}
+      <em>í</em>. Think “day = día.”
+    </p>
+    <ul>
+      <li>El día está soleado. (The day is sunny.)</li>
+      <li>Buen día, clase. (Good day, class.)</li>
+      <li>Cada día aprendo algo. (Every day I learn something.)</li>
+    </ul>
+  </div>
+</section>
 
-// <section>
-//   <div>
-//     <p>
-//       <strong>la gente</strong> (fem., singular form) — “the people.” Tip:
-//       remember: <em>la gente</em> (singular word, plural idea).
-//     </p>
-//     <ul>
-//       <li>
-//         La gente del barrio es alegre. (People in the neighborhood are
-//         cheerful.)
-//       </li>
-//       <li>Hay poca gente hoy. (There are few people today.)</li>
-//       <li>Esa gente canta muy bien. (Those people sing very well.)</li>
-//     </ul>
-//   </div>
-//   <div>
-//     <p>
-//       <strong>la vida</strong> (fem.) — “the life.” Tip: “viva” sounds
-//       like “live!” → think life.
-//     </p>
-//     <ul>
-//       <li>La vida es bonita. (Life is beautiful.)</li>
-//       <li>
-//         Mi vida en la escuela es feliz. (My life at school is happy.)
-//       </li>
-//       <li>Cuida tu vida. (Take care of your life.)</li>
-//     </ul>
-//   </div>
-//   <div>
-//     <p>
-//       <strong>el día</strong> (masc.) — “the day.” Tip: accent on{" "}
-//       <em>í</em>. Think “day = día.”
-//     </p>
-//     <ul>
-//       <li>El día está soleado. (The day is sunny.)</li>
-//       <li>Buen día, clase. (Good day, class.)</li>
-//       <li>Cada día aprendo algo. (Every day I learn something.)</li>
-//     </ul>
-//   </div>
-// </section>
-
-// <h3>Nouns</h3>
-// <section>
-//   <div>
-//     <p>
-//       <strong>tratar</strong> — “to try / to treat.” Tip: pair it with{" "}
-//       <em>de</em> when you try to do something.
-//     </p>
-//     <ul>
-//       <li>Quiero tratar de leer más. (I want to try to read more.)</li>
-//       <li>Tratan de llegar temprano. (They try to arrive early.)</li>
-//       <li>Ella me trata con respeto. (She treats me with respect.)</li>
-//     </ul>
-//   </div>
-//   <div>
-//     <p>
-//       <strong>hablar</strong> — “to speak / to talk.” Tip: looks like
-//       “blah blah” → talking.
-//     </p>
-//     <ul>
-//       <li>¿Puedo hablar contigo? (Can I talk with you?)</li>
-//       <li>Hablamos español en clase. (We speak Spanish in class.)</li>
-//       <li>Él habla muy claro. (He speaks very clearly.)</li>
-//     </ul>
-//   </div>
-//   <div>
-//     <p>
-//       <strong>dejar</strong> — “to leave / to allow / to let.” Tip:
-//       “leave” something on a desk; “let” someone do something.
-//     </p>
-//     <ul>
-//       <li>
-//         Deja el cuaderno en la mesa. (Leave the notebook on the table.)
-//       </li>
-//       <li>¿Me dejas salir? (Will you let me go out?)</li>
-//       <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
-//     </ul>
-//   </div>
-// </section>
-// put these into json and use them for future classes
+<h3>Nouns</h3>
+<section>
+  <div>
+    <p>
+      <strong>tratar</strong> — “to try / to treat.” Tip: pair it with{" "}
+      <em>de</em> when you try to do something.
+    </p>
+    <ul>
+      <li>Quiero tratar de leer más. (I want to try to read more.)</li>
+      <li>Tratan de llegar temprano. (They try to arrive early.)</li>
+      <li>Ella me trata con respeto. (She treats me with respect.)</li>
+    </ul>
+  </div>
+  <div>
+    <p>
+      <strong>hablar</strong> — “to speak / to talk.” Tip: looks like
+      “blah blah” → talking.
+    </p>
+    <ul>
+      <li>¿Puedo hablar contigo? (Can I talk with you?)</li>
+      <li>Hablamos español en clase. (We speak Spanish in class.)</li>
+      <li>Él habla muy claro. (He speaks very clearly.)</li>
+    </ul>
+  </div>
+  <div>
+    <p>
+      <strong>dejar</strong> — “to leave / to allow / to let.” Tip:
+      “leave” something on a desk; “let” someone do something.
+    </p>
+    <ul>
+      <li>
+        Deja el cuaderno en la mesa. (Leave the notebook on the table.)
+      </li>
+      <li>¿Me dejas salir? (Will you let me go out?)</li>
+      <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
+    </ul>
+  </div>
+</section> */
+}
 {
   /* <section>
   <div>
