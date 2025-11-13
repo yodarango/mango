@@ -252,6 +252,30 @@
   height: 14px;
 }
 
+.date-input-smart {
+  min-width: 180px;
+  padding: 0.4rem 0.75rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.date-input-smart:focus {
+  outline: none;
+  border-color: #00ff00;
+  background: #252525;
+}
+
+.date-input-smart::placeholder {
+  color: #666;
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
 .date-separator {
   color: #888;
   font-size: 0.8rem;
@@ -646,8 +670,10 @@
     gap: 0.5rem;
   }
 
-  .date-input {
+  .date-input,
+  .date-input-smart {
     width: 100%;
+    min-width: 100%;
   }
 
   .date-separator {

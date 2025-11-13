@@ -14,7 +14,14 @@ function AdminAssignments() {
   const [statusFilter, setStatusFilter] = useState("all"); // all, completed, pending, expired
   const [selectedClasses, setSelectedClasses] = useState(new Set());
   const [selectedStudents, setSelectedStudents] = useState(new Set());
-  const [dateRange, setDateRange] = useState({ start: "", end: "" });
+  const [dateRange, setDateRange] = useState(() => {
+    const saved = sessionStorage.getItem("adminAssignmentsDateRange");
+    return saved ? JSON.parse(saved) : { start: "", end: "" };
+  });
+  const [dateInputs, setDateInputs] = useState(() => {
+    const saved = sessionStorage.getItem("adminAssignmentsDateInputs");
+    return saved ? JSON.parse(saved) : { start: "", end: "" };
+  });
 
   // Bulk edit mode
   const [isEditingDueDate, setIsEditingDueDate] = useState(false);
@@ -120,6 +127,72 @@ function AdminAssignments() {
     setSelectedClasses(new Set());
     setSelectedStudents(new Set());
     setDateRange({ start: "", end: "" });
+    setDateInputs({ start: "", end: "" });
+    sessionStorage.removeItem("adminAssignmentsDateRange");
+    sessionStorage.removeItem("adminAssignmentsDateInputs");
+  };
+
+  // Smart date parsing function
+  const parseSmartDate = (input) => {
+    if (!input.trim()) return "";
+
+    const parts = input.split("/").map((p) => p.trim());
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // 0-indexed
+
+    let month, day, year;
+
+    if (parts.length === 1) {
+      // Single digit: day of current month/year
+      day = parseInt(parts[0]);
+      month = currentMonth;
+      year = currentYear;
+    } else if (parts.length === 2) {
+      // Two parts: month/day of current year
+      month = parseInt(parts[0]);
+      day = parseInt(parts[1]);
+      year = currentYear;
+    } else if (parts.length === 3) {
+      // Three parts: month/day/year
+      month = parseInt(parts[0]);
+      day = parseInt(parts[1]);
+      year = parseInt(parts[2]);
+      // Handle 2-digit year
+      if (year < 100) {
+        year += 2000;
+      }
+    } else {
+      return ""; // Invalid format
+    }
+
+    // Validate ranges
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
+      return "";
+    }
+
+    // Format as YYYY-MM-DD
+    const formattedMonth = String(month).padStart(2, "0");
+    const formattedDay = String(day).padStart(2, "0");
+    return `${year}-${formattedMonth}-${formattedDay}`;
+  };
+
+  // Handle date input change
+  const handleDateInputChange = (field, value) => {
+    const newInputs = { ...dateInputs, [field]: value };
+    setDateInputs(newInputs);
+    sessionStorage.setItem(
+      "adminAssignmentsDateInputs",
+      JSON.stringify(newInputs)
+    );
+
+    const parsedDate = parseSmartDate(value);
+    const newRange = { ...dateRange, [field]: parsedDate };
+    setDateRange(newRange);
+    sessionStorage.setItem(
+      "adminAssignmentsDateRange",
+      JSON.stringify(newRange)
+    );
   };
 
   const toggleEditMode = () => {
@@ -409,23 +482,19 @@ function AdminAssignments() {
             </label>
             <div className='date-range-inputs'>
               <input
-                type='date'
-                className='date-input'
-                value={dateRange.start}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, start: e.target.value })
-                }
-                placeholder='Start date'
+                type='text'
+                className='date-input-smart'
+                value={dateInputs.start}
+                onChange={(e) => handleDateInputChange("start", e.target.value)}
+                placeholder='Start (e.g., 7 or 7/10 or 7/10/25)'
               />
               <span className='date-separator'>to</span>
               <input
-                type='date'
-                className='date-input'
-                value={dateRange.end}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, end: e.target.value })
-                }
-                placeholder='End date'
+                type='text'
+                className='date-input-smart'
+                value={dateInputs.end}
+                onChange={(e) => handleDateInputChange("end", e.target.value)}
+                placeholder='End (e.g., 15 or 7/15 or 7/15/25)'
               />
             </div>
           </div>
