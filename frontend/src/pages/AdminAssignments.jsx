@@ -266,6 +266,44 @@ function AdminAssignments() {
     }
   };
 
+  const handleBulkDelete = async () => {
+    const count = filteredAssignments.length;
+
+    if (count === 0) {
+      alert("No assignments to delete");
+      return;
+    }
+
+    const confirmMessage = `Are you sure you want to delete ${count} assignment(s)? This action cannot be undone.`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const assignmentIds = filteredAssignments.map((a) => a.id);
+
+      // Delete all assignments
+      const deletePromises = assignmentIds.map((id) =>
+        fetch(`/api/assignments/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      );
+
+      await Promise.all(deletePromises);
+
+      // Refresh assignments
+      fetchData();
+      alert(`Successfully deleted ${count} assignment(s)`);
+    } catch (error) {
+      console.error("Error deleting assignments:", error);
+      alert("Failed to delete some assignments");
+    }
+  };
+
   const isExpired = (assignment) => {
     if (assignment.completed) return false;
     const dueDate = new Date(assignment.dueDate);
@@ -564,7 +602,19 @@ function AdminAssignments() {
             </div>
             <div className='col-status'>Status</div>
             <div className='col-coins'>Coins</div>
-            <div className='col-actions'>Actions</div>
+            <div className='col-actions'>
+              Actions
+              <button
+                className='bulk-delete-btn'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBulkDelete();
+                }}
+                title={`Delete all ${filteredAssignments.length} filtered assignment(s)`}
+              >
+                <i className='fa-solid fa-trash'></i>
+              </button>
+            </div>
             {isEditingDueDate && <div className='col-select'>Select</div>}
           </div>
           {filteredAssignments.map((assignment) => (

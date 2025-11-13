@@ -409,6 +409,23 @@
   background: rgba(0, 255, 0, 0.1);
 }
 
+.bulk-delete-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.bulk-delete-btn:hover {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
 .col-select {
   display: flex;
   justify-content: center;
