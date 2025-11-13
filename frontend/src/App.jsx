@@ -40,6 +40,7 @@ function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const isPlayPage = location.pathname.startsWith("/play/");
+  const isHomeAvatarPage = location.pathname === "/";
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { unreadCount } = useNotifications();
@@ -57,6 +58,8 @@ function App() {
   const closeDrawer = () => {
     setDrawerOpen(false);
   };
+
+  const isFullWidthPage = isPlayPage || isHomeAvatarPage;
 
   return (
     <div className='app'>
@@ -85,7 +88,7 @@ function App() {
         <Drawer isOpen={drawerOpen} onClose={closeDrawer} />
       )}
 
-      <main className={`main-content ${isPlayPage ? "full-width" : ""}`}>
+      <main className={`main-content ${isFullWidthPage ? "full-width" : ""}`}>
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route
