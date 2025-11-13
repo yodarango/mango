@@ -122,71 +122,86 @@ function Avatars() {
             {avatars.length === 0 ? (
               <p>No avatars found.</p>
             ) : (
-              avatars.map((avatar) => {
-                const warriors = avatarWarriors[avatar.id] || [];
+              avatars
+                .map((avatar) => {
+                  const warriors = avatarWarriors[avatar.id] || [];
 
-                // comma separated by thousands
-                const totalPowerSumOfAllWarriors = Math.ceil(
-                  warriors.reduce(
-                    (sum, warrior) =>
-                      sum + warrior.attack + warrior.defense + warrior.healing,
-                    0
-                  ) +
-                    avatar.coins / 2
-                ).toLocaleString("en-US");
+                  // Calculate total power once
+                  const totalPower = Math.ceil(
+                    warriors.reduce(
+                      (sum, warrior) =>
+                        sum +
+                        warrior.attack +
+                        warrior.defense +
+                        warrior.healing,
+                      0
+                    ) +
+                      avatar.coins / 2
+                  );
 
-                return (
-                  <div key={avatar.id} className='avatar-section'>
-                    <div className='avatar-stats-container'>
-                      <div className='avatar-stats'>
-                        <div className='stat-item'>
-                          <i className='fa-solid fa-khanda'></i>
-                          <span>{warriors.length}</span>
+                  return {
+                    ...avatar,
+                    warriors,
+                    totalPower,
+                    totalPowerFormatted: totalPower.toLocaleString("en-US"),
+                  };
+                })
+                .sort((a, b) => b.totalPower - a.totalPower)
+                .map((avatar) => {
+                  return (
+                    <div key={avatar.id} className='avatar-section'>
+                      <div className='avatar-stats-container'>
+                        <div className='avatar-stats'>
+                          <div className='stat-item'>
+                            <i className='fa-solid fa-khanda'></i>
+                            <span>{avatar.warriors.length}</span>
+                          </div>
+                          <div className='stat-item'>
+                            <i className='fa-solid fa-coins'></i>
+                            <span>{avatar.coins}</span>
+                          </div>
+                          <div className='stat-item'>
+                            <i className='fa-solid fa-chart-line'></i>
+                            <span>Lv {avatar.level}</span>
+                          </div>
                         </div>
-                        <div className='stat-item'>
-                          <i className='fa-solid fa-coins'></i>
-                          <span>{avatar.coins}</span>
-                        </div>
-                        <div className='stat-item'>
-                          <i className='fa-solid fa-chart-line'></i>
-                          <span>Lv {avatar.level}</span>
-                        </div>
-                      </div>
 
-                      <div className='avatar-thumbnail-container'>
-                        <div
-                          className='avatar-thumbnail'
-                          onClick={() => handleAvatarClick(avatar)}
-                        >
-                          <img
-                            src={getAvatarThumbnail(avatar.thumbnail)}
-                            alt={avatar.avatarName}
-                          />
-                        </div>
-                        <h3 style={{ color: getElementColor(avatar.element) }}>
-                          <i className='fa-solid fa-bolt' /> {avatar.avatarName}{" "}
-                          ({totalPowerSumOfAllWarriors})
-                        </h3>
-                      </div>
-                    </div>
-
-                    <div className='avatar-main'>
-                      {/* Warriors below avatar */}
-                      <div className='warriors-grid'>
-                        {warriors.map((warrior) => (
-                          <div key={warrior.id} className='warrior-thumb'>
+                        <div className='avatar-thumbnail-container'>
+                          <div
+                            className='avatar-thumbnail'
+                            onClick={() => handleAvatarClick(avatar)}
+                          >
                             <img
-                              src={warrior.thumbnail}
-                              alt={warrior.name}
-                              title={warrior.name}
+                              src={getAvatarThumbnail(avatar.thumbnail)}
+                              alt={avatar.avatarName}
                             />
                           </div>
-                        ))}
+                          <h3
+                            style={{ color: getElementColor(avatar.element) }}
+                          >
+                            <i className='fa-solid fa-bolt' />{" "}
+                            {avatar.avatarName} ({avatar.totalPowerFormatted})
+                          </h3>
+                        </div>
+                      </div>
+
+                      <div className='avatar-main'>
+                        {/* Warriors below avatar */}
+                        <div className='warriors-grid'>
+                          {avatar.warriors.map((warrior) => (
+                            <div key={warrior.id} className='warrior-thumb'>
+                              <img
+                                src={warrior.thumbnail}
+                                alt={warrior.name}
+                                title={warrior.name}
+                              />
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
+                  );
+                })
             )}
           </div>
         </div>
