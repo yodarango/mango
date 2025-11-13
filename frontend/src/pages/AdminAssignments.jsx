@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import CustomMultiSelect from "../components/CustomMultiSelect";
 import "./AdminAssignments.css";
 
 function AdminAssignments() {
@@ -375,54 +376,34 @@ function AdminAssignments() {
         <div className='filters-grid'>
           {/* Class Filter */}
           {uniqueClasses.length > 0 && (
-            <div className='filter-group'>
-              <label className='filter-label'>
-                <i className='fa-solid fa-school'></i> Class
-              </label>
-              <div className='filter-options'>
-                {uniqueClasses.map((className) => (
-                  <button
-                    key={className}
-                    className={`filter-chip ${
-                      selectedClasses.has(className) ? "active" : ""
-                    }`}
-                    onClick={() => toggleClassFilter(className)}
-                  >
-                    Class {className}
-                    {selectedClasses.has(className) && (
-                      <i className='fa-solid fa-check'></i>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <CustomMultiSelect
+              label='Class'
+              icon='fa-solid fa-school'
+              options={uniqueClasses.map((className) => ({
+                value: className,
+                label: `Class ${className}`,
+              }))}
+              selectedValues={selectedClasses}
+              onToggle={toggleClassFilter}
+              placeholder='All classes'
+            />
           )}
 
           {/* Student Filter */}
-          <div className='filter-group'>
-            <label className='filter-label'>
-              <i className='fa-solid fa-user'></i> Student
-            </label>
-            <div className='filter-options scrollable'>
-              {Object.values(students).map((student) => (
-                <button
-                  key={student.id}
-                  className={`filter-chip ${
-                    selectedStudents.has(student.id) ? "active" : ""
-                  }`}
-                  onClick={() => toggleStudentFilter(student.id)}
-                >
-                  {student.name}
-                  {selectedStudents.has(student.id) && (
-                    <i className='fa-solid fa-check'></i>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CustomMultiSelect
+            label='Student'
+            icon='fa-solid fa-user'
+            options={Object.values(students).map((student) => ({
+              value: student.id,
+              label: student.name,
+            }))}
+            selectedValues={selectedStudents}
+            onToggle={toggleStudentFilter}
+            placeholder='All students'
+          />
 
           {/* Date Range Filter */}
-          <div className='filter-group'>
+          <div className='filter-group date-range-group'>
             <label className='filter-label'>
               <i className='fa-solid fa-calendar'></i> Due Date Range
             </label>
