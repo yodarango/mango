@@ -309,29 +309,31 @@ function AvatarProfile() {
         )}
 
         <div className='warriors-section'>
-          <h2>
+          <h2 style={{ color: "yellow" }}>
             <i className='fa-solid fa-khanda'></i> Warriors
           </h2>
-          <p className='section-subtitle'>
-            Your collection of warriors ready for battle
+          <p className='section-subtitle' style={{ color: "white" }}>
+            Your warriors are ordered from most to least powerful
           </p>
 
           <div className='warriors-grid'>
             {warriors.length === 0 ? (
               <p>No warriors yet. Purchase some with your coins!</p>
             ) : (
-              <StoreGrid
-                items={warriors.sort(
-                  (a, b) =>
-                    b.attack +
-                    b.defense +
-                    b.healing -
-                    (a.attack + a.defense + a.healing)
-                )}
-                userCoins={avatar.coins}
-                userLevel={avatar.level}
-                alwasyActive
-              />
+              <div>
+                <StoreGrid
+                  items={warriors.sort(
+                    (a, b) =>
+                      b.attack +
+                      b.defense +
+                      b.healing -
+                      (a.attack + a.defense + a.healing)
+                  )}
+                  userCoins={avatar.coins}
+                  userLevel={avatar.level}
+                  alwasyActive
+                />
+              </div>
             )}
           </div>
         </div>

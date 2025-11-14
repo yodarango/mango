@@ -1778,42 +1778,61 @@ func getStreak(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Query for the most recent completed assignment with assignment_id = "1005"
-	var dueDate sql.NullTime
-	err = db.QueryRow(`SELECT due_date FROM assignments
-		WHERE user_id = ? AND assignment_id = "1005" AND completed = 1
-		ORDER BY due_date DESC LIMIT 1`, targetUserID).Scan(&dueDate)
+	// Query all assignment_id = "1005" assignments ordered by due_date DESC
+	rows, err := db.Query(`SELECT due_date, completed FROM assignments
+		WHERE user_id = ? AND assignment_id = "1005"
+		ORDER BY due_date DESC`, targetUserID)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			// No completed daily vocab assignments
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]string{"streak": "0 days"})
-			return
-		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	defer rows.Close()
 
-	if !dueDate.Valid {
+	// Collect all assignments
+	type Assignment struct {
+		DueDate   time.Time
+		Completed bool
+	}
+	var assignments []Assignment
+
+	for rows.Next() {
+		var a Assignment
+		var dueDate sql.NullTime
+		var completed int
+
+		err := rows.Scan(&dueDate, &completed)
+		if err != nil {
+			continue
+		}
+
+		if dueDate.Valid {
+			a.DueDate = dueDate.Time
+			a.Completed = completed == 1
+			assignments = append(assignments, a)
+		}
+	}
+
+	// If no assignments, streak is 0
+	if len(assignments) == 0 {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"streak": "0 days"})
 		return
 	}
 
-	// Calculate days since the most recent completed assignment
-	completedDate := dueDate.Time
-	now := time.Now()
-
-	// Reset time to midnight for accurate day calculation
-	completedDate = time.Date(completedDate.Year(), completedDate.Month(), completedDate.Day(), 0, 0, 0, 0, completedDate.Location())
-	now = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
-
-	daysSince := int(now.Sub(completedDate).Hours() / 24)
+	// Count consecutive days from the most recent assignment until we hit an incomplete one
+	streakDays := 0
+	for _, assignment := range assignments {
+		if !assignment.Completed {
+			// Hit an incomplete assignment, stop counting
+			break
+		}
+		streakDays++
+	}
 
 	// Format the response
-	streakText := fmt.Sprintf("%d day", daysSince)
-	if daysSince != 1 {
+	streakText := fmt.Sprintf("%d day", streakDays)
+	if streakDays != 1 {
 		streakText += "s"
 	}
 
