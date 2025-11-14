@@ -68,7 +68,7 @@ function AvatarProfile() {
   const isAdmin = user && user.role === "admin";
 
   return (
-    <div className='page profile-page'>
+    <div className='page profile-page-fhdn10'>
       <div className='profile-actions'>
         <button className='back-button' onClick={() => navigate("/")}>
           ← Back to Gallery
