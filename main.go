@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -1764,8 +1765,65 @@ func getUnreadCount(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]int{"count": count})
 }
 
+// Get streak for a user
+func getStreak(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	userIDParam := vars["userId"]
+
+	// Parse the userId parameter
+	targetUserID, err := strconv.Atoi(userIDParam)
+	if err != nil {
+		http.Error(w, "Invalid userId parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Query for the most recent completed assignment with assignment_id = "1005"
+	var dueDate sql.NullTime
+	err = db.QueryRow(`SELECT due_date FROM assignments
+		WHERE user_id = ? AND assignment_id = "1005" AND completed = 1
+		ORDER BY due_date DESC LIMIT 1`, targetUserID).Scan(&dueDate)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// No completed daily vocab assignments
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]string{"streak": "0 days"})
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if !dueDate.Valid {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"streak": "0 days"})
+		return
+	}
+
+	// Calculate days since the most recent completed assignment
+	completedDate := dueDate.Time
+	now := time.Now()
+
+	// Reset time to midnight for accurate day calculation
+	completedDate = time.Date(completedDate.Year(), completedDate.Month(), completedDate.Day(), 0, 0, 0, 0, completedDate.Location())
+	now = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+
+	daysSince := int(now.Sub(completedDate).Hours() / 24)
+
+	// Format the response
+	streakText := fmt.Sprintf("%d day", daysSince)
+	if daysSince != 1 {
+		streakText += "s"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"streak": streakText})
+}
+
 // Get user's assignments
 func getAssignments(w http.ResponseWriter, r *http.Request) {
+
 	claims, err := getUserFromToken(r)
 	if err != nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -3952,6 +4010,7 @@ func main() {
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
 	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
+	api.HandleFunc("/streak/{userId}", getStreak).Methods("GET")
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")

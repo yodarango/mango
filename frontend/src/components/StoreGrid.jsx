@@ -146,12 +146,14 @@ function StoreGrid({
         )}
       </div>
 
-      <div className='results-info'>
-        <span className='results-count'>
-          {filteredItems.length} {filteredItems.length === 1 ? "item" : "items"}{" "}
-          found
-        </span>
-      </div>
+      {hasActiveFilters && (
+        <div className='results-info'>
+          <span className='results-count'>
+            {filteredItems.length}{" "}
+            {filteredItems.length === 1 ? "item" : "items"} found
+          </span>
+        </div>
+      )}
 
       {filteredItems.length === 0 ? (
         <div className='no-results'>

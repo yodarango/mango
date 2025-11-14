@@ -1,0 +1,38 @@
+.streak-badge {
+  position: relative;
+  background: #e6ebe8;
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.streak-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.streak-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--charcoal-medium);
+  min-width: 30px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .streak-badge {
+    padding: 0.4rem 0.8rem;
+  }
+
+  .streak-emoji {
+    font-size: 1.2rem;
+  }
+
+  .streak-number {
+    font-size: 1rem;
+    min-width: 25px;
+  }
+}
