@@ -20,8 +20,15 @@
     text-align: center;
     font-size: 24px;
     font-weight: black;
-    padding: 0 0 2rem;
+    padding: 0;
     color: white;
+  }
+
+  .desc-det-2 {
+    padding: 0 0 2rem 0;
+    color: rgb(0, 238, 255);
+    text-align: center;
+    font-size: 22px;
   }
 
   .avatars-container {
@@ -34,9 +41,30 @@
   }
 
   .avatar-section {
-    background: var(--charcoal-dark);
+    background: var(--charcoal-medium);
     border-radius: 12px;
     overflow: hidden;
+    padding: 8px;
+    position: relative;
+
+    .position-indicator {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 50px;
+      width: 50px;
+      background-color: #f2f2f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    .kingdom-of {
+      text-align: center;
+      margin-bottom: 10px;
+    }
   }
 
   /* Responsive widths */
@@ -131,8 +159,8 @@
   }
 
   .warrior-thumb {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 6px;
     overflow: hidden;
     cursor: pointer;

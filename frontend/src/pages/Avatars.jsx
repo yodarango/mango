@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import "./Avatars.css";
 
 function Avatars() {
+  const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [avatarWarriors, setAvatarWarriors] = useState({});
   const [loading, setLoading] = useState(true);
@@ -150,7 +152,12 @@ function Avatars() {
           <p className='desc-det'>
             Kingoms are ranked from most to least powerful
           </p>
-          <p>The current King of the Land 👑 is {}</p>
+          {avatarsFromFirstToLast && (
+            <p className='desc-det-2'>
+              The current King of the Land 👑 is{" "}
+              {avatarsFromFirstToLast[0]?.name}
+            </p>
+          )}
 
           <div className='avatars-container'>
             {avatars.length === 0 ? (
@@ -158,9 +165,16 @@ function Avatars() {
             ) : (
               avatarsFromFirstToLast
                 .sort((a, b) => b.totalPower - a.totalPower)
-                .map((avatar) => {
+                .map((avatar, i) => {
                   return (
                     <div key={avatar.id} className='avatar-section'>
+                      <p
+                        className='kingdom-of'
+                        style={{ color: getElementColor(avatar.element) }}
+                      >
+                        Kingdom of {avatar.element}
+                      </p>
+                      {i === 0 && <div className='position-indicator'>👑</div>}
                       <div className='avatar-stats-container'>
                         <div className='avatar-stats'>
                           <div className='stat-item'>
@@ -189,6 +203,7 @@ function Avatars() {
                           </div>
                           <h3
                             style={{ color: getElementColor(avatar.element) }}
+                            onClick={() => navigate(`/avatar/${avatar.id}`)}
                           >
                             <i className='fa-solid fa-bolt' />{" "}
                             {avatar.avatarName} ({avatar.totalPowerFormatted})
