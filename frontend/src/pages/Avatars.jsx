@@ -86,7 +86,7 @@ function Avatars() {
   };
 
   const getElementColor = (element) => {
-    if (element.includes("Metal")) return "#2c2c2c";
+    if (element.includes("Metal")) return "#9d9d9dff";
     if (element.includes("Electricity")) return "#ffd700";
     if (element.includes("Wind")) return "#9b59b6";
     if (element.includes("Water")) return "#4a90e2";
@@ -111,6 +111,29 @@ function Avatars() {
     return "#2c3e50";
   };
 
+  const avatarsFromFirstToLast = avatars
+    .map((avatar) => {
+      const warriors = avatarWarriors[avatar.id] || [];
+
+      // Calculate total power once
+      const totalPower = Math.ceil(
+        warriors.reduce(
+          (sum, warrior) =>
+            sum + warrior.attack + warrior.defense + warrior.healing,
+          0
+        ) +
+          avatar.coins / 2
+      );
+
+      return {
+        ...avatar,
+        warriors,
+        totalPower,
+        totalPowerFormatted: totalPower.toLocaleString("en-US"),
+      };
+    })
+    .sort((a, b) => b.totalPower - a.totalPower);
+
   if (loading) {
     return (
       <div className='page'>
@@ -127,35 +150,13 @@ function Avatars() {
           <p className='desc-det'>
             Kingoms are ranked from most to least powerful
           </p>
+          <p>The current King of the Land 👑 is {}</p>
 
           <div className='avatars-container'>
             {avatars.length === 0 ? (
               <p>No avatars found.</p>
             ) : (
-              avatars
-                .map((avatar) => {
-                  const warriors = avatarWarriors[avatar.id] || [];
-
-                  // Calculate total power once
-                  const totalPower = Math.ceil(
-                    warriors.reduce(
-                      (sum, warrior) =>
-                        sum +
-                        warrior.attack +
-                        warrior.defense +
-                        warrior.healing,
-                      0
-                    ) +
-                      avatar.coins / 2
-                  );
-
-                  return {
-                    ...avatar,
-                    warriors,
-                    totalPower,
-                    totalPowerFormatted: totalPower.toLocaleString("en-US"),
-                  };
-                })
+              avatarsFromFirstToLast
                 .sort((a, b) => b.totalPower - a.totalPower)
                 .map((avatar) => {
                   return (
@@ -224,7 +225,7 @@ function Avatars() {
       {/* Popup Portal - Outside the main container */}
       {selectedAvatar &&
         createPortal(
-          <div className='avatar-popup-overlay' onClick={closePopup}>
+          <div className='avatar-popup-overlay-2373h' onClick={closePopup}>
             <div className='avatar-popup' onClick={(e) => e.stopPropagation()}>
               <button className='popup-close' onClick={closePopup}>
                 <i className='fa-solid fa-times'></i>
@@ -243,19 +244,8 @@ function Avatars() {
                       {selectedAvatar.avatarName}
                     </p>
                     <p style={{ color: "white" }}>
-                      Total power:{" "}
-                      {Math.ceil(
-                        (avatarWarriors[selectedAvatar.id] || []).reduce(
-                          (sum, warrior) =>
-                            sum +
-                            warrior.attack +
-                            warrior.defense +
-                            warrior.healing,
-                          0
-                        ) +
-                          selectedAvatar.coins / 2
-                      ).toLocaleString("en-US")}
-                    </p>{" "}
+                      Total power: {selectedAvatar.totalPowerFormatted}
+                    </p>
                     <p style={{ color: "yellow" }}>
                       Total coins: {selectedAvatar.coins}
                     </p>
@@ -303,8 +293,11 @@ function Avatars() {
       {/* Warrior Popup Portal */}
       {selectedWarrior &&
         createPortal(
-          <div className='warrior-popup-overlay' onClick={closeWarriorPopup}>
-            <div className='warrior-popup' onClick={(e) => e.stopPropagation()}>
+          <div
+            className='avatar-popup-overlay-2373h'
+            onClick={closeWarriorPopup}
+          >
+            <div className='avatar-popup' onClick={(e) => e.stopPropagation()}>
               <button className='popup-close' onClick={closeWarriorPopup}>
                 <i className='fa-solid fa-times'></i>
               </button>
