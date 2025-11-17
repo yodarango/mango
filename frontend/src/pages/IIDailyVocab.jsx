@@ -21,6 +21,60 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>trabajo</strong> (masc.) — “work, job.” Tip: think “I{" "}
+            <em>try</em> hard at work” → “tra-BA-jo.”
+          </p>
+          <ul>
+            <li>Tengo mucho trabajo hoy. (I have a lot of work today.)</li>
+            <li>Me gusta mi trabajo. (I like my job.)</li>
+            <li>Terminé el trabajo. (I finished the work.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>llamada</strong> (fem.) — “call (phone call).” Tip: comes
+            from <em>llamar</em> (to call).
+          </p>
+          <ul>
+            <li>Hice una llamada a mi mamá. (I made a call to my mom.)</li>
+            <li>Recibí una llamada importante. (I got an important call.)</li>
+            <li>La llamada fue muy corta. (The call was very short.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>pasar</strong> — “to pass, to happen, to spend (time).” Tip:
+            looks like “pass.”
+          </p>
+          <ul>
+            <li>¿Qué pasa? (What’s happening?)</li>
+            <li>Paso tiempo con mis amigos. (I spend time with my friends.)</li>
+            <li>El tren va a pasar. (The train is going to pass.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>llevar</strong> — “to carry, to take, to wear.” Tip: you
+            “carry” what you “wear.”
+          </p>
+          <ul>
+            <li>Llevo mi mochila. (I carry my backpack.)</li>
+            <li>
+              Ella lleva una chaqueta roja. (She is wearing a red jacket.)
+            </li>
+            <li>Llevamos comida a la fiesta. (We take food to the party.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3> 
+      <section>
+        <div>
+          <p>
             <strong>vida</strong> (fem.) — “life.” Tip: “¡Viva!” = alive → think
             life.
           </p>
@@ -69,7 +123,7 @@ export const IIDailyVocab = () => {
             <li>Dejé mi mochila en casa. (I left my backpack at home.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

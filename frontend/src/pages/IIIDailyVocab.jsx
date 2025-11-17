@@ -21,6 +21,85 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
+            but it means “name.”
+          </p>
+          <ul>
+            <li>Mi nombre es Ana. (My name is Ana.)</li>
+            <li>¿Cuál es tu nombre? (What is your name?)</li>
+            <li>Escribe tu nombre aquí. (Write your name here.)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>padre</strong> (masc.) — “father.” Tip: like “dad” in
+            “paternal.”
+          </p>
+          <ul>
+            <li>Mi padre es muy amable. (My father is very kind.)</li>
+            <li>Veo a mi padre cada día. (I see my father every day.)</li>
+            <li>
+              Su padre trabaja en la escuela. (His/Her father works at the
+              school.)
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>chico</strong> (masc.) — “guy, boy.” Tip: think “little kid”
+            → “chico.”
+          </p>
+          <ul>
+            <li>Ese chico es mi amigo. (That guy/boy is my friend.)</li>
+            <li>El chico juega fútbol. (The boy plays soccer.)</li>
+            <li>
+              Hay un chico nuevo en la clase. (There is a new guy/boy in class.)
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>conocer</strong> — “to know, to meet (people/places).” Tip:
+            conocer = be familiar, meet.
+          </p>
+          <ul>
+            <li>Quiero conocer a tu familia. (I want to meet your family.)</li>
+            <li>Conozco esta ciudad. (I know this city.)</li>
+            <li>¿Conoces a Mario? (Do you know Mario?)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>tomar</strong> — “to take, to drink.” Tip: “tomar agua” =
+            drink water.
+          </p>
+          <ul>
+            <li>Tomo agua cada día. (I drink water every day.)</li>
+            <li>Tomamos el autobús. (We take the bus.)</li>
+            <li>¿Quieres tomar jugo? (Do you want to drink juice?)</li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            <strong>encontrar</strong> — “to find, to encounter.” Tip: looks
+            like “encounter.”
+          </p>
+          <ul>
+            <li>Quiero encontrar mi libro. (I want to find my book.)</li>
+            <li>No puedo encontrar mi lápiz. (I can’t find my pencil.)</li>
+            <li>Encontramos una solución. (We found a solution.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>hogar</strong> (masc.) — “home” (cozy family place). Tip:
             “home” and “hogar” both start with “ho.”
           </p>
@@ -91,7 +170,7 @@ export const IIIDailyVocab = () => {
             <li>Encontramos una solución. (We found a solution.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };
