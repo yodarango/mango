@@ -63,6 +63,47 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>crear</strong> — “to create.” Tip: looks like “create” →
+            same meaning.
+          </p>
+          <ul>
+            <li>Me gusta crear dibujos. (I like to create drawings.)</li>
+            <li>
+              Vamos a crear un proyecto. (We are going to create a project.)
+            </li>
+            <li>Puedes crear una idea nueva. (You can create a new idea.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>evitar</strong> — “to avoid, to prevent.” Tip: think “evade”
+            → avoid.
+          </p>
+          <ul>
+            <li>Quiero evitar problemas. (I want to avoid problems.)</li>
+            <li>Evita correr en el pasillo. (Avoid running in the hallway.)</li>
+            <li>Podemos evitar el ruido. (We can prevent the noise.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>quedar</strong> — “to stay, remain, be left.” Tip: think
+            “stay and <em>k</em>eep.”
+          </p>
+          <ul>
+            <li>Me quiero quedar aquí. (I want to stay here.)</li>
+            <li>Solo quedan dos. (Only two are left.)</li>
+            <li>
+              La camisa me queda bien. (The shirt fits me / stays well on me.)
+            </li>
+          </ul>
+        </div>
+      </section>
+      {/* <section>
+        <div>
+          <p>
             <strong>conocer</strong> — “to know, to meet (people/places).” Tip:
             conocer = be familiar, meet.
           </p>
@@ -94,7 +135,7 @@ export const IIIDailyVocab = () => {
             <li>Encontramos una solución. (We found a solution.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>
