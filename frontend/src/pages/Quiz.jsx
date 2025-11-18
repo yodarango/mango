@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import "./Quiz.css";
 
 function Quiz() {
   const { assignmentId } = useParams(); // Get assignmentId from URL (e.g., "1001")
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const warriorIdFromUrl = searchParams.get("warrior");
   const [assignment, setAssignment] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -19,6 +21,7 @@ function Quiz() {
   const [assets, setAssets] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [avatarId, setAvatarId] = useState(null);
+  const [isRetake, setIsRetake] = useState(false);
 
   // Fetch user's assets
   useEffect(() => {
@@ -63,6 +66,16 @@ function Quiz() {
               (asset) => asset.status === "warrior"
             );
             setAssets(ownedAssets);
+
+            // If warrior ID is provided in URL, auto-select that warrior
+            if (warriorIdFromUrl) {
+              const preselectedWarrior = ownedAssets.find(
+                (asset) => asset.id === parseInt(warriorIdFromUrl)
+              );
+              if (preselectedWarrior) {
+                setSelectedAsset(preselectedWarrior);
+              }
+            }
           }
         }
       } catch (err) {
@@ -209,6 +222,17 @@ function Quiz() {
     setQuizStarted(true);
   };
 
+  const handleRetake = () => {
+    // Reset quiz state for retake
+    setIsRetake(true);
+    setQuizCompleted(false);
+    setQuizStarted(false);
+    setResults(null);
+    setAnswers({});
+    setTypedAnswers({});
+    setCurrentQuestion(0);
+  };
+
   const handleAnswer = (questionId, answerIndex) => {
     setAnswers((prev) => ({
       ...prev,
@@ -341,6 +365,7 @@ function Quiz() {
           userAnswers: userAnswersForBackend, // Include user answers
           assetId: selectedAsset?.id, // Include selected asset ID
           xpGain: xpGain, // Include XP gain
+          isRetake: isRetake, // Include retake flag
         }),
       });
 
@@ -459,7 +484,7 @@ function Quiz() {
               </li>
             </ul>
 
-            {assets.length > 0 && (
+            {assets.length > 0 && !warriorIdFromUrl && (
               <div className='asset-selection'>
                 <p>
                   <strong>Select a warrior to gain XP:</strong>
@@ -490,6 +515,27 @@ function Quiz() {
                     {selectedAsset.name} will gain XP based on your performance
                   </p>
                 )}
+              </div>
+            )}
+
+            {warriorIdFromUrl && selectedAsset && (
+              <div className='asset-selection'>
+                <p>
+                  <strong>Training warrior:</strong>
+                </p>
+                <div className='selected-warrior-display'>
+                  <img src={selectedAsset.thumbnail} alt={selectedAsset.name} />
+                  <div className='warrior-info'>
+                    <div className='warrior-name'>{selectedAsset.name}</div>
+                    <div className='warrior-level'>
+                      Level {selectedAsset.level}
+                    </div>
+                    <div className='warrior-xp'>
+                      {selectedAsset.xp || 0} /{" "}
+                      {selectedAsset.xpRequired || 100} XP
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -742,6 +788,11 @@ function Quiz() {
           </div>
 
           <div className='results-actions'>
+            {assignment.assignmentId === "1005" && (
+              <button onClick={handleRetake} className='btn-retake'>
+                <i className='fa-solid fa-rotate'></i> Retake Quiz (10% rewards)
+              </button>
+            )}
             <button
               onClick={() => navigate("/assignments")}
               className='btn-close'

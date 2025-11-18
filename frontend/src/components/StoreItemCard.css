@@ -529,3 +529,31 @@
   padding-top: 1.5rem;
   border-top: 2px solid var(--charcoal-light);
 }
+
+.train-btn {
+  background: var(--charcoal-light);
+  color: var(--accent-orange);
+  border: 2px solid var(--accent-orange);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.train-btn:hover {
+  background: var(--accent-orange);
+  color: var(--charcoal-dark);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
+}
+
+.train-btn:active {
+  transform: scale(0.98);
+}

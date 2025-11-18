@@ -152,6 +152,7 @@ type Assignment struct {
 	DueDate       time.Time       `json:"dueDate"`
 	CoinsReceived int             `json:"coinsReceived"`
 	Data          json.RawMessage `json:"data,omitempty"`
+	RetakeCount   int             `json:"retakeCount"`
 }
 
 // QuizQuestion represents a standardized quiz question structure
@@ -467,6 +468,12 @@ func initDB() {
 	_, err = db.Exec(`ALTER TABLE assignments ADD COLUMN data TEXT`)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add data column: %v", err)
+	}
+
+	// Add retake_count column if it doesn't exist (for existing databases)
+	_, err = db.Exec(`ALTER TABLE assignments ADD COLUMN retake_count INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add retake_count column: %v", err)
 	}
 
 	createGamesTableSQL := `CREATE TABLE IF NOT EXISTS games (
@@ -1849,7 +1856,7 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data, COALESCE(retake_count, 0)
 		FROM assignments WHERE user_id = ? ORDER BY due_date ASC`, claims.UserID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -1864,8 +1871,9 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		var dueDate sql.NullTime
 		var coinsReceived sql.NullInt64
 		var data sql.NullString
+		var retakeCount sql.NullInt64
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data, &retakeCount); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1878,6 +1886,9 @@ func getAssignments(w http.ResponseWriter, r *http.Request) {
 		}
 		if data.Valid && data.String != "" {
 			assignment.Data = json.RawMessage(data.String)
+		}
+		if retakeCount.Valid {
+			assignment.RetakeCount = int(retakeCount.Int64)
 		}
 		assignments = append(assignments, assignment)
 	}
@@ -2195,11 +2206,12 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 	var dueDate sql.NullTime
 	var coinsReceived sql.NullInt64
 	var data sql.NullString
+	var retakeCount sql.NullInt64
 
 	// Fetch assignment by assignment_id and user_id
-	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data, COALESCE(retake_count, 0)
 		FROM assignments WHERE id = ?`, assignmentID).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data, &retakeCount)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -2219,6 +2231,9 @@ func getStudentAssignment(w http.ResponseWriter, r *http.Request) {
 	}
 	if data.Valid && data.String != "" {
 		assignment.Data = json.RawMessage(data.String)
+	}
+	if retakeCount.Valid {
+		assignment.RetakeCount = int(retakeCount.Int64)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -2241,7 +2256,7 @@ func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
+	rows, err := db.Query(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data, COALESCE(retake_count, 0)
 		FROM assignments ORDER BY due_date DESC`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -2256,8 +2271,9 @@ func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 		var dueDate sql.NullTime
 		var coinsReceived sql.NullInt64
 		var data sql.NullString
+		var retakeCount sql.NullInt64
 		if err := rows.Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data); err != nil {
+			&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data, &retakeCount); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -2270,6 +2286,9 @@ func getAllAssignments(w http.ResponseWriter, r *http.Request) {
 		}
 		if data.Valid && data.String != "" {
 			assignment.Data = json.RawMessage(data.String)
+		}
+		if retakeCount.Valid {
+			assignment.RetakeCount = int(retakeCount.Int64)
 		}
 		assignments = append(assignments, assignment)
 	}
@@ -2302,10 +2321,11 @@ func getAssignmentByID(w http.ResponseWriter, r *http.Request) {
 	var dueDate sql.NullTime
 	var coinsReceived sql.NullInt64
 	var data sql.NullString
+	var retakeCount sql.NullInt64
 
-	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data
+	err = db.QueryRow(`SELECT id, coins, assignment_id, user_id, completed, name, due_date, coins_received, data, COALESCE(retake_count, 0)
 		FROM assignments WHERE id = ?`, id).Scan(&assignment.ID, &assignment.Coins, &assignment.AssignmentID,
-		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data)
+		&assignment.UserID, &completed, &assignment.Name, &dueDate, &coinsReceived, &data, &retakeCount)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -2325,6 +2345,9 @@ func getAssignmentByID(w http.ResponseWriter, r *http.Request) {
 	}
 	if data.Valid && data.String != "" {
 		assignment.Data = json.RawMessage(data.String)
+	}
+	if retakeCount.Valid {
+		assignment.RetakeCount = int(retakeCount.Int64)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -2497,6 +2520,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		UserAnswers   []map[string]interface{} `json:"userAnswers,omitempty"`
 		AssetID       *int                     `json:"assetId,omitempty"`
 		XPGain        int                      `json:"xpGain,omitempty"`
+		IsRetake      bool                     `json:"isRetake,omitempty"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -2504,8 +2528,8 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("Submit assignment request: user_id=%d, assignment_db_id=%d, coins=%d, asset_id=%v, xp_gain=%d",
-		claims.UserID, req.AssignmentID, req.CoinsReceived, req.AssetID, req.XPGain)
+	log.Printf("Submit assignment request: user_id=%d, assignment_db_id=%d, coins=%d, asset_id=%v, xp_gain=%d, is_retake=%v",
+		claims.UserID, req.AssignmentID, req.CoinsReceived, req.AssetID, req.XPGain, req.IsRetake)
 
 	// Start transaction
 	tx, err := db.Begin()
@@ -2533,6 +2557,27 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 
 	// Use the assignment database ID directly (no need to query)
 	assignmentDBID := req.AssignmentID
+
+	// Check if this is a retake and get assignment info
+	var assignmentIDStr string
+	var completed int
+	var retakeCount sql.NullInt64
+	err = tx.QueryRow(`SELECT assignment_id, completed, COALESCE(retake_count, 0) FROM assignments WHERE id = ?`,
+		assignmentDBID).Scan(&assignmentIDStr, &completed, &retakeCount)
+	if err != nil {
+		http.Error(w, "Assignment not found", http.StatusNotFound)
+		return
+	}
+
+	// If this is a retake for assignment_id 1005, apply 10% rewards
+	actualCoinsReceived := req.CoinsReceived
+	actualXPGain := req.XPGain
+	if req.IsRetake && assignmentIDStr == "1005" {
+		actualCoinsReceived = int(float64(req.CoinsReceived) * 0.1)
+		actualXPGain = int(float64(req.XPGain) * 0.1)
+		log.Printf("Retake detected for assignment 1005: reducing rewards to 10%% (coins: %d -> %d, xp: %d -> %d)",
+			req.CoinsReceived, actualCoinsReceived, req.XPGain, actualXPGain)
+	}
 
 	// If userAnswers are provided, update the assignment data with user answers
 	if req.UserAnswers != nil && len(req.UserAnswers) > 0 {
@@ -2578,34 +2623,58 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Update assignment with new data, mark as completed, and set coins_received
-		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, data = ?
-			WHERE id = ?`, req.CoinsReceived, string(updatedData), assignmentDBID)
+		// If it's a retake, increment retake_count
+		if req.IsRetake {
+			newRetakeCount := 0
+			if retakeCount.Valid {
+				newRetakeCount = int(retakeCount.Int64) + 1
+			} else {
+				newRetakeCount = 1
+			}
+			_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, data = ?, retake_count = ?
+				WHERE id = ?`, actualCoinsReceived, string(updatedData), newRetakeCount, assignmentDBID)
+		} else {
+			_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, data = ?
+				WHERE id = ?`, actualCoinsReceived, string(updatedData), assignmentDBID)
+		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	} else {
 		// No user answers provided, just mark as completed
-		_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
-			WHERE id = ?`, req.CoinsReceived, assignmentDBID)
+		// If it's a retake, increment retake_count
+		if req.IsRetake {
+			newRetakeCount := 0
+			if retakeCount.Valid {
+				newRetakeCount = int(retakeCount.Int64) + 1
+			} else {
+				newRetakeCount = 1
+			}
+			_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?, retake_count = ?
+				WHERE id = ?`, actualCoinsReceived, newRetakeCount, assignmentDBID)
+		} else {
+			_, err = tx.Exec(`UPDATE assignments SET completed = 1, coins_received = ?
+				WHERE id = ?`, actualCoinsReceived, assignmentDBID)
+		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
-	// Add coins to avatar
-	newCoins := currentCoins + req.CoinsReceived
+	// Add coins to avatar (use actual coins after retake reduction)
+	newCoins := currentCoins + actualCoinsReceived
 	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Handle asset XP update if asset was selected
+	// Handle asset XP update if asset was selected (use actual XP after retake reduction)
 	var assetLeveledUp bool
 	var assetData map[string]interface{}
-	if req.AssetID != nil && req.XPGain > 0 {
+	if req.AssetID != nil && actualXPGain > 0 {
 		// Get current asset data
 		var currentXP, xpRequired, level, attack, defense, healing, cost int
 		var name, thumbnail string
@@ -2615,8 +2684,8 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 			// Asset not found or doesn't belong to user - just log and continue
 			log.Printf("Warning: Asset %d not found or doesn't belong to avatar %d: %v", *req.AssetID, avatarID, err)
 		} else {
-			// Add XP
-			newXP := currentXP + req.XPGain
+			// Add XP (use actual XP after retake reduction)
+			newXP := currentXP + actualXPGain
 
 			// Check if leveled up
 			if newXP >= xpRequired {
@@ -2652,7 +2721,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 					"newDefense": newDefense,
 					"oldHealing": healing,
 					"newHealing": newHealing,
-					"xpGained":   req.XPGain,
+					"xpGained":   actualXPGain,
 				}
 			} else {
 				// Just update XP
@@ -2666,7 +2735,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 				assetData = map[string]interface{}{
 					"name":      name,
 					"thumbnail": thumbnail,
-					"xpGained":  req.XPGain,
+					"xpGained":  actualXPGain,
 				}
 			}
 		}

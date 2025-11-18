@@ -92,6 +92,22 @@ function Drawer({ isOpen, onClose }) {
               </Link>
             )}
 
+            <button
+              className='drawer-link'
+              onClick={() => {
+                window.location.reload();
+              }}
+              style={{
+                border: "none",
+                background: "none",
+                width: "100%",
+                textAlign: "left",
+              }}
+            >
+              <i className='fa-solid fa-rotate'></i>
+              <span>Refresh</span>
+            </button>
+
             {/* Admin-only links */}
             {user.role === "admin" && (
               <>

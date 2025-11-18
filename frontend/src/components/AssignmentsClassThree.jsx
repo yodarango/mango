@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./AssignmentsClassThree.css";
 
 function AssignmentsClassThree() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const assignmentFilter = searchParams.get("assignment");
+  const warriorId = searchParams.get("warrior");
 
   useEffect(() => {
     fetchAssignments();
@@ -20,7 +23,13 @@ function AssignmentsClassThree() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        let data = await response.json();
+
+        // Filter by assignment_id if provided in query params
+        if (assignmentFilter) {
+          data = data.filter((a) => a.assignmentId === assignmentFilter);
+        }
+
         // Sort by due date - newest (most recent) first
         const sorted = data.sort((a, b) => {
           const dateA = new Date(a.dueDate);
@@ -117,7 +126,9 @@ function AssignmentsClassThree() {
             return (
               <Link
                 key={assignment.id}
-                to={`/assignments/quiz/${assignment.id}`}
+                to={`/assignments/quiz/${assignment.id}${
+                  warriorId ? `?warrior=${warriorId}` : ""
+                }`}
                 className='assignment-link'
               >
                 <i className='fa-solid fa-file-lines'></i>

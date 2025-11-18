@@ -331,6 +331,7 @@ function AvatarProfile() {
                   )}
                   userCoins={avatar.coins}
                   userLevel={avatar.level}
+                  canTrain
                   alwasyActive
                 />
               </div>

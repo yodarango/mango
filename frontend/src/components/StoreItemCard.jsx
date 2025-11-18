@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./StoreItemCard.css";
 
 function StoreItemCard({
@@ -9,7 +10,9 @@ function StoreItemCard({
   purchasing,
   onPurchase,
   alwasyActive,
+  canTrain,
 }) {
+  const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
   const [requesting, setRequesting] = useState(false);
 
@@ -277,6 +280,21 @@ function StoreItemCard({
                   <i className='fa-solid fa-wand-magic-sparkles'></i>
                   <span className='ability-label'>Ability:</span>
                   <span className='ability-name'>{item.ability}</span>
+                </div>
+              )}
+
+              {canTrain && (
+                <div className='popup-footer'>
+                  <button
+                    className='train-btn'
+                    onClick={() =>
+                      navigate(
+                        `/assignments?assignment=1005&warrior=${item.id}`
+                      )
+                    }
+                  >
+                    <i className='fa-solid fa-dumbbell'></i> Train Warrior
+                  </button>
                 </div>
               )}
 
