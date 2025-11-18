@@ -315,8 +315,15 @@ function Quiz() {
         }
       }
 
+      // Calculate coins earned for this question
+      let coinsEarned = 0;
       if (isCorrect) {
-        totalCoins += q.coins_worth;
+        coinsEarned = q.coins_worth;
+        // Apply 10% reduction for retakes
+        if (isRetake) {
+          coinsEarned = Math.floor(q.coins_worth * 0.1);
+        }
+        totalCoins += coinsEarned;
       }
 
       return {
@@ -326,7 +333,7 @@ function Quiz() {
         userAnswer,
         correctAnswer,
         isCorrect,
-        coinsEarned: isCorrect ? q.coins_worth : 0,
+        coinsEarned,
       };
     });
 
@@ -348,7 +355,12 @@ function Quiz() {
     // Calculate success rate for XP
     const correctAnswers = questionResults.filter((r) => r.isCorrect).length;
     const successRate = (correctAnswers / questions.length) * 100;
-    const xpGain = Math.floor(successRate / 2); // XP gain is half of success rate
+    let xpGain = Math.floor(successRate / 2); // XP gain is half of success rate
+
+    // Apply 10% reduction for retakes (reduce by 90%)
+    if (isRetake) {
+      xpGain = Math.floor(xpGain * 0.1);
+    }
 
     // Submit to backend
     try {
@@ -474,7 +486,17 @@ function Quiz() {
                 Total questions: <strong>{questions.length}</strong>
               </li>
               <li>
-                Total coins possible: <strong>{assignment.coins}</strong>
+                Total coins possible:{" "}
+                <strong>
+                  {isRetake
+                    ? Math.floor(assignment.coins * 0.1)
+                    : assignment.coins}
+                </strong>
+                {isRetake && (
+                  <span style={{ color: "#ff9500", marginLeft: "0.5rem" }}>
+                    (10% of original)
+                  </span>
+                )}
               </li>
               <li>
                 <strong>Each question is timed individually</strong>

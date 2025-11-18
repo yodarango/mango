@@ -1,0 +1,87 @@
+[
+  {
+    "file": "II/daily_vocab_nouns.json",
+    "items": [
+      {
+        "eng": "night",
+        "gender": "feminine",
+        "index": 9,
+        "spa": "noche",
+        "used": null
+      },
+      {
+        "eng": "home",
+        "gender": "masculine",
+        "index": 10,
+        "spa": "hogar",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "II/daily_vocab_verbs.json",
+    "items": [
+      {
+        "eng": "to exist",
+        "index": 917,
+        "spa": "existir",
+        "used": null
+      },
+      {
+        "eng": "to know, to meet",
+        "index": 794,
+        "spa": "conocer",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_nouns.json",
+    "items": [
+      {
+        "eng": "place",
+        "gender": "masculine",
+        "index": 16,
+        "spa": "lugar",
+        "used": null
+      },
+      {
+        "eng": "feel",
+        "gender": "masculine",
+        "index": 17,
+        "spa": "sentimiento",
+        "used": null
+      },
+      {
+        "eng": "girl",
+        "gender": "feminine",
+        "index": 18,
+        "spa": "chica",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_verbs.json",
+    "items": [
+      {
+        "eng": "to carry out, to perform, to achieve",
+        "index": 12,
+        "spa": "realizar",
+        "used": null
+      },
+      {
+        "eng": "to permit, allow",
+        "index": 918,
+        "spa": "permitir",
+        "used": null
+      },
+      {
+        "eng": "to result, to turn out",
+        "index": 13,
+        "spa": "resultar",
+        "used": null
+      }
+    ]
+  }
+]

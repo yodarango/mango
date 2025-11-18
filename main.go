@@ -2569,14 +2569,12 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// If this is a retake for assignment_id 1005, apply 10% rewards
+	// Frontend already applies 10% reduction for retakes, so just use the values as-is
 	actualCoinsReceived := req.CoinsReceived
 	actualXPGain := req.XPGain
 	if req.IsRetake && assignmentIDStr == "1005" {
-		actualCoinsReceived = int(float64(req.CoinsReceived) * 0.1)
-		actualXPGain = int(float64(req.XPGain) * 0.1)
-		log.Printf("Retake detected for assignment 1005: reducing rewards to 10%% (coins: %d -> %d, xp: %d -> %d)",
-			req.CoinsReceived, actualCoinsReceived, req.XPGain, actualXPGain)
+		log.Printf("Retake detected for assignment 1005: using frontend-calculated rewards (coins: %d, xp: %d)",
+			actualCoinsReceived, actualXPGain)
 	}
 
 	// If userAnswers are provided, update the assignment data with user answers
