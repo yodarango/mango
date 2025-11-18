@@ -222,7 +222,33 @@ function Quiz() {
     setQuizStarted(true);
   };
 
-  const handleRetake = () => {
+  const handleRetake = async () => {
+    // Refresh the selected asset's data to show updated XP
+    if (selectedAsset) {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`/api/assets/${selectedAsset.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const updatedAsset = await response.json();
+          setSelectedAsset(updatedAsset);
+
+          // Also update in the assets list
+          setAssets((prevAssets) =>
+            prevAssets.map((asset) =>
+              asset.id === updatedAsset.id ? updatedAsset : asset
+            )
+          );
+        }
+      } catch (error) {
+        console.error("Error refreshing asset data:", error);
+      }
+    }
+
     // Reset quiz state for retake
     setIsRetake(true);
     setQuizCompleted(false);
