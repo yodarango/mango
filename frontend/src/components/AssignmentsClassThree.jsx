@@ -5,6 +5,7 @@ import "./AssignmentsClassThree.css";
 function AssignmentsClassThree() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [warrior, setWarrior] = useState(null);
   const [searchParams] = useSearchParams();
   const assignmentFilter = searchParams.get("assignment");
   const warriorId = searchParams.get("warrior");
@@ -12,6 +13,30 @@ function AssignmentsClassThree() {
   useEffect(() => {
     fetchAssignments();
   }, []);
+
+  useEffect(() => {
+    if (warriorId) {
+      fetchWarrior();
+    }
+  }, [warriorId]);
+
+  const fetchWarrior = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/assets/${warriorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setWarrior(data);
+      }
+    } catch (error) {
+      console.error("Error fetching warrior:", error);
+    }
+  };
 
   const fetchAssignments = async () => {
     try {
@@ -86,12 +111,29 @@ function AssignmentsClassThree() {
 
   return (
     <div className='assignments-class-container'>
-      <div className='assignments-header'>
-        <h1>
-          <i className='fa-solid fa-clipboard-list'></i> Assignments
-        </h1>
-        <p className='subtitle'>Complete your Spanish Quest assignments</p>
-      </div>
+      {assignmentFilter && warriorId && warrior ? (
+        <div className='assignments-header training-header'>
+          <div className='warrior-thumbnail'>
+            <img src={warrior.thumbnail} alt={warrior.name} />
+          </div>
+          <div className='training-info'>
+            <h1>
+              <i className='fa-solid fa-dumbbell'></i> Train {warrior.name}
+            </h1>
+            <p className='subtitle'>
+              Choose a daily vocab quiz to train {warrior.name} and receive
+              extra coins
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className='assignments-header'>
+          <h1>
+            <i className='fa-solid fa-clipboard-list'></i> Assignments
+          </h1>
+          <p className='subtitle'>Complete your Spanish Quest assignments</p>
+        </div>
+      )}
 
       {assignments.length === 0 ? (
         <div className='empty-state'>
