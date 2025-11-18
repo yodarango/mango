@@ -21,6 +21,86 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
+          </p>
+          <ul>
+            <li>Este lugar es bonito. (This place is pretty.)</li>
+            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
+            <li>Vivimos en un buen lugar. (We live in a good place.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>sentimiento</strong> (masc.) — “feeling.” Tip: comes from{" "}
+            <em>sentir</em> (to feel).
+          </p>
+          <ul>
+            <li>Tengo un buen sentimiento. (I have a good feeling.)</li>
+            <li>Ese sentimiento es fuerte. (That feeling is strong.)</li>
+            <li>Habla de tus sentimientos. (Talk about your feelings.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>chica</strong> (fem.) — “girl.” Tip: chico = boy, chica =
+            girl.
+          </p>
+          <ul>
+            <li>La chica es amable. (The girl is kind.)</li>
+            <li>Hay una chica nueva. (There is a new girl.)</li>
+            <li>Esa chica es mi amiga. (That girl is my friend.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+
+      <section>
+        <div>
+          <p>
+            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
+            looks like “realize,” but means to accomplish.
+          </p>
+          <ul>
+            <li>Quiero realizar mis metas. (I want to achieve my goals.)</li>
+            <li>Realizamos un proyecto. (We carried out a project.)</li>
+            <li>Ella realizó su sueño. (She achieved her dream.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>permitir</strong> — “to allow, permit.” Tip: exactly like
+            “permit.”
+          </p>
+          <ul>
+            <li>
+              Mis padres me permiten salir. (My parents allow me to go out.)
+            </li>
+            <li>No está permitido correr. (Running is not allowed.)</li>
+            <li>Permite que te ayude. (Allow me to help you.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>resultar</strong> — “to result, turn out.” Tip: like
+            “result.”
+          </p>
+          <ul>
+            <li>Todo resultó bien. (Everything turned out well.)</li>
+            <li>El plan resultó difícil. (The plan turned out difficult.)</li>
+            <li>¿Cómo resultó el proyecto? (How did the project turn out?)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
             but it means “name.”
           </p>
@@ -100,7 +180,7 @@ export const IIIDailyVocab = () => {
             </li>
           </ul>
         </div>
-      </section>
+      </section> */}
       {/* <section>
         <div>
           <p>

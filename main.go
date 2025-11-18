@@ -2569,7 +2569,7 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Frontend already applies 10% reduction for retakes, so just use the values as-is
+	// Frontend already applies 20% reduction for retakes, so just use the values as-is
 	actualCoinsReceived := req.CoinsReceived
 	actualXPGain := req.XPGain
 	if req.IsRetake && assignmentIDStr == "1005" {

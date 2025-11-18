@@ -319,9 +319,9 @@ function Quiz() {
       let coinsEarned = 0;
       if (isCorrect) {
         coinsEarned = q.coins_worth;
-        // Apply 10% reduction for retakes
+        // Apply 20% for retakes
         if (isRetake) {
-          coinsEarned = Math.floor(q.coins_worth * 0.1);
+          coinsEarned = Math.floor(q.coins_worth * 0.2);
         }
         totalCoins += coinsEarned;
       }
@@ -357,9 +357,9 @@ function Quiz() {
     const successRate = (correctAnswers / questions.length) * 100;
     let xpGain = Math.floor(successRate / 2); // XP gain is half of success rate
 
-    // Apply 10% reduction for retakes (reduce by 90%)
+    // Apply 20% for retakes
     if (isRetake) {
-      xpGain = Math.floor(xpGain * 0.1);
+      xpGain = Math.floor(xpGain * 0.2);
     }
 
     // Submit to backend
@@ -489,12 +489,12 @@ function Quiz() {
                 Total coins possible:{" "}
                 <strong>
                   {isRetake
-                    ? Math.floor(assignment.coins * 0.1)
+                    ? Math.floor(assignment.coins * 0.2)
                     : assignment.coins}
                 </strong>
                 {isRetake && (
                   <span style={{ color: "#ff9500", marginLeft: "0.5rem" }}>
-                    (10% of original)
+                    (20% of original)
                   </span>
                 )}
               </li>
@@ -812,7 +812,7 @@ function Quiz() {
           <div className='results-actions'>
             {assignment.assignmentId === "1005" && (
               <button onClick={handleRetake} className='btn-retake'>
-                <i className='fa-solid fa-rotate'></i> Retake Quiz (10% rewards)
+                <i className='fa-solid fa-rotate'></i> Retake Quiz (20% rewards)
               </button>
             )}
             <button

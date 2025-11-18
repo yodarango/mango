@@ -17,7 +17,62 @@ export const IIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
+      {/* Nouns */}
       <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
+            <strong>noche</strong> (fem.) means “night.” Tip: sounds like
+            “nocturnal.”
+          </p>
+          <ul>
+            <li>Buenas noches. (Good night.)</li>
+            <li>La noche está tranquila. (The night is calm.)</li>
+            <li>Trabajo por la noche. (I work at night.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hogar</strong> (masc.) means “home.” Tip: “home” and “hogar”
+            both start with “ho.”
+          </p>
+          <ul>
+            <li>Mi hogar es feliz. (My home is happy.)</li>
+            <li>Regresamos al hogar. (We return home.)</li>
+            <li>El hogar une a la familia. (Home brings family together.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Verbs */}
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>existir</strong> means “to exist.” Tip: looks like “exist.”
+          </p>
+          <ul>
+            <li>Los animales existen. (Animals exist.)</li>
+            <li>¿Crees que existen los aliens? (Do you think aliens exist?)</li>
+            <li>No puede existir sin agua. (It can’t exist without water.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>conocer</strong> means “to know/meet.” Tip: conocer = meet
+            people or know places.
+          </p>
+          <ul>
+            <li>Quiero conocer a tu familia. (I want to meet your family.)</li>
+            <li>Conozco esta ciudad. (I know this city.)</li>
+            <li>¿Conoces a Mario? (Do you know Mario?)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
       <section>
         <div>
           <p>
@@ -69,7 +124,7 @@ export const IIDailyVocab = () => {
             <li>Llevamos comida a la fiesta. (We take food to the party.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3> 
       <section>
