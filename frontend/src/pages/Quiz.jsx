@@ -836,11 +836,11 @@ function Quiz() {
           </div>
 
           <div className='results-actions'>
-            {assignment.assignmentId === "1005" && (
+            {/* {assignment.assignmentId === "1005" && (
               <button onClick={handleRetake} className='btn-retake'>
                 <i className='fa-solid fa-rotate'></i> Retake Quiz (20% rewards)
               </button>
-            )}
+            )} */}
             <button
               onClick={() => navigate("/assignments")}
               className='btn-close'
