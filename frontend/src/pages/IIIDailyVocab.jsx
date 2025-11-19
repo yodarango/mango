@@ -16,8 +16,88 @@ export const IIIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
-
       <h3>Nouns</h3>
+
+      <section>
+        <div>
+          <p>
+            <strong>casa</strong> (fem.) — “house.” Tip: very common word;
+            picture your house.
+          </p>
+          <ul>
+            <li>Mi casa es grande. (My house is big.)</li>
+            <li>Regreso a casa. (I return home.)</li>
+            <li>La casa es blanca. (The house is white.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>izquierda</strong> (fem.) — “left.” Tip: “iz-QUIER-da” →
+            sounds like “is weird-a.”
+          </p>
+          <ul>
+            <li>Gira a la izquierda. (Turn left.)</li>
+            <li>Mi mano izquierda. (My left hand.)</li>
+            <li>
+              El salón está a la izquierda. (The classroom is on the left.)
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>derecha</strong> (fem.) — “right.” Tip: “de-RE-cha” → think
+            “direct, correct.”
+          </p>
+          <ul>
+            <li>Gira a la derecha. (Turn right.)</li>
+            <li>Mi mano derecha. (My right hand.)</li>
+            <li>La tienda está a la derecha. (The store is on the right.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>vivir</strong> — “to live.” Tip: looks like “vivid,” full of
+            life.
+          </p>
+          <ul>
+            <li>Vivo en una casa. (I live in a house.)</li>
+            <li>Queremos vivir aquí. (We want to live here.)</li>
+            <li>Ella vive cerca. (She lives nearby.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>buscar</strong> — “to search; to look for.” Tip: picture a
+            “bus” that helps you look for things.
+          </p>
+          <ul>
+            <li>Busco mi lápiz. (I’m looking for my pencil.)</li>
+            <li>¿Qué buscas? (What are you looking for?)</li>
+            <li>Buscamos un lugar. (We are looking for a place.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>entrar</strong> — “to enter; to go in.” Tip: looks like
+            “enter.”
+          </p>
+          <ul>
+            <li>Puedes entrar. (You may enter.)</li>
+            <li>Entramos a la clase. (We go into the class.)</li>
+            <li>No quiero entrar todavía. (I don’t want to go in yet.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
       <section>
         <div>
           <p>
@@ -95,7 +175,7 @@ export const IIIDailyVocab = () => {
             <li>¿Cómo resultó el proyecto? (How did the project turn out?)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

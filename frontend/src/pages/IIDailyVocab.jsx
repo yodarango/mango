@@ -17,8 +17,63 @@ export const IIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
-      {/* Nouns */}
+
       <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
+            <strong>pensamiento</strong> (masc.) — “thought.” Tip: from{" "}
+            <em>pensar</em> (to think).
+          </p>
+          <ul>
+            <li>Tuve un pensamiento bueno. (I had a good thought.)</li>
+            <li>Ese pensamiento es raro. (That thought is strange.)</li>
+            <li>Comparte tu pensamiento. (Share your thought.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>dinero</strong> (masc.) — “money.” Tip: kids hear “dinero”
+            often in English too.
+          </p>
+          <ul>
+            <li>No tengo dinero. (I don’t have money.)</li>
+            <li>Ahorro mi dinero. (I save my money.)</li>
+            <li>¿Cuánto dinero cuesta? (How much money does it cost?)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+
+      <section>
+        <div>
+          <p>
+            <strong>tomar</strong> — “to take; to drink.” Tip: “tomar agua” =
+            drink water.
+          </p>
+          <ul>
+            <li>Tomo agua cada día. (I drink water every day.)</li>
+            <li>Tomamos el bus. (We take the bus.)</li>
+            <li>¿Quieres tomar jugo? (Do you want to drink juice?)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>encontrar</strong> — “to find; to encounter.” Tip: looks
+            like “encounter.”
+          </p>
+          <ul>
+            <li>Quiero encontrar mi libro. (I want to find my book.)</li>
+            <li>No puedo encontrarlo. (I can’t find it.)</li>
+            <li>Encontramos la respuesta. (We found the answer.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
       <section>
         <div>
           <p>
@@ -45,7 +100,7 @@ export const IIDailyVocab = () => {
         </div>
       </section>
 
-      {/* Verbs */}
+
       <h3>Verbs</h3>
       <section>
         <div>
@@ -70,7 +125,7 @@ export const IIDailyVocab = () => {
             <li>¿Conoces a Mario? (Do you know Mario?)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>
