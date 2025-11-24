@@ -22,6 +22,59 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>chico</strong> (masc.) — “guy, boy.” Tip: chico = boy, chica
+            = girl.
+          </p>
+          <ul>
+            <li>Ese chico es mi amigo. (That guy/boy is my friend.)</li>
+            <li>El chico juega fútbol. (The boy plays soccer.)</li>
+            <li>Hay un chico nuevo en clase. (There’s a new boy in class.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
+          </p>
+          <ul>
+            <li>Este lugar es bonito. (This place is pretty.)</li>
+            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
+            <li>Vivimos en un buen lugar. (We live in a good place.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>quedar</strong> — “to stay, remain, be left.” Tip: think
+            “stay and keep.”
+          </p>
+          <ul>
+            <li>Me quiero quedar aquí. (I want to stay here.)</li>
+            <li>Solo quedan dos. (Only two are left.)</li>
+            <li>La camisa me queda bien. (The shirt fits me well.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
+            looks like “realize,” but means to accomplish.
+          </p>
+          <ul>
+            <li>Quiero realizar mis metas. (I want to achieve my goals.)</li>
+            <li>Realizamos un proyecto. (We carried out a project.)</li>
+            <li>Ella realizó su sueño. (She achieved her dream.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>pensamiento</strong> (masc.) — “thought.” Tip: from{" "}
             <em>pensar</em> (to think).
           </p>
@@ -71,7 +124,7 @@ export const IIDailyVocab = () => {
             <li>Encontramos la respuesta. (We found the answer.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

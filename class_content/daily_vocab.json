@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "thought",
+        "eng": "guy",
         "gender": "masculine",
-        "index": 11,
-        "spa": "pensamiento",
+        "index": 15,
+        "spa": "chico",
         "used": null
       },
       {
-        "eng": "money",
+        "eng": "place",
         "gender": "masculine",
-        "index": 12,
-        "spa": "dinero",
+        "index": 16,
+        "spa": "lugar",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to take, to drink",
-        "index": 7,
-        "spa": "tomar",
+        "eng": "to stay, to remain, to be left",
+        "index": 11,
+        "spa": "quedar",
         "used": null
       },
       {
-        "eng": "to find, to encounter",
-        "index": 8,
-        "spa": "encontrar",
+        "eng": "to carry out, to perform, to achieve",
+        "index": 12,
+        "spa": "realizar",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "house",
-        "gender": "feminine",
-        "index": 19,
-        "spa": "casa",
+        "eng": "world",
+        "gender": "masculine",
+        "index": 25,
+        "spa": "mundo",
         "used": null
       },
       {
-        "eng": "left",
-        "gender": "feminine",
-        "index": 20,
-        "spa": "izquierda",
+        "eng": "son",
+        "gender": "masculine",
+        "index": 26,
+        "spa": "hijo",
         "used": null
       },
       {
-        "eng": "right",
-        "gender": "feminine",
-        "index": 21,
-        "spa": "derecha",
+        "eng": "car",
+        "gender": "masculine",
+        "index": 27,
+        "spa": "coche",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to live",
-        "index": 919,
-        "spa": "vivir",
+        "eng": "to lose",
+        "index": 795,
+        "spa": "perder",
         "used": null
       },
       {
-        "eng": "to search, to look for",
-        "index": 14,
-        "spa": "buscar",
+        "eng": "to appear, show up",
+        "index": 796,
+        "spa": "aparecer",
         "used": null
       },
       {
-        "eng": "to enter, to go in",
-        "index": 15,
-        "spa": "entrar",
+        "eng": "to work",
+        "index": 19,
+        "spa": "trabajar",
         "used": null
       }
     ]

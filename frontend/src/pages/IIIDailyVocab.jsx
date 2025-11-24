@@ -16,7 +16,90 @@ export const IIIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
+
       <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
+            <strong>mundo</strong> (masc.) — “world.” Tip: think “the whole
+            mundo = world.”
+          </p>
+          <ul>
+            <li>El mundo es grande. (The world is big.)</li>
+            <li>
+              Hay muchos países en el mundo. (There are many countries in the
+              world.)
+            </li>
+            <li>Quiero viajar por el mundo. (I want to travel the world.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hijo</strong> (masc.) — “son.” Tip: pronounce “EE-ho.”
+          </p>
+          <ul>
+            <li>Mi hijo tiene diez años. (My son is ten years old.)</li>
+            <li>Su hijo es muy amable. (Their son is very kind.)</li>
+            <li>Veo a mi hijo cada día. (I see my son every day.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>coche</strong> (masc.) — “car.” Tip: used in Spain; in
+            Mexico: “carro.”
+          </p>
+          <ul>
+            <li>Tengo un coche nuevo. (I have a new car.)</li>
+            <li>Sube al coche. (Get in the car.)</li>
+            <li>El coche es rápido. (The car is fast.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>perder</strong> — “to lose.” Tip: think “I don’t want to
+            lose PERDón.”
+          </p>
+          <ul>
+            <li>No quiero perder mi libro. (I don’t want to lose my book.)</li>
+            <li>Perdemos el juego. (We lose the game.)</li>
+            <li>Perdí mis llaves. (I lost my keys.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>aparecer</strong> — “to appear, show up.” Tip: looks like
+            “appear.”
+          </p>
+          <ul>
+            <li>El gato apareció. (The cat appeared.)</li>
+            <li>Ella aparece tarde. (She shows up late.)</li>
+            <li>
+              Algo apareció en la mesa. (Something showed up on the table.)
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>trabajar</strong> — “to work.” Tip: similar to “trabajo”
+            (work/noun).
+          </p>
+          <ul>
+            <li>Trabajo en la escuela. (I work at the school.)</li>
+            <li>Él trabaja mucho. (He works a lot.)</li>
+            <li>Trabajamos juntos. (We work together.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
 
       <section>
         <div>
@@ -95,7 +178,7 @@ export const IIIDailyVocab = () => {
             <li>No quiero entrar todavía. (I don’t want to go in yet.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>
