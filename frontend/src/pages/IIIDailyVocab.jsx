@@ -1,6 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import "./IIIDailyVocab.css";
+import React from "react";
 
 export const IIIDailyVocab = () => {
   return (
@@ -18,6 +18,84 @@ export const IIIDailyVocab = () => {
       </header>
 
       <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
+            <strong>coche</strong> (masc.) — “car.” Tip: Spain uses “coche,”
+            Mexico often uses “carro.”
+          </p>
+          <ul>
+            <li>El coche es rojo. (The car is red.)</li>
+            <li>Sube al coche. (Get in the car.)</li>
+            <li>Tengo un coche nuevo. (I have a new car.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>mujer</strong> (fem.) — “woman.” Tip: pronounce “moo-HER.”
+          </p>
+          <ul>
+            <li>Esa mujer es doctora. (That woman is a doctor.)</li>
+            <li>La mujer habla inglés. (The woman speaks English.)</li>
+            <li>Esa mujer es mi mamá. (That woman is my mom.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>amigo</strong> (masc.) — “friend.” Tip: ends in -o for boy
+            friend; -a for girl friend (amiga).
+          </p>
+          <ul>
+            <li>Él es mi amigo. (He is my friend.)</li>
+            <li>Busco a mi amigo. (I’m looking for my friend.)</li>
+            <li>Mi amigo es muy divertido. (My friend is very fun.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>obtener</strong> — “to obtain, get.” Tip: similar to
+            “obtain.”
+          </p>
+          <ul>
+            <li>Quiero obtener buena nota. (I want to get a good grade.)</li>
+            <li>
+              Puedes obtener información aquí. (You can get information here.)
+            </li>
+            <li>Obtuve el libro. (I obtained/got the book.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>lograr</strong> — “to achieve; to manage to.” Tip: think
+            “long run → achieve.”
+          </p>
+          <ul>
+            <li>Quiero lograr mis metas. (I want to achieve my goals.)</li>
+            <li>Logramos terminar. (We managed to finish.)</li>
+            <li>Ella logró su sueño. (She achieved her dream.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>esperar</strong> — “to wait; to hope; to expect.” Tip: one
+            verb, three meanings!
+          </p>
+          <ul>
+            <li>Espero el bus. (I wait for the bus.)</li>
+            <li>Espero que estés bien. (I hope you are well.)</li>
+            <li>Espero una respuesta. (I expect a response.)</li>
+          </ul>
+        </div>
+      </section>
+      {/* <h3>Nouns</h3>
       <section>
         <div>
           <p>
@@ -97,7 +175,7 @@ export const IIIDailyVocab = () => {
             <li>Trabajamos juntos. (We work together.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
 
