@@ -22,6 +22,60 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>casa</strong> (fem.) — “house.” Tip: very common word;
+            picture your own house.
+          </p>
+          <ul>
+            <li>Mi casa es grande. (My house is big.)</li>
+            <li>Regreso a casa. (I return home.)</li>
+            <li>La casa es blanca. (The house is white.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>izquierda</strong> (fem.) — “left.” Tip: sounds like
+            “is-KEER-da.”
+          </p>
+          <ul>
+            <li>Gira a la izquierda. (Turn left.)</li>
+            <li>Mi mano izquierda. (My left hand.)</li>
+            <li>El baño está a la izquierda. (The bathroom is on the left.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>vivir</strong> — “to live.” Tip: looks like “vivid,” full of
+            life.
+          </p>
+          <ul>
+            <li>Vivo en una casa. (I live in a house.)</li>
+            <li>Ella vive cerca. (She lives nearby.)</li>
+            <li>Queremos vivir aquí. (We want to live here.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>buscar</strong> — “to search; to look for.” Tip: imagine a
+            “bus” helping you look for things.
+          </p>
+          <ul>
+            <li>Busco mi lápiz. (I’m looking for my pencil.)</li>
+            <li>¿Qué buscas? (What are you looking for?)</li>
+            <li>Buscamos un lugar. (We are looking for a place.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>sentimiento</strong> (masc.) — “feeling.” Tip: from{" "}
             <em>sentir</em> (to feel).
           </p>
@@ -72,7 +126,7 @@ export const IIDailyVocab = () => {
             <li>¿Cómo resultó el proyecto? (How did the project turn out?)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

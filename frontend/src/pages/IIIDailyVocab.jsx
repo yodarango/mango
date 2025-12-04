@@ -21,6 +21,82 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>amigo</strong> (masc., but “amiga” for girl friend) —
+            “friend.” Tip: -o = boy, -a = girl.
+          </p>
+          <ul>
+            <li>Mi amigo es simpático. (My friend is nice.)</li>
+            <li>Ella es mi amiga. (She is my friend.)</li>
+            <li>Busco a mi amigo. (I’m looking for my friend.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>mente</strong> (fem.) — “mind.” Tip: think “mental.”
+          </p>
+          <ul>
+            <li>Mi mente está cansada. (My mind is tired.)</li>
+            <li>Usa tu mente. (Use your mind.)</li>
+            <li>La mente es poderosa. (The mind is powerful.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>cabeza</strong> (fem.) — “head.” Tip: think “cap” → covers
+            your head.
+          </p>
+          <ul>
+            <li>Me duele la cabeza. (My head hurts.)</li>
+            <li>Protege tu cabeza. (Protect your head.)</li>
+            <li>Ella mueve la cabeza. (She moves her head.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>afirmar</strong> — “to affirm, to state.” Tip: similar to
+            “affirm.”
+          </p>
+          <ul>
+            <li>Afirmo que es verdad. (I state that it’s true.)</li>
+            <li>Él afirmó su idea. (He affirmed his idea.)</li>
+            <li>
+              La maestra afirma las reglas. (The teacher states the rules.)
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>preguntar</strong> — “to ask.” Tip: question → preguntar.
+          </p>
+          <ul>
+            <li>Quiero preguntar algo. (I want to ask something.)</li>
+            <li>Ella pregunta mucho. (She asks a lot.)</li>
+            <li>¿Puedo preguntar? (May I ask?)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>ganar</strong> — “to win, earn, gain.” Tip: think “gain.”
+          </p>
+          <ul>
+            <li>Quiero ganar el juego. (I want to win the game.)</li>
+            <li>Gano dinero. (I earn money.)</li>
+            <li>Ella ganó un premio. (She won a prize.)</li>
+          </ul>
+        </div>
+      </section>
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>coche</strong> (masc.) — “car.” Tip: Spain uses “coche,”
             Mexico often uses “carro.”
           </p>
@@ -94,7 +170,7 @@ export const IIIDailyVocab = () => {
             <li>Espero una respuesta. (I expect a response.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
       {/* <h3>Nouns</h3>
       <section>
         <div>
