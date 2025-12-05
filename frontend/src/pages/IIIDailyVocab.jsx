@@ -21,6 +21,83 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>mamá</strong> (fem.) — “mom.” Tip: accent on the last
+            syllable: ma-MÁ.
+          </p>
+          <ul>
+            <li>Mi mamá es muy buena. (My mom is very kind.)</li>
+            <li>La mamá de Juan llegó. (Juan’s mom arrived.)</li>
+            <li>Quiero llamar a mi mamá. (I want to call my mom.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>niño</strong> (masc.) — “boy; child.” Tip: ñ = “ny” sound →
+            “nee-nyo.”
+          </p>
+          <ul>
+            <li>El niño juega. (The boy plays.)</li>
+            <li>Ese niño es divertido. (That boy is fun.)</li>
+            <li>El niño corre rápido. (The child runs fast.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>trabajo</strong> (masc.) — “job; work.” Tip: related to the
+            verb <em>trabajar</em>.
+          </p>
+          <ul>
+            <li>Tengo un nuevo trabajo. (I have a new job.)</li>
+            <li>Mi trabajo es difícil. (My job is hard.)</li>
+            <li>Es un buen trabajo. (It’s a good job.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>llamar</strong> — “to call; to name.” Tip: llamar →
+            “YAH-mar.”
+          </p>
+          <ul>
+            <li>Voy a llamar a mi mamá. (I’m going to call my mom.)</li>
+            <li>Me llamo Ana. (I am named Ana.)</li>
+            <li>Él llama al perro. (He calls the dog.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>ocurrir</strong> — “to occur; to happen.” Tip: like “occur.”
+          </p>
+          <ul>
+            <li>¿Qué ocurrió? (What happened?)</li>
+            <li>Algo ocurrió aquí. (Something happened here.)</li>
+            <li>Pueden ocurrir errores. (Mistakes can happen.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>cambiar</strong> — “to change.” Tip: think “change →
+            cambio.”
+          </p>
+          <ul>
+            <li>Quiero cambiar mi ropa. (I want to change my clothes.)</li>
+            <li>El clima cambia. (The weather changes.)</li>
+            <li>Podemos cambiar el plan. (We can change the plan.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>amigo</strong> (masc., but “amiga” for girl friend) —
             “friend.” Tip: -o = boy, -a = girl.
           </p>
@@ -92,7 +169,7 @@ export const IIIDailyVocab = () => {
             <li>Ella ganó un premio. (She won a prize.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
       {/* <h3>Nouns</h3>
       <section>
         <div>

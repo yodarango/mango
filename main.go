@@ -75,6 +75,9 @@ type Asset struct {
 	IsLocked      bool   `json:"isLocked"`
 	IsLockedBy    *int   `json:"isLockedBy,omitempty"`
 	IsUnlockedFor *int   `json:"isUnlockedFor,omitempty"`
+	BaseAttack    int    `json:"baseAttack,omitempty"`
+	BaseDefense   int    `json:"baseDefense,omitempty"`
+	BaseHealing   int    `json:"baseHealing,omitempty"`
 }
 
 type StoreItem struct {
@@ -364,6 +367,42 @@ func initDB() {
 	if err != nil {
 		// Column might already exist, which is fine
 		// SQLite will error if column exists, but we can ignore it
+	}
+
+	// Add base stat columns if they don't exist (migration)
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN base_attack INTEGER DEFAULT NULL`)
+	if err != nil {
+		// Column might already exist, which is fine
+	}
+
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN base_defense INTEGER DEFAULT NULL`)
+	if err != nil {
+		// Column might already exist, which is fine
+	}
+
+	_, err = db.Exec(`ALTER TABLE assets ADD COLUMN base_healing INTEGER DEFAULT NULL`)
+	if err != nil {
+		// Column might already exist, which is fine
+	}
+
+	// Populate base stats for existing assets that don't have them
+	// For existing assets, we'll reverse-calculate the base stats from current stats and level
+	_, err = db.Exec(`UPDATE assets
+		SET base_attack = CASE
+			WHEN level = 1 THEN attack
+			ELSE CAST(attack / (1.0 * level * level * level * level * level * level * level * level * level) AS INTEGER)
+		END,
+		base_defense = CASE
+			WHEN level = 1 THEN defense
+			ELSE CAST(defense / (1.0 * level * level * level * level * level * level * level * level * level) AS INTEGER)
+		END,
+		base_healing = CASE
+			WHEN level = 1 THEN healing
+			ELSE CAST(healing / (1.0 * level * level * level * level * level * level * level * level * level) AS INTEGER)
+		END
+		WHERE base_attack IS NULL OR base_defense IS NULL OR base_healing IS NULL`)
+	if err != nil {
+		log.Printf("Warning: Could not populate base stats: %v", err)
 	}
 
 	// Add is_locked column if it doesn't exist (migration)
@@ -667,11 +706,11 @@ func initDB() {
 			// Create 3 random warriors for this avatar
 			for j := 0; j < 3; j++ {
 				asset := generateRandomAsset(int(avatarID), "warrior")
-				_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked, base_attack, base_defense, base_healing)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 					asset.AvatarID, asset.Status, asset.Type, asset.Name, asset.Thumbnail, asset.Attack, asset.Defense,
 					asset.Healing, asset.Power, asset.Endurance, asset.Level, asset.Cost,
-					asset.Ability, asset.Health, asset.Stamina, 0)
+					asset.Ability, asset.Health, asset.Stamina, 0, asset.BaseAttack, asset.BaseDefense, asset.BaseHealing)
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -683,15 +722,18 @@ func initDB() {
 			mascot.Attack = rand.Intn(50) + 50
 			mascot.Defense = rand.Intn(50) + 50
 			mascot.Healing = rand.Intn(50) + 50
+			mascot.BaseAttack = mascot.Attack
+			mascot.BaseDefense = mascot.Defense
+			mascot.BaseHealing = mascot.Healing
 			mascot.Endurance = rand.Intn(50) + 50
 			mascot.Level = rand.Intn(5) + 5 // Level 5-10
 			mascot.Cost = mascot.Level * 20
 
-			_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			_, err = db.Exec(`INSERT INTO assets (avatar_id, status, type, name, thumbnail, attack, defense, healing, power, endurance, level, cost, ability, health, stamina, is_locked, base_attack, base_defense, base_healing)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 				mascot.AvatarID, mascot.Status, mascot.Type, mascot.Name, mascot.Thumbnail, mascot.Attack, mascot.Defense,
 				mascot.Healing, mascot.Power, mascot.Endurance, mascot.Level, mascot.Cost,
-				mascot.Ability, mascot.Health, mascot.Stamina, 0)
+				mascot.Ability, mascot.Health, mascot.Stamina, 0, mascot.BaseAttack, mascot.BaseDefense, mascot.BaseHealing)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -762,22 +804,30 @@ func generateRandomAsset(avatarID int, status string) Asset {
 	// Generate a random type ID for grouping
 	typeID := fmt.Sprintf("W%d", rand.Intn(1000))
 
+	// Generate base stats
+	baseAttack := rand.Intn(100) + 1
+	baseDefense := rand.Intn(100) + 1
+	baseHealing := rand.Intn(100) + 1
+
 	return Asset{
-		AvatarID:  avatarID,
-		Status:    status,
-		Type:      typeID,
-		Name:      warriorNames[rand.Intn(len(warriorNames))],
-		Thumbnail: thumbnail,
-		Attack:    rand.Intn(100) + 1,
-		Defense:   rand.Intn(100) + 1,
-		Healing:   rand.Intn(100) + 1,
-		Power:     rand.Intn(500) + 100,
-		Endurance: rand.Intn(100) + 1,
-		Level:     level,
-		Cost:      (level * 10) + rand.Intn(50),
-		Ability:   abilities[rand.Intn(len(abilities))],
-		Health:    maxHealth,
-		Stamina:   maxStamina,
+		AvatarID:    avatarID,
+		Status:      status,
+		Type:        typeID,
+		Name:        warriorNames[rand.Intn(len(warriorNames))],
+		Thumbnail:   thumbnail,
+		Attack:      baseAttack,
+		Defense:     baseDefense,
+		Healing:     baseHealing,
+		BaseAttack:  baseAttack,
+		BaseDefense: baseDefense,
+		BaseHealing: baseHealing,
+		Power:       rand.Intn(500) + 100,
+		Endurance:   rand.Intn(100) + 1,
+		Level:       level,
+		Cost:        (level * 10) + rand.Intn(50),
+		Ability:     abilities[rand.Intn(len(abilities))],
+		Health:      maxHealth,
+		Stamina:     maxStamina,
 	}
 }
 
@@ -2673,15 +2723,30 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 	var assetLeveledUp bool
 	var assetData map[string]interface{}
 	if req.AssetID != nil && actualXPGain > 0 {
-		// Get current asset data
+		// Get current asset data including base stats
 		var currentXP, xpRequired, level, attack, defense, healing, cost int
+		var baseAttack, baseDefense, baseHealing sql.NullInt64
 		var name, thumbnail string
-		err = tx.QueryRow(`SELECT COALESCE(xp, 0), COALESCE(xp_required, 100), level, attack, defense, healing, cost, name, thumbnail
-			FROM assets WHERE id = ? AND avatar_id = ?`, *req.AssetID, avatarID).Scan(&currentXP, &xpRequired, &level, &attack, &defense, &healing, &cost, &name, &thumbnail)
+		err = tx.QueryRow(`SELECT COALESCE(xp, 0), COALESCE(xp_required, 100), level, attack, defense, healing, cost, name, thumbnail, base_attack, base_defense, base_healing
+			FROM assets WHERE id = ? AND avatar_id = ?`, *req.AssetID, avatarID).Scan(&currentXP, &xpRequired, &level, &attack, &defense, &healing, &cost, &name, &thumbnail, &baseAttack, &baseDefense, &baseHealing)
 		if err != nil {
 			// Asset not found or doesn't belong to user - just log and continue
 			log.Printf("Warning: Asset %d not found or doesn't belong to avatar %d: %v", *req.AssetID, avatarID, err)
 		} else {
+			// If base stats are not set, use current stats as base (for legacy assets)
+			if !baseAttack.Valid {
+				baseAttack.Int64 = int64(attack)
+				baseAttack.Valid = true
+			}
+			if !baseDefense.Valid {
+				baseDefense.Int64 = int64(defense)
+				baseDefense.Valid = true
+			}
+			if !baseHealing.Valid {
+				baseHealing.Int64 = int64(healing)
+				baseHealing.Valid = true
+			}
+
 			// Add XP (use actual XP after retake reduction)
 			newXP := currentXP + actualXPGain
 
@@ -2693,15 +2758,35 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 				// Calculate overage XP
 				overageXP := newXP - xpRequired
 
-				// Update stats based on new level
-				newAttack := attack * newLevel
-				newDefense := defense * newLevel
-				newHealing := healing * newLevel
+				// NEW ALGORITHM: Linear progression with 3000 point cap
+				// Each level adds a fixed amount of points, distributed evenly across 100 levels
+				// Max gain per stat = 3000 points over 100 levels = 30 points per level
+				pointsPerLevel := 30.0
+
+				// Calculate new stats: base + (points per level * (level - 1))
+				// Level 1 = base stats, Level 2 = base + 30, Level 3 = base + 60, etc.
+				// At level 100: base + (30 * 99) = base + 2970 (just under 3000 cap)
+				newAttack := int(baseAttack.Int64) + int(pointsPerLevel*float64(newLevel-1))
+				newDefense := int(baseDefense.Int64) + int(pointsPerLevel*float64(newLevel-1))
+				newHealing := int(baseHealing.Int64) + int(pointsPerLevel*float64(newLevel-1))
+
+				// Ensure we don't exceed the 3000 point cap
+				maxIncrease := 3000
+				if newAttack > int(baseAttack.Int64)+maxIncrease {
+					newAttack = int(baseAttack.Int64) + maxIncrease
+				}
+				if newDefense > int(baseDefense.Int64)+maxIncrease {
+					newDefense = int(baseDefense.Int64) + maxIncrease
+				}
+				if newHealing > int(baseHealing.Int64)+maxIncrease {
+					newHealing = int(baseHealing.Int64) + maxIncrease
+				}
+
 				newCost := cost * newLevel
 
-				// Update asset with new level and stats
-				_, err = tx.Exec(`UPDATE assets SET level = ?, attack = ?, defense = ?, healing = ?, cost = ?, xp = ?
-					WHERE id = ?`, newLevel, newAttack, newDefense, newHealing, newCost, overageXP, *req.AssetID)
+				// Update asset with new level and stats, and ensure base stats are saved
+				_, err = tx.Exec(`UPDATE assets SET level = ?, attack = ?, defense = ?, healing = ?, cost = ?, xp = ?, base_attack = ?, base_defense = ?, base_healing = ?
+					WHERE id = ?`, newLevel, newAttack, newDefense, newHealing, newCost, overageXP, int(baseAttack.Int64), int(baseDefense.Int64), int(baseHealing.Int64), *req.AssetID)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error leveling up asset: %v", err), http.StatusInternalServerError)
 					return
@@ -2722,8 +2807,9 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 					"xpGained":   actualXPGain,
 				}
 			} else {
-				// Just update XP
-				_, err = tx.Exec(`UPDATE assets SET xp = ? WHERE id = ?`, newXP, *req.AssetID)
+				// Just update XP and ensure base stats are saved
+				_, err = tx.Exec(`UPDATE assets SET xp = ?, base_attack = ?, base_defense = ?, base_healing = ? WHERE id = ?`,
+					newXP, int(baseAttack.Int64), int(baseDefense.Int64), int(baseHealing.Int64), *req.AssetID)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error updating asset XP: %v", err), http.StatusInternalServerError)
 					return

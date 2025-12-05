@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "house",
+        "eng": "right",
         "gender": "feminine",
-        "index": 19,
-        "spa": "casa",
+        "index": 21,
+        "spa": "derecha",
         "used": null
       },
       {
-        "eng": "left",
+        "eng": "mother",
         "gender": "feminine",
-        "index": 20,
-        "spa": "izquierda",
+        "index": 22,
+        "spa": "madre",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to live",
-        "index": 919,
-        "spa": "vivir",
+        "eng": "to enter, to go in",
+        "index": 15,
+        "spa": "entrar",
         "used": null
       },
       {
-        "eng": "to search, to look for",
-        "index": 14,
-        "spa": "buscar",
+        "eng": "to consider",
+        "index": 16,
+        "spa": "considerar",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "friend",
-        "gender": "amiga - feminine",
-        "index": 30,
-        "spa": "amigo",
+        "eng": "mom",
+        "gender": "feminine",
+        "index": 32,
+        "spa": "mamá",
         "used": null
       },
       {
-        "eng": "mind",
-        "gender": "feminine",
-        "index": 30,
-        "spa": "mente",
+        "eng": "boy",
+        "gender": "masculine",
+        "index": 33,
+        "spa": "niño",
         "used": null
       },
       {
-        "eng": "head",
-        "gender": "feminine",
-        "index": 31,
-        "spa": "cabeza",
+        "eng": "job",
+        "gender": "masculine",
+        "index": 34,
+        "spa": "trabajo",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to affirm, to assert, to state",
-        "index": 22,
-        "spa": "afirmar",
+        "eng": "to call, to name",
+        "index": 25,
+        "spa": "llamar",
         "used": null
       },
       {
-        "eng": "to ask",
-        "index": 23,
-        "spa": "preguntar",
+        "eng": "to occur, happen",
+        "index": 920,
+        "spa": "ocurrir",
         "used": null
       },
       {
-        "eng": "to win, to earn, to gain",
-        "index": 24,
-        "spa": "ganar",
+        "eng": "to change",
+        "index": 26,
+        "spa": "cambiar",
         "used": null
       }
     ]

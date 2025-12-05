@@ -22,6 +22,60 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>derecha</strong> (fem.) — “right” (direction). Tip: think
+            “direct → derecha.”
+          </p>
+          <ul>
+            <li>Gira a la derecha. (Turn right.)</li>
+            <li>Mi mano derecha. (My right hand.)</li>
+            <li>El parque está a la derecha. (The park is on the right.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>madre</strong> (fem.) — “mother.” Tip: formal word for
+            “mom.”
+          </p>
+          <ul>
+            <li>Mi madre es muy amable. (My mother is very kind.)</li>
+            <li>La madre de Ana es doctora. (Ana’s mother is a doctor.)</li>
+            <li>Su madre cocina bien. (His/Her mother cooks well.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>entrar</strong> — “to enter; to go in.” Tip: looks like
+            “enter.”
+          </p>
+          <ul>
+            <li>Puedes entrar. (You may enter.)</li>
+            <li>Entramos a la clase. (We go into the class.)</li>
+            <li>No quiero entrar todavía. (I don’t want to go in yet.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>considerar</strong> — “to consider.” Tip: almost the same in
+            English.
+          </p>
+          <ul>
+            <li>Debes considerar la idea. (You should consider the idea.)</li>
+            <li>Considero tus palabras. (I consider your words.)</li>
+            <li>Ella considera estudiar más. (She considers studying more.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>casa</strong> (fem.) — “house.” Tip: very common word;
             picture your own house.
           </p>
@@ -70,7 +124,7 @@ export const IIDailyVocab = () => {
             <li>Buscamos un lugar. (We are looking for a place.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>
