@@ -258,6 +258,9 @@ function Play() {
   };
 
   const handleCellClick = async (cell) => {
+    // Check if it's the current user's turn
+    const isMyTurn = gameAvatars[currentTurnIndex] === avatarId;
+
     // FIRST: Check if clicking on a warrior (to select/deselect for moving or view stats)
     if (cell.occupiedBy && cell.status === "warrior") {
       // If cell has a warrior, check if it belongs to the current user
@@ -265,6 +268,12 @@ function Play() {
 
       // Check if this warrior belongs to the current user's avatar
       if (warrior && warrior.avatarId === avatarId) {
+        // Check if it's the user's turn
+        if (!isMyTurn) {
+          alert("Not your turn!");
+          return;
+        }
+
         // Check if clicking the same warrior that's already selected for moving
         if (movingWarrior && movingWarrior.warrior.id === warrior.id) {
           // Cancel the move by deselecting
@@ -275,7 +284,7 @@ function Play() {
         }
         return; // Exit early after handling warrior selection
       } else {
-        // This warrior belongs to someone else, just show stats
+        // This warrior belongs to someone else, just show stats (allowed anytime)
         // Try to fetch the warrior details from the backend
         try {
           const token = localStorage.getItem("token");
@@ -336,6 +345,9 @@ function Play() {
           // Refresh the game data
           await fetchGame();
           setMovingWarrior(null);
+
+          // Advance to next turn after successful move
+          await advanceTurnAPI();
         } else {
           const errorText = await response.text();
           alert(`Failed to move warrior: ${errorText}`);
@@ -349,6 +361,12 @@ function Play() {
     }
     // THIRD: If a warrior is selected, place it on the cell
     else if (selectedWarrior && cell.active) {
+      // Check if it's the user's turn
+      if (!isMyTurn) {
+        alert("Not your turn!");
+        return;
+      }
+
       if (cell.occupiedBy) {
         alert("This cell is already occupied!");
         return;
@@ -375,6 +393,9 @@ function Play() {
           // Refresh the game data
           await fetchGame();
           setSelectedWarrior(null);
+
+          // Advance to next turn after successful placement
+          await advanceTurnAPI();
         } else {
           const errorText = await response.text();
           alert(`Failed to place warrior: ${errorText}`);
@@ -583,9 +604,8 @@ function Play() {
       {gameAvatars.length > 0 && (
         <div className='turn-timer-container'>
           <div className='timer-label'>
-            {gameAvatars[currentTurnIndex] === avatarId
-              ? "Your Turn"
-              : "Opponent's Turn"}
+            {avatarsMap[gameAvatars[currentTurnIndex]]?.avatarName || "Unknown"}
+            's Turn
           </div>
           <div className={`timer-value ${timeRemaining <= 5 ? "warning" : ""}`}>
             {timeRemaining}s
