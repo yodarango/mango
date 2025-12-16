@@ -22,6 +22,110 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>curso</strong> (masc.) — “course/class.” Tip: like “course”
+            in English.
+          </p>
+          <ul>
+            <li>Este curso es fácil. (This course is easy.)</li>
+            <li>Tengo un curso de español. (I have a Spanish class.)</li>
+            <li>El curso empieza hoy. (The course starts today.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>papá</strong> (masc.) — “dad.” Tip: accent on the last
+            syllable: pa-PÁ.
+          </p>
+          <ul>
+            <li>Mi papá trabaja mucho. (My dad works a lot.)</li>
+            <li>Voy con mi papá. (I go with my dad.)</li>
+            <li>Mi papá cocina bien. (My dad cooks well.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>mundo</strong> (masc.) — “world.” Tip: sounds like
+            “mundo/world.”
+          </p>
+          <ul>
+            <li>El mundo es grande. (The world is big.)</li>
+            <li>Viajo por el mundo. (I travel the world.)</li>
+            <li>
+              Hay muchos países en el mundo. (There are many countries in the
+              world.)
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hijo</strong> (masc.) — “son.” Tip: pronounce “EE-ho.”
+          </p>
+          <ul>
+            <li>Mi hijo es pequeño. (My son is small.)</li>
+            <li>Su hijo estudia aquí. (Their son studies here.)</li>
+            <li>Veo a mi hijo hoy. (I see my son today.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>señalar</strong> — “to point out, indicate.” Tip: think
+            “signal.”
+          </p>
+          <ul>
+            <li>Señala la respuesta. (Point to the answer.)</li>
+            <li>El maestro señala el mapa. (The teacher points at the map.)</li>
+            <li>Puedes señalar aquí. (You can point here.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>presentar</strong> — “to present, introduce.” Tip: like
+            “present.”
+          </p>
+          <ul>
+            <li>Voy a presentar a mi amigo. (I will introduce my friend.)</li>
+            <li>Presenta tu proyecto. (Present your project.)</li>
+            <li>Ella presenta la clase. (She presents the class.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>perder</strong> — “to lose.” Tip: opposite of “ganar” (to
+            win).
+          </p>
+          <ul>
+            <li>No quiero perder el juego. (I don’t want to lose the game.)</li>
+            <li>Perdí mi lápiz. (I lost my pencil.)</li>
+            <li>Podemos perder tiempo. (We can lose time.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>aparecer</strong> — “to appear, show up.” Tip: like
+            “appear.”
+          </p>
+          <ul>
+            <li>El gato apareció. (The cat appeared.)</li>
+            <li>Ella aparece tarde. (She shows up late.)</li>
+            <li>Una idea aparece. (An idea appears.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>derecha</strong> (fem.) — “right” (direction). Tip: think
             “direct → derecha.”
           </p>
@@ -70,7 +174,7 @@ export const IIDailyVocab = () => {
             <li>Ella considera estudiar más. (She considers studying more.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

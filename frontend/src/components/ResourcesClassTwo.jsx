@@ -22,6 +22,19 @@ function ResourcesClassTwo() {
           </div>
           <i className='fa-solid fa-chevron-right'></i>
         </Link>
+        <Link
+          to='https://www.notion.so/Spanish-Conquest-Pack-2749934580b780eba907e6f0bef28db3'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='resource-link'
+        >
+          <i className='fa-solid fa-khanda'></i>
+          <div className='resource-info'>
+            <span className='resource-name'>Spanish Quest</span>
+            <span className='resource-description'>Prepare for the battle</span>
+          </div>
+          <i className='fa-solid fa-chevron-right'></i>
+        </Link>
         {/* they are not ready yet */}
         {/* <Link to='/assignments/ser-conjugation' className='resource-link'>
           <i className='fa-solid fa-key'></i>

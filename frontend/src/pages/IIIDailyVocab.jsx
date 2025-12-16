@@ -21,6 +21,139 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>bebé</strong> (masc./fem.) — “baby.” Tip: same word for boy
+            or girl.
+          </p>
+          <ul>
+            <li>El bebé duerme. (The baby sleeps.)</li>
+            <li>La bebé llora. (The baby cries.)</li>
+            <li>El bebé es pequeño. (The baby is small.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>familia</strong> (fem.) — “family.” Tip: similar in English.
+          </p>
+          <ul>
+            <li>Mi familia es grande. (My family is big.)</li>
+            <li>Vivo con mi familia. (I live with my family.)</li>
+            <li>Amo a mi familia. (I love my family.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>habitación</strong> (fem.) — “room.” Tip: think “habit” →
+            place you stay.
+          </p>
+          <ul>
+            <li>Mi habitación es azul. (My room is blue.)</li>
+            <li>Estoy en mi habitación. (I’m in my room.)</li>
+            <li>La habitación es grande. (The room is big.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hermano</strong> (masc.) — “brother.” Tip: hermana = sister.
+          </p>
+          <ul>
+            <li>Mi hermano es alto. (My brother is tall.)</li>
+            <li>Juego con mi hermano. (I play with my brother.)</li>
+            <li>Tengo un hermano mayor. (I have an older brother.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>cabeza</strong> (fem.) — “head.” Tip: think “cap” for your
+            head.
+          </p>
+          <ul>
+            <li>Me duele la cabeza. (My head hurts.)</li>
+            <li>Muevo la cabeza. (I move my head.)</li>
+            <li>Protege tu cabeza. (Protect your head.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>significar</strong> — “to mean, signify.” Tip: think “sign.”
+          </p>
+          <ul>
+            <li>¿Qué significa esta palabra? (What does this word mean?)</li>
+            <li>Eso significa mucho. (That means a lot.)</li>
+            <li>La señal significa parar. (The sign means stop.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>gustar</strong> — “to like.” Tip: it works backwards:{" "}
+            <em>me gusta</em>.
+          </p>
+          <ul>
+            <li>Me gusta el helado. (I like ice cream.)</li>
+            <li>¿Te gusta la música? (Do you like music?)</li>
+            <li>Le gusta leer. (He/She likes to read.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>establecer</strong> — “to establish.” Tip: like “establish.”
+          </p>
+          <ul>
+            <li>Queremos establecer reglas. (We want to set rules.)</li>
+            <li>Establecen un plan. (They establish a plan.)</li>
+            <li>El club se establece hoy. (The club is established today.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>cumplir</strong> — “to fulfill, accomplish.” Tip: cumplir
+            metas = reach goals.
+          </p>
+          <ul>
+            <li>Cumplo mi promesa. (I keep my promise.)</li>
+            <li>Queremos cumplir la meta. (We want to reach the goal.)</li>
+            <li>Cumple años hoy. (He/She has a birthday today.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>explicar</strong> — “to explain.” Tip: like “explain.”
+          </p>
+          <ul>
+            <li>Explico la lección. (I explain the lesson.)</li>
+            <li>¿Puedes explicar? (Can you explain?)</li>
+            <li>Ella explica bien. (She explains well.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>alcanzar</strong> — “to reach, catch up, achieve.” Tip:
+            reach your goal.
+          </p>
+          <ul>
+            <li>Quiero alcanzar la meta. (I want to reach the goal.)</li>
+            <li>No alcanzo el libro. (I can’t reach the book.)</li>
+            <li>Alcanzamos el éxito. (We achieve success.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>mamá</strong> (fem.) — “mom.” Tip: accent on the last
             syllable: ma-MÁ.
           </p>
@@ -92,7 +225,7 @@ export const IIIDailyVocab = () => {
             <li>Podemos cambiar el plan. (We can change the plan.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

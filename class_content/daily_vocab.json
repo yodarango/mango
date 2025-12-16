@@ -3,17 +3,31 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "right",
-        "gender": "feminine",
-        "index": 21,
-        "spa": "derecha",
+        "eng": "course",
+        "gender": "masculine",
+        "index": 23,
+        "spa": "curso",
         "used": null
       },
       {
-        "eng": "mother",
-        "gender": "feminine",
-        "index": 22,
-        "spa": "madre",
+        "eng": "dad",
+        "gender": "masculine",
+        "index": 24,
+        "spa": "papá",
+        "used": null
+      },
+      {
+        "eng": "world",
+        "gender": "masculine",
+        "index": 25,
+        "spa": "mundo",
+        "used": null
+      },
+      {
+        "eng": "son",
+        "gender": "masculine",
+        "index": 26,
+        "spa": "hijo",
         "used": null
       }
     ]
@@ -22,15 +36,27 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to enter, to go in",
-        "index": 15,
-        "spa": "entrar",
+        "eng": "to point out, to indicate",
+        "index": 17,
+        "spa": "señalar",
         "used": null
       },
       {
-        "eng": "to consider",
-        "index": 16,
-        "spa": "considerar",
+        "eng": "to present, to introduce",
+        "index": 18,
+        "spa": "presentar",
+        "used": null
+      },
+      {
+        "eng": "to lose",
+        "index": 795,
+        "spa": "perder",
+        "used": null
+      },
+      {
+        "eng": "to appear, show up",
+        "index": 796,
+        "spa": "aparecer",
         "used": null
       }
     ]
@@ -39,24 +65,45 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "mom",
+        "eng": "baby",
+        "gender": "masculine",
+        "index": 35,
+        "spa": "bebé",
+        "used": null
+      },
+      {
+        "eng": "baby",
         "gender": "feminine",
-        "index": 32,
-        "spa": "mamá",
+        "index": 36,
+        "spa": "bebé",
         "used": null
       },
       {
-        "eng": "boy",
-        "gender": "masculine",
-        "index": 33,
-        "spa": "niño",
+        "eng": "family",
+        "gender": "feminine",
+        "index": 36,
+        "spa": "familia",
         "used": null
       },
       {
-        "eng": "job",
+        "eng": "room",
+        "gender": "feminine",
+        "index": 37,
+        "spa": "habitación",
+        "used": null
+      },
+      {
+        "eng": "brother",
         "gender": "masculine",
-        "index": 34,
-        "spa": "trabajo",
+        "index": 38,
+        "spa": "hermano",
+        "used": null
+      },
+      {
+        "eng": "head",
+        "gender": "feminine",
+        "index": 39,
+        "spa": "cabeza",
         "used": null
       }
     ]
@@ -65,21 +112,39 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to call, to name",
-        "index": 25,
-        "spa": "llamar",
+        "eng": "to mean, to signify",
+        "index": 27,
+        "spa": "significar",
         "used": null
       },
       {
-        "eng": "to occur, happen",
-        "index": 920,
-        "spa": "ocurrir",
+        "eng": "to like, to be pleasing",
+        "index": 28,
+        "spa": "gustar",
         "used": null
       },
       {
-        "eng": "to change",
-        "index": 26,
-        "spa": "cambiar",
+        "eng": "to establish",
+        "index": 798,
+        "spa": "establecer",
+        "used": null
+      },
+      {
+        "eng": "to fulfill, accomplish",
+        "index": 921,
+        "spa": "cumplir",
+        "used": null
+      },
+      {
+        "eng": "to explain",
+        "index": 29,
+        "spa": "explicar",
+        "used": null
+      },
+      {
+        "eng": "to reach, to catch up, to achieve",
+        "index": 30,
+        "spa": "alcanzar",
         "used": null
       }
     ]
