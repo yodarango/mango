@@ -30,7 +30,11 @@ function Games() {
   };
 
   const handleDelete = async (gameId, gameName) => {
-    if (!confirm(`Are you sure you want to delete "${gameName}"? This will also delete all game cells.`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete "${gameName}"? This will also delete all game cells.`
+      )
+    ) {
       return;
     }
 
@@ -78,9 +82,9 @@ function Games() {
 
   if (loading) {
     return (
-      <div className="page games-page">
-        <div className="loading-container">
-          <i className="fa-solid fa-spinner fa-spin"></i>
+      <div className='page games-page'>
+        <div className='loading-container'>
+          <i className='fa-solid fa-spinner fa-spin'></i>
           <p>Loading games...</p>
         </div>
       </div>
@@ -88,101 +92,103 @@ function Games() {
   }
 
   return (
-    <div className="page games-page">
-      <div className="games-header">
-        <div className="header-content">
+    <div className='page games-page'>
+      <div className='games-header'>
+        <div className='header-content'>
           <h1>
-            <i className="fa-solid fa-chess-board"></i> Games Management
+            <i className='fa-solid fa-chess-board'></i> Games Management
           </h1>
-          <p className="subtitle">View, edit, and play all your created games</p>
+          <p className='subtitle'>
+            View, edit, and play all your created games
+          </p>
         </div>
         <button
-          className="create-game-btn"
+          className='create-game-btn'
           onClick={() => navigate("/admin/create-game")}
         >
-          <i className="fa-solid fa-plus"></i> Create New Game
+          <i className='fa-solid fa-plus'></i> Create New Game
         </button>
       </div>
 
       {games.length === 0 ? (
-        <div className="empty-state">
-          <i className="fa-solid fa-chess-board"></i>
+        <div className='empty-state'>
+          <i className='fa-solid fa-chess-board'></i>
           <h2>No Games Yet</h2>
           <p>Create your first game to get started!</p>
           <button
-            className="create-first-btn"
+            className='create-first-btn'
             onClick={() => navigate("/admin/create-game")}
           >
-            <i className="fa-solid fa-plus"></i> Create Game
+            <i className='fa-solid fa-plus'></i> Create Game
           </button>
         </div>
       ) : (
-        <div className="games-grid">
+        <div className='games-grid'>
           {games.map((game) => (
-            <div key={game.id} className="game-card">
-              <div className="game-thumbnail">
+            <div key={game.id} className='game-card'>
+              <div className='game-thumbnail'>
                 {game.thumbnail ? (
                   <img src={game.thumbnail} alt={game.name} />
                 ) : (
-                  <div className="thumbnail-placeholder">
-                    <i className="fa-solid fa-chess-board"></i>
+                  <div className='thumbnail-placeholder'>
+                    <i className='fa-solid fa-chess-board'></i>
                   </div>
                 )}
               </div>
 
-              <div className="game-info">
+              <div className='game-info'>
                 <h3>{game.name}</h3>
-                <div className="game-meta">
-                  <div className="meta-item">
-                    <i className="fa-solid fa-table-cells"></i>
+                <div className='game-meta'>
+                  <div className='meta-item'>
+                    <i className='fa-solid fa-table-cells'></i>
                     <span>
                       {game.rows} × {game.columns} grid
                     </span>
                   </div>
-                  <div className="meta-item">
-                    <i className="fa-solid fa-calendar"></i>
+                  <div className='meta-item'>
+                    <i className='fa-solid fa-calendar'></i>
                     <span>{formatDate(game.createdAt)}</span>
                   </div>
-                  <div className="meta-item">
-                    <i className="fa-solid fa-hashtag"></i>
+                  <div className='meta-item'>
+                    <i className='fa-solid fa-hashtag'></i>
                     <span>{game.rows * game.columns} cells</span>
                   </div>
                 </div>
               </div>
 
-              <div className="game-actions">
+              <div className='game-actions'>
                 <button
-                  className="action-btn play-btn"
+                  className='action-btn play-btn'
                   onClick={() => handlePlay(game)}
-                  title="Play Game"
+                  title='Host Game'
                 >
-                  <i className="fa-solid fa-play"></i>
-                  <span>Play</span>
+                  <i className='fa-solid fa-tower-broadcast'></i>
+                  <span>Host</span>
                 </button>
 
                 <button
-                  className="action-btn edit-btn"
+                  className='action-btn edit-btn'
                   onClick={() => handleEdit(game)}
-                  title="Edit Game"
+                  title='Edit Game'
                 >
-                  <i className="fa-solid fa-pen"></i>
+                  <i className='fa-solid fa-pen'></i>
                   <span>Edit</span>
                 </button>
 
                 <button
-                  className="action-btn delete-btn"
+                  className='action-btn delete-btn'
                   onClick={() => handleDelete(game.id, game.name)}
                   disabled={deleting === game.id}
-                  title="Delete Game"
+                  title='Delete Game'
                 >
                   {deleting === game.id ? (
                     <>
-                      <i className="fa-solid fa-spinner fa-spin"></i>
+                      <i className='fa-solid fa-spinner fa-spin'></i>
                       <span>Deleting...</span>
                     </>
                   ) : (
                     <>
-                      <i className="fa-solid fa-trash"></i>
+                      <i className='fa-solid fa-trash'></i>
                       <span>Delete</span>
                     </>
                   )}
@@ -197,4 +203,3 @@ function Games() {
 }
 
 export default Games;
-

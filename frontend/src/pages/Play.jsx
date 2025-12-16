@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import "./Play.css";
 
 function Play() {
@@ -18,9 +19,14 @@ function Play() {
   const [viewingAsset, setViewingAsset] = useState(null);
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
   const [wsConnected, setWsConnected] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
   const gridWrapperRef = useRef(null);
   const wsRef = useRef(null);
   const fetchGameRef = useRef(null);
+
+  // Check if user is admin
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isAdmin = user && user.role === "admin";
 
   const fetchGame = async () => {
     try {
@@ -441,6 +447,17 @@ function Play() {
     <div className='play-container'>
       {/* Warriors Display */}
       <div className='warriors-display'>
+        {isAdmin && (
+          <div className='warriors-header'>
+            <button
+              className='host-game-btn'
+              onClick={() => setShowQRModal(true)}
+              title='Show QR Code for Players'
+            >
+              <i className='fa-solid fa-qrcode'></i> Host
+            </button>
+          </div>
+        )}
         {selectedWarrior && !movingWarrior && (
           <div className='selection-banner'>
             <span>
@@ -452,38 +469,44 @@ function Play() {
             </button>
           </div>
         )}
-        {warriors.length === 0 ? (
-          <p className='no-warriors'>No warriors available</p>
-        ) : (
-          <div className='warriors-grid'>
-            {warriors.map((warrior) => {
-              const availableCount = warrior.assets.filter(
-                (asset) => !cells.some((cell) => cell.occupiedBy === asset.id)
-              ).length;
-              const isSelected =
-                selectedWarrior && selectedWarrior.type === warrior.type;
 
-              return (
-                <div
-                  key={warrior.type}
-                  className={`warrior-item ${isSelected ? "selected" : ""} ${
-                    availableCount === 0 ? "depleted" : ""
-                  }`}
-                  onClick={() => handleWarriorClick(warrior)}
-                  title={`${availableCount} available`}
-                >
-                  <img
-                    src={warrior.thumbnail}
-                    alt={warrior.name}
-                    className='warrior-thumbnail'
-                  />
-                  <span className='warrior-count'>
-                    ({availableCount}/{warrior.count})
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+        {!isAdmin && (
+          <>
+            {warriors.length === 0 ? (
+              <p className='no-warriors'>No warriors available</p>
+            ) : (
+              <div className='warriors-grid'>
+                {warriors.map((warrior) => {
+                  const availableCount = warrior.assets.filter(
+                    (asset) =>
+                      !cells.some((cell) => cell.occupiedBy === asset.id)
+                  ).length;
+                  const isSelected =
+                    selectedWarrior && selectedWarrior.type === warrior.type;
+
+                  return (
+                    <div
+                      key={warrior.type}
+                      className={`warrior-item ${
+                        isSelected ? "selected" : ""
+                      } ${availableCount === 0 ? "depleted" : ""}`}
+                      onClick={() => handleWarriorClick(warrior)}
+                      title={`${availableCount} available`}
+                    >
+                      <img
+                        src={warrior.thumbnail}
+                        alt={warrior.name}
+                        className='warrior-thumbnail'
+                      />
+                      <span className='warrior-count'>
+                        ({availableCount}/{warrior.count})
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -740,6 +763,48 @@ function Play() {
                   <p>{viewingAsset.description}</p>
                 </div>
               )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* QR Code Modal */}
+      {showQRModal && (
+        <>
+          <div
+            className='modal-overlay'
+            onClick={() => setShowQRModal(false)}
+          ></div>
+          <div className='qr-modal'>
+            <div className='modal-header'>
+              <h2>
+                <i className='fa-solid fa-qrcode'></i> Join Game
+              </h2>
+              <button
+                className='modal-close-btn'
+                onClick={() => setShowQRModal(false)}
+              >
+                <i className='fa-solid fa-times'></i>
+              </button>
+            </div>
+            <div className='modal-body qr-modal-body'>
+              <p className='qr-instructions'>
+                Players can scan this QR code to join the game:
+              </p>
+              <div className='qr-code-container'>
+                <QRCodeSVG
+                  value={`${window.location.origin}/play/${gameId}`}
+                  size={256}
+                  level='H'
+                  marginSize={4}
+                />
+              </div>
+              <div className='game-url'>
+                <p className='url-label'>Or visit:</p>
+                <code className='url-text'>
+                  {window.location.origin}/play/{gameId}
+                </code>
+              </div>
             </div>
           </div>
         </>
