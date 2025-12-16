@@ -18,11 +18,9 @@ function Play() {
   const [placingAsset, setPlacingAsset] = useState(false);
   const [viewingAsset, setViewingAsset] = useState(null);
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
-  const [wsConnected, setWsConnected] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const gridWrapperRef = useRef(null);
-  const wsRef = useRef(null);
-  const fetchGameRef = useRef(null);
+  const pollingIntervalRef = useRef(null);
 
   // Check if user is admin
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -49,75 +47,30 @@ function Play() {
     }
   };
 
-  // Keep fetchGameRef updated with the latest fetchGame function
-  useEffect(() => {
-    fetchGameRef.current = fetchGame;
-  });
-
   // Debug: Log when cells change
   useEffect(() => {
     console.log("Cells state updated:", cells);
   }, [cells]);
 
+  // Initial load and setup polling
   useEffect(() => {
     if (gameId) {
       fetchGame();
       fetchUserWarriors();
-      setupWebSocket();
+
+      // Start polling every 800ms
+      pollingIntervalRef.current = setInterval(() => {
+        fetchGame();
+      }, 800);
     }
 
+    // Cleanup: stop polling when component unmounts
     return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
       }
     };
   }, [gameId]);
-
-  const setupWebSocket = () => {
-    const token = localStorage.getItem("token");
-    // In development, Vite proxy will handle the WebSocket connection
-    // In production, use the actual host
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const wsUrl = `${protocol}//${host}/api/ws?token=${token}`;
-
-    console.log("Connecting to WebSocket:", wsUrl);
-    const ws = new WebSocket(wsUrl);
-
-    ws.onopen = () => {
-      console.log("WebSocket connected in Play");
-      setWsConnected(true);
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket message received:", data);
-
-        if (data.type === "game_update" && data.gameId === parseInt(gameId)) {
-          // Refresh game data when updates occur using the ref
-          if (fetchGameRef.current) {
-            fetchGameRef.current();
-          }
-        }
-      } catch (error) {
-        console.error("Error parsing WebSocket message:", error);
-      }
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      setWsConnected(false);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket disconnected");
-      setWsConnected(false);
-      // Don't auto-reconnect, let user manually reconnect via button
-    };
-
-    wsRef.current = ws;
-  };
 
   // Center the grid on load
   useEffect(() => {
@@ -343,17 +296,6 @@ function Play() {
     setZoom(parseInt(e.target.value));
   };
 
-  const toggleWebSocket = () => {
-    if (wsConnected && wsRef.current) {
-      // Disconnect
-      wsRef.current.close();
-      setWsConnected(false);
-    } else {
-      // Connect
-      setupWebSocket();
-    }
-  };
-
   const getCellBackground = (cell) => {
     // If cell is occupied, use the avatar's element color with 50% opacity
     if (cell.occupiedBy) {
@@ -522,17 +464,6 @@ function Play() {
           className='zoom-slider'
           orient='vertical'
         />
-        <button
-          className={`ws-status-btn ${
-            wsConnected ? "connected" : "disconnected"
-          }`}
-          onClick={toggleWebSocket}
-          title={
-            wsConnected
-              ? "Connected - Click to disconnect"
-              : "Disconnected - Click to connect"
-          }
-        ></button>
       </div>
 
       <div className='grid-wrapper' ref={gridWrapperRef}>
