@@ -22,6 +22,13 @@ function Play() {
   const gridWrapperRef = useRef(null);
   const pollingIntervalRef = useRef(null);
 
+  // Turn tracking state
+  const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
+  const [turnStartTime, setTurnStartTime] = useState(null);
+  const [turnDuration, setTurnDuration] = useState(20);
+  const [timeRemaining, setTimeRemaining] = useState(20);
+  const [gameAvatars, setGameAvatars] = useState([]); // Avatar IDs in turn order
+
   // Check if user is admin
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const isAdmin = user && user.role === "admin";
@@ -40,6 +47,18 @@ function Play() {
       console.log("New cells:", data.cells);
       setGame(data.game);
       setCells(data.cells || []);
+
+      // Update turn tracking data
+      if (data.game) {
+        setCurrentTurnIndex(data.game.currentTurnIndex || 0);
+        setTurnDuration(data.game.turnDuration || 20);
+        setGameAvatars(data.game.avatars || []);
+
+        if (data.game.turnStartTime) {
+          setTurnStartTime(new Date(data.game.turnStartTime));
+        }
+      }
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching game:", error);
@@ -81,6 +100,40 @@ function Play() {
       wrapper.scrollLeft = (scrollWidth - clientWidth) / 2;
     }
   }, [loading, game]);
+
+  // Timer countdown effect
+  useEffect(() => {
+    if (turnStartTime && turnDuration) {
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - new Date(turnStartTime).getTime()) / 1000;
+        const remaining = Math.max(0, turnDuration - elapsed);
+        setTimeRemaining(Math.ceil(remaining));
+
+        // Auto-advance turn when time runs out
+        if (remaining <= 0) {
+          advanceTurnAPI();
+        }
+      }, 100); // Update every 100ms for smooth countdown
+
+      return () => clearInterval(interval);
+    }
+  }, [turnStartTime, turnDuration]);
+
+  // Function to advance turn via API
+  const advanceTurnAPI = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(`/api/games/${gameId}/advance-turn`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // The polling will pick up the new turn data
+    } catch (error) {
+      console.error("Error advancing turn:", error);
+    }
+  };
 
   const fetchUserWarriors = async () => {
     try {
@@ -525,6 +578,26 @@ function Play() {
           orient='vertical'
         />
       </div>
+
+      {/* Turn Timer */}
+      {gameAvatars.length > 0 && (
+        <div className='turn-timer-container'>
+          <div className='timer-label'>
+            {gameAvatars[currentTurnIndex] === avatarId
+              ? "Your Turn"
+              : "Opponent's Turn"}
+          </div>
+          <div className={`timer-value ${timeRemaining <= 5 ? "warning" : ""}`}>
+            {timeRemaining}s
+          </div>
+          <div className='timer-progress'>
+            <div
+              className='timer-progress-bar'
+              style={{ width: `${(timeRemaining / turnDuration) * 100}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
 
       <div className='grid-wrapper' ref={gridWrapperRef}>
         <div

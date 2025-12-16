@@ -172,12 +172,16 @@ type QuizQuestion struct {
 }
 
 type Game struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	Thumbnail string    `json:"thumbnail"`
-	Rows      int       `json:"rows"`
-	Columns   int       `json:"columns"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID               int        `json:"id"`
+	Name             string     `json:"name"`
+	Thumbnail        string     `json:"thumbnail"`
+	Rows             int        `json:"rows"`
+	Columns          int        `json:"columns"`
+	CurrentTurnIndex int        `json:"currentTurnIndex"`
+	TurnStartTime    *time.Time `json:"turnStartTime,omitempty"`
+	TurnDuration     int        `json:"turnDuration"` // in seconds
+	CreatedAt        time.Time  `json:"createdAt"`
+	Avatars          []int      `json:"avatars,omitempty"` // Avatar IDs in turn order
 }
 
 type GameCell struct {
@@ -521,10 +525,44 @@ func initDB() {
 		thumbnail TEXT,
 		rows INTEGER NOT NULL,
 		columns INTEGER NOT NULL,
+		current_turn_index INTEGER DEFAULT 0,
+		turn_start_time DATETIME,
+		turn_duration INTEGER DEFAULT 20,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 	);`
 
 	_, err = db.Exec(createGamesTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Add turn tracking columns if they don't exist (for existing databases)
+	_, err = db.Exec(`ALTER TABLE games ADD COLUMN current_turn_index INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add current_turn_index column: %v", err)
+	}
+
+	_, err = db.Exec(`ALTER TABLE games ADD COLUMN turn_start_time DATETIME`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add turn_start_time column: %v", err)
+	}
+
+	_, err = db.Exec(`ALTER TABLE games ADD COLUMN turn_duration INTEGER DEFAULT 20`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add turn_duration column: %v", err)
+	}
+
+	// Create game_avatars table for turn order
+	createGameAvatarsTableSQL := `CREATE TABLE IF NOT EXISTS game_avatars (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		game_id INTEGER NOT NULL,
+		avatar_id INTEGER NOT NULL,
+		turn_order INTEGER NOT NULL,
+		FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE,
+		FOREIGN KEY (avatar_id) REFERENCES avatars(id)
+	);`
+
+	_, err = db.Exec(createGameAvatarsTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -3001,8 +3039,8 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create game
-	result, err := db.Exec("INSERT INTO games (name, thumbnail, rows, columns) VALUES (?, ?, ?, ?)",
+	// Create game with turn tracking initialized
+	result, err := db.Exec("INSERT INTO games (name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration) VALUES (?, ?, ?, ?, 0, datetime('now'), 20)",
 		req.Name, req.Thumbnail, req.Rows, req.Columns)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -3010,6 +3048,16 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	gameID, _ := result.LastInsertId()
+
+	// Store avatar IDs in turn order
+	for i, avatarID := range req.AvatarIDs {
+		_, err := db.Exec(`INSERT INTO game_avatars (game_id, avatar_id, turn_order) VALUES (?, ?, ?)`,
+			gameID, avatarID, i)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 
 	// Generate grid cells (chess-like notation: A1, A2, B1, B2, etc.)
 	// For rows > 26, use AA, AB, AC... (like Excel columns)
@@ -3075,12 +3123,36 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	gameID := vars["id"]
 
 	var game Game
-	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, created_at FROM games WHERE id = ?", gameID).
-		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CreatedAt)
+	var turnStartTime sql.NullTime
+	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, created_at FROM games WHERE id = ?", gameID).
+		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CurrentTurnIndex, &turnStartTime, &game.TurnDuration, &game.CreatedAt)
 	if err != nil {
 		http.Error(w, "Game not found", http.StatusNotFound)
 		return
 	}
+
+	if turnStartTime.Valid {
+		game.TurnStartTime = &turnStartTime.Time
+	}
+
+	// Get avatar IDs in turn order
+	avatarRows, err := db.Query(`SELECT avatar_id FROM game_avatars WHERE game_id = ? ORDER BY turn_order`, gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer avatarRows.Close()
+
+	var avatars []int
+	for avatarRows.Next() {
+		var avatarID int
+		if err := avatarRows.Scan(&avatarID); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		avatars = append(avatars, avatarID)
+	}
+	game.Avatars = avatars
 
 	// Get all cells for this game
 	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, occupied_by, status
@@ -3456,6 +3528,49 @@ func moveWarrior(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Advance to next turn (automatically called when timer expires or manually by admin)
+func advanceTurn(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	gameID := vars["id"]
+
+	// Get current turn info
+	var currentTurnIndex, avatarCount int
+	err := db.QueryRow("SELECT current_turn_index FROM games WHERE id = ?", gameID).Scan(&currentTurnIndex)
+	if err != nil {
+		http.Error(w, "Game not found", http.StatusNotFound)
+		return
+	}
+
+	// Get total number of avatars in this game
+	err = db.QueryRow("SELECT COUNT(*) FROM game_avatars WHERE game_id = ?", gameID).Scan(&avatarCount)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Calculate next turn index (wrap around)
+	nextTurnIndex := (currentTurnIndex + 1) % avatarCount
+
+	// Update game with new turn
+	_, err = db.Exec(`UPDATE games SET current_turn_index = ?, turn_start_time = datetime('now') WHERE id = ?`,
+		nextTurnIndex, gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Broadcast game update
+	gameIDInt, _ := strconv.Atoi(gameID)
+	broadcastGameUpdate(gameIDInt)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":        true,
+		"newTurnIndex":   nextTurnIndex,
+		"turnStartTime":  time.Now(),
+	})
 }
 
 // Create a new battle with questions
@@ -4199,6 +4314,7 @@ func main() {
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")
 	api.HandleFunc("/games/{id}", updateGame).Methods("PUT")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
+	api.HandleFunc("/games/{id}/advance-turn", advanceTurn).Methods("POST")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
