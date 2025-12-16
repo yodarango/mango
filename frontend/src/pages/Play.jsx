@@ -170,11 +170,96 @@ function Play() {
     }
   };
 
+  // Calculate if a cell is within movement range based on warrior level
+  const isCellInRange = (fromCell, toCell, warriorLevel) => {
+    if (!fromCell || !toCell || !game) return false;
+
+    // Parse cell IDs (e.g., "A1" -> row: 0, col: 1)
+    const parseCell = (cellId) => {
+      const match = cellId.match(/^([A-Z]+)(\d+)$/);
+      if (!match) return null;
+
+      const letters = match[1];
+      const col = parseInt(match[2]);
+
+      // Convert letters to row number (A=0, B=1, ..., AA=26, etc.)
+      let row = 0;
+      for (let i = 0; i < letters.length; i++) {
+        row = row * 26 + (letters.charCodeAt(i) - 65 + (i > 0 ? 1 : 0));
+      }
+
+      return { row, col };
+    };
+
+    const from = parseCell(fromCell.cellId);
+    const to = parseCell(toCell.cellId);
+
+    if (!from || !to) return false;
+
+    // Calculate the distance (Chebyshev distance for diagonal movement)
+    const rowDiff = Math.abs(to.row - from.row);
+    const colDiff = Math.abs(to.col - from.col);
+    const distance = Math.max(rowDiff, colDiff);
+
+    return distance <= warriorLevel;
+  };
+
   const handleCellClick = async (cell) => {
-    // If moving a warrior, move it to this cell
+    // FIRST: Check if clicking on a warrior (to select/deselect for moving or view stats)
+    if (cell.occupiedBy && cell.status === "warrior") {
+      // If cell has a warrior, check if it belongs to the current user
+      const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
+
+      // Check if this warrior belongs to the current user's avatar
+      if (warrior && warrior.avatarId === avatarId) {
+        // Check if clicking the same warrior that's already selected for moving
+        if (movingWarrior && movingWarrior.warrior.id === warrior.id) {
+          // Cancel the move by deselecting
+          setMovingWarrior(null);
+        } else {
+          // This warrior belongs to the user, allow them to move it
+          setMovingWarrior({ warrior, fromCell: cell });
+        }
+        return; // Exit early after handling warrior selection
+      } else {
+        // This warrior belongs to someone else, just show stats
+        // Try to fetch the warrior details from the backend
+        try {
+          const token = localStorage.getItem("token");
+          const response = await fetch(`/api/assets/${cell.occupiedBy}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            const warriorData = await response.json();
+            setViewingAsset(warriorData);
+          }
+        } catch (error) {
+          console.error("Error fetching warrior details:", error);
+        }
+        return; // Exit early after viewing other player's warrior
+      }
+    }
+
+    // SECOND: If moving a warrior, move it to this cell
     if (movingWarrior && cell.active) {
       if (cell.occupiedBy) {
         alert("This cell is already occupied!");
+        return;
+      }
+
+      // Check if the cell is within movement range
+      if (
+        !isCellInRange(
+          movingWarrior.fromCell,
+          cell,
+          movingWarrior.warrior.level
+        )
+      ) {
+        alert(
+          `This warrior can only move ${movingWarrior.warrior.level} cell(s) at level ${movingWarrior.warrior.level}!`
+        );
         return;
       }
 
@@ -209,7 +294,7 @@ function Play() {
         setPlacingAsset(false);
       }
     }
-    // If a warrior is selected, place it on the cell
+    // THIRD: If a warrior is selected, place it on the cell
     else if (selectedWarrior && cell.active) {
       if (cell.occupiedBy) {
         alert("This cell is already occupied!");
@@ -247,34 +332,9 @@ function Play() {
       } finally {
         setPlacingAsset(false);
       }
-    } else if (cell.occupiedBy && cell.status === "warrior") {
-      // If cell has a warrior, check if it belongs to the current user
-      const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
-
-      // Check if this warrior belongs to the current user's avatar
-      if (warrior && warrior.avatarId === avatarId) {
-        // This warrior belongs to the user, allow them to move it
-        setMovingWarrior({ warrior, fromCell: cell });
-      } else {
-        // This warrior belongs to someone else, just show stats
-        // Try to fetch the warrior details from the backend
-        try {
-          const token = localStorage.getItem("token");
-          const response = await fetch(`/api/assets/${cell.occupiedBy}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.ok) {
-            const warriorData = await response.json();
-            setViewingAsset(warriorData);
-          }
-        } catch (error) {
-          console.error("Error fetching warrior details:", error);
-        }
-      }
-    } else {
-      // Otherwise show cell details
+    }
+    // FOURTH: Otherwise show cell details
+    else {
       setSelectedCell(cell);
     }
   };
@@ -491,10 +551,20 @@ function Play() {
               {row.map((cell, colIndex) => {
                 const isMovingFrom =
                   movingWarrior && movingWarrior.fromCell.id === cell.id;
-                const isPlaceable =
-                  (selectedWarrior || movingWarrior) &&
-                  cell.active &&
-                  !cell.occupiedBy;
+
+                // Check if cell is placeable based on context
+                let isPlaceable = false;
+                if (selectedWarrior && cell.active && !cell.occupiedBy) {
+                  // Placing a new warrior - any active empty cell
+                  isPlaceable = true;
+                } else if (movingWarrior && cell.active && !cell.occupiedBy) {
+                  // Moving an existing warrior - only cells within range
+                  isPlaceable = isCellInRange(
+                    movingWarrior.fromCell,
+                    cell,
+                    movingWarrior.warrior.level
+                  );
+                }
 
                 return (
                   <div
