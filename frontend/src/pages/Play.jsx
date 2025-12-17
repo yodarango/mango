@@ -53,6 +53,13 @@ function Play() {
       setGame(data.game);
       setCells(data.cells || []);
 
+      // Check if there's an in-progress battle
+      if (data.battle && data.battle.status === "in_progress") {
+        // Navigate all users to the battle page
+        navigate(`/battles/${data.battle.id}`);
+        return; // Stop further processing
+      }
+
       // Update turn tracking data
       if (data.game) {
         const newTurnIndex = data.game.currentTurnIndex || 0;
@@ -1008,6 +1015,7 @@ function Play() {
                           status: "in_progress",
                           attacker: movingWarrior.warrior.id,
                           defender: attackTarget.defender.id,
+                          gameId: parseInt(gameId),
                         }),
                       });
 

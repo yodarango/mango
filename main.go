@@ -180,6 +180,7 @@ type Game struct {
 	CurrentTurnIndex int        `json:"currentTurnIndex"`
 	TurnStartTime    *time.Time `json:"turnStartTime,omitempty"`
 	TurnDuration     int        `json:"turnDuration"` // in seconds
+	BattleID         *int       `json:"battleId,omitempty"`
 	CreatedAt        time.Time  `json:"createdAt"`
 	Avatars          []int      `json:"avatars,omitempty"` // Avatar IDs in turn order
 }
@@ -3148,8 +3149,9 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 
 	var game Game
 	var turnStartTime sql.NullTime
-	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, created_at FROM games WHERE id = ?", gameID).
-		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CurrentTurnIndex, &turnStartTime, &game.TurnDuration, &game.CreatedAt)
+	var battleID sql.NullInt64
+	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, battle_id, created_at FROM games WHERE id = ?", gameID).
+		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CurrentTurnIndex, &turnStartTime, &game.TurnDuration, &battleID, &game.CreatedAt)
 	if err != nil {
 		http.Error(w, "Game not found", http.StatusNotFound)
 		return
@@ -3157,6 +3159,11 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 
 	if turnStartTime.Valid {
 		game.TurnStartTime = &turnStartTime.Time
+	}
+
+	if battleID.Valid {
+		battleIDInt := int(battleID.Int64)
+		game.BattleID = &battleIDInt
 	}
 
 	// Get avatar IDs in turn order
@@ -3220,10 +3227,22 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 		cells = append(cells, cell)
 	}
 
+	// Get battle details if game has a battle linked
+	var battle *Battle
+	if game.BattleID != nil {
+		var b Battle
+		err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles WHERE id = ?", *game.BattleID).
+			Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender)
+		if err == nil {
+			battle = &b
+		}
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"game":  game,
-		"cells": cells,
+		"game":   game,
+		"cells":  cells,
+		"battle": battle,
 	})
 }
 
@@ -3696,6 +3715,7 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 		Status    *string `json:"status"`   // Optional status (defaults to 'pending')
 		Attacker  *int    `json:"attacker"` // Avatar ID of attacker
 		Defender  *int    `json:"defender"` // Avatar ID of defender
+		GameID    *int    `json:"gameId"`   // Optional game ID to link battle to game
 		Questions []struct {
 			Question       string `json:"question"`
 			Answer         string `json:"answer"`
@@ -3724,6 +3744,15 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	battleID, _ := result.LastInsertId()
+
+	// Link battle to game if gameId is provided
+	if req.GameID != nil {
+		_, err = db.Exec("UPDATE games SET battle_id = ? WHERE id = ?", battleID, *req.GameID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 
 	// Create questions (optional - only if provided)
 	for _, q := range req.Questions {
