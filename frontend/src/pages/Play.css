@@ -185,6 +185,24 @@
   text-align: center;
 }
 
+.timer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.timer-avatar-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid var(--accent-orange);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+}
+
 .timer-value {
   color: var(--accent-green);
   font-size: 2rem;

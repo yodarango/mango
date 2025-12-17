@@ -607,8 +607,19 @@ function Play() {
             {avatarsMap[gameAvatars[currentTurnIndex]]?.avatarName || "Unknown"}
             's Turn
           </div>
-          <div className={`timer-value ${timeRemaining <= 5 ? "warning" : ""}`}>
-            {timeRemaining}s
+          <div className='timer-content'>
+            {avatarsMap[gameAvatars[currentTurnIndex]]?.thumbnail && (
+              <img
+                src={avatarsMap[gameAvatars[currentTurnIndex]].thumbnail}
+                alt={avatarsMap[gameAvatars[currentTurnIndex]]?.avatarName}
+                className='timer-avatar-thumbnail'
+              />
+            )}
+            <div
+              className={`timer-value ${timeRemaining <= 5 ? "warning" : ""}`}
+            >
+              {timeRemaining}s
+            </div>
           </div>
           <div className='timer-progress'>
             <div
