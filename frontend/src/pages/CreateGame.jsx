@@ -5,19 +5,16 @@ import "./CreateGame.css";
 function CreateGame() {
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
-  const [battles, setBattles] = useState([]);
   const [selectedAvatars, setSelectedAvatars] = useState([]);
   const [gameName, setGameName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [rows, setRows] = useState(5);
   const [columns, setColumns] = useState(5);
-  const [selectedBattle, setSelectedBattle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     fetchAvatars();
-    fetchBattles();
   }, []);
 
   const fetchAvatars = async () => {
@@ -34,21 +31,6 @@ function CreateGame() {
     } catch (error) {
       console.error("Error fetching avatars:", error);
       setLoading(false);
-    }
-  };
-
-  const fetchBattles = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/battles", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setBattles(data || []);
-    } catch (error) {
-      console.error("Error fetching battles:", error);
     }
   };
 
@@ -94,7 +76,6 @@ function CreateGame() {
           rows: parseInt(rows),
           columns: parseInt(columns),
           avatarIds: selectedAvatars,
-          battleId: selectedBattle,
         }),
       });
 
@@ -179,31 +160,6 @@ function CreateGame() {
                 onChange={(e) => setThumbnail(e.target.value)}
                 placeholder='Enter image URL'
               />
-            </div>
-          </div>
-
-          <div className='form-row'>
-            <div className='form-group'>
-              <label htmlFor='battle'>
-                <i className='fa-solid fa-swords'></i> Battle (Optional)
-              </label>
-              <select
-                id='battle'
-                value={selectedBattle || ""}
-                onChange={(e) =>
-                  setSelectedBattle(
-                    e.target.value ? parseInt(e.target.value) : null
-                  )
-                }
-                className='glass-dropdown'
-              >
-                <option value=''>No Battle</option>
-                {battles.map((battle) => (
-                  <option key={battle.id} value={battle.id}>
-                    {battle.name}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
 

@@ -992,13 +992,39 @@ function Play() {
               <div className='attack-actions'>
                 <button
                   className='btn-attack'
-                  onClick={() => {
-                    if (game.battleId) {
-                      navigate(
-                        `/admin/battle/${game.battleId}?attacker=${avatarId}&defender=${attackTarget.defenderAvatar.id}`
-                      );
-                    } else {
-                      alert("No battle configured for this game!");
+                  onClick={async () => {
+                    try {
+                      const token = localStorage.getItem("token");
+
+                      // Create a new battle
+                      const response = await fetch("/api/battles/create", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          name: `Battle: ${avatarsMap[avatarId]?.avatarName} vs ${attackTarget.defenderAvatar?.avatarName}`,
+                          status: "in_progress",
+                        }),
+                      });
+
+                      if (response.ok) {
+                        const battleData = await response.json();
+                        const battleId = battleData.id || battleData.battleId;
+
+                        // Navigate to battle page with the new battle ID
+                        navigate(
+                          `/admin/battle/${battleId}?attacker=${avatarId}&defender=${attackTarget.defenderAvatar.id}`
+                        );
+                      } else {
+                        const errorText = await response.text();
+                        alert(`Failed to create battle: ${errorText}`);
+                        setAttackTarget(null);
+                      }
+                    } catch (error) {
+                      console.error("Error creating battle:", error);
+                      alert("Error creating battle");
                       setAttackTarget(null);
                     }
                   }}

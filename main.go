@@ -180,7 +180,6 @@ type Game struct {
 	CurrentTurnIndex int        `json:"currentTurnIndex"`
 	TurnStartTime    *time.Time `json:"turnStartTime,omitempty"`
 	TurnDuration     int        `json:"turnDuration"` // in seconds
-	BattleID         *int       `json:"battleId,omitempty"`
 	CreatedAt        time.Time  `json:"createdAt"`
 	Avatars          []int      `json:"avatars,omitempty"` // Avatar IDs in turn order
 }
@@ -226,7 +225,6 @@ type CreateGameRequest struct {
 	Rows      int      `json:"rows"`
 	Columns   int      `json:"columns"`
 	AvatarIDs []int    `json:"avatarIds"` // Selected avatars for this game
-	BattleID  *int     `json:"battleId"`  // Optional battle for this game
 }
 
 var db *sql.DB
@@ -3049,8 +3047,8 @@ func createGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create game with turn tracking initialized
-	result, err := db.Exec("INSERT INTO games (name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, battle_id) VALUES (?, ?, ?, ?, 0, datetime('now'), 20, ?)",
-		req.Name, req.Thumbnail, req.Rows, req.Columns, req.BattleID)
+	result, err := db.Exec("INSERT INTO games (name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration) VALUES (?, ?, ?, ?, 0, datetime('now'), 20)",
+		req.Name, req.Thumbnail, req.Rows, req.Columns)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3133,9 +3131,8 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 
 	var game Game
 	var turnStartTime sql.NullTime
-	var battleID sql.NullInt64
-	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, battle_id, created_at FROM games WHERE id = ?", gameID).
-		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CurrentTurnIndex, &turnStartTime, &game.TurnDuration, &battleID, &game.CreatedAt)
+	err := db.QueryRow("SELECT id, name, thumbnail, rows, columns, current_turn_index, turn_start_time, turn_duration, created_at FROM games WHERE id = ?", gameID).
+		Scan(&game.ID, &game.Name, &game.Thumbnail, &game.Rows, &game.Columns, &game.CurrentTurnIndex, &turnStartTime, &game.TurnDuration, &game.CreatedAt)
 	if err != nil {
 		http.Error(w, "Game not found", http.StatusNotFound)
 		return
@@ -3143,11 +3140,6 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 
 	if turnStartTime.Valid {
 		game.TurnStartTime = &turnStartTime.Time
-	}
-
-	if battleID.Valid {
-		battleIDInt := int(battleID.Int64)
-		game.BattleID = &battleIDInt
 	}
 
 	// Get avatar IDs in turn order
@@ -3673,23 +3665,18 @@ func setTurn(w http.ResponseWriter, r *http.Request) {
 
 // Create a new battle with questions
 func createBattle(w http.ResponseWriter, r *http.Request) {
-	claims, err := getUserFromToken(r)
+	_, err := getUserFromToken(r)
 	if err != nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	// Check if user is admin
-	var role string
-	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
-	if err != nil || role != "admin" {
-		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
-		return
-	}
+	// Allow any authenticated user to create battles (for attack scenarios)
 
 	var req struct {
-		Name      string `json:"name"`
-		Reward    string `json:"reward"`
+		Name      string  `json:"name"`
+		Reward    string  `json:"reward"`
+		Status    *string `json:"status"` // Optional status (defaults to 'pending')
 		Questions []struct {
 			Question       string `json:"question"`
 			Answer         string `json:"answer"`
@@ -3703,9 +3690,15 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Default status to 'pending' if not provided
+	status := "pending"
+	if req.Status != nil && *req.Status != "" {
+		status = *req.Status
+	}
+
 	// Create battle
-	result, err := db.Exec("INSERT INTO battles (name, reward, status) VALUES (?, ?, 'pending')",
-		req.Name, req.Reward)
+	result, err := db.Exec("INSERT INTO battles (name, reward, status) VALUES (?, ?, ?)",
+		req.Name, req.Reward, status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3713,7 +3706,7 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 
 	battleID, _ := result.LastInsertId()
 
-	// Create questions
+	// Create questions (optional - only if provided)
 	for _, q := range req.Questions {
 		_, err := db.Exec(`INSERT INTO battle_questions
 			(battle_id, question, answer, possible_points, time)
