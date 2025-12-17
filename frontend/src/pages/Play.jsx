@@ -1004,10 +1004,10 @@ function Play() {
                           Authorization: `Bearer ${token}`,
                         },
                         body: JSON.stringify({
-                          name: `Battle: ${avatarsMap[avatarId]?.avatarName} vs ${attackTarget.defenderAvatar?.avatarName}`,
+                          name: `Battle: ${movingWarrior.warrior.name} vs ${attackTarget.defender.name}`,
                           status: "in_progress",
-                          attacker: avatarId,
-                          defender: attackTarget.defenderAvatar.id,
+                          attacker: movingWarrior.warrior.id,
+                          defender: attackTarget.defender.id,
                         }),
                       });
 
