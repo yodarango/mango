@@ -33,6 +33,19 @@ function EditGame() {
       setCells(data.cells || []);
       setLoading(false);
 
+      // Fetch all avatars for turn control
+      const avatarsResponse = await fetch("/api/avatars", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (avatarsResponse.ok) {
+        const allAvatars = await avatarsResponse.json();
+        const avatarMap = {};
+        allAvatars.forEach((avatar) => {
+          avatarMap[avatar.id] = avatar;
+        });
+        setAvatarsMap(avatarMap);
+      }
+
       // Fetch thumbnails for occupied cells
       const occupiedCells = (data.cells || []).filter((c) => c.occupiedBy);
       const uniqueAssetIds = [
@@ -242,6 +255,39 @@ function EditGame() {
     }
   };
 
+  const handleSetTurn = async (avatarId) => {
+    if (
+      !confirm(
+        `Set turn to ${avatarsMap[avatarId]?.avatarName || "this avatar"}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/games/${gameId}/set-turn`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ avatarId }),
+      });
+
+      if (response.ok) {
+        alert("Turn updated successfully!");
+        await fetchGame(); // Refresh game data
+      } else {
+        const errorText = await response.text();
+        alert(`Failed to set turn: ${errorText}`);
+      }
+    } catch (error) {
+      console.error("Error setting turn:", error);
+      alert("Error setting turn");
+    }
+  };
+
   const getCellBackground = (cell) => {
     // If cell is occupied, use the avatar's element color with 50% opacity
     if (cell.occupiedBy) {
@@ -347,6 +393,55 @@ function EditGame() {
           <i className='fa-solid fa-info-circle'></i> Click any cell to edit its
           properties
         </p>
+
+        {/* Turn Control Section */}
+        {game && game.avatars && game.avatars.length > 0 && (
+          <div className='turn-control-section'>
+            <h3>
+              <i className='fa-solid fa-clock'></i> Turn Control
+            </h3>
+            <p className='turn-hint'>
+              Click an avatar to set their turn (useful for recovering from turn
+              issues)
+            </p>
+            <div className='avatar-turn-list'>
+              {game.avatars.map((avatarId, index) => {
+                const avatar = avatarsMap[avatarId];
+                const isCurrentTurn = game.currentTurnIndex === index;
+                return (
+                  <div
+                    key={avatarId}
+                    className={`avatar-turn-item ${
+                      isCurrentTurn ? "current-turn" : ""
+                    }`}
+                    onClick={() => handleSetTurn(avatarId)}
+                  >
+                    {avatar && avatar.thumbnail && (
+                      <img
+                        src={avatar.thumbnail}
+                        alt={avatar.avatarName}
+                        className='avatar-turn-thumbnail'
+                      />
+                    )}
+                    <div className='avatar-turn-info'>
+                      <div className='avatar-turn-name'>
+                        {avatar?.avatarName || `Avatar ${avatarId}`}
+                      </div>
+                      <div className='avatar-turn-order'>
+                        Turn Order: {index + 1}
+                      </div>
+                    </div>
+                    {isCurrentTurn && (
+                      <div className='current-turn-badge'>
+                        <i className='fa-solid fa-star'></i> Current Turn
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Zoom Slider */}
         <div className='zoom-slider-wrapper'>

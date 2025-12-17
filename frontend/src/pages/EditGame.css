@@ -31,6 +31,110 @@
   gap: 0.5rem;
 }
 
+/* Turn Control Section */
+.turn-control-section {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--accent-orange);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 800px;
+  box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+}
+
+.turn-control-section h3 {
+  font-family: "MedievalSharp", cursive;
+  color: var(--accent-orange);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+}
+
+.turn-hint {
+  color: var(--accent-yellow);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.avatar-turn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.avatar-turn-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-turn-item:hover {
+  background: rgba(255, 140, 0, 0.2);
+  border-color: var(--accent-orange);
+  transform: translateX(5px);
+}
+
+.avatar-turn-item.current-turn {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.avatar-turn-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid var(--accent-orange);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.avatar-turn-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.avatar-turn-name {
+  font-family: "MedievalSharp", cursive;
+  color: var(--accent-yellow);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.avatar-turn-order {
+  color: var(--accent-green);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.current-turn-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent-yellow);
+  color: var(--charcoal);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: "MedievalSharp", cursive;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
 /* Zoom Slider - Horizontal */
 .zoom-slider-wrapper {
   display: flex;

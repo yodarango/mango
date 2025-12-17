@@ -3599,6 +3599,63 @@ func advanceTurn(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Set turn to a specific avatar (admin only)
+func setTurn(w http.ResponseWriter, r *http.Request) {
+	// Check if user is admin
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	vars := mux.Vars(r)
+	gameID := vars["id"]
+
+	var req struct {
+		AvatarID int `json:"avatarId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	// Find the turn order index for this avatar in this game
+	var turnOrder int
+	err = db.QueryRow(`SELECT turn_order FROM game_avatars WHERE game_id = ? AND avatar_id = ?`,
+		gameID, req.AvatarID).Scan(&turnOrder)
+	if err != nil {
+		http.Error(w, "Avatar not found in this game", http.StatusNotFound)
+		return
+	}
+
+	// Update game to set the current turn to this avatar
+	_, err = db.Exec(`UPDATE games SET current_turn_index = ?, turn_start_time = datetime('now') WHERE id = ?`,
+		turnOrder, gameID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Broadcast game update
+	gameIDInt, _ := strconv.Atoi(gameID)
+	broadcastGameUpdate(gameIDInt)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":       true,
+		"newTurnIndex":  turnOrder,
+		"turnStartTime": time.Now(),
+	})
+}
+
 // Create a new battle with questions
 func createBattle(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -4341,6 +4398,7 @@ func main() {
 	api.HandleFunc("/games/{id}", updateGame).Methods("PUT")
 	api.HandleFunc("/games/{id}", deleteGame).Methods("DELETE")
 	api.HandleFunc("/games/{id}/advance-turn", advanceTurn).Methods("POST")
+	api.HandleFunc("/games/{id}/set-turn", setTurn).Methods("POST")
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
