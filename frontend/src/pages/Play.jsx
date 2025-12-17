@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import "./Play.css";
 
 function Play() {
   const { gameId } = useParams();
+  const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [cells, setCells] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,7 @@ function Play() {
   const [viewingAsset, setViewingAsset] = useState(null);
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
   const [showQRModal, setShowQRModal] = useState(false);
+  const [attackTarget, setAttackTarget] = useState(null); // {cell, defenderAvatar}
   const gridWrapperRef = useRef(null);
   const pollingIntervalRef = useRef(null);
 
@@ -366,8 +368,15 @@ function Play() {
         }
         return; // Exit early after handling warrior selection
       } else {
-        // This warrior belongs to someone else, just show stats (allowed anytime)
-        // Try to fetch the warrior details from the backend
+        // This warrior belongs to someone else
+        // If we're currently moving a warrior (attack scenario), show attack confirmation
+        if (movingWarrior && isMyTurn) {
+          const defenderAvatar = avatarsMap[warrior.avatarId];
+          setAttackTarget({ cell, defenderAvatar, defender: warrior });
+          return;
+        }
+
+        // Otherwise, just show stats (allowed anytime)
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(`/api/assets/${cell.occupiedBy}`, {
@@ -388,6 +397,7 @@ function Play() {
 
     // SECOND: If moving a warrior, move it to this cell
     if (movingWarrior && cell.active) {
+      // Check if cell is occupied (should not happen as we handle this in FIRST section)
       if (cell.occupiedBy) {
         alert("This cell is already occupied!");
         return;
@@ -950,6 +960,58 @@ function Play() {
                   <p>{viewingAsset.description}</p>
                 </div>
               )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Attack Confirmation Modal */}
+      {attackTarget && (
+        <>
+          <div
+            className='modal-overlay'
+            onClick={() => setAttackTarget(null)}
+          ></div>
+          <div className='attack-modal'>
+            <div className='modal-header'>
+              <h2>
+                <i className='fa-solid fa-swords'></i> Attack Confirmation
+              </h2>
+              <button
+                className='modal-close-btn'
+                onClick={() => setAttackTarget(null)}
+              >
+                <i className='fa-solid fa-times'></i>
+              </button>
+            </div>
+            <div className='modal-body'>
+              <p className='attack-message'>
+                Are you sure you want to attack{" "}
+                <strong>{attackTarget.defenderAvatar?.avatarName}</strong>?
+              </p>
+              <div className='attack-actions'>
+                <button
+                  className='btn-attack'
+                  onClick={() => {
+                    if (game.battleId) {
+                      navigate(
+                        `/admin/battle/${game.battleId}?attacker=${avatarId}&defender=${attackTarget.defenderAvatar.id}`
+                      );
+                    } else {
+                      alert("No battle configured for this game!");
+                      setAttackTarget(null);
+                    }
+                  }}
+                >
+                  <i className='fa-solid fa-swords'></i> Yes, Attack!
+                </button>
+                <button
+                  className='btn-cancel'
+                  onClick={() => setAttackTarget(null)}
+                >
+                  <i className='fa-solid fa-times'></i> Cancel
+                </button>
+              </div>
             </div>
           </div>
         </>

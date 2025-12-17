@@ -873,6 +873,82 @@
   font-size: 1.2rem;
 }
 
+/* Attack Confirmation Modal */
+.attack-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(40, 40, 40, 0.95);
+  backdrop-filter: blur(10px);
+  border: 3px solid var(--accent-orange);
+  border-radius: 12px;
+  padding: 0;
+  z-index: 1001;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.5),
+    0 0 100px rgba(255, 107, 53, 0.3);
+}
+
+.attack-message {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.attack-message strong {
+  color: var(--accent-orange);
+  font-family: "MedievalSharp", cursive;
+}
+
+.attack-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-attack,
+.btn-cancel {
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid;
+  font-family: "Cinzel", serif;
+}
+
+.btn-attack {
+  background: var(--accent-orange);
+  color: var(--charcoal-dark);
+  border-color: var(--accent-orange);
+}
+
+.btn-attack:hover {
+  background: transparent;
+  color: var(--accent-orange);
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+}
+
+.btn-cancel {
+  background: transparent;
+  color: var(--text-light);
+  border-color: var(--charcoal-light);
+}
+
+.btn-cancel:hover {
+  background: var(--charcoal-light);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
 /* QR Code Modal */
 .qr-modal {
   position: fixed;
