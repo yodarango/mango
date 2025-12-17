@@ -28,6 +28,9 @@ function Play() {
   const [turnDuration, setTurnDuration] = useState(20);
   const [timeRemaining, setTimeRemaining] = useState(20);
   const [gameAvatars, setGameAvatars] = useState([]); // Avatar IDs in turn order
+  const [isAdvancingTurn, setIsAdvancingTurn] = useState(false); // Prevent multiple advance calls
+  const lastTurnAdvanceRef = useRef(null); // Track last turn advance to prevent duplicates
+  const zeroTimeCountRef = useRef(0); // Count how long we've been at 0 seconds
 
   // Check if user is admin
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -50,13 +53,26 @@ function Play() {
 
       // Update turn tracking data
       if (data.game) {
-        setCurrentTurnIndex(data.game.currentTurnIndex || 0);
+        const newTurnIndex = data.game.currentTurnIndex || 0;
+        const newTurnStartTime = data.game.turnStartTime
+          ? new Date(data.game.turnStartTime)
+          : null;
+
+        // Check if the turn has actually changed
+        if (
+          newTurnIndex !== currentTurnIndex ||
+          (newTurnStartTime &&
+            turnStartTime &&
+            newTurnStartTime.getTime() !== turnStartTime.getTime())
+        ) {
+          // Turn has changed, reset the advancing flag
+          setIsAdvancingTurn(false);
+        }
+
+        setCurrentTurnIndex(newTurnIndex);
         setTurnDuration(data.game.turnDuration || 20);
         setGameAvatars(data.game.avatars || []);
-
-        if (data.game.turnStartTime) {
-          setTurnStartTime(new Date(data.game.turnStartTime));
-        }
+        setTurnStartTime(newTurnStartTime);
       }
 
       setLoading(false);
@@ -103,35 +119,78 @@ function Play() {
 
   // Timer countdown effect
   useEffect(() => {
-    if (turnStartTime && turnDuration) {
+    if (turnStartTime && turnDuration && gameAvatars.length > 0) {
+      // Create a unique key for this turn to prevent duplicate advances
+      const turnKey = `${currentTurnIndex}-${new Date(
+        turnStartTime
+      ).getTime()}`;
+
       const interval = setInterval(() => {
         const elapsed = (Date.now() - new Date(turnStartTime).getTime()) / 1000;
         const remaining = Math.max(0, turnDuration - elapsed);
         setTimeRemaining(Math.ceil(remaining));
 
-        // Auto-advance turn when time runs out
+        // Track how long we've been at 0
         if (remaining <= 0) {
+          zeroTimeCountRef.current += 0.1; // Increment by 100ms
+        } else {
+          zeroTimeCountRef.current = 0; // Reset if not at 0
+        }
+
+        // Auto-advance turn when time runs out
+        // Any active player can advance an expired turn to prevent getting stuck
+        // Force advance if stuck at 0 for more than 1 second
+        if (
+          remaining <= 0 &&
+          !isAdvancingTurn &&
+          (lastTurnAdvanceRef.current !== turnKey ||
+            zeroTimeCountRef.current > 1)
+        ) {
+          lastTurnAdvanceRef.current = turnKey;
+          zeroTimeCountRef.current = 0; // Reset counter
           advanceTurnAPI();
         }
       }, 100); // Update every 100ms for smooth countdown
 
       return () => clearInterval(interval);
     }
-  }, [turnStartTime, turnDuration]);
+  }, [
+    turnStartTime,
+    turnDuration,
+    currentTurnIndex,
+    gameAvatars,
+    avatarId,
+    isAdvancingTurn,
+  ]);
 
   // Function to advance turn via API
   const advanceTurnAPI = async () => {
+    // Prevent multiple simultaneous advance calls
+    if (isAdvancingTurn) {
+      return;
+    }
+
+    setIsAdvancingTurn(true);
     try {
       const token = localStorage.getItem("token");
-      await fetch(`/api/games/${gameId}/advance-turn`, {
+      const response = await fetch(`/api/games/${gameId}/advance-turn`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      // The polling will pick up the new turn data
+
+      if (response.ok) {
+        // Immediately fetch the new game state
+        await fetchGame();
+      }
     } catch (error) {
       console.error("Error advancing turn:", error);
+    } finally {
+      // Reset the flag after a short delay to allow the new turn data to be fetched
+      setTimeout(() => {
+        setIsAdvancingTurn(false);
+      }, 500);
     }
   };
 
