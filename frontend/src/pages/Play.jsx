@@ -270,6 +270,14 @@ function Play() {
   };
 
   const handleWarriorClick = (warriorGroup) => {
+    // Check if it's the user's turn before allowing warrior selection for placement
+    const isMyTurn = gameAvatars[currentTurnIndex] === avatarId;
+
+    if (!isMyTurn) {
+      alert("Not your turn!");
+      return;
+    }
+
     // Find the first available warrior of this type (not placed on grid)
     const availableWarrior = warriorGroup.assets.find(
       (asset) => !cells.some((cell) => cell.occupiedBy === asset.id)
