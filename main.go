@@ -3548,9 +3548,9 @@ func advanceTurn(w http.ResponseWriter, r *http.Request) {
 	// This prevents race conditions where multiple clients try to advance simultaneously
 	if turnStartTime != nil {
 		elapsed := time.Since(*turnStartTime).Seconds()
-		// Only advance if at least 95% of the turn duration has elapsed (19 seconds for a 20-second turn)
-		// This prevents premature advances while still allowing advances when time is up
-		minElapsed := float64(turnDuration) * 0.95
+		// Only advance if at least 90% of the turn duration has elapsed (18 seconds for a 20-second turn)
+		// This prevents premature advances while allowing advances when timer shows 0
+		minElapsed := float64(turnDuration) * 0.90
 		if elapsed < minElapsed {
 			// Turn is not ready to advance yet - silently return success to avoid errors
 			w.Header().Set("Content-Type", "application/json")

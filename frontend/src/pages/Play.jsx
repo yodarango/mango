@@ -59,14 +59,17 @@ function Play() {
           : null;
 
         // Check if the turn has actually changed
-        if (
+        const turnChanged =
           newTurnIndex !== currentTurnIndex ||
           (newTurnStartTime &&
             turnStartTime &&
-            newTurnStartTime.getTime() !== turnStartTime.getTime())
-        ) {
-          // Turn has changed, reset the advancing flag
+            newTurnStartTime.getTime() !== turnStartTime.getTime());
+
+        if (turnChanged) {
+          // Turn has changed, reset the advancing flag immediately
           setIsAdvancingTurn(false);
+          // Also reset the last turn advance ref so the new turn can be advanced when it expires
+          lastTurnAdvanceRef.current = null;
         }
 
         setCurrentTurnIndex(newTurnIndex);
@@ -125,30 +128,38 @@ function Play() {
         turnStartTime
       ).getTime()}`;
 
+      // Reset zero counter when turn changes
+      zeroTimeCountRef.current = 0;
+
       const interval = setInterval(() => {
         const elapsed = (Date.now() - new Date(turnStartTime).getTime()) / 1000;
         const remaining = Math.max(0, turnDuration - elapsed);
         setTimeRemaining(Math.ceil(remaining));
 
-        // Track how long we've been at 0
-        if (remaining <= 0) {
-          zeroTimeCountRef.current += 0.1; // Increment by 100ms
-        } else {
-          zeroTimeCountRef.current = 0; // Reset if not at 0
-        }
-
-        // Auto-advance turn when time runs out
-        // Any active player can advance an expired turn to prevent getting stuck
-        // Force advance if stuck at 0 for more than 1 second
-        if (
-          remaining <= 0 &&
+        // Only track zero time and attempt advance if:
+        // 1. Not currently advancing
+        // 2. This turn hasn't been advanced yet
+        // 3. Enough time has actually elapsed (at least 95% of turn duration)
+        const shouldConsiderAdvance =
           !isAdvancingTurn &&
-          (lastTurnAdvanceRef.current !== turnKey ||
-            zeroTimeCountRef.current > 1)
-        ) {
-          lastTurnAdvanceRef.current = turnKey;
-          zeroTimeCountRef.current = 0; // Reset counter
-          advanceTurnAPI();
+          lastTurnAdvanceRef.current !== turnKey &&
+          elapsed >= turnDuration * 0.95;
+
+        if (shouldConsiderAdvance) {
+          // Track how long we've been at 0
+          if (remaining <= 0) {
+            zeroTimeCountRef.current += 0.1; // Increment by 100ms
+          } else {
+            zeroTimeCountRef.current = 0; // Reset if not at 0
+          }
+
+          // Auto-advance turn when time runs out
+          // Force advance if stuck at 0 for more than 1 second
+          if (remaining <= 0 || zeroTimeCountRef.current > 1) {
+            lastTurnAdvanceRef.current = turnKey;
+            zeroTimeCountRef.current = 0; // Reset counter
+            advanceTurnAPI();
+          }
         }
       }, 100); // Update every 100ms for smooth countdown
 
@@ -171,6 +182,10 @@ function Play() {
     }
 
     setIsAdvancingTurn(true);
+
+    // Reset the zero time counter to prevent immediate re-trigger
+    zeroTimeCountRef.current = 0;
+
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`/api/games/${gameId}/advance-turn`, {
@@ -181,16 +196,16 @@ function Play() {
       });
 
       if (response.ok) {
-        // Immediately fetch the new game state
+        // Immediately fetch the new game state to get the fresh turnStartTime
         await fetchGame();
       }
     } catch (error) {
       console.error("Error advancing turn:", error);
     } finally {
-      // Reset the flag after a short delay to allow the new turn data to be fetched
+      // Keep the flag set for longer to ensure polling has time to update
       setTimeout(() => {
         setIsAdvancingTurn(false);
-      }, 500);
+      }, 1000);
     }
   };
 
