@@ -13,9 +13,7 @@ function EditGame() {
   const [zoom, setZoom] = useState(100);
   const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
   const [avatarsMap, setAvatarsMap] = useState({}); // Map of avatarId -> avatar data
-  const [wsConnected, setWsConnected] = useState(false);
-  const wsRef = useRef(null);
-  const fetchGameRef = useRef(null);
+  const pollingIntervalRef = useRef(null);
 
   const fetchGame = async () => {
     try {
@@ -113,69 +111,24 @@ function EditGame() {
     }
   };
 
-  // Keep fetchGameRef updated with the latest fetchGame function
-  useEffect(() => {
-    fetchGameRef.current = fetchGame;
-  });
-
+  // Initial load and setup polling
   useEffect(() => {
     if (gameId) {
       fetchGame();
-      setupWebSocket();
+
+      // Start polling every 800ms
+      pollingIntervalRef.current = setInterval(() => {
+        fetchGame();
+      }, 800);
     }
 
+    // Cleanup: stop polling when component unmounts
     return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
       }
     };
   }, [gameId]);
-
-  const setupWebSocket = () => {
-    const token = localStorage.getItem("token");
-    // In development, Vite proxy will handle the WebSocket connection
-    // In production, use the actual host
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const wsUrl = `${protocol}//${host}/api/ws?token=${token}`;
-
-    console.log("Connecting to WebSocket:", wsUrl);
-    const ws = new WebSocket(wsUrl);
-
-    ws.onopen = () => {
-      console.log("WebSocket connected in EditGame");
-      setWsConnected(true);
-    };
-
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket message received:", data);
-
-        if (data.type === "game_update" && data.gameId === parseInt(gameId)) {
-          // Refresh game data when updates occur using the ref
-          if (fetchGameRef.current) {
-            fetchGameRef.current();
-          }
-        }
-      } catch (error) {
-        console.error("Error parsing WebSocket message:", error);
-      }
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      setWsConnected(false);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket disconnected");
-      setWsConnected(false);
-      // Don't auto-reconnect, let user manually reconnect via button
-    };
-
-    wsRef.current = ws;
-  };
 
   const handleCellClick = (cell) => {
     setSelectedCell(cell);
@@ -199,17 +152,6 @@ function EditGame() {
 
   const handleZoomChange = (e) => {
     setZoom(parseInt(e.target.value));
-  };
-
-  const toggleWebSocket = () => {
-    if (wsConnected && wsRef.current) {
-      // Disconnect
-      wsRef.current.close();
-      setWsConnected(false);
-    } else {
-      // Connect
-      setupWebSocket();
-    }
   };
 
   const handleSaveCell = async () => {
@@ -454,17 +396,6 @@ function EditGame() {
             onChange={handleZoomChange}
             className='zoom-slider-horizontal'
           />
-          <button
-            className={`ws-status-btn ${
-              wsConnected ? "connected" : "disconnected"
-            }`}
-            onClick={toggleWebSocket}
-            title={
-              wsConnected
-                ? "Connected - Click to disconnect"
-                : "Disconnected - Click to connect"
-            }
-          ></button>
         </div>
       </div>
 
