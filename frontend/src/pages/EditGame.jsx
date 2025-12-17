@@ -14,6 +14,9 @@ function EditGame() {
   const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
   const [avatarsMap, setAvatarsMap] = useState({}); // Map of avatarId -> avatar data
   const pollingIntervalRef = useRef(null);
+  const previousGameDataRef = useRef(null); // Store previous game data to compare
+  const avatarsFetchedRef = useRef(false); // Track if avatars have been fetched
+  const fetchedAssetIdsRef = useRef(new Set()); // Track which assets we've already fetched
 
   const fetchGame = async () => {
     try {
@@ -24,87 +27,83 @@ function EditGame() {
         },
       });
       const data = await response.json();
-      console.log("EditGame - Fetched game data:", data);
-      console.log("EditGame - Cells before update:", cells);
-      console.log("EditGame - New cells:", data.cells);
-      setGame(data.game);
-      setCells(data.cells || []);
-      setLoading(false);
 
-      // Fetch all avatars for turn control
-      const avatarsResponse = await fetch("/api/avatars", {
-        headers: { Authorization: `Bearer ${token}` },
+      // Compare with previous data to avoid unnecessary re-renders
+      const currentDataString = JSON.stringify({
+        game: data.game,
+        cells: data.cells,
       });
-      if (avatarsResponse.ok) {
-        const allAvatars = await avatarsResponse.json();
-        const avatarMap = {};
-        allAvatars.forEach((avatar) => {
-          avatarMap[avatar.id] = avatar;
-        });
-        setAvatarsMap(avatarMap);
+      const previousDataString = previousGameDataRef.current;
+
+      // Only update state if data has actually changed
+      if (currentDataString !== previousDataString) {
+        console.log("EditGame - Data changed, updating state");
+        setGame(data.game);
+        setCells(data.cells || []);
+        previousGameDataRef.current = currentDataString;
       }
 
-      // Fetch thumbnails for occupied cells
+      setLoading(false);
+
+      // Fetch all avatars for turn control (only once)
+      if (!avatarsFetchedRef.current) {
+        const avatarsResponse = await fetch("/api/avatars", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (avatarsResponse.ok) {
+          const allAvatars = await avatarsResponse.json();
+          const avatarMap = {};
+          allAvatars.forEach((avatar) => {
+            avatarMap[avatar.id] = avatar;
+          });
+          setAvatarsMap(avatarMap);
+          avatarsFetchedRef.current = true;
+        }
+      }
+
+      // Fetch thumbnails for occupied cells (only new assets)
       const occupiedCells = (data.cells || []).filter((c) => c.occupiedBy);
       const uniqueAssetIds = [
         ...new Set(occupiedCells.map((c) => c.occupiedBy)),
       ];
 
-      // Fetch asset details for thumbnails and avatars
-      const thumbnailPromises = uniqueAssetIds.map(async (assetId) => {
-        try {
-          const response = await fetch(`/api/assets/${assetId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (response.ok) {
-            const asset = await response.json();
-            return {
-              id: assetId,
-              thumbnail: asset.thumbnail,
-              name: asset.name,
-              avatarId: asset.avatarId,
-            };
-          }
-        } catch (err) {
-          console.error(`Error fetching asset ${assetId}:`, err);
-        }
-        return null;
-      });
+      // Filter to only fetch assets we haven't fetched before
+      const newAssetIds = uniqueAssetIds.filter(
+        (id) => !fetchedAssetIdsRef.current.has(id)
+      );
 
-      const thumbnails = await Promise.all(thumbnailPromises);
-      const thumbnailMap = {};
-      const uniqueAvatarIds = new Set();
-      thumbnails.forEach((t) => {
-        if (t) {
-          thumbnailMap[t.id] = t;
-          uniqueAvatarIds.add(t.avatarId);
-        }
-      });
-      setAssetThumbnails(thumbnailMap);
-
-      // Fetch avatar data for element colors
-      const avatarPromises = Array.from(uniqueAvatarIds).map(
-        async (avatarId) => {
+      if (newAssetIds.length > 0) {
+        // Fetch asset details for thumbnails and avatars
+        const thumbnailPromises = newAssetIds.map(async (assetId) => {
           try {
-            const response = await fetch(`/api/avatars/${avatarId}`, {
+            const response = await fetch(`/api/assets/${assetId}`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (response.ok) {
-              return await response.json();
+              const asset = await response.json();
+              fetchedAssetIdsRef.current.add(assetId); // Mark as fetched
+              return {
+                id: assetId,
+                thumbnail: asset.thumbnail,
+                name: asset.name,
+                avatarId: asset.avatarId,
+              };
             }
           } catch (err) {
-            console.error(`Error fetching avatar ${avatarId}:`, err);
+            console.error(`Error fetching asset ${assetId}:`, err);
           }
           return null;
-        }
-      );
+        });
 
-      const avatars = await Promise.all(avatarPromises);
-      const avatarMap = {};
-      avatars.forEach((avatar) => {
-        if (avatar) avatarMap[avatar.id] = avatar;
-      });
-      setAvatarsMap(avatarMap);
+        const thumbnails = await Promise.all(thumbnailPromises);
+        const newThumbnailMap = { ...assetThumbnails }; // Keep existing thumbnails
+        thumbnails.forEach((t) => {
+          if (t) {
+            newThumbnailMap[t.id] = t;
+          }
+        });
+        setAssetThumbnails(newThumbnailMap);
+      }
     } catch (error) {
       console.error("Error fetching game:", error);
       setLoading(false);
