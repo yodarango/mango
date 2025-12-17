@@ -29,6 +29,7 @@ import Play from "./pages/Play";
 import CreateBattle from "./pages/CreateBattle";
 import EditBattle from "./pages/EditBattle";
 import AdminBattle from "./pages/AdminBattle";
+import Battle from "./pages/Battle";
 import EditAvatar from "./pages/EditAvatar";
 import CreateStoreItems from "./pages/CreateStoreItems";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -304,6 +305,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminBattle />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/battles/:id'
+            element={
+              <ProtectedRoute>
+                <Battle />
               </ProtectedRoute>
             }
           />

@@ -1016,9 +1016,7 @@ function Play() {
                         const battleId = battleData.id || battleData.battleId;
 
                         // Navigate to battle page with the new battle ID
-                        navigate(
-                          `/admin/battle/${battleId}?attacker=${avatarId}&defender=${attackTarget.defenderAvatar.id}`
-                        );
+                        navigate(`/battles/${battleId}`);
                       } else {
                         const errorText = await response.text();
                         alert(`Failed to create battle: ${errorText}`);
