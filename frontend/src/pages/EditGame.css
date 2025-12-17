@@ -33,19 +33,24 @@
 
 /* Turn Control Section */
 .turn-control-section {
-  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  left: 30px;
+  top: 100px;
+  max-width: 250px;
+  background: rgba(0, 0, 0, 0.9);
   border: 2px solid var(--accent-orange);
   border-radius: 12px;
-  padding: 1.5rem;
-  margin: 1.5rem auto;
-  max-width: 800px;
+  padding: 1rem;
   box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+  z-index: 100;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
 }
 
 .turn-control-section h3 {
   font-family: "MedievalSharp", cursive;
   color: var(--accent-orange);
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -56,10 +61,11 @@
 
 .turn-hint {
   color: var(--accent-yellow);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   opacity: 0.8;
+  line-height: 1.3;
 }
 
 .avatar-turn-list {
@@ -70,9 +76,10 @@
 
 .avatar-turn-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0.5rem;
+  padding: 0.75rem;
   background: rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -83,7 +90,7 @@
 .avatar-turn-item:hover {
   background: rgba(255, 140, 0, 0.2);
   border-color: var(--accent-orange);
-  transform: translateX(5px);
+  transform: scale(1.05);
 }
 
 .avatar-turn-item.current-turn {
@@ -93,8 +100,8 @@
 }
 
 .avatar-turn-thumbnail {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   border-radius: 8px;
   border: 2px solid var(--accent-orange);
@@ -102,37 +109,41 @@
 }
 
 .avatar-turn-info {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  text-align: center;
 }
 
 .avatar-turn-name {
   font-family: "MedievalSharp", cursive;
   color: var(--accent-yellow);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .avatar-turn-order {
   color: var(--accent-green);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   opacity: 0.8;
 }
 
 .current-turn-badge {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
   background: var(--accent-yellow);
   color: var(--charcoal);
   border-radius: 20px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   font-family: "MedievalSharp", cursive;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  width: 100%;
 }
 
 /* Zoom Slider - Horizontal */
