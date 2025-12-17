@@ -3823,6 +3823,7 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 
 	// Get attacker asset
 	var attackerAsset *Asset
+	var attackerAvatarID int
 	if battle.Attacker != nil {
 		var asset Asset
 		var isLockedInt int
@@ -3834,11 +3835,13 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			asset.IsLocked = isLockedInt == 1
 			attackerAsset = &asset
+			attackerAvatarID = asset.AvatarID
 		}
 	}
 
 	// Get defender asset
 	var defenderAsset *Asset
+	var defenderAvatarID int
 	if battle.Defender != nil {
 		var asset Asset
 		var isLockedInt int
@@ -3850,6 +3853,39 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			asset.IsLocked = isLockedInt == 1
 			defenderAsset = &asset
+			defenderAvatarID = asset.AvatarID
+		}
+	}
+
+	// Get attacker's unanswered question
+	var attackerQuestion *BattleQuestion
+	if attackerAvatarID > 0 {
+		var q BattleQuestion
+		err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+			FROM battle_questions
+			WHERE user_id = ? AND submitted_at IS NULL
+			ORDER BY id ASC
+			LIMIT 1`, attackerAvatarID).
+			Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
+				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &q.UserAnswer, &q.SubmittedAt)
+		if err == nil {
+			attackerQuestion = &q
+		}
+	}
+
+	// Get defender's unanswered question
+	var defenderQuestion *BattleQuestion
+	if defenderAvatarID > 0 {
+		var q BattleQuestion
+		err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+			FROM battle_questions
+			WHERE user_id = ? AND submitted_at IS NULL
+			ORDER BY id ASC
+			LIMIT 1`, defenderAvatarID).
+			Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
+				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &q.UserAnswer, &q.SubmittedAt)
+		if err == nil {
+			defenderQuestion = &q
 		}
 	}
 
@@ -3875,10 +3911,12 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"battle":         battle,
-		"attackerAsset":  attackerAsset,
-		"defenderAsset":  defenderAsset,
-		"questions":      questions,
+		"battle":           battle,
+		"attackerAsset":    attackerAsset,
+		"defenderAsset":    defenderAsset,
+		"attackerQuestion": attackerQuestion,
+		"defenderQuestion": defenderQuestion,
+		"questions":        questions,
 	})
 }
 
@@ -3980,6 +4018,40 @@ func stopBattle(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Get unanswered question for a user
+func getUnansweredQuestion(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	userID := vars["userId"]
+
+	var question BattleQuestion
+	err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+		FROM battle_questions
+		WHERE user_id = ? AND submitted_at IS NULL
+		ORDER BY id ASC
+		LIMIT 1`, userID).
+		Scan(&question.ID, &question.BattleID, &question.Question, &question.Answer, &question.UserID,
+			&question.PossiblePoints, &question.ReceivedScore, &question.Time, &question.UserAnswer, &question.SubmittedAt)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]interface{}{"question": nil})
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{"question": question})
 }
 
 // Submit answer (for students)
@@ -4503,6 +4575,7 @@ func main() {
 	api.HandleFunc("/battles/{id}/stop", stopBattle).Methods("POST")
 	api.HandleFunc("/battles/submit-answer", submitAnswer).Methods("POST")
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
+	api.HandleFunc("/battles/questions/unanswered/{userId}", getUnansweredQuestion).Methods("GET")
 
 	// Admin store management routes
 	api.HandleFunc("/admin/upload-store-images", uploadStoreImages).Methods("POST")

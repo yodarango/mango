@@ -7,6 +7,8 @@ function Battle() {
   const [battle, setBattle] = useState(null);
   const [attacker, setAttacker] = useState(null);
   const [defender, setDefender] = useState(null);
+  const [attackerQuestion, setAttackerQuestion] = useState(null);
+  const [defenderQuestion, setDefenderQuestion] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ function Battle() {
     try {
       const token = localStorage.getItem("token");
 
-      // Fetch battle details with assets included
+      // Fetch battle details with assets and questions included
       const battleResponse = await fetch(`/api/battles/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -35,6 +37,8 @@ function Battle() {
       setBattle(data.battle);
       setAttacker(data.attackerAsset);
       setDefender(data.defenderAsset);
+      setAttackerQuestion(data.attackerQuestion);
+      setDefenderQuestion(data.defenderQuestion);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching battle:", error);
@@ -64,9 +68,31 @@ function Battle() {
     );
   }
 
+  const renderQuestion = (question) => {
+    if (!question) return null;
+
+    try {
+      const questionData = JSON.parse(question.question);
+      return (
+        <div className='battle-question'>
+          <p className='question-text'>{questionData.question}</p>
+          <ul className='question-options'>
+            {questionData.options.map((option, index) => (
+              <li key={index}>{option}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    } catch (error) {
+      console.error("Error parsing question:", error);
+      return null;
+    }
+  };
+
   return (
     <div className='battle-container'>
       <div className='battle-side attacker-side'>
+        {attackerQuestion && renderQuestion(attackerQuestion)}
         <img
           src={attacker.thumbnail}
           alt={attacker.name}
@@ -82,6 +108,7 @@ function Battle() {
       </div>
 
       <div className='battle-side defender-side'>
+        {defenderQuestion && renderQuestion(defenderQuestion)}
         <img
           src={defender.thumbnail}
           alt={defender.name}
@@ -100,3 +127,6 @@ function Battle() {
 }
 
 export default Battle;
+
+left of in here. I need to have a periodic check so that when a battle is marked as comlpete the useris taken back to the game and the game is ReadableStreamDefaultReader. 
+the next thing to do is to allow the user to select the answer
