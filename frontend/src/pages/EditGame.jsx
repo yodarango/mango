@@ -197,14 +197,6 @@ function EditGame() {
   };
 
   const handleSetTurn = async (avatarId) => {
-    if (
-      !confirm(
-        `Set turn to ${avatarsMap[avatarId]?.avatarName || "this avatar"}?`
-      )
-    ) {
-      return;
-    }
-
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`/api/games/${gameId}/set-turn`, {
@@ -217,15 +209,14 @@ function EditGame() {
       });
 
       if (response.ok) {
-        alert("Turn updated successfully!");
-        await fetchGame(); // Refresh game data
+        // Turn updated successfully - polling will pick up the change
+        console.log("Turn updated successfully");
       } else {
         const errorText = await response.text();
-        alert(`Failed to set turn: ${errorText}`);
+        console.error("Failed to set turn:", errorText);
       }
     } catch (error) {
       console.error("Error setting turn:", error);
-      alert("Error setting turn");
     }
   };
 
