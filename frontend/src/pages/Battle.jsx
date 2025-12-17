@@ -17,7 +17,7 @@ function Battle() {
     try {
       const token = localStorage.getItem("token");
 
-      // Fetch battle details
+      // Fetch battle details with assets included
       const battleResponse = await fetch(`/api/battles/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -30,41 +30,11 @@ function Battle() {
         return;
       }
 
-      const battleData = await battleResponse.json();
-      setBattle(battleData);
+      const data = await battleResponse.json();
 
-      // Fetch attacker asset details
-      if (battleData.attacker) {
-        const attackerResponse = await fetch(
-          `/api/assets/${battleData.attacker}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (attackerResponse.ok) {
-          const attackerData = await attackerResponse.json();
-          setAttacker(attackerData);
-        }
-      }
-
-      // Fetch defender asset details
-      if (battleData.defender) {
-        const defenderResponse = await fetch(
-          `/api/assets/${battleData.defender}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (defenderResponse.ok) {
-          const defenderData = await defenderResponse.json();
-          setDefender(defenderData);
-        }
-      }
-
+      setBattle(data.battle);
+      setAttacker(data.attackerAsset);
+      setDefender(data.defenderAsset);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching battle:", error);
@@ -76,8 +46,22 @@ function Battle() {
     return <div className='battle-loading'>Loading battle...</div>;
   }
 
-  if (!battle || !attacker || !defender) {
+  if (!battle) {
     return <div className='battle-error'>Battle not found</div>;
+  }
+
+  if (!attacker || !defender) {
+    return (
+      <div className='battle-error'>
+        <p>Failed to load battle participants</p>
+        <p style={{ fontSize: "0.9rem", marginTop: "1rem" }}>
+          Attacker ID: {battle.attacker || "N/A"} - {attacker ? "✓" : "✗"}
+        </p>
+        <p style={{ fontSize: "0.9rem" }}>
+          Defender ID: {battle.defender || "N/A"} - {defender ? "✓" : "✗"}
+        </p>
+      </div>
+    );
   }
 
   return (

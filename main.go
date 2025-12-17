@@ -3792,6 +3792,38 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get attacker asset
+	var attackerAsset *Asset
+	if battle.Attacker != nil {
+		var asset Asset
+		var isLockedInt int
+		err = db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
+			FROM assets WHERE id = ?`, *battle.Attacker).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
+		if err == nil {
+			asset.IsLocked = isLockedInt == 1
+			attackerAsset = &asset
+		}
+	}
+
+	// Get defender asset
+	var defenderAsset *Asset
+	if battle.Defender != nil {
+		var asset Asset
+		var isLockedInt int
+		err = db.QueryRow(`SELECT id, COALESCE(avatar_id, 0), status, type, name, thumbnail, attack, defense, healing, power, endurance, level, required_level, cost, ability, health, stamina, COALESCE(xp, 0), COALESCE(xp_required, 100), COALESCE(is_locked, 0), COALESCE(is_locked_by, 0), COALESCE(is_unlocked_for, 0)
+			FROM assets WHERE id = ?`, *battle.Defender).Scan(&asset.ID, &asset.AvatarID, &asset.Status, &asset.Type, &asset.Name, &asset.Thumbnail,
+			&asset.Attack, &asset.Defense, &asset.Healing, &asset.Power,
+			&asset.Endurance, &asset.Level, &asset.RequiredLevel, &asset.Cost, &asset.Ability,
+			&asset.Health, &asset.Stamina, &asset.XP, &asset.XPRequired, &isLockedInt, &asset.IsLockedBy, &asset.IsUnlockedFor)
+		if err == nil {
+			asset.IsLocked = isLockedInt == 1
+			defenderAsset = &asset
+		}
+	}
+
 	// Get questions
 	rows, err := db.Query(`SELECT id, battle_id, question, answer, user_id, possible_points,
 		received_score, time, user_answer, submitted_at FROM battle_questions WHERE battle_id = ?`, battleID)
@@ -3814,8 +3846,10 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"battle":    battle,
-		"questions": questions,
+		"battle":         battle,
+		"attackerAsset":  attackerAsset,
+		"defenderAsset":  defenderAsset,
+		"questions":      questions,
 	})
 }
 
