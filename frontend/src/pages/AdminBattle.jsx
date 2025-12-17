@@ -367,7 +367,6 @@ function AdminBattle() {
           </div>
         </div>
       )}
-
       {/* Grading Modal */}
       {showGrading && (
         <>

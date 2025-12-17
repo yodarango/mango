@@ -1006,6 +1006,8 @@ function Play() {
                         body: JSON.stringify({
                           name: `Battle: ${avatarsMap[avatarId]?.avatarName} vs ${attackTarget.defenderAvatar?.avatarName}`,
                           status: "in_progress",
+                          attacker: avatarId,
+                          defender: attackTarget.defenderAvatar.id,
                         }),
                       });
 

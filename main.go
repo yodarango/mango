@@ -198,12 +198,14 @@ type GameCell struct {
 }
 
 type Battle struct {
-	ID     int       `json:"id"`
-	Name   string    `json:"name"`
-	Reward string    `json:"reward"`
-	Winner *int      `json:"winner,omitempty"`
-	Date   time.Time `json:"date"`
-	Status string    `json:"status"` // pending, in_progress, completed
+	ID       int       `json:"id"`
+	Name     string    `json:"name"`
+	Reward   string    `json:"reward"`
+	Winner   *int      `json:"winner,omitempty"`
+	Date     time.Time `json:"date"`
+	Status   string    `json:"status"`   // pending, in_progress, completed
+	Attacker *int      `json:"attacker,omitempty"` // Avatar ID of attacker
+	Defender *int      `json:"defender,omitempty"` // Avatar ID of defender
 }
 
 type BattleQuestion struct {
@@ -658,12 +660,27 @@ func initDB() {
 		winner INTEGER,
 		date DATETIME DEFAULT CURRENT_TIMESTAMP,
 		status TEXT DEFAULT 'pending',
-		FOREIGN KEY (winner) REFERENCES avatars(id)
+		attacker INTEGER DEFAULT NULL,
+		defender INTEGER DEFAULT NULL,
+		FOREIGN KEY (winner) REFERENCES avatars(id),
+		FOREIGN KEY (attacker) REFERENCES avatars(id),
+		FOREIGN KEY (defender) REFERENCES avatars(id)
 	);`
 
 	_, err = db.Exec(createBattlesTableSQL)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Add attacker and defender columns to existing battles table (migration)
+	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN attacker INTEGER DEFAULT NULL`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add attacker column: %v", err)
+	}
+
+	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN defender INTEGER DEFAULT NULL`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add defender column: %v", err)
 	}
 
 	// Create battle_questions table
@@ -3676,7 +3693,9 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name      string  `json:"name"`
 		Reward    string  `json:"reward"`
-		Status    *string `json:"status"` // Optional status (defaults to 'pending')
+		Status    *string `json:"status"`   // Optional status (defaults to 'pending')
+		Attacker  *int    `json:"attacker"` // Avatar ID of attacker
+		Defender  *int    `json:"defender"` // Avatar ID of defender
 		Questions []struct {
 			Question       string `json:"question"`
 			Answer         string `json:"answer"`
@@ -3697,8 +3716,8 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create battle
-	result, err := db.Exec("INSERT INTO battles (name, reward, status) VALUES (?, ?, ?)",
-		req.Name, req.Reward, status)
+	result, err := db.Exec("INSERT INTO battles (name, reward, status, attacker, defender) VALUES (?, ?, ?, ?, ?)",
+		req.Name, req.Reward, status, req.Attacker, req.Defender)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3733,7 +3752,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query("SELECT id, name, reward, winner, date, status FROM battles ORDER BY date DESC")
+	rows, err := db.Query("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles ORDER BY date DESC")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3743,7 +3762,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 	var battles []Battle
 	for rows.Next() {
 		var b Battle
-		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status)
+		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender)
 		if err != nil {
 			continue
 		}
@@ -3766,8 +3785,8 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 	battleID := vars["id"]
 
 	var battle Battle
-	err = db.QueryRow("SELECT id, name, reward, winner, date, status FROM battles WHERE id = ?", battleID).
-		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status)
+	err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles WHERE id = ?", battleID).
+		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status, &battle.Attacker, &battle.Defender)
 	if err != nil {
 		http.Error(w, "Battle not found", http.StatusNotFound)
 		return
