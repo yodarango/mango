@@ -254,9 +254,9 @@ function Play() {
             `/api/avatars/${avatar.id}/assets`
           );
           const assets = await assetsResponse.json();
-          // Filter for warrior status, excluding "rip" status
+          // Filter for warrior status (including "rip")
           return (assets || []).filter(
-            (asset) => asset.status === "warrior" && asset.status !== "rip"
+            (asset) => asset.status === "warrior" || asset.status === "rip"
           );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
@@ -268,41 +268,23 @@ function Play() {
       const allWarriorsFlat = allWarriorsArrays.flat();
 
       // Store ALL warrior assets (from all users) for thumbnail display
-      // Exclude "rip" status assets
-      setAllWarriorAssets(
-        allWarriorsFlat.filter((asset) => asset.status !== "rip")
-      );
+      // Include "rip" status assets for grid display
+      setAllWarriorAssets(allWarriorsFlat);
 
-      // Get only the current user's warriors for placement
+      // Get only the current user's warriors for placement (including rip)
       const userWarriorAssets = allWarriorsFlat.filter(
-        (asset) => asset.avatarId === userAvatar.id && asset.status !== "rip"
+        (asset) => asset.avatarId === userAvatar.id
       );
-
-      // Group user's warriors by type and count them
-      const warriorGroups = {};
-      userWarriorAssets.forEach((warrior) => {
-        if (!warriorGroups[warrior.type]) {
-          warriorGroups[warrior.type] = {
-            type: warrior.type,
-            name: warrior.name,
-            thumbnail: warrior.thumbnail,
-            count: 0,
-            assets: [],
-          };
-        }
-        warriorGroups[warrior.type].count++;
-        warriorGroups[warrior.type].assets.push(warrior);
-      });
 
       console.log("All warriors (all users):", allWarriorsFlat);
-      console.log("User's warrior groups:", warriorGroups);
-      setWarriors(Object.values(warriorGroups));
+      console.log("User's warriors:", userWarriorAssets);
+      setWarriors(userWarriorAssets);
     } catch (error) {
       console.error("Error fetching warriors:", error);
     }
   };
 
-  const handleWarriorClick = (warriorGroup) => {
+  const handleWarriorClick = (warrior) => {
     // Check if it's the user's turn before allowing warrior selection for placement
     const isMyTurn = gameAvatars[currentTurnIndex] === avatarId;
 
@@ -311,16 +293,20 @@ function Play() {
       return;
     }
 
-    // Find the first available warrior of this type (not placed on grid)
-    const availableWarrior = warriorGroup.assets.find(
-      (asset) => !cells.some((cell) => cell.occupiedBy === asset.id)
-    );
-
-    if (availableWarrior) {
-      setSelectedWarrior(availableWarrior);
-    } else {
-      alert("All warriors of this type are already placed on the grid!");
+    // Check if warrior is rip
+    if (warrior.status === "rip") {
+      alert("This warrior is inactive and cannot be placed!");
+      return;
     }
+
+    // Check if warrior is already placed on grid
+    const isPlaced = cells.some((cell) => cell.occupiedBy === warrior.id);
+    if (isPlaced) {
+      alert("This warrior is already placed on the grid!");
+      return;
+    }
+
+    setSelectedWarrior(warrior);
   };
 
   // Calculate if a cell is within movement range based on warrior level
@@ -683,29 +669,49 @@ function Play() {
             ) : (
               <div className='warriors-grid'>
                 {warriors.map((warrior) => {
-                  const availableCount = warrior.assets.filter(
-                    (asset) =>
-                      !cells.some((cell) => cell.occupiedBy === asset.id)
-                  ).length;
                   const isSelected =
-                    selectedWarrior && selectedWarrior.type === warrior.type;
+                    selectedWarrior && selectedWarrior.id === warrior.id;
+                  const isRip = warrior.status === "rip";
+                  const isPlaced = cells.some(
+                    (cell) => cell.occupiedBy === warrior.id
+                  );
+                  const isDepleted = isPlaced || isRip;
 
                   return (
                     <div
-                      key={warrior.type}
+                      key={warrior.id}
                       className={`warrior-item ${
                         isSelected ? "selected" : ""
-                      } ${availableCount === 0 ? "depleted" : ""}`}
+                      } ${isDepleted ? "depleted" : ""}`}
                       onClick={() => handleWarriorClick(warrior)}
-                      title={`${availableCount} available`}
+                      title={
+                        isRip
+                          ? "Inactive (RIP)"
+                          : isPlaced
+                          ? "Already placed on grid"
+                          : warrior.name
+                      }
                     >
                       <img
                         src={warrior.thumbnail}
                         alt={warrior.name}
                         className='warrior-thumbnail'
+                        style={
+                          isRip
+                            ? { filter: "grayscale(100%) opacity(0.5)" }
+                            : {}
+                        }
                       />
-                      <span className='warrior-count'>
-                        ({availableCount}/{warrior.count})
+                      <span className='warrior-name'>
+                        {warrior.name}
+                        {isRip && (
+                          <span
+                            className='rip-badge'
+                            style={{ color: "#888", marginLeft: "4px" }}
+                          >
+                            ☠️
+                          </span>
+                        )}
                       </span>
                     </div>
                   );
