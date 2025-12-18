@@ -1025,6 +1025,32 @@ function Play() {
                         const battleData = await response.json();
                         const battleId = battleData.id || battleData.battleId;
 
+                        // Assign first available question to attacker
+                        await fetch("/api/battles/assign-question", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({
+                            battleId: battleId,
+                            userId: movingWarrior.warrior.avatarId,
+                          }),
+                        });
+
+                        // Assign first available question to defender
+                        await fetch("/api/battles/assign-question", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({
+                            battleId: battleId,
+                            userId: attackTarget.defender.avatarId,
+                          }),
+                        });
+
                         // Navigate to battle page with the new battle ID
                         navigate(`/battles/${battleId}`);
                       } else {

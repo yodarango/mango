@@ -700,7 +700,7 @@ func initDB() {
 	// Create battle_questions table
 	createBattleQuestionsTableSQL := `CREATE TABLE IF NOT EXISTS battle_questions (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		battle_id INTEGER NOT NULL,
+		battle_id INTEGER DEFAULT NULL,
 		question TEXT NOT NULL,
 		answer TEXT NOT NULL,
 		user_id INTEGER DEFAULT NULL,
@@ -716,6 +716,63 @@ func initDB() {
 	_, err = db.Exec(createBattleQuestionsTableSQL)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Migrate battle_questions table to make battle_id nullable
+	// Check if we need to migrate by checking the table schema
+	var tableSchema string
+	err = db.QueryRow(`SELECT sql FROM sqlite_master WHERE type='table' AND name='battle_questions'`).Scan(&tableSchema)
+	if err == nil && strings.Contains(tableSchema, "battle_id INTEGER NOT NULL") {
+		log.Println("Migrating battle_questions table to make battle_id nullable...")
+
+		// Disable foreign keys temporarily
+		_, err = db.Exec("PRAGMA foreign_keys = OFF;")
+		if err != nil {
+			log.Fatal("Failed to disable foreign keys:", err)
+		}
+
+		// SQLite doesn't support ALTER COLUMN, so we need to recreate the table
+		_, err = db.Exec(`
+			CREATE TABLE battle_questions_new (
+				id INTEGER PRIMARY KEY AUTOINCREMENT,
+				battle_id INTEGER DEFAULT NULL,
+				question TEXT NOT NULL,
+				answer TEXT NOT NULL,
+				user_id INTEGER DEFAULT NULL,
+				possible_points INTEGER NOT NULL,
+				received_score INTEGER DEFAULT 0,
+				time INTEGER NOT NULL,
+				user_answer TEXT DEFAULT NULL,
+				submitted_at DATETIME DEFAULT NULL
+			)
+		`)
+		if err != nil {
+			log.Fatal("Failed to create new battle_questions table:", err)
+		}
+
+		// Copy data from old table to new table
+		_, err = db.Exec(`
+			INSERT INTO battle_questions_new (id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at)
+			SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+			FROM battle_questions
+		`)
+		if err != nil {
+			log.Fatal("Failed to copy data to new battle_questions table:", err)
+		}
+
+		// Drop old table
+		_, err = db.Exec(`DROP TABLE battle_questions`)
+		if err != nil {
+			log.Fatal("Failed to drop old battle_questions table:", err)
+		}
+
+		// Rename new table to original name
+		_, err = db.Exec(`ALTER TABLE battle_questions_new RENAME TO battle_questions`)
+		if err != nil {
+			log.Fatal("Failed to rename battle_questions_new table:", err)
+		}
+
+		log.Println("Migration completed successfully!")
 	}
 
 	// Enable foreign keys
@@ -4603,6 +4660,46 @@ func notifyUser(userID int, notificationType string, data interface{}) {
 	}
 }
 
+// Assign question to battle
+func assignQuestionToBattle(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		BattleID int `json:"battleId"`
+		UserID   int `json:"userId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Find first question for this user without a battle_id assigned
+	var questionID int
+	err = db.QueryRow(`SELECT id FROM battle_questions
+		WHERE user_id = ? AND battle_id IS NULL
+		ORDER BY id ASC
+		LIMIT 1`, req.UserID).Scan(&questionID)
+	if err != nil {
+		http.Error(w, "No available question found for user", http.StatusNotFound)
+		return
+	}
+
+	// Assign the battle_id to this question
+	_, err = db.Exec(`UPDATE battle_questions SET battle_id = ? WHERE id = ?`, req.BattleID, questionID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Broadcast to multiple users
 func notifyUsers(userIDs []int, notificationType string, data interface{}) {
 	for _, userID := range userIDs {
@@ -4699,6 +4796,7 @@ func main() {
 	api.HandleFunc("/battles/submit-answer", submitAnswer).Methods("POST")
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
 	api.HandleFunc("/battles/questions/unanswered/{userId}", getUnansweredQuestion).Methods("GET")
+	api.HandleFunc("/battles/assign-question", assignQuestionToBattle).Methods("POST")
 
 	// Admin store management routes
 	api.HandleFunc("/admin/upload-store-images", uploadStoreImages).Methods("POST")
