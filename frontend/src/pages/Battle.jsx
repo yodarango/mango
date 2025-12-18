@@ -16,6 +16,8 @@ function Battle() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [attackerTimer, setAttackerTimer] = useState(20);
   const [defenderTimer, setDefenderTimer] = useState(20);
+  const [showResults, setShowResults] = useState(false);
+  const [battleResults, setBattleResults] = useState(null);
   const pollingIntervalRef = useRef(null);
   const attackerTimerRef = useRef(null);
   const defenderTimerRef = useRef(null);
@@ -218,6 +220,37 @@ function Battle() {
         setGameId(data.battle.gameId);
       }
 
+      // Check if both users have answered and show answer feedback
+      if (
+        data.attackerQuestion?.submittedAt &&
+        data.defenderQuestion?.submittedAt &&
+        !showResults
+      ) {
+        // Parse questions to get correct answers
+        const attackerQuestionData = JSON.parse(data.attackerQuestion.question);
+        const defenderQuestionData = JSON.parse(data.defenderQuestion.question);
+
+        // Check if answers are correct
+        const attackerCorrect =
+          data.attackerQuestion.userAnswer?.toLowerCase() ===
+          data.attackerQuestion.answer?.toLowerCase();
+        const defenderCorrect =
+          data.defenderQuestion.userAnswer?.toLowerCase() ===
+          data.defenderQuestion.answer?.toLowerCase();
+
+        setBattleResults({
+          attackerCorrect,
+          defenderCorrect,
+          attackerAnswer: data.attackerQuestion.userAnswer,
+          defenderAnswer: data.defenderQuestion.userAnswer,
+          attackerCorrectAnswer: data.attackerQuestion.answer,
+          defenderCorrectAnswer: data.defenderQuestion.answer,
+          attackerQuestion: attackerQuestionData.question,
+          defenderQuestion: defenderQuestionData.question,
+        });
+        setShowResults(true);
+      }
+
       // Check if battle is complete and redirect to game (except admin)
       if (data.battle.status === "completed" && !isAdmin) {
         const targetGameId = data.battle.gameId || gameId;
@@ -304,6 +337,51 @@ function Battle() {
     if (!question) return null;
 
     const hasAnswered = question.submittedAt !== null;
+
+    // If both have answered, show results
+    if (showResults && battleResults) {
+      const isCorrect = isAttacker
+        ? battleResults.attackerCorrect
+        : battleResults.defenderCorrect;
+      const userAnswer = isAttacker
+        ? battleResults.attackerAnswer
+        : battleResults.defenderAnswer;
+      const correctAnswer = isAttacker
+        ? battleResults.attackerCorrectAnswer
+        : battleResults.defenderCorrectAnswer;
+      const questionText = isAttacker
+        ? battleResults.attackerQuestion
+        : battleResults.defenderQuestion;
+
+      return (
+        <div className='battle-question'>
+          <p className='question-text' style={{ fontSize: "0.9rem" }}>
+            {questionText}
+          </p>
+          <div
+            className='answer-result'
+            style={{
+              padding: "1rem",
+              marginTop: "0.5rem",
+              borderRadius: "8px",
+              backgroundColor: isCorrect ? "#2d5016" : "#5c1a1a",
+            }}
+          >
+            <p style={{ marginBottom: "0.5rem", fontWeight: "bold" }}>
+              {isCorrect ? "✓ Correct!" : "✗ Incorrect"}
+            </p>
+            <p style={{ fontSize: "0.85rem" }}>
+              Your answer: <strong>{userAnswer}</strong>
+            </p>
+            {!isCorrect && (
+              <p style={{ fontSize: "0.85rem", color: "#ffcc00" }}>
+                Correct answer: <strong>{correctAnswer}</strong>
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    }
 
     // If answered, show status message instead of question
     if (hasAnswered) {
