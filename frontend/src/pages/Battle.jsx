@@ -80,14 +80,14 @@ function Battle() {
       setAttackerQuestion(data.attackerQuestion);
       setDefenderQuestion(data.defenderQuestion);
 
-      // Store game ID from response
-      if (data.gameId && !gameId) {
-        setGameId(data.gameId);
+      // Store game ID from battle
+      if (data.battle.gameId && !gameId) {
+        setGameId(data.battle.gameId);
       }
 
       // Check if battle is complete and redirect to game (except admin)
       if (data.battle.status === "completed" && !isAdmin) {
-        const targetGameId = data.gameId || gameId;
+        const targetGameId = data.battle.gameId || gameId;
         if (targetGameId) {
           navigate(`/play/${targetGameId}`);
           return;

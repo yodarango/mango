@@ -209,6 +209,7 @@ type Battle struct {
 	Defender         *int      `json:"defender,omitempty"`  // Asset ID of defender
 	AttackerAvatarID *int      `json:"attackerAvatarId,omitempty"` // Avatar ID of attacker
 	DefenderAvatarID *int      `json:"defenderAvatarId,omitempty"` // Avatar ID of defender
+	GameID           *int      `json:"gameId,omitempty"`    // Game ID this battle belongs to
 }
 
 type BattleQuestion struct {
@@ -695,6 +696,12 @@ func initDB() {
 	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN defender_avatar_id INTEGER DEFAULT NULL`)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add defender_avatar_id column: %v", err)
+	}
+
+	// Add game_id column to battles table
+	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN game_id INTEGER DEFAULT NULL`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add game_id column: %v", err)
 	}
 
 	// Create battle_questions table
@@ -3867,8 +3874,8 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create battle
-	result, err := db.Exec("INSERT INTO battles (name, reward, status, attacker, defender, attacker_avatar_id, defender_avatar_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
-		req.Name, req.Reward, status, req.Attacker, req.Defender, req.AttackerAvatarID, req.DefenderAvatarID)
+	result, err := db.Exec("INSERT INTO battles (name, reward, status, attacker, defender, attacker_avatar_id, defender_avatar_id, game_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		req.Name, req.Reward, status, req.Attacker, req.Defender, req.AttackerAvatarID, req.DefenderAvatarID, req.GameID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3912,7 +3919,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id FROM battles ORDER BY date DESC")
+	rows, err := db.Query("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id, game_id FROM battles ORDER BY date DESC")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3922,7 +3929,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 	var battles []Battle
 	for rows.Next() {
 		var b Battle
-		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender, &b.AttackerAvatarID, &b.DefenderAvatarID)
+		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender, &b.AttackerAvatarID, &b.DefenderAvatarID, &b.GameID)
 		if err != nil {
 			continue
 		}
@@ -3945,8 +3952,8 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 	battleID := vars["id"]
 
 	var battle Battle
-	err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id FROM battles WHERE id = ?", battleID).
-		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status, &battle.Attacker, &battle.Defender, &battle.AttackerAvatarID, &battle.DefenderAvatarID)
+	err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id, game_id FROM battles WHERE id = ?", battleID).
+		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status, &battle.Attacker, &battle.Defender, &battle.AttackerAvatarID, &battle.DefenderAvatarID, &battle.GameID)
 	if err != nil {
 		http.Error(w, "Battle not found", http.StatusNotFound)
 		return
@@ -4058,15 +4065,6 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		questions = append(questions, q)
 	}
 
-	// Get game ID linked to this battle
-	var gameID sql.NullInt64
-	err = db.QueryRow("SELECT id FROM games WHERE battle_id = ?", battleID).Scan(&gameID)
-	var gameIDPtr *int
-	if err == nil && gameID.Valid {
-		gameIDInt := int(gameID.Int64)
-		gameIDPtr = &gameIDInt
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"battle":           battle,
@@ -4075,7 +4073,6 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		"attackerQuestion": attackerQuestion,
 		"defenderQuestion": defenderQuestion,
 		"questions":        questions,
-		"gameId":           gameIDPtr,
 	})
 }
 
