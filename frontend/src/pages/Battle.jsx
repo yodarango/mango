@@ -32,23 +32,20 @@ function Battle() {
     };
   }, [id]);
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("/api/avatars", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const token = localStorage.getItem("user");
+      if (!token) return;
 
-      if (response.ok) {
-        const avatars = await response.json();
-        if (avatars.length > 0) {
-          setCurrentUserAvatarId(avatars[0].id);
-        }
+      // Decode JWT token to get avatar ID
+      const user = JSON.parse(token);
+      const avatarId = user.id;
+
+      if (avatarId) {
+        setCurrentUserAvatarId(avatarId);
       }
     } catch (error) {
-      console.error("Error fetching current user:", error);
+      console.error("Error decoding token:", error);
     }
   };
 
@@ -193,7 +190,7 @@ function Battle() {
   const isAttacker = battle?.attackerAvatarId === currentUserAvatarId;
   const isDefender = battle?.defenderAvatarId === currentUserAvatarId;
 
-  console.log(battle?.attackerAvatarId, currentUserAvatarId);
+  console.log(battle?.defenderAvatarId, currentUserAvatarId);
 
   return (
     <div className='battle-container'>
