@@ -274,7 +274,7 @@ function Battle() {
   };
 
   return (
-    <div className='battle-container'>
+    <div className='battle-container-3423'>
       <div className='battle-side attacker-side'>
         <h2 style={{ color: "orange" }}>Attacker</h2>
         {attackerQuestion &&
@@ -289,10 +289,11 @@ function Battle() {
             <div className='stat-bar'>
               <div
                 className='stat-bar-fill health-bar'
-                style={{ width: `${attacker.health}%` }}
+                style={{
+                  width: `${Math.min(Math.max(attacker.health, 0), 100)}%`,
+                }}
               ></div>
             </div>
-            {console.log(attacker, defender)}
             <span className='stat-bar-value'>{attacker.health}</span>
           </div>
           <div className='stat-bar-row'>
@@ -302,7 +303,9 @@ function Battle() {
             <div className='stat-bar'>
               <div
                 className='stat-bar-fill stamina-bar'
-                style={{ width: `${attacker.stamina}%` }}
+                style={{
+                  width: `${Math.min(Math.max(attacker.stamina, 0), 100)}%`,
+                }}
               ></div>
             </div>
             <span className='stat-bar-value'>{attacker.stamina}</span>
@@ -345,7 +348,9 @@ function Battle() {
             <div className='stat-bar'>
               <div
                 className='stat-bar-fill health-bar'
-                style={{ width: `${defender.health}%` }}
+                style={{
+                  width: `${Math.min(Math.max(defender.health, 0), 100)}%`,
+                }}
               ></div>
             </div>
             <span className='stat-bar-value'>{defender.health}</span>
@@ -357,7 +362,9 @@ function Battle() {
             <div className='stat-bar'>
               <div
                 className='stat-bar-fill stamina-bar'
-                style={{ width: `${defender.stamina}%` }}
+                style={{
+                  width: `${Math.min(Math.max(defender.stamina, 0), 100)}%`,
+                }}
               ></div>
             </div>
             <span className='stat-bar-value'>{defender.stamina}</span>
