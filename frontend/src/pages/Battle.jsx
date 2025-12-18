@@ -279,18 +279,55 @@ function Battle() {
         <h2 style={{ color: "orange" }}>Attacker</h2>
         {attackerQuestion &&
           renderQuestion(attackerQuestion, isAttacker, attacker.name, true)}
+
+        {/* Health and Stamina Bars */}
+        <div className='warrior-bars'>
+          <div className='stat-bar-row'>
+            <div className='stat-bar-label'>
+              <i className='fas fa-heart'></i> Health
+            </div>
+            <div className='stat-bar'>
+              <div
+                className='stat-bar-fill health-bar'
+                style={{ width: `${attacker.health}%` }}
+              ></div>
+            </div>
+            {console.log(attacker, defender)}
+            <span className='stat-bar-value'>{attacker.health}</span>
+          </div>
+          <div className='stat-bar-row'>
+            <div className='stat-bar-label'>
+              <i className='fas fa-bolt'></i> Stamina
+            </div>
+            <div className='stat-bar'>
+              <div
+                className='stat-bar-fill stamina-bar'
+                style={{ width: `${attacker.stamina}%` }}
+              ></div>
+            </div>
+            <span className='stat-bar-value'>{attacker.stamina}</span>
+          </div>
+        </div>
+
         <img
           src={attacker.thumbnail}
           alt={attacker.name}
           className='battle-avatar-image'
         />
-        <div className='battle-stats'>
-          <p className='stat-name'>{attacker.name}</p>
-          <p className='stat-item'>Power: {attacker.power}</p>
-          <p className='stat-item'>Attack: {attacker.attack}</p>
-          <p className='stat-item'>Defense: {attacker.defense}</p>
-          <p className='stat-item'>Health: {attacker.health}</p>
-          <p className='stat-item'>Stamina: {attacker.stamina}</p>
+
+        {/* Warrior Name */}
+        <p className='warrior-name'>{attacker.name}</p>
+
+        {/* Attack and Defense */}
+        <div className='warrior-combat-stats'>
+          <div className='combat-stat'>
+            <i className='fas fa-sword'></i>
+            <span>Attack: {attacker.attack}</span>
+          </div>
+          <div className='combat-stat'>
+            <i className='fas fa-shield'></i>
+            <span>Defense: {attacker.defense}</span>
+          </div>
         </div>
       </div>
 
@@ -298,18 +335,54 @@ function Battle() {
         <h2 style={{ color: "green" }}>Defender</h2>
         {defenderQuestion &&
           renderQuestion(defenderQuestion, isDefender, defender.name, false)}
+
+        {/* Health and Stamina Bars */}
+        <div className='warrior-bars'>
+          <div className='stat-bar-row'>
+            <div className='stat-bar-label'>
+              <i className='fas fa-heart'></i> Health
+            </div>
+            <div className='stat-bar'>
+              <div
+                className='stat-bar-fill health-bar'
+                style={{ width: `${defender.health}%` }}
+              ></div>
+            </div>
+            <span className='stat-bar-value'>{defender.health}</span>
+          </div>
+          <div className='stat-bar-row'>
+            <div className='stat-bar-label'>
+              <i className='fas fa-bolt'></i> Stamina
+            </div>
+            <div className='stat-bar'>
+              <div
+                className='stat-bar-fill stamina-bar'
+                style={{ width: `${defender.stamina}%` }}
+              ></div>
+            </div>
+            <span className='stat-bar-value'>{defender.stamina}</span>
+          </div>
+        </div>
+
         <img
           src={defender.thumbnail}
           alt={defender.name}
           className='battle-avatar-image'
         />
-        <div className='battle-stats'>
-          <p className='stat-name'>{defender.name}</p>
-          <p className='stat-item'>Power: {defender.power}</p>
-          <p className='stat-item'>Attack: {defender.attack}</p>
-          <p className='stat-item'>Defense: {defender.defense}</p>
-          <p className='stat-item'>Health: {defender.health}</p>
-          <p className='stat-item'>Stamina: {defender.stamina}</p>
+
+        {/* Warrior Name */}
+        <p className='warrior-name'>{defender.name}</p>
+
+        {/* Attack and Defense */}
+        <div className='warrior-combat-stats'>
+          <div className='combat-stat'>
+            <i className='fas fa-sword'></i>
+            <span>Attack: {defender.attack}</span>
+          </div>
+          <div className='combat-stat'>
+            <i className='fas fa-shield'></i>
+            <span>Defense: {defender.defense}</span>
+          </div>
         </div>
       </div>
 

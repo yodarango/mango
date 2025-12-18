@@ -41,10 +41,110 @@
   max-width: 600px;
   height: auto;
   object-fit: contain;
-  margin-bottom: 2rem;
+  margin: 1rem 0;
   filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
 }
 
+/* Warrior Bars */
+.warrior-bars {
+  width: 90%;
+  max-width: 500px;
+  margin-bottom: 1rem;
+}
+
+.stat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.stat-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-weight: 600;
+  min-width: 90px;
+}
+
+.stat-bar-label i {
+  font-size: 0.85rem;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 24px;
+  background: var(--charcoal-dark);
+  border: 2px solid var(--charcoal-light);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.stat-bar-value {
+  min-width: 40px;
+  text-align: right;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-yellow);
+}
+
+.health-bar {
+  background: linear-gradient(90deg, #ff4444, #ff6b6b);
+}
+
+.stamina-bar {
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+/* Warrior Name */
+.warrior-name {
+  font-family: "MedievalSharp", cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-yellow);
+  margin: 1rem 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Combat Stats */
+.warrior-combat-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+  margin-top: 1rem;
+}
+
+.combat-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.combat-stat i {
+  color: var(--accent-orange);
+  font-size: 1.1rem;
+}
+
+.combat-stat span {
+  color: var(--text-light);
+}
+
+/* Old styles - keeping for backward compatibility */
 .battle-stats {
   text-align: center;
   color: var(--text-light);
