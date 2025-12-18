@@ -4301,9 +4301,25 @@ func processBattle(battleID, attackerAssetID, defenderAssetID, attackerAvatarID,
 		newAttackerStamina = 0
 	}
 
-	// Update assets in database
+	// Update defender asset in database
 	db.Exec("UPDATE assets SET health = ? WHERE id = ?", newDefenderHealth, defenderAssetID)
+
+	// Check if defender health is <= 0 and mark as "rip"
+	if newDefenderHealth <= 0 {
+		log.Printf("Defender asset %d has health <= 0, marking as 'rip'", defenderAssetID)
+		db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", defenderAssetID)
+	}
+
+	// Update attacker asset in database
 	db.Exec("UPDATE assets SET stamina = ? WHERE id = ?", newAttackerStamina, attackerAssetID)
+
+	// Check if attacker health is <= 0 and mark as "rip" (in case attacker already had low health)
+	var attackerHealth int
+	db.QueryRow("SELECT health FROM assets WHERE id = ?", attackerAssetID).Scan(&attackerHealth)
+	if attackerHealth <= 0 {
+		log.Printf("Attacker asset %d has health <= 0, marking as 'rip'", attackerAssetID)
+		db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", attackerAssetID)
+	}
 
 	// Mark battle as complete
 	db.Exec("UPDATE battles SET status = 'completed' WHERE id = ?", battleID)
