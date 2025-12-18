@@ -14,7 +14,13 @@ function Battle() {
   const [gameId, setGameId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [attackerTimer, setAttackerTimer] = useState(20);
+  const [defenderTimer, setDefenderTimer] = useState(20);
   const pollingIntervalRef = useRef(null);
+  const attackerTimerRef = useRef(null);
+  const defenderTimerRef = useRef(null);
+  const hasAutoSubmittedAttacker = useRef(false);
+  const hasAutoSubmittedDefender = useRef(false);
 
   useEffect(() => {
     fetchCurrentUser();
@@ -32,6 +38,133 @@ function Battle() {
       }
     };
   }, [id]);
+
+  // Timer for attacker
+  useEffect(() => {
+    console.log(
+      "Attacker Timer Effect - Question ID:",
+      attackerQuestion?.id,
+      "Submitted:",
+      attackerQuestion?.submittedAt,
+      "Auto-submitted:",
+      hasAutoSubmittedAttacker.current
+    );
+
+    // Only start timer if attacker hasn't answered and question exists
+    if (
+      attackerQuestion &&
+      !attackerQuestion.submittedAt &&
+      !hasAutoSubmittedAttacker.current
+    ) {
+      // Only start a new timer if one isn't already running
+      if (!attackerTimerRef.current) {
+        console.log(
+          "Starting attacker timer for question ID:",
+          attackerQuestion.id
+        );
+        setAttackerTimer(20);
+
+        attackerTimerRef.current = setInterval(() => {
+          setAttackerTimer((prev) => {
+            console.log("Attacker timer tick:", prev);
+            if (prev <= 1) {
+              // Time's up - auto submit with wrong answer
+              console.log("Attacker time's up! Auto-submitting...");
+              if (!hasAutoSubmittedAttacker.current) {
+                hasAutoSubmittedAttacker.current = true;
+                handleAnswerSelect("x", attackerQuestion.id);
+              }
+              clearInterval(attackerTimerRef.current);
+              attackerTimerRef.current = null;
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+    } else {
+      // Clear timer if question is answered
+      if (attackerTimerRef.current) {
+        console.log("Clearing attacker timer");
+        clearInterval(attackerTimerRef.current);
+        attackerTimerRef.current = null;
+      }
+      if (attackerQuestion?.submittedAt) {
+        hasAutoSubmittedAttacker.current = false;
+      }
+    }
+
+    return () => {
+      // Don't clear on cleanup - let the timer run
+    };
+  }, [attackerQuestion?.id, attackerQuestion?.submittedAt]);
+
+  // Timer for defender
+  useEffect(() => {
+    console.log(
+      "Defender Timer Effect - Question ID:",
+      defenderQuestion?.id,
+      "Submitted:",
+      defenderQuestion?.submittedAt,
+      "Attacker Submitted:",
+      attackerQuestion?.submittedAt,
+      "Auto-submitted:",
+      hasAutoSubmittedDefender.current
+    );
+
+    // Only start timer if defender hasn't answered, question exists, and attacker has answered
+    if (
+      defenderQuestion &&
+      !defenderQuestion.submittedAt &&
+      attackerQuestion?.submittedAt &&
+      !hasAutoSubmittedDefender.current
+    ) {
+      // Only start a new timer if one isn't already running
+      if (!defenderTimerRef.current) {
+        console.log(
+          "Starting defender timer for question ID:",
+          defenderQuestion.id
+        );
+        setDefenderTimer(20);
+
+        defenderTimerRef.current = setInterval(() => {
+          setDefenderTimer((prev) => {
+            console.log("Defender timer tick:", prev);
+            if (prev <= 1) {
+              // Time's up - auto submit with wrong answer
+              console.log("Defender time's up! Auto-submitting...");
+              if (!hasAutoSubmittedDefender.current) {
+                hasAutoSubmittedDefender.current = true;
+                handleAnswerSelect("x", defenderQuestion.id);
+              }
+              clearInterval(defenderTimerRef.current);
+              defenderTimerRef.current = null;
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+    } else {
+      // Clear timer if question is answered or waiting for attacker
+      if (defenderTimerRef.current) {
+        console.log("Clearing defender timer");
+        clearInterval(defenderTimerRef.current);
+        defenderTimerRef.current = null;
+      }
+      if (defenderQuestion?.submittedAt) {
+        hasAutoSubmittedDefender.current = false;
+      }
+    }
+
+    return () => {
+      // Don't clear on cleanup - let the timer run
+    };
+  }, [
+    defenderQuestion?.id,
+    defenderQuestion?.submittedAt,
+    attackerQuestion?.submittedAt,
+  ]);
 
   const fetchCurrentUser = () => {
     try {
@@ -199,9 +332,14 @@ function Battle() {
 
     try {
       const questionData = JSON.parse(question.question);
+      const timer = isAttacker ? attackerTimer : defenderTimer;
 
       return (
         <div className='battle-question'>
+          <div className='timer-display'>
+            <i className='fas fa-clock'></i>
+            <span className={timer <= 5 ? "timer-warning" : ""}>{timer}s</span>
+          </div>
           <p className='question-text'>{questionData.question}</p>
           <ul className='question-options'>
             {questionData.options.map((option, index) => (
