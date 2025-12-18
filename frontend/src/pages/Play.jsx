@@ -1157,7 +1157,7 @@ function Play() {
               </p>
               <div className='qr-code-container'>
                 <QRCodeSVG
-                  value={`${window.location.origin}/play/${gameId}`}
+                  value={`http://10.0.0.40:5173/play/${gameId}`}
                   size={256}
                   level='H'
                   marginSize={4}
