@@ -389,6 +389,20 @@ function Play() {
         // This warrior belongs to someone else
         // If we're currently moving a warrior (attack scenario), show attack confirmation
         if (movingWarrior && isMyTurn) {
+          // Check if the target warrior is within attack range
+          if (
+            !isCellInRange(
+              movingWarrior.fromCell,
+              cell,
+              movingWarrior.warrior.level
+            )
+          ) {
+            alert(
+              `This warrior can only attack ${movingWarrior.warrior.level} cell(s) away at level ${movingWarrior.warrior.level}!`
+            );
+            return;
+          }
+
           const defenderAvatar = avatarsMap[warrior.avatarId];
           setAttackTarget({ cell, defenderAvatar, defender: warrior });
           return;
