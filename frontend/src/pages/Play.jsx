@@ -251,7 +251,10 @@ function Play() {
             `/api/avatars/${avatar.id}/assets`
           );
           const assets = await assetsResponse.json();
-          return (assets || []).filter((asset) => asset.status === "warrior");
+          // Filter for warrior status, excluding "rip" status
+          return (assets || []).filter(
+            (asset) => asset.status === "warrior" && asset.status !== "rip"
+          );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
           return [];
@@ -262,11 +265,14 @@ function Play() {
       const allWarriorsFlat = allWarriorsArrays.flat();
 
       // Store ALL warrior assets (from all users) for thumbnail display
-      setAllWarriorAssets(allWarriorsFlat);
+      // Exclude "rip" status assets
+      setAllWarriorAssets(
+        allWarriorsFlat.filter((asset) => asset.status !== "rip")
+      );
 
       // Get only the current user's warriors for placement
       const userWarriorAssets = allWarriorsFlat.filter(
-        (asset) => asset.avatarId === userAvatar.id
+        (asset) => asset.avatarId === userAvatar.id && asset.status !== "rip"
       );
 
       // Group user's warriors by type and count them
@@ -356,6 +362,11 @@ function Play() {
     if (cell.occupiedBy && cell.status === "warrior") {
       // If cell has a warrior, check if it belongs to the current user
       const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
+
+      // Skip if warrior is "rip" - treat cell as empty
+      if (warrior && warrior.status === "rip") {
+        return;
+      }
 
       // Check if this warrior belongs to the current user's avatar
       if (warrior && warrior.avatarId === avatarId) {
@@ -533,7 +544,8 @@ function Play() {
     // If cell is occupied, use the avatar's element color with 50% opacity
     if (cell.occupiedBy) {
       const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
-      if (warrior && avatarsMap[warrior.avatarId]) {
+      // Only apply background if warrior exists and is not "rip"
+      if (warrior && warrior.status !== "rip" && avatarsMap[warrior.avatarId]) {
         const avatar = avatarsMap[warrior.avatarId];
         const elementColor = getElementColor(avatar.element);
         // Convert hex to rgba with 50% opacity
@@ -755,12 +767,27 @@ function Play() {
                 const isMovingFrom =
                   movingWarrior && movingWarrior.fromCell.id === cell.id;
 
+                // Check if cell has a living warrior (not "rip")
+                const warrior = cell.occupiedBy
+                  ? allWarriorAssets.find((w) => w.id === cell.occupiedBy)
+                  : null;
+                const isOccupiedByLivingWarrior =
+                  warrior && warrior.status !== "rip";
+
                 // Check if cell is placeable based on context
                 let isPlaceable = false;
-                if (selectedWarrior && cell.active && !cell.occupiedBy) {
-                  // Placing a new warrior - any active empty cell
+                if (
+                  selectedWarrior &&
+                  cell.active &&
+                  !isOccupiedByLivingWarrior
+                ) {
+                  // Placing a new warrior - any active empty cell (or cell with rip warrior)
                   isPlaceable = true;
-                } else if (movingWarrior && cell.active && !cell.occupiedBy) {
+                } else if (
+                  movingWarrior &&
+                  cell.active &&
+                  !isOccupiedByLivingWarrior
+                ) {
                   // Moving an existing warrior - only cells within range
                   isPlaceable = isCellInRange(
                     movingWarrior.fromCell,
@@ -774,7 +801,7 @@ function Play() {
                     key={`${cell.id}-${cell.occupiedBy || "empty"}`}
                     className={`grid-cell ${
                       cell.active ? "active" : "inactive"
-                    } ${cell.occupiedBy ? "occupied" : ""} ${
+                    } ${isOccupiedByLivingWarrior ? "occupied" : ""} ${
                       isPlaceable ? "placeable" : ""
                     } ${isMovingFrom ? "moving-from" : ""}`}
                     style={getCellBackground(cell)}
@@ -795,7 +822,12 @@ function Play() {
                         const warrior = allWarriorAssets.find(
                           (w) => w.id === cell.occupiedBy
                         );
-                        if (warrior && warrior.thumbnail) {
+                        // Only render if warrior exists and is not "rip" status
+                        if (
+                          warrior &&
+                          warrior.status !== "rip" &&
+                          warrior.thumbnail
+                        ) {
                           return (
                             <div className='occupied-marker'>
                               <img
@@ -806,12 +838,8 @@ function Play() {
                             </div>
                           );
                         }
-                        // Fallback to icon if warrior not found or no thumbnail
-                        return (
-                          <div className='occupied-marker'>
-                            <i className='fa-solid fa-user'></i>
-                          </div>
-                        );
+                        // Don't render anything if warrior is "rip" or not found
+                        return null;
                       })()}
                   </div>
                 );

@@ -4308,6 +4308,8 @@ func processBattle(battleID, attackerAssetID, defenderAssetID, attackerAvatarID,
 	if newDefenderHealth <= 0 {
 		log.Printf("Defender asset %d has health <= 0, marking as 'rip'", defenderAssetID)
 		db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", defenderAssetID)
+		// Clear the defender from any game cell they occupy
+		db.Exec("UPDATE game_cells SET occupied_by = NULL, status = 'active' WHERE occupied_by = ?", defenderAssetID)
 	}
 
 	// Update attacker asset in database
@@ -4319,6 +4321,8 @@ func processBattle(battleID, attackerAssetID, defenderAssetID, attackerAvatarID,
 	if attackerHealth <= 0 {
 		log.Printf("Attacker asset %d has health <= 0, marking as 'rip'", attackerAssetID)
 		db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", attackerAssetID)
+		// Clear the attacker from any game cell they occupy
+		db.Exec("UPDATE game_cells SET occupied_by = NULL, status = 'active' WHERE occupied_by = ?", attackerAssetID)
 	}
 
 	// Mark battle as complete
