@@ -193,9 +193,12 @@ function Battle() {
   const isAttacker = battle?.attackerAvatarId === currentUserAvatarId;
   const isDefender = battle?.defenderAvatarId === currentUserAvatarId;
 
+  console.log(battle?.attackerAvatarId, currentUserAvatarId);
+
   return (
     <div className='battle-container'>
       <div className='battle-side attacker-side'>
+        <h2 style={{ color: "orange" }}>Attacker</h2>
         {attackerQuestion && renderQuestion(attackerQuestion, isAttacker)}
         <img
           src={attacker.thumbnail}
@@ -213,6 +216,7 @@ function Battle() {
       </div>
 
       <div className='battle-side defender-side'>
+        <h2 style={{ color: "green" }}>Defender</h2>
         {defenderQuestion && renderQuestion(defenderQuestion, isDefender)}
         <img
           src={defender.thumbnail}

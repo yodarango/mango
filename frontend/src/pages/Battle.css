@@ -1,5 +1,6 @@
 .battle-container {
   display: flex;
+  padding-top: 250px;
   width: 100%;
   height: 100vh;
   max-height: 100vh;
