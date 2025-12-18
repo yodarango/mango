@@ -199,14 +199,16 @@ type GameCell struct {
 }
 
 type Battle struct {
-	ID       int       `json:"id"`
-	Name     string    `json:"name"`
-	Reward   string    `json:"reward"`
-	Winner   *int      `json:"winner,omitempty"`
-	Date     time.Time `json:"date"`
-	Status   string    `json:"status"`   // pending, in_progress, completed
-	Attacker *int      `json:"attacker,omitempty"` // Avatar ID of attacker
-	Defender *int      `json:"defender,omitempty"` // Avatar ID of defender
+	ID               int       `json:"id"`
+	Name             string    `json:"name"`
+	Reward           string    `json:"reward"`
+	Winner           *int      `json:"winner,omitempty"`
+	Date             time.Time `json:"date"`
+	Status           string    `json:"status"`              // pending, in_progress, completed
+	Attacker         *int      `json:"attacker,omitempty"`  // Asset ID of attacker
+	Defender         *int      `json:"defender,omitempty"`  // Asset ID of defender
+	AttackerAvatarID *int      `json:"attackerAvatarId,omitempty"` // Avatar ID of attacker
+	DefenderAvatarID *int      `json:"defenderAvatarId,omitempty"` // Avatar ID of defender
 }
 
 type BattleQuestion struct {
@@ -682,6 +684,17 @@ func initDB() {
 	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN defender INTEGER DEFAULT NULL`)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add defender column: %v", err)
+	}
+
+	// Add attacker_avatar_id and defender_avatar_id columns to battles table
+	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN attacker_avatar_id INTEGER DEFAULT NULL`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add attacker_avatar_id column: %v", err)
+	}
+
+	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN defender_avatar_id INTEGER DEFAULT NULL`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add defender_avatar_id column: %v", err)
 	}
 
 	// Create battle_questions table
@@ -3710,13 +3723,15 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	// Allow any authenticated user to create battles (for attack scenarios)
 
 	var req struct {
-		Name      string  `json:"name"`
-		Reward    string  `json:"reward"`
-		Status    *string `json:"status"`   // Optional status (defaults to 'pending')
-		Attacker  *int    `json:"attacker"` // Avatar ID of attacker
-		Defender  *int    `json:"defender"` // Avatar ID of defender
-		GameID    *int    `json:"gameId"`   // Optional game ID to link battle to game
-		Questions []struct {
+		Name             string  `json:"name"`
+		Reward           string  `json:"reward"`
+		Status           *string `json:"status"`            // Optional status (defaults to 'pending')
+		Attacker         *int    `json:"attacker"`          // Asset ID of attacker
+		Defender         *int    `json:"defender"`          // Asset ID of defender
+		AttackerAvatarID *int    `json:"attackerAvatarId"`  // Avatar ID of attacker
+		DefenderAvatarID *int    `json:"defenderAvatarId"`  // Avatar ID of defender
+		GameID           *int    `json:"gameId"`            // Optional game ID to link battle to game
+		Questions        []struct {
 			Question       string `json:"question"`
 			Answer         string `json:"answer"`
 			PossiblePoints int    `json:"possiblePoints"`
@@ -3736,8 +3751,8 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create battle
-	result, err := db.Exec("INSERT INTO battles (name, reward, status, attacker, defender) VALUES (?, ?, ?, ?, ?)",
-		req.Name, req.Reward, status, req.Attacker, req.Defender)
+	result, err := db.Exec("INSERT INTO battles (name, reward, status, attacker, defender, attacker_avatar_id, defender_avatar_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		req.Name, req.Reward, status, req.Attacker, req.Defender, req.AttackerAvatarID, req.DefenderAvatarID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3781,7 +3796,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db.Query("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles ORDER BY date DESC")
+	rows, err := db.Query("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id FROM battles ORDER BY date DESC")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -3791,7 +3806,7 @@ func getBattles(w http.ResponseWriter, r *http.Request) {
 	var battles []Battle
 	for rows.Next() {
 		var b Battle
-		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender)
+		err := rows.Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender, &b.AttackerAvatarID, &b.DefenderAvatarID)
 		if err != nil {
 			continue
 		}
@@ -3814,8 +3829,8 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 	battleID := vars["id"]
 
 	var battle Battle
-	err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles WHERE id = ?", battleID).
-		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status, &battle.Attacker, &battle.Defender)
+	err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id FROM battles WHERE id = ?", battleID).
+		Scan(&battle.ID, &battle.Name, &battle.Reward, &battle.Winner, &battle.Date, &battle.Status, &battle.Attacker, &battle.Defender, &battle.AttackerAvatarID, &battle.DefenderAvatarID)
 	if err != nil {
 		http.Error(w, "Battle not found", http.StatusNotFound)
 		return
@@ -4065,6 +4080,7 @@ func submitAnswer(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		QuestionID int    `json:"questionId"`
 		Answer     string `json:"answer"`
+		BattleID   int    `json:"battleId"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -4090,8 +4106,107 @@ func submitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if both participants have answered
+	var attackerAvatarID, defenderAvatarID int
+	var attackerAssetID, defenderAssetID int
+	err = db.QueryRow("SELECT attacker_avatar_id, defender_avatar_id, attacker, defender FROM battles WHERE id = ?", req.BattleID).
+		Scan(&attackerAvatarID, &defenderAvatarID, &attackerAssetID, &defenderAssetID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get both questions and answers
+	var attackerQuestion, defenderQuestion BattleQuestion
+	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+		FROM battle_questions
+		WHERE battle_id = ? AND user_id = ?`, req.BattleID, attackerAvatarID).
+		Scan(&attackerQuestion.ID, &attackerQuestion.Question, &attackerQuestion.Answer, &attackerQuestion.UserAnswer, &attackerQuestion.SubmittedAt)
+	if err != nil {
+		// Attacker hasn't answered yet
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]bool{"success": true})
+		return
+	}
+
+	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+		FROM battle_questions
+		WHERE battle_id = ? AND user_id = ?`, req.BattleID, defenderAvatarID).
+		Scan(&defenderQuestion.ID, &defenderQuestion.Question, &defenderQuestion.Answer, &defenderQuestion.UserAnswer, &defenderQuestion.SubmittedAt)
+	if err != nil {
+		// Defender hasn't answered yet
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]bool{"success": true})
+		return
+	}
+
+	// Both have answered - process battle
+	if attackerQuestion.SubmittedAt != nil && defenderQuestion.SubmittedAt != nil {
+		processBattle(req.BattleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID, &attackerQuestion, &defenderQuestion)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Process battle calculations
+func processBattle(battleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID int, attackerQuestion, defenderQuestion *BattleQuestion) {
+	// Get attacker and defender assets
+	var attackerAsset, defenderAsset Asset
+	db.QueryRow("SELECT id, attack, defense, health, stamina FROM assets WHERE id = ?", attackerAssetID).
+		Scan(&attackerAsset.ID, &attackerAsset.Attack, &attackerAsset.Defense, &attackerAsset.Health, &attackerAsset.Stamina)
+	db.QueryRow("SELECT id, attack, defense, health, stamina FROM assets WHERE id = ?", defenderAssetID).
+		Scan(&defenderAsset.ID, &defenderAsset.Attack, &defenderAsset.Defense, &defenderAsset.Health, &defenderAsset.Stamina)
+
+	// Check if answers are correct (case-insensitive comparison)
+	attackerCorrect := false
+	defenderCorrect := false
+	if attackerQuestion.UserAnswer != nil {
+		attackerCorrect = strings.ToLower(*attackerQuestion.UserAnswer) == strings.ToLower(attackerQuestion.Answer)
+	}
+	if defenderQuestion.UserAnswer != nil {
+		defenderCorrect = strings.ToLower(*defenderQuestion.UserAnswer) == strings.ToLower(defenderQuestion.Answer)
+	}
+
+	// Calculate damage percentage: (attacker.attack / defender.defense) * 100
+	damagePercentage := float64(attackerAsset.Attack) / float64(defenderAsset.Defense) * 100.0
+
+	// Apply battle logic
+	newDefenderHealth := defenderAsset.Health
+	newAttackerStamina := attackerAsset.Stamina
+
+	if attackerCorrect && defenderCorrect {
+		// Both right: defender takes half damage (25% in example)
+		newDefenderHealth = int(float64(defenderAsset.Health) - (float64(defenderAsset.Health) * (damagePercentage / 2.0) / 100.0))
+	} else if attackerCorrect && !defenderCorrect {
+		// Attacker right, defender wrong: defender takes full damage
+		newDefenderHealth = int(float64(defenderAsset.Health) - (float64(defenderAsset.Health) * damagePercentage / 100.0))
+	} else if !attackerCorrect && defenderCorrect {
+		// Attacker wrong, defender right: attacker loses 25% stamina, no damage to defender
+		newAttackerStamina = int(float64(attackerAsset.Stamina) * 0.75)
+	} else {
+		// Both wrong: defender takes 25% damage, attacker loses 25% stamina
+		newDefenderHealth = int(float64(defenderAsset.Health) * 0.75)
+		newAttackerStamina = int(float64(attackerAsset.Stamina) * 0.75)
+	}
+
+	// Ensure values don't go below 0
+	if newDefenderHealth < 0 {
+		newDefenderHealth = 0
+	}
+	if newAttackerStamina < 0 {
+		newAttackerStamina = 0
+	}
+
+	// Update assets in database
+	db.Exec("UPDATE assets SET health = ? WHERE id = ?", newDefenderHealth, defenderAssetID)
+	db.Exec("UPDATE assets SET stamina = ? WHERE id = ?", newAttackerStamina, attackerAssetID)
+
+	// Mark battle as complete
+	db.Exec("UPDATE battles SET status = 'completed' WHERE id = ?", battleID)
+
+	// Clear battle_id from game so it resumes
+	db.Exec("UPDATE games SET battle_id = NULL WHERE battle_id = ?", battleID)
 }
 
 // Grade answers (admin)

@@ -1015,6 +1015,8 @@ function Play() {
                           status: "in_progress",
                           attacker: movingWarrior.warrior.id,
                           defender: attackTarget.defender.id,
+                          attackerAvatarId: movingWarrior.warrior.avatarId,
+                          defenderAvatarId: attackTarget.defender.avatarId,
                           gameId: parseInt(gameId),
                         }),
                       });
