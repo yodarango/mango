@@ -13,6 +13,7 @@ function Battle() {
   const [currentUserAvatarId, setCurrentUserAvatarId] = useState(null);
   const [gameId, setGameId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const pollingIntervalRef = useRef(null);
 
   useEffect(() => {
@@ -37,12 +38,17 @@ function Battle() {
       const token = localStorage.getItem("user");
       if (!token) return;
 
-      // Decode JWT token to get avatar ID
+      // Decode JWT token to get avatar ID and role
       const user = JSON.parse(token);
       const avatarId = user.id;
+      const role = user.role;
 
       if (avatarId) {
         setCurrentUserAvatarId(avatarId);
+      }
+
+      if (role === "admin") {
+        setIsAdmin(true);
       }
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -74,30 +80,16 @@ function Battle() {
       setAttackerQuestion(data.attackerQuestion);
       setDefenderQuestion(data.defenderQuestion);
 
-      // Check if battle is complete and redirect to game
-      if (data.battle.status === "completed") {
-        // Store game ID if we haven't already
-        if (!gameId) {
-          const gameResponse = await fetch("/api/games", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+      // Store game ID from response
+      if (data.gameId && !gameId) {
+        setGameId(data.gameId);
+      }
 
-          if (gameResponse.ok) {
-            const games = await gameResponse.json();
-            const linkedGame = games.find(
-              (game) => game.battleId === data.battle.id
-            );
-            if (linkedGame) {
-              setGameId(linkedGame.id);
-              navigate(`/play/${linkedGame.id}`);
-              return;
-            }
-          }
-        } else {
-          // We already have the game ID, just navigate
-          navigate(`/play/${gameId}`);
+      // Check if battle is complete and redirect to game (except admin)
+      if (data.battle.status === "completed" && !isAdmin) {
+        const targetGameId = data.gameId || gameId;
+        if (targetGameId) {
+          navigate(`/play/${targetGameId}`);
           return;
         }
       }
@@ -126,6 +118,30 @@ function Battle() {
       });
     } catch (error) {
       console.error("Error submitting answer:", error);
+    }
+  };
+
+  const handleCompleteBattle = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/battles/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ battleId: parseInt(id) }),
+      });
+
+      if (response.ok) {
+        alert("Battle completed!");
+        fetchBattle(); // Refresh to trigger redirect
+      } else {
+        alert("Failed to complete battle");
+      }
+    } catch (error) {
+      console.error("Error completing battle:", error);
+      alert("Error completing battle");
     }
   };
 
@@ -217,6 +233,46 @@ function Battle() {
 
   console.log(battle?.defenderAvatarId, currentUserAvatarId);
 
+  // Helper to parse and display question for admin
+  const renderAdminQuestion = (question, label) => {
+    if (!question) return <p>No question assigned</p>;
+
+    try {
+      const questionData = JSON.parse(question.question);
+      return (
+        <div className='admin-question-block'>
+          <h4>{label}</h4>
+          <p className='admin-question-text'>{questionData.question}</p>
+          <ul className='admin-options-list'>
+            {questionData.options.map((option, index) => (
+              <li
+                key={index}
+                className={option === question.answer ? "correct-answer" : ""}
+              >
+                {option}
+                {option === question.answer && " ✓"}
+              </li>
+            ))}
+          </ul>
+          <p className='admin-user-answer'>
+            User Answer:{" "}
+            <span
+              className={
+                question.userAnswer === question.answer
+                  ? "correct"
+                  : "incorrect"
+              }
+            >
+              {question.userAnswer || "Not answered yet"}
+            </span>
+          </p>
+        </div>
+      );
+    } catch (error) {
+      return <p>Error parsing question</p>;
+    }
+  };
+
   return (
     <div className='battle-container'>
       <div className='battle-side attacker-side'>
@@ -256,6 +312,29 @@ function Battle() {
           <p className='stat-item'>Stamina: {defender.stamina}</p>
         </div>
       </div>
+
+      {/* Admin Panel */}
+      {isAdmin && (
+        <div className='admin-battle-panel'>
+          <h3>Admin Panel</h3>
+          <div className='admin-questions-container'>
+            {renderAdminQuestion(
+              attackerQuestion,
+              `${attacker.name}'s Question`
+            )}
+            {renderAdminQuestion(
+              defenderQuestion,
+              `${defender.name}'s Question`
+            )}
+          </div>
+          <button
+            className='complete-battle-btn'
+            onClick={handleCompleteBattle}
+          >
+            Complete Battle
+          </button>
+        </div>
+      )}
     </div>
   );
 }

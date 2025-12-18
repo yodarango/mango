@@ -4058,6 +4058,15 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		questions = append(questions, q)
 	}
 
+	// Get game ID linked to this battle
+	var gameID sql.NullInt64
+	err = db.QueryRow("SELECT id FROM games WHERE battle_id = ?", battleID).Scan(&gameID)
+	var gameIDPtr *int
+	if err == nil && gameID.Valid {
+		gameIDInt := int(gameID.Int64)
+		gameIDPtr = &gameIDInt
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"battle":           battle,
@@ -4066,6 +4075,7 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		"attackerQuestion": attackerQuestion,
 		"defenderQuestion": defenderQuestion,
 		"questions":        questions,
+		"gameId":           gameIDPtr,
 	})
 }
 
