@@ -63,6 +63,9 @@ function Play() {
         return; // Stop further processing
       }
 
+      // Check for warriors with stamina <= 0 and remove them from grid
+      await checkAndRemoveDepleteWarriors();
+
       // Update turn tracking data
       if (data.game) {
         const newTurnIndex = data.game.currentTurnIndex || 0;
@@ -94,6 +97,63 @@ function Play() {
     } catch (error) {
       console.error("Error fetching game:", error);
       setLoading(false);
+    }
+  };
+
+  // Check for warriors with stamina <= 0 and remove them from grid
+  const checkAndRemoveDepleteWarriors = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      // Get all warriors from all avatars to check their stamina
+      const avatarsResponse = await fetch("/api/avatars");
+      const avatars = await avatarsResponse.json();
+
+      const allWarriorsPromises = avatars.map(async (avatar) => {
+        try {
+          const assetsResponse = await fetch(
+            `/api/avatars/${avatar.id}/assets`
+          );
+          const assets = await assetsResponse.json();
+          return (assets || []).filter(
+            (asset) => asset.status === "warrior" || asset.status === "rip"
+          );
+        } catch (err) {
+          console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
+          return [];
+        }
+      });
+
+      const allWarriorsArrays = await Promise.all(allWarriorsPromises);
+      const allWarriorsFlat = allWarriorsArrays.flat();
+
+      // Find warriors with stamina <= 0
+      const depletedWarriors = allWarriorsFlat.filter(
+        (warrior) => warrior.stamina <= 0
+      );
+
+      // Remove each depleted warrior from grid and mark as unavailable
+      for (const warrior of depletedWarriors) {
+        console.log(
+          `Removing depleted warrior ${warrior.name} (ID: ${warrior.id}) with stamina ${warrior.stamina}`
+        );
+
+        // Call API to remove warrior from grid and mark as unavailable
+        await fetch(`/api/warriors/${warrior.id}/deplete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+
+      // Refresh warriors list if any were depleted
+      if (depletedWarriors.length > 0) {
+        await fetchUserWarriors();
+      }
+    } catch (error) {
+      console.error("Error checking depleted warriors:", error);
     }
   };
 

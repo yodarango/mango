@@ -3709,6 +3709,53 @@ func moveWarrior(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Deplete warrior - remove from grid and mark as unavailable (rip status)
+func depleteWarrior(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	warriorID := vars["id"]
+
+	// Get warrior's current stamina
+	var stamina int
+	err = db.QueryRow("SELECT stamina FROM assets WHERE id = ?", warriorID).Scan(&stamina)
+	if err != nil {
+		http.Error(w, "Warrior not found", http.StatusNotFound)
+		return
+	}
+
+	// Only deplete if stamina is <= 0
+	if stamina <= 0 {
+		// Remove warrior from any game cells
+		_, err = db.Exec("UPDATE game_cells SET occupied_by = NULL, status = '' WHERE occupied_by = ?", warriorID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Mark warrior as "rip" (unavailable)
+		_, err = db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", warriorID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Get the game ID to broadcast update
+		var gameID sql.NullInt64
+		db.QueryRow("SELECT game_id FROM game_cells WHERE occupied_by = ?", warriorID).Scan(&gameID)
+		if gameID.Valid {
+			broadcastGameUpdate(int(gameID.Int64))
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Advance to next turn (automatically called when timer expires or manually by admin)
 func advanceTurn(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -4905,6 +4952,7 @@ func main() {
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
+	api.HandleFunc("/warriors/{id}/deplete", depleteWarrior).Methods("POST")
 
 	// Battle routes
 	api.HandleFunc("/battles", getBattles).Methods("GET")
