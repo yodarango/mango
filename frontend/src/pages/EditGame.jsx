@@ -17,6 +17,7 @@ function EditGame() {
   const previousGameDataRef = useRef(null); // Store previous game data to compare
   const avatarsFetchedRef = useRef(false); // Track if avatars have been fetched
   const fetchedAssetIdsRef = useRef(new Set()); // Track which assets we've already fetched
+  const openedBattleIdRef = useRef(null); // Track which battle we've already opened
 
   const fetchGame = async () => {
     try {
@@ -27,6 +28,18 @@ function EditGame() {
         },
       });
       const data = await response.json();
+
+      // Check if there's an in-progress battle and open it in a new tab (admin only)
+      if (data.battle && data.battle.status === "in_progress") {
+        // Only open if we haven't already opened this battle
+        if (openedBattleIdRef.current !== data.battle.id) {
+          window.open(`/battles/${data.battle.id}`, "_blank");
+          openedBattleIdRef.current = data.battle.id;
+        }
+      } else {
+        // Reset if no battle or battle completed
+        openedBattleIdRef.current = null;
+      }
 
       // Compare with previous data to avoid unnecessary re-renders
       const currentDataString = JSON.stringify({

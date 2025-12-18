@@ -3298,13 +3298,72 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get battle details if game has a battle linked
-	var battle *Battle
+	var battleResponse map[string]interface{}
 	if game.BattleID != nil {
 		var b Battle
-		err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender FROM battles WHERE id = ?", *game.BattleID).
-			Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender)
+		err = db.QueryRow("SELECT id, name, reward, winner, date, status, attacker, defender, attacker_avatar_id, defender_avatar_id FROM battles WHERE id = ?", *game.BattleID).
+			Scan(&b.ID, &b.Name, &b.Reward, &b.Winner, &b.Date, &b.Status, &b.Attacker, &b.Defender, &b.AttackerAvatarID, &b.DefenderAvatarID)
 		if err == nil {
-			battle = &b
+			battleResponse = map[string]interface{}{
+				"id":               b.ID,
+				"name":             b.Name,
+				"reward":           b.Reward,
+				"winner":           b.Winner,
+				"date":             b.Date,
+				"status":           b.Status,
+				"attacker":         b.Attacker,
+				"defender":         b.Defender,
+				"attackerAvatarId": b.AttackerAvatarID,
+				"defenderAvatarId": b.DefenderAvatarID,
+			}
+
+			// Get attacker question
+			if b.AttackerAvatarID != nil {
+				var q BattleQuestion
+				var submittedAt sql.NullTime
+				var userAnswer sql.NullString
+				err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+					FROM battle_questions
+					WHERE user_id = ? AND battle_id = ?
+					ORDER BY id ASC
+					LIMIT 1`, *b.AttackerAvatarID, b.ID).
+					Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
+						&q.PossiblePoints, &q.ReceivedScore, &q.Time, &userAnswer, &submittedAt)
+				if err == nil {
+					if userAnswer.Valid {
+						q.UserAnswer = &userAnswer.String
+					}
+					if submittedAt.Valid {
+						submittedAtStr := submittedAt.Time.Format(time.RFC3339)
+						q.SubmittedAt = &submittedAtStr
+					}
+					battleResponse["attackerQuestion"] = q
+				}
+			}
+
+			// Get defender question
+			if b.DefenderAvatarID != nil {
+				var q BattleQuestion
+				var submittedAt sql.NullTime
+				var userAnswer sql.NullString
+				err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
+					FROM battle_questions
+					WHERE user_id = ? AND battle_id = ?
+					ORDER BY id ASC
+					LIMIT 1`, *b.DefenderAvatarID, b.ID).
+					Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
+						&q.PossiblePoints, &q.ReceivedScore, &q.Time, &userAnswer, &submittedAt)
+				if err == nil {
+					if userAnswer.Valid {
+						q.UserAnswer = &userAnswer.String
+					}
+					if submittedAt.Valid {
+						submittedAtStr := submittedAt.Time.Format(time.RFC3339)
+						q.SubmittedAt = &submittedAtStr
+					}
+					battleResponse["defenderQuestion"] = q
+				}
+			}
 		}
 	}
 
@@ -3312,7 +3371,7 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"game":   game,
 		"cells":  cells,
-		"battle": battle,
+		"battle": battleResponse,
 	})
 }
 
@@ -4181,35 +4240,7 @@ func submitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if defender answered (which means attacker already answered)
-	var attackerAvatarID, defenderAvatarID int
-	var attackerAssetID, defenderAssetID int
-	err = db.QueryRow("SELECT attacker_avatar_id, defender_avatar_id, attacker, defender FROM battles WHERE id = ?", req.BattleID).
-		Scan(&attackerAvatarID, &defenderAvatarID, &attackerAssetID, &defenderAssetID)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// Check if this was the defender answering
-	if avatarID == defenderAvatarID {
-		// Defender just answered - process battle
-		var attackerQuestion, defenderQuestion BattleQuestion
-		err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
-			FROM battle_questions
-			WHERE battle_id = ? AND user_id = ?`, req.BattleID, attackerAvatarID).
-			Scan(&attackerQuestion.ID, &attackerQuestion.Question, &attackerQuestion.Answer, &attackerQuestion.UserAnswer, &attackerQuestion.SubmittedAt)
-		if err == nil && attackerQuestion.SubmittedAt != nil {
-			err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
-				FROM battle_questions
-				WHERE battle_id = ? AND user_id = ?`, req.BattleID, defenderAvatarID).
-				Scan(&defenderQuestion.ID, &defenderQuestion.Question, &defenderQuestion.Answer, &defenderQuestion.UserAnswer, &defenderQuestion.SubmittedAt)
-			if err == nil && defenderQuestion.SubmittedAt != nil {
-				processBattle(req.BattleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID, &attackerQuestion, &defenderQuestion)
-			}
-		}
-	}
-
+	// Do not automatically complete the battle - admin will do it manually
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
@@ -4700,6 +4731,73 @@ func assignQuestionToBattle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Complete battle manually (admin only)
+func completeBattle(w http.ResponseWriter, r *http.Request) {
+	_, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		BattleID int `json:"battleId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get battle info
+	var attackerAvatarID, defenderAvatarID int
+	var attackerAssetID, defenderAssetID int
+	err = db.QueryRow("SELECT attacker_avatar_id, defender_avatar_id, attacker, defender FROM battles WHERE id = ?", req.BattleID).
+		Scan(&attackerAvatarID, &defenderAvatarID, &attackerAssetID, &defenderAssetID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Get both questions
+	var attackerQuestion, defenderQuestion BattleQuestion
+	var attackerSubmittedAt, defenderSubmittedAt sql.NullTime
+	var attackerUserAnswer, defenderUserAnswer sql.NullString
+
+	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+		FROM battle_questions
+		WHERE battle_id = ? AND user_id = ?`, req.BattleID, attackerAvatarID).
+		Scan(&attackerQuestion.ID, &attackerQuestion.Question, &attackerQuestion.Answer, &attackerUserAnswer, &attackerSubmittedAt)
+	if err == nil {
+		if attackerUserAnswer.Valid {
+			attackerQuestion.UserAnswer = &attackerUserAnswer.String
+		}
+		if attackerSubmittedAt.Valid {
+			submittedAtStr := attackerSubmittedAt.Time.Format(time.RFC3339)
+			attackerQuestion.SubmittedAt = &submittedAtStr
+		}
+	}
+
+	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+		FROM battle_questions
+		WHERE battle_id = ? AND user_id = ?`, req.BattleID, defenderAvatarID).
+		Scan(&defenderQuestion.ID, &defenderQuestion.Question, &defenderQuestion.Answer, &defenderUserAnswer, &defenderSubmittedAt)
+	if err == nil {
+		if defenderUserAnswer.Valid {
+			defenderQuestion.UserAnswer = &defenderUserAnswer.String
+		}
+		if defenderSubmittedAt.Valid {
+			submittedAtStr := defenderSubmittedAt.Time.Format(time.RFC3339)
+			defenderQuestion.SubmittedAt = &submittedAtStr
+		}
+	}
+
+	// Process battle
+	processBattle(req.BattleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID, &attackerQuestion, &defenderQuestion)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
 // Broadcast to multiple users
 func notifyUsers(userIDs []int, notificationType string, data interface{}) {
 	for _, userID := range userIDs {
@@ -4797,6 +4895,7 @@ func main() {
 	api.HandleFunc("/battles/grade", gradeAnswers).Methods("POST")
 	api.HandleFunc("/battles/questions/unanswered/{userId}", getUnansweredQuestion).Methods("GET")
 	api.HandleFunc("/battles/assign-question", assignQuestionToBattle).Methods("POST")
+	api.HandleFunc("/battles/complete", completeBattle).Methods("POST")
 
 	// Admin store management routes
 	api.HandleFunc("/admin/upload-store-images", uploadStoreImages).Methods("POST")
