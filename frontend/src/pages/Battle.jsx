@@ -151,12 +151,38 @@ function Battle() {
     );
   }
 
-  const renderQuestion = (question, isUserQuestion) => {
+  const renderQuestion = (question, isUserQuestion, avatarName, isAttacker) => {
     if (!question) return null;
+
+    const hasAnswered = question.submittedAt !== null;
+
+    // If answered, show status message instead of question
+    if (hasAnswered) {
+      return (
+        <div className='battle-question'>
+          <p className='answered-indicator'>
+            {isUserQuestion
+              ? "You have answered the question"
+              : `${avatarName} has answered the question`}
+          </p>
+        </div>
+      );
+    }
+
+    // Check if defender should wait for attacker
+    const isDefender = !isAttacker;
+    const shouldWait = isDefender && !attackerQuestion?.submittedAt;
+
+    if (shouldWait) {
+      return (
+        <div className='battle-question'>
+          <p className='question-text'>Waiting for attacker to answer...</p>
+        </div>
+      );
+    }
 
     try {
       const questionData = JSON.parse(question.question);
-      const hasAnswered = question.submittedAt !== null;
 
       return (
         <div className='battle-question'>
@@ -166,10 +192,10 @@ function Battle() {
               <li
                 key={index}
                 className={`question-option ${
-                  !isUserQuestion || hasAnswered ? "disabled" : ""
+                  !isUserQuestion ? "disabled" : ""
                 }`}
                 onClick={() => {
-                  if (isUserQuestion && !hasAnswered) {
+                  if (isUserQuestion) {
                     handleAnswerSelect(option, question.id);
                   }
                 }}
@@ -178,7 +204,6 @@ function Battle() {
               </li>
             ))}
           </ul>
-          {hasAnswered && <p className='answered-indicator'>✓ Answered</p>}
         </div>
       );
     } catch (error) {
@@ -196,7 +221,8 @@ function Battle() {
     <div className='battle-container'>
       <div className='battle-side attacker-side'>
         <h2 style={{ color: "orange" }}>Attacker</h2>
-        {attackerQuestion && renderQuestion(attackerQuestion, isAttacker)}
+        {attackerQuestion &&
+          renderQuestion(attackerQuestion, isAttacker, attacker.name, true)}
         <img
           src={attacker.thumbnail}
           alt={attacker.name}
@@ -214,7 +240,8 @@ function Battle() {
 
       <div className='battle-side defender-side'>
         <h2 style={{ color: "green" }}>Defender</h2>
-        {defenderQuestion && renderQuestion(defenderQuestion, isDefender)}
+        {defenderQuestion &&
+          renderQuestion(defenderQuestion, isDefender, defender.name, false)}
         <img
           src={defender.thumbnail}
           alt={defender.name}

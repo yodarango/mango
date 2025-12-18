@@ -3872,34 +3872,52 @@ func getBattle(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Get attacker's unanswered question
+	// Get attacker's question for this battle
 	var attackerQuestion *BattleQuestion
 	if attackerAvatarID > 0 {
 		var q BattleQuestion
+		var submittedAt sql.NullTime
+		var userAnswer sql.NullString
 		err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
 			FROM battle_questions
-			WHERE user_id = ? AND submitted_at IS NULL
+			WHERE user_id = ? AND battle_id = ?
 			ORDER BY id ASC
-			LIMIT 1`, attackerAvatarID).
+			LIMIT 1`, attackerAvatarID, battleID).
 			Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
-				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &q.UserAnswer, &q.SubmittedAt)
+				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &userAnswer, &submittedAt)
 		if err == nil {
+			if userAnswer.Valid {
+				q.UserAnswer = &userAnswer.String
+			}
+			if submittedAt.Valid {
+				submittedAtStr := submittedAt.Time.Format(time.RFC3339)
+				q.SubmittedAt = &submittedAtStr
+			}
 			attackerQuestion = &q
 		}
 	}
 
-	// Get defender's unanswered question
+	// Get defender's question for this battle
 	var defenderQuestion *BattleQuestion
 	if defenderAvatarID > 0 {
 		var q BattleQuestion
+		var submittedAt sql.NullTime
+		var userAnswer sql.NullString
 		err = db.QueryRow(`SELECT id, battle_id, question, answer, user_id, possible_points, received_score, time, user_answer, submitted_at
 			FROM battle_questions
-			WHERE user_id = ? AND submitted_at IS NULL
+			WHERE user_id = ? AND battle_id = ?
 			ORDER BY id ASC
-			LIMIT 1`, defenderAvatarID).
+			LIMIT 1`, defenderAvatarID, battleID).
 			Scan(&q.ID, &q.BattleID, &q.Question, &q.Answer, &q.UserID,
-				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &q.UserAnswer, &q.SubmittedAt)
+				&q.PossiblePoints, &q.ReceivedScore, &q.Time, &userAnswer, &submittedAt)
 		if err == nil {
+			if userAnswer.Valid {
+				q.UserAnswer = &userAnswer.String
+			}
+			if submittedAt.Valid {
+				submittedAtStr := submittedAt.Time.Format(time.RFC3339)
+				q.SubmittedAt = &submittedAtStr
+			}
 			defenderQuestion = &q
 		}
 	}
@@ -4106,7 +4124,7 @@ func submitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if both participants have answered
+	// Check if defender answered (which means attacker already answered)
 	var attackerAvatarID, defenderAvatarID int
 	var attackerAssetID, defenderAssetID int
 	err = db.QueryRow("SELECT attacker_avatar_id, defender_avatar_id, attacker, defender FROM battles WHERE id = ?", req.BattleID).
@@ -4116,33 +4134,23 @@ func submitAnswer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get both questions and answers
-	var attackerQuestion, defenderQuestion BattleQuestion
-	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
-		FROM battle_questions
-		WHERE battle_id = ? AND user_id = ?`, req.BattleID, attackerAvatarID).
-		Scan(&attackerQuestion.ID, &attackerQuestion.Question, &attackerQuestion.Answer, &attackerQuestion.UserAnswer, &attackerQuestion.SubmittedAt)
-	if err != nil {
-		// Attacker hasn't answered yet
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]bool{"success": true})
-		return
-	}
-
-	err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
-		FROM battle_questions
-		WHERE battle_id = ? AND user_id = ?`, req.BattleID, defenderAvatarID).
-		Scan(&defenderQuestion.ID, &defenderQuestion.Question, &defenderQuestion.Answer, &defenderQuestion.UserAnswer, &defenderQuestion.SubmittedAt)
-	if err != nil {
-		// Defender hasn't answered yet
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]bool{"success": true})
-		return
-	}
-
-	// Both have answered - process battle
-	if attackerQuestion.SubmittedAt != nil && defenderQuestion.SubmittedAt != nil {
-		processBattle(req.BattleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID, &attackerQuestion, &defenderQuestion)
+	// Check if this was the defender answering
+	if avatarID == defenderAvatarID {
+		// Defender just answered - process battle
+		var attackerQuestion, defenderQuestion BattleQuestion
+		err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+			FROM battle_questions
+			WHERE battle_id = ? AND user_id = ?`, req.BattleID, attackerAvatarID).
+			Scan(&attackerQuestion.ID, &attackerQuestion.Question, &attackerQuestion.Answer, &attackerQuestion.UserAnswer, &attackerQuestion.SubmittedAt)
+		if err == nil && attackerQuestion.SubmittedAt != nil {
+			err = db.QueryRow(`SELECT id, question, answer, user_answer, submitted_at
+				FROM battle_questions
+				WHERE battle_id = ? AND user_id = ?`, req.BattleID, defenderAvatarID).
+				Scan(&defenderQuestion.ID, &defenderQuestion.Question, &defenderQuestion.Answer, &defenderQuestion.UserAnswer, &defenderQuestion.SubmittedAt)
+			if err == nil && defenderQuestion.SubmittedAt != nil {
+				processBattle(req.BattleID, attackerAssetID, defenderAssetID, attackerAvatarID, defenderAvatarID, &attackerQuestion, &defenderQuestion)
+			}
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -4168,26 +4176,26 @@ func processBattle(battleID, attackerAssetID, defenderAssetID, attackerAvatarID,
 		defenderCorrect = strings.ToLower(*defenderQuestion.UserAnswer) == strings.ToLower(defenderQuestion.Answer)
 	}
 
-	// Calculate damage percentage: (attacker.attack / defender.defense) * 100
-	damagePercentage := float64(attackerAsset.Attack) / float64(defenderAsset.Defense) * 100.0
+	// Calculate damage points: (attacker.attack / defender.defense) * 100
+	damagePoints := float64(attackerAsset.Attack) / float64(defenderAsset.Defense) * 100.0
 
 	// Apply battle logic
 	newDefenderHealth := defenderAsset.Health
 	newAttackerStamina := attackerAsset.Stamina
 
 	if attackerCorrect && defenderCorrect {
-		// Both right: defender takes half damage (25% in example)
-		newDefenderHealth = int(float64(defenderAsset.Health) - (float64(defenderAsset.Health) * (damagePercentage / 2.0) / 100.0))
+		// Both right: defender takes half damage points
+		newDefenderHealth = defenderAsset.Health - int(damagePoints/2.0)
 	} else if attackerCorrect && !defenderCorrect {
-		// Attacker right, defender wrong: defender takes full damage
-		newDefenderHealth = int(float64(defenderAsset.Health) - (float64(defenderAsset.Health) * damagePercentage / 100.0))
+		// Attacker right, defender wrong: defender takes full damage points
+		newDefenderHealth = defenderAsset.Health - int(damagePoints)
 	} else if !attackerCorrect && defenderCorrect {
-		// Attacker wrong, defender right: attacker loses 25% stamina, no damage to defender
-		newAttackerStamina = int(float64(attackerAsset.Stamina) * 0.75)
+		// Attacker wrong, defender right: attacker loses 25 stamina points, no damage to defender
+		newAttackerStamina = attackerAsset.Stamina - 25
 	} else {
-		// Both wrong: defender takes 25% damage, attacker loses 25% stamina
-		newDefenderHealth = int(float64(defenderAsset.Health) * 0.75)
-		newAttackerStamina = int(float64(attackerAsset.Stamina) * 0.75)
+		// Both wrong: defender takes 25 health points, attacker loses 25 stamina points
+		newDefenderHealth = defenderAsset.Health - 25
+		newAttackerStamina = attackerAsset.Stamina - 25
 	}
 
 	// Ensure values don't go below 0
