@@ -81,6 +81,11 @@ function Drawer({ isOpen, onClose }) {
               <span>Resources</span>
             </Link>
 
+            <Link to='/play/8' className='drawer-link' onClick={onClose}>
+              <i className='fa-solid fa-swords'></i>
+              <span>Battle</span>
+            </Link>
+
             {avatarId && (
               <Link
                 to={`/avatar/${avatarId}`}

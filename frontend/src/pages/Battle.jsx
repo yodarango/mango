@@ -537,15 +537,21 @@ function Battle() {
         {/* Warrior Name */}
         <p className='warrior-name'>{attacker.name}</p>
 
-        {/* Attack and Defense */}
+        {/* Attack and Defense Cards */}
         <div className='warrior-combat-stats'>
-          <div className='combat-stat'>
+          <div className='combat-stat-card attack-card'>
             <i className='fas fa-sword'></i>
-            <span>Attack: {attacker.attack}</span>
+            <div className='stat-info'>
+              <span className='stat-label'>Attack</span>
+              <span className='stat-number'>{attacker.attack}</span>
+            </div>
           </div>
-          <div className='combat-stat'>
+          <div className='combat-stat-card defense-card'>
             <i className='fas fa-shield'></i>
-            <span>Defense: {attacker.defense}</span>
+            <div className='stat-info'>
+              <span className='stat-label'>Defense</span>
+              <span className='stat-number'>{attacker.defense}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -596,15 +602,21 @@ function Battle() {
         {/* Warrior Name */}
         <p className='warrior-name'>{defender.name}</p>
 
-        {/* Attack and Defense */}
+        {/* Attack and Defense Cards */}
         <div className='warrior-combat-stats'>
-          <div className='combat-stat'>
+          <div className='combat-stat-card attack-card'>
             <i className='fas fa-sword'></i>
-            <span>Attack: {defender.attack}</span>
+            <div className='stat-info'>
+              <span className='stat-label'>Attack</span>
+              <span className='stat-number'>{defender.attack}</span>
+            </div>
           </div>
-          <div className='combat-stat'>
+          <div className='combat-stat-card defense-card'>
             <i className='fas fa-shield'></i>
-            <span>Defense: {defender.defense}</span>
+            <div className='stat-info'>
+              <span className='stat-label'>Defense</span>
+              <span className='stat-number'>{defender.defense}</span>
+            </div>
           </div>
         </div>
       </div>
