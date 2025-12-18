@@ -10,7 +10,10 @@ function EditGame() {
   const [selectedCell, setSelectedCell] = useState(null);
   const [editingCell, setEditingCell] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [zoom, setZoom] = useState(100);
+  const [zoom, setZoom] = useState(() => {
+    const savedZoom = localStorage.getItem("editGridZoom");
+    return savedZoom ? parseInt(savedZoom) : 100;
+  });
   const [assetThumbnails, setAssetThumbnails] = useState({}); // Store asset thumbnails by ID
   const [avatarsMap, setAvatarsMap] = useState({}); // Map of avatarId -> avatar data
   const pollingIntervalRef = useRef(null);
@@ -95,6 +98,10 @@ function EditGame() {
             if (response.ok) {
               const asset = await response.json();
               fetchedAssetIdsRef.current.add(assetId); // Mark as fetched
+              // Filter out warriors with status "rip"
+              if (asset.status === "rip") {
+                return null;
+              }
               return {
                 id: assetId,
                 thumbnail: asset.thumbnail,
@@ -163,7 +170,9 @@ function EditGame() {
   };
 
   const handleZoomChange = (e) => {
-    setZoom(parseInt(e.target.value));
+    const newZoom = parseInt(e.target.value);
+    setZoom(newZoom);
+    localStorage.setItem("editGridZoom", newZoom);
   };
 
   const handleSaveCell = async () => {
@@ -237,6 +246,7 @@ function EditGame() {
     // If cell is occupied, use the avatar's element color with 50% opacity
     if (cell.occupiedBy) {
       const asset = assetThumbnails[cell.occupiedBy];
+      // Only apply background if asset exists and is not "rip"
       if (asset && avatarsMap[asset.avatarId]) {
         const avatar = avatarsMap[asset.avatarId];
         const elementColor = getElementColor(avatar.element);
@@ -445,6 +455,7 @@ function EditGame() {
                   {cell.occupiedBy &&
                     (() => {
                       const asset = assetThumbnails[cell.occupiedBy];
+                      // Only render if asset exists (rip warriors are filtered out)
                       if (asset && asset.thumbnail) {
                         return (
                           <div className='occupied-marker'>
@@ -456,12 +467,8 @@ function EditGame() {
                           </div>
                         );
                       }
-                      // Fallback to icon if asset not loaded yet
-                      return (
-                        <div className='occupied-marker'>
-                          <i className='fa-solid fa-user'></i>
-                        </div>
-                      );
+                      // Don't render anything if asset is not loaded or is "rip"
+                      return null;
                     })()}
                   <div className='edit-indicator'>
                     <i className='fa-solid fa-pen'></i>

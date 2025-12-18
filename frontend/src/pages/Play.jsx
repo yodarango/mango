@@ -10,7 +10,10 @@ function Play() {
   const [cells, setCells] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCell, setSelectedCell] = useState(null);
-  const [zoom, setZoom] = useState(100);
+  const [zoom, setZoom] = useState(() => {
+    const savedZoom = localStorage.getItem("gridZoom");
+    return savedZoom ? parseInt(savedZoom) : 100;
+  });
   const [warriors, setWarriors] = useState([]);
   const [avatarId, setAvatarId] = useState(null);
   const [allWarriorAssets, setAllWarriorAssets] = useState([]);
@@ -551,7 +554,9 @@ function Play() {
   };
 
   const handleZoomChange = (e) => {
-    setZoom(parseInt(e.target.value));
+    const newZoom = parseInt(e.target.value);
+    setZoom(newZoom);
+    localStorage.setItem("gridZoom", newZoom);
   };
 
   const getCellBackground = (cell) => {
