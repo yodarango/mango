@@ -210,17 +210,13 @@ function Battle() {
       const data = await battleResponse.json();
 
       setBattle(data.battle);
-      setAttacker(data.attackerAsset);
-      setDefender(data.defenderAsset);
-      setAttackerQuestion(data.attackerQuestion);
-      setDefenderQuestion(data.defenderQuestion);
 
       // Store game ID from battle
       if (data.battle.gameId && !gameId) {
         setGameId(data.battle.gameId);
       }
 
-      // Check if both users have answered and show answer feedback
+      // Check if both users have answered and calculate damage preview
       if (
         data.attackerQuestion?.submittedAt &&
         data.defenderQuestion?.submittedAt &&
@@ -238,6 +234,46 @@ function Battle() {
           data.defenderQuestion.userAnswer?.toLowerCase() ===
           data.defenderQuestion.answer?.toLowerCase();
 
+        // Calculate damage based on battle logic
+        let defenderHealthLost = 0;
+        let attackerStaminaLost = 0;
+
+        if (attackerCorrect && defenderCorrect) {
+          // Both correct: Defender loses half damage
+          const baseDamage =
+            (data.attackerAsset.attack / data.defenderAsset.defense) * 100;
+          defenderHealthLost = Math.round(baseDamage / 2);
+        } else if (attackerCorrect && !defenderCorrect) {
+          // Attacker correct, defender wrong: Defender loses full damage
+          defenderHealthLost = Math.round(
+            (data.attackerAsset.attack / data.defenderAsset.defense) * 100
+          );
+        } else if (!attackerCorrect && defenderCorrect) {
+          // Attacker wrong, defender correct: Attacker loses 25 stamina
+          attackerStaminaLost = 25;
+        } else {
+          // Both wrong: Defender loses 25 health, attacker loses 25 stamina
+          defenderHealthLost = 25;
+          attackerStaminaLost = 25;
+        }
+
+        // Apply damage to create preview of updated stats
+        const updatedAttacker = {
+          ...data.attackerAsset,
+          stamina: Math.max(
+            0,
+            data.attackerAsset.stamina - attackerStaminaLost
+          ),
+        };
+
+        const updatedDefender = {
+          ...data.defenderAsset,
+          health: Math.max(0, data.defenderAsset.health - defenderHealthLost),
+        };
+
+        setAttacker(updatedAttacker);
+        setDefender(updatedDefender);
+
         setBattleResults({
           attackerCorrect,
           defenderCorrect,
@@ -247,9 +283,18 @@ function Battle() {
           defenderCorrectAnswer: data.defenderQuestion.answer,
           attackerQuestion: attackerQuestionData.question,
           defenderQuestion: defenderQuestionData.question,
+          defenderHealthLost,
+          attackerStaminaLost,
         });
         setShowResults(true);
+      } else {
+        // No damage preview - use original stats
+        setAttacker(data.attackerAsset);
+        setDefender(data.defenderAsset);
       }
+
+      setAttackerQuestion(data.attackerQuestion);
+      setDefenderQuestion(data.defenderQuestion);
 
       // Check if battle is complete and redirect to game (except admin)
       if (data.battle.status === "completed" && !isAdmin) {
