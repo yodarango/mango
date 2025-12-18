@@ -3714,33 +3714,12 @@ func advanceTurn(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	gameID := vars["id"]
 
-	// Get current turn info including turn start time and duration
-	var currentTurnIndex, avatarCount, turnDuration int
-	var turnStartTime *time.Time
-	err := db.QueryRow("SELECT current_turn_index, turn_start_time, turn_duration FROM games WHERE id = ?", gameID).Scan(&currentTurnIndex, &turnStartTime, &turnDuration)
+	// Get current turn info
+	var currentTurnIndex, avatarCount int
+	err := db.QueryRow("SELECT current_turn_index FROM games WHERE id = ?", gameID).Scan(&currentTurnIndex)
 	if err != nil {
 		http.Error(w, "Game not found", http.StatusNotFound)
 		return
-	}
-
-	// Validate that enough time has elapsed before advancing
-	// This prevents race conditions where multiple clients try to advance simultaneously
-	if turnStartTime != nil {
-		elapsed := time.Since(*turnStartTime).Seconds()
-		// Only advance if at least 90% of the turn duration has elapsed (18 seconds for a 20-second turn)
-		// This prevents premature advances while allowing advances when timer shows 0
-		minElapsed := float64(turnDuration) * 0.90
-		if elapsed < minElapsed {
-			// Turn is not ready to advance yet - silently return success to avoid errors
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]interface{}{
-				"success": true,
-				"message": "Turn not ready to advance yet",
-				"elapsed": elapsed,
-				"required": minElapsed,
-			})
-			return
-		}
 	}
 
 	// Get total number of avatars in this game
