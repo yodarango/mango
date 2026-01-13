@@ -51,17 +51,6 @@ export const IIIDailyVocab = () => {
             <li>El camino es fácil. (The way is easy.)</li>
           </ul>
         </div>
-
-        <div>
-          <p>
-            <strong>gente</strong> (fem.) — “people.” Tip: always use “la
-            gente.”
-          </p>
-          <ul>
-            <li>La gente habla. (People talk.)</li>
-            <li>La gente escucha. (People listen.)</li>
-          </ul>
-        </div>
       </section>
 
       <section>

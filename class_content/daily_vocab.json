@@ -15,20 +15,6 @@
         "index": 2,
         "spa": "hombre",
         "used": null
-      },
-      {
-        "eng": "way",
-        "gender": "masculine",
-        "index": 3,
-        "spa": "camino",
-        "used": null
-      },
-      {
-        "eng": "people",
-        "gender": "feminine",
-        "index": 4,
-        "spa": "gente",
-        "used": null
       }
     ]
   },
@@ -45,18 +31,6 @@
         "eng": "to seem, appear",
         "index": 793,
         "spa": "parecer",
-        "used": null
-      },
-      {
-        "eng": "to arrive, to reach",
-        "index": 1,
-        "spa": "llegar",
-        "used": null
-      },
-      {
-        "eng": "to try, to treat",
-        "index": 2,
-        "spa": "tratar",
         "used": null
       }
     ]
@@ -84,27 +58,6 @@
         "index": 3,
         "spa": "camino",
         "used": null
-      },
-      {
-        "eng": "people",
-        "gender": "feminine",
-        "index": 4,
-        "spa": "gente",
-        "used": null
-      },
-      {
-        "eng": "life",
-        "gender": "feminine",
-        "index": 5,
-        "spa": "vida",
-        "used": null
-      },
-      {
-        "eng": "day",
-        "gender": "masculine",
-        "index": 6,
-        "spa": "día",
-        "used": null
       }
     ]
   },
@@ -127,24 +80,6 @@
         "eng": "to arrive, to reach",
         "index": 1,
         "spa": "llegar",
-        "used": null
-      },
-      {
-        "eng": "to try, to treat",
-        "index": 2,
-        "spa": "tratar",
-        "used": null
-      },
-      {
-        "eng": "to speak, to talk",
-        "index": 3,
-        "spa": "hablar",
-        "used": null
-      },
-      {
-        "eng": "to leave, to allow, to let",
-        "index": 4,
-        "spa": "dejar",
         "used": null
       }
     ]

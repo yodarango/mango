@@ -41,17 +41,6 @@ export const IIDailyVocab = () => {
             <li>El hombre trabaja aquí. (The man works here.)</li>
           </ul>
         </div>
-
-        <div>
-          <p>
-            <strong>camino</strong> (masc.) — “way; road.” Tip: think of a path
-            or trail.
-          </p>
-          <ul>
-            <li>Este es el camino correcto. (This is the right way.)</li>
-            <li>El camino es largo. (The road is long.)</li>
-          </ul>
-        </div>
       </section>
 
       <h3>Verbs</h3>
