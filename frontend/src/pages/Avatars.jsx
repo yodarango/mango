@@ -39,7 +39,7 @@ function Avatars() {
             );
             const assets = await assetsResponse.json();
             warriorsMap[avatar.id] = (assets || []).filter(
-              (asset) => asset.status === "warrior"
+              (asset) => asset.status === "warrior" || asset.status === "rip"
             );
           } catch (err) {
             console.error(
@@ -219,12 +219,32 @@ function Avatars() {
                               key={warrior.id}
                               className='warrior-thumb'
                               onClick={(e) => handleWarriorClick(warrior, e)}
+                              style={{ position: "relative" }}
                             >
+                              {console.log(warrior.status)}
                               <img
                                 src={warrior.thumbnail}
                                 alt={warrior.name}
                                 title={warrior.name}
+                                style={
+                                  warrior.status === "rip"
+                                    ? { filter: "grayscale(100%)" }
+                                    : {}
+                                }
                               />
+                              {warrior.status === "rip" && (
+                                <div
+                                  style={{
+                                    position: "absolute",
+                                    top: "4px",
+                                    right: "4px",
+                                    fontSize: "20px",
+                                    lineHeight: "1",
+                                  }}
+                                >
+                                  🪦
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -319,11 +339,33 @@ function Avatars() {
 
               <div className='popup-content'>
                 <div className='popup-header'>
-                  <img
-                    src={selectedWarrior.thumbnail}
-                    alt={selectedWarrior.name}
-                    className='popup-warrior-image'
-                  />
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
+                    <img
+                      src={selectedWarrior.thumbnail}
+                      alt={selectedWarrior.name}
+                      className='popup-warrior-image'
+                      style={
+                        selectedWarrior.status === "rip"
+                          ? { filter: "grayscale(100%)" }
+                          : {}
+                      }
+                    />
+                    {selectedWarrior.status === "rip" && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "8px",
+                          right: "8px",
+                          fontSize: "32px",
+                          lineHeight: "1",
+                        }}
+                      >
+                        🪦
+                      </div>
+                    )}
+                  </div>
                   <div className='popup-title'>
                     <h2>{selectedWarrior.name}</h2>
                     <p className='popup-warrior-type'>{selectedWarrior.type}</p>

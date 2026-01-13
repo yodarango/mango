@@ -61,9 +61,9 @@ function Quiz() {
 
           if (assetsResponse.ok) {
             const assetsData = await assetsResponse.json();
-            // Filter only warrior status assets (owned by user)
+            // Filter warrior status assets (owned by user) - include both alive and dead warriors
             const ownedAssets = assetsData.filter(
-              (asset) => asset.status === "warrior"
+              (asset) => asset.status === "warrior" || asset.status === "rip"
             );
             setAssets(ownedAssets);
 
@@ -538,24 +538,49 @@ function Quiz() {
                   <strong>Select a warrior to gain XP:</strong>
                 </p>
                 <div className='asset-grid'>
-                  {assets.map((asset) => (
-                    <div
-                      key={asset.id}
-                      className={`asset-card ${
-                        selectedAsset?.id === asset.id ? "selected" : ""
-                      }`}
-                      onClick={() => setSelectedAsset(asset)}
-                    >
-                      <img src={asset.thumbnail} alt={asset.name} />
-                      <div className='asset-info'>
-                        <div className='asset-name'>{asset.name}</div>
-                        <div className='asset-level'>Lvl {asset.level}</div>
-                        <div className='asset-xp'>
-                          {asset.xp || 0} / {asset.xpRequired || 100} XP
+                  {assets.map((asset) => {
+                    const isDead = asset.status === "rip";
+                    return (
+                      <div
+                        key={asset.id}
+                        className={`asset-card ${
+                          selectedAsset?.id === asset.id ? "selected" : ""
+                        } ${isDead ? "dead" : ""}`}
+                        onClick={() => !isDead && setSelectedAsset(asset)}
+                        style={{
+                          cursor: isDead ? "not-allowed" : "pointer",
+                          opacity: isDead ? 0.5 : 1,
+                          position: "relative",
+                        }}
+                      >
+                        <img
+                          src={asset.thumbnail}
+                          alt={asset.name}
+                          style={isDead ? { filter: "grayscale(100%)" } : {}}
+                        />
+                        {isDead && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "8px",
+                              right: "8px",
+                              fontSize: "24px",
+                              lineHeight: "1",
+                            }}
+                          >
+                            🪦
+                          </div>
+                        )}
+                        <div className='asset-info'>
+                          <div className='asset-name'>{asset.name}</div>
+                          <div className='asset-level'>Lvl {asset.level}</div>
+                          <div className='asset-xp'>
+                            {asset.xp || 0} / {asset.xpRequired || 100} XP
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 {selectedAsset && (
                   <p className='selected-note'>
@@ -571,8 +596,32 @@ function Quiz() {
                 <p>
                   <strong>Training warrior:</strong>
                 </p>
-                <div className='selected-warrior-display'>
-                  <img src={selectedAsset.thumbnail} alt={selectedAsset.name} />
+                <div
+                  className='selected-warrior-display'
+                  style={{ position: "relative" }}
+                >
+                  <img
+                    src={selectedAsset.thumbnail}
+                    alt={selectedAsset.name}
+                    style={
+                      selectedAsset.status === "rip"
+                        ? { filter: "grayscale(100%)" }
+                        : {}
+                    }
+                  />
+                  {selectedAsset.status === "rip" && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "8px",
+                        right: "8px",
+                        fontSize: "24px",
+                        lineHeight: "1",
+                      }}
+                    >
+                      🪦
+                    </div>
+                  )}
                   <div className='warrior-info'>
                     <div className='warrior-name'>{selectedAsset.name}</div>
                     <div className='warrior-level'>

@@ -86,12 +86,17 @@ function StoreItemCard({
       >
         {item.thumbnail && (
           <div className='store-item-image'>
-            <img src={item.thumbnail} alt={item.name} />
+            <img
+              src={item.thumbnail}
+              alt={item.name}
+              style={item.status === "rip" ? { filter: "grayscale(100%)" } : {}}
+            />
             {isLocked && (
               <div className={`lock-overlay ${canAfford ? "lock-yellow" : ""}`}>
                 <i className='fa-solid fa-lock'></i>
               </div>
             )}
+            {item.status === "rip" && <div className='rip-overlay'>🪦</div>}
           </div>
         )}
 
@@ -181,8 +186,27 @@ function StoreItemCard({
 
             <div className='popup-header'>
               {item.thumbnail && (
-                <div className='popup-image'>
-                  <img src={item.thumbnail} alt={item.name} />
+                <div className='popup-image' style={{ position: "relative" }}>
+                  <img
+                    src={item.thumbnail}
+                    alt={item.name}
+                    style={
+                      item.status === "rip" ? { filter: "grayscale(100%)" } : {}
+                    }
+                  />
+                  {item.status === "rip" && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "8px",
+                        right: "8px",
+                        fontSize: "32px",
+                        lineHeight: "1",
+                      }}
+                    >
+                      🪦
+                    </div>
+                  )}
                 </div>
               )}
               <h2>{item.name}</h2>

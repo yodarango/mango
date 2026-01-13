@@ -32,7 +32,7 @@ function AvatarProfile() {
 
       // Separate warriors and mascot
       const warriorsList = (assetsData || []).filter(
-        (asset) => asset.status === "warrior"
+        (asset) => asset.status === "warrior" || asset.status === "rip"
       );
       const mascotData = (assetsData || []).find(
         (asset) => asset.status === "mascot"
