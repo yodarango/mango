@@ -45,14 +45,17 @@ function StreakBadge() {
     // Extract the number from the streak string (e.g., "8 days" -> 8)
     const days = parseInt(streakString) || 0;
 
-    if (days < 5) return "🤞";
-    if (days < 10) return "👍";
-    if (days < 30) return "👌";
-    if (days < 45) return "💯";
-    if (days < 60) return "🔥";
-    if (days < 75) return "☄️";
-    if (days < 90) return "🧨";
-    return "🧨";
+    if (days < 6) return "🤞";
+    if (days < 12) return "👍";
+    if (days < 20) return "👌";
+    if (days < 30) return "💯";
+    if (days < 42) return "🔥";
+    if (days < 56) return "☄️";
+    if (days < 66) return "🧨";
+    if (days < 90) return "🏆";
+    if (days < 106) return "🎉";
+
+    return "...";
   };
 
   if (loading) {

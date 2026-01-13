@@ -1977,7 +1977,7 @@ func getStreak(w http.ResponseWriter, r *http.Request) {
 
 	// Query all assignment_id = "1005" assignments ordered by due_date DESC
 	rows, err := db.Query(`SELECT due_date, completed FROM assignments
-		WHERE user_id = ? AND assignment_id = "1005"
+		WHERE user_id = ?
 		ORDER BY due_date DESC`, targetUserID)
 
 	if err != nil {
@@ -2013,23 +2013,23 @@ func getStreak(w http.ResponseWriter, r *http.Request) {
 	// If no assignments, streak is 0
 	if len(assignments) == 0 {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"streak": "0 days"})
+		json.NewEncoder(w).Encode(map[string]string{"streak": "0 assignments"})
 		return
 	}
 
-	// Count consecutive days from the most recent assignment until we hit an incomplete one
-	streakDays := 0
+	// Count consecutive completed assignments from the most recent assignment until we hit an incomplete one
+	completedAssignments := 0
 	for _, assignment := range assignments {
 		if !assignment.Completed {
 			// Hit an incomplete assignment, stop counting
 			break
 		}
-		streakDays++
+		completedAssignments++
 	}
 
 	// Format the response
-	streakText := fmt.Sprintf("%d day", streakDays)
-	if streakDays != 1 {
+	streakText := fmt.Sprintf("%d assignment", completedAssignments)
+	if completedAssignments != 1 {
 		streakText += "s"
 	}
 
