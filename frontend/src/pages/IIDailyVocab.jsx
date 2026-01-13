@@ -22,6 +22,65 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>tiempo</strong> (masc.) — “time; weather.” Tip: like “tempo”
+            in music.
+          </p>
+          <ul>
+            <li>No tengo tiempo. (I don’t have time.)</li>
+            <li>El tiempo pasa rápido. (Time passes fast.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hombre</strong> (masc.) — “man.” Tip: common word heard in
+            movies.
+          </p>
+          <ul>
+            <li>Ese hombre es alto. (That man is tall.)</li>
+            <li>El hombre trabaja aquí. (The man works here.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>camino</strong> (masc.) — “way; road.” Tip: think of a path
+            or trail.
+          </p>
+          <ul>
+            <li>Este es el camino correcto. (This is the right way.)</li>
+            <li>El camino es largo. (The road is long.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <h3>Verbs</h3>
+      <section>
+        <div>
+          <p>
+            <strong>deber</strong> — “to owe; must; should.” Tip: duty = must.
+          </p>
+          <ul>
+            <li>Debo estudiar. (I must study.)</li>
+            <li>Te debo dinero. (I owe you money.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>parecer</strong> — “to seem; to appear.” Tip: use “parece.”
+          </p>
+          <ul>
+            <li>Parece fácil. (It seems easy.)</li>
+            <li>Me parece bien. (Seems good to me.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>curso</strong> (masc.) — “course/class.” Tip: like “course”
             in English.
           </p>
@@ -120,7 +179,7 @@ export const IIDailyVocab = () => {
             <li>Una idea aparece. (An idea appears.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>

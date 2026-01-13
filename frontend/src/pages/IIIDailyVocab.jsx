@@ -21,6 +21,85 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
+            <strong>tiempo</strong> (masc.) — “time.” Tip: same word, review
+            helps memory.
+          </p>
+          <ul>
+            <li>El tiempo vuela. (Time flies.)</li>
+            <li>Necesito tiempo. (I need time.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>hombre</strong> (masc.) — “man.” Tip: repetition makes it
+            stick.
+          </p>
+          <ul>
+            <li>El hombre corre. (The man runs.)</li>
+            <li>Un hombre amable. (A kind man.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>camino</strong> (masc.) — “way.” Tip: imagine walking a
+            path.
+          </p>
+          <ul>
+            <li>Busco el camino. (I look for the way.)</li>
+            <li>El camino es fácil. (The way is easy.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>gente</strong> (fem.) — “people.” Tip: always use “la
+            gente.”
+          </p>
+          <ul>
+            <li>La gente habla. (People talk.)</li>
+            <li>La gente escucha. (People listen.)</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <div>
+          <p>
+            <strong>deber</strong> — “must; should.” Tip: repeat from before.
+          </p>
+          <ul>
+            <li>Debes escuchar. (You should listen.)</li>
+            <li>Debo irme. (I must go.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>parecer</strong> — “to seem.” Tip: parece = it seems.
+          </p>
+          <ul>
+            <li>Parece verdad. (It seems true.)</li>
+            <li>Eso parece raro. (That seems strange.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>llegar</strong> — “to arrive.” Tip: arrive = llegar.
+          </p>
+          <ul>
+            <li>Llegamos tarde. (We arrive late.)</li>
+            <li>Quiero llegar temprano. (I want to arrive early.)</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* <h3>Nouns</h3>
+      <section>
+        <div>
+          <p>
             <strong>bebé</strong> (masc./fem.) — “baby.” Tip: same word for boy
             or girl.
           </p>
@@ -148,7 +227,7 @@ export const IIIDailyVocab = () => {
             <li>Alcanzamos el éxito. (We achieve success.)</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
       {/* <h3>Nouns</h3>
       <section>
