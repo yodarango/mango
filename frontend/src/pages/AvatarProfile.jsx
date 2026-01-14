@@ -124,9 +124,9 @@ function AvatarProfile() {
         setShowRewardModal(true);
       }, 500);
     } else {
-      // All rewards claimed, update the avatar's lastStreakRewardClaimed
-      // For now just log it
+      // All rewards claimed, refresh avatar data
       console.log(`All rewards claimed up to milestone: ${milestone}`);
+      fetchAvatarData();
     }
   };
 
@@ -185,6 +185,7 @@ function AvatarProfile() {
         streakMilestone={currentMilestone}
         rewardAsset={rewardAsset}
         onClaimReward={handleRewardClaimed}
+        avatarId={parseInt(id)}
       />
 
       <div

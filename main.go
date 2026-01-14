@@ -47,9 +47,10 @@ type Avatar struct {
 	AnimalAlly    string `json:"animalAlly"`
 	Mascot                  string `json:"mascot"`
 	LastStreakRewardClaimed int    `json:"lastStreakRewardClaimed"`
+	XPBank                  int    `json:"xpBank"`
 	AssetCount              int    `json:"assetCount,omitempty"`
-	TotalPower    int    `json:"totalPower,omitempty"`
-	Rank          int    `json:"rank,omitempty"`
+	TotalPower              int    `json:"totalPower,omitempty"`
+	Rank                    int    `json:"rank,omitempty"`
 }
 
 type Asset struct {
@@ -569,6 +570,10 @@ func initDB() {
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add last_streak_reward_claimed column: %v", err)
 	}
+	_, err = db.Exec(`ALTER TABLE avatars ADD COLUMN xp_bank INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add xp_bank column: %v", err)
+	}
 
 	// Create game_avatars table for turn order
 	createGameAvatarsTableSQL := `CREATE TABLE IF NOT EXISTS game_avatars (
@@ -977,7 +982,7 @@ func generateRandomAsset(avatarID int, status string) Asset {
 }
 
 func getAvatars(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0)
+	rows, err := db.Query(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0), COALESCE(xp_bank, 0)
 		FROM avatars ORDER BY id`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -990,7 +995,7 @@ func getAvatars(w http.ResponseWriter, r *http.Request) {
 		var avatar Avatar
 		if err := rows.Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
 			&avatar.SuperPower, &avatar.Personality, &avatar.Weakness,
-			&avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed); err != nil {
+			&avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed, &avatar.XPBank); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1045,9 +1050,9 @@ func getAvatar(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	var avatar Avatar
-	err := db.QueryRow(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0)
+	err := db.QueryRow(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0), COALESCE(xp_bank, 0)
 		FROM avatars WHERE id = ?`, id).Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
-		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed)
+		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed, &avatar.XPBank)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -2040,6 +2045,98 @@ func getStreak(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"streak": streakText})
+}
+
+// Claim streak reward
+func claimStreakReward(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		AvatarID        int    `json:"avatarId"`
+		Milestone       int    `json:"milestone"`
+		PrizeType       string `json:"prizeType"`
+		PrizeAmount     int    `json:"prizeAmount,omitempty"`
+		PrizeAssetID    int    `json:"prizeAssetId,omitempty"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Verify the avatar belongs to the user
+	var avatarUserID int
+	err = db.QueryRow("SELECT user_id FROM avatars WHERE id = ?", req.AvatarID).Scan(&avatarUserID)
+	if err != nil {
+		http.Error(w, "Avatar not found", http.StatusNotFound)
+		return
+	}
+
+	if avatarUserID != claims.UserID {
+		http.Error(w, "Forbidden: Avatar does not belong to you", http.StatusForbidden)
+		return
+	}
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Update last_streak_reward_claimed
+	_, err = tx.Exec("UPDATE avatars SET last_streak_reward_claimed = ? WHERE id = ?", req.Milestone, req.AvatarID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Process the prize based on type
+	if req.PrizeType == "coins" {
+		// Add coins to avatar
+		_, err = tx.Exec("UPDATE avatars SET coins = coins + ? WHERE id = ?", req.PrizeAmount, req.AvatarID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if req.PrizeType == "xp" {
+		// Add XP to xp_bank
+		_, err = tx.Exec("UPDATE avatars SET xp_bank = xp_bank + ? WHERE id = ?", req.PrizeAmount, req.AvatarID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if req.PrizeType == "asset" {
+		// Transfer asset: update status to "warrior", set avatar_id, and clear locking fields
+		_, err = tx.Exec(`UPDATE assets SET
+			avatar_id = ?,
+			status = 'warrior',
+			is_locked = NULL,
+			is_locked_for = NULL,
+			is_locked_by = NULL
+			WHERE id = ?`, req.AvatarID, req.PrizeAssetID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Commit transaction
+	if err = tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": "Reward claimed successfully",
+	})
 }
 
 // Get user's assignments
@@ -4936,6 +5033,7 @@ func main() {
 	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
 	api.HandleFunc("/streak/{userId}", getStreak).Methods("GET")
+	api.HandleFunc("/streak/claim-reward", claimStreakReward).Methods("POST")
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")
 	api.HandleFunc("/assignments/submit", submitAssignment).Methods("POST")
 	api.HandleFunc("/assignments/create", createAssignments).Methods("POST")

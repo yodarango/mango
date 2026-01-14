@@ -7,6 +7,7 @@ export function RewardModal({
   streakMilestone,
   rewardAsset,
   onClaimReward,
+  avatarId,
 }) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentEmoji, setCurrentEmoji] = useState("🎁");
@@ -102,8 +103,41 @@ export function RewardModal({
     }, intervalTime);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if (finalPrize) {
+      // Call API to claim the reward
+      try {
+        const token = localStorage.getItem("token");
+        const payload = {
+          avatarId: avatarId,
+          milestone: streakMilestone,
+          prizeType: finalPrize.type,
+        };
+
+        if (finalPrize.type === "xp" || finalPrize.type === "coins") {
+          payload.prizeAmount = finalPrize.amount;
+        } else if (finalPrize.type === "asset") {
+          payload.prizeAssetId = finalPrize.asset.id;
+        }
+
+        const response = await fetch("/api/streak/claim-reward", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          console.error("Failed to claim reward");
+        } else {
+          console.log("Reward claimed successfully:", finalPrize);
+        }
+      } catch (error) {
+        console.error("Error claiming reward:", error);
+      }
+
       onClaimReward(streakMilestone);
     }
     setFinalPrize(null);
