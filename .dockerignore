@@ -5,4 +5,14 @@ frontend/dist
 .git
 .gitignore
 README.md
+*.md
+.env
+.env.*
+*.log
+.DS_Store
+deploy.sh
+sync_db.sh
+sync_site.sh
+compress_images.sh
+spanish_quest
 

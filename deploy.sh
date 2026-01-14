@@ -42,7 +42,7 @@ echo '👍 pulled changes from git and reset to origin'; \
 echo 'Current directory: '; pwd; \
 echo '🏗️ Building docker now...';\
 docker compose down
-docker compose up -d --build; \
+DOCKER_BUILDKIT=1 docker compose up -d --build; \
 echo '🚀🚀🚀 Deployment successful'"
 
 
