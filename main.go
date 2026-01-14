@@ -148,6 +148,20 @@ type CreateNotificationRequest struct {
 	Message string `json:"message"`
 }
 
+type AppReleaseNote struct {
+	ID        int        `json:"id"`
+	UserID    int        `json:"userId"`
+	Message   string     `json:"message"`
+	IsRead    bool       `json:"isRead"`
+	CreatedAt time.Time  `json:"createdAt"`
+	ReadAt    *time.Time `json:"readAt,omitempty"`
+}
+
+type CreateReleaseNoteRequest struct {
+	UserIDs []int  `json:"userIds"` // Empty array means all users
+	Message string `json:"message"`
+}
+
 type Assignment struct {
 	ID            int             `json:"id"`
 	Coins         int             `json:"coins"`
@@ -494,6 +508,21 @@ func initDB() {
 	);`
 
 	_, err = db.Exec(createNotificationsTableSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createAppReleaseNotesTableSQL := `CREATE TABLE IF NOT EXISTS app_release_notes (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		message TEXT NOT NULL,
+		is_read INTEGER DEFAULT 0,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		read_at DATETIME,
+		FOREIGN KEY (user_id) REFERENCES users(id)
+	);`
+
+	_, err = db.Exec(createAppReleaseNotesTableSQL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -3217,6 +3246,142 @@ func deleteNotification(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Get unread release notes for the logged-in user
+func getUnreadReleaseNotes(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	rows, err := db.Query(`SELECT id, user_id, message, is_read, created_at, read_at
+		FROM app_release_notes WHERE user_id = ? AND is_read = 0 ORDER BY created_at DESC`, claims.UserID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var releaseNotes []AppReleaseNote
+	for rows.Next() {
+		var note AppReleaseNote
+		var isRead int
+		var readAt sql.NullTime
+		if err := rows.Scan(&note.ID, &note.UserID, &note.Message,
+			&isRead, &note.CreatedAt, &readAt); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		note.IsRead = isRead == 1
+		if readAt.Valid {
+			note.ReadAt = &readAt.Time
+		}
+		releaseNotes = append(releaseNotes, note)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(releaseNotes)
+}
+
+// Mark release note as read
+func markReleaseNoteRead(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	noteID := vars["id"]
+
+	// Verify release note belongs to user
+	var userID int
+	err = db.QueryRow("SELECT user_id FROM app_release_notes WHERE id = ?", noteID).Scan(&userID)
+	if err != nil {
+		http.Error(w, "Release note not found", http.StatusNotFound)
+		return
+	}
+
+	if userID != claims.UserID {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
+
+	// Mark as read
+	_, err = db.Exec("UPDATE app_release_notes SET is_read = 1, read_at = CURRENT_TIMESTAMP WHERE id = ?", noteID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Create release notes (admin only)
+func createReleaseNotes(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Check if user is admin
+	var role string
+	err = db.QueryRow("SELECT role FROM users WHERE id = ?", claims.UserID).Scan(&role)
+	if err != nil || role != "admin" {
+		http.Error(w, "Forbidden: Admin access required", http.StatusForbidden)
+		return
+	}
+
+	var req CreateReleaseNoteRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if req.Message == "" {
+		http.Error(w, "Message is required", http.StatusBadRequest)
+		return
+	}
+
+	var userIDs []int
+	if len(req.UserIDs) == 0 {
+		// Get all users
+		rows, err := db.Query("SELECT id FROM users")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var userID int
+			if err := rows.Scan(&userID); err != nil {
+				continue
+			}
+			userIDs = append(userIDs, userID)
+		}
+	} else {
+		userIDs = req.UserIDs
+	}
+
+	// Create release note for each user
+	for _, userID := range userIDs {
+		_, err := db.Exec("INSERT INTO app_release_notes (user_id, message) VALUES (?, ?)",
+			userID, req.Message)
+		if err != nil {
+			log.Printf("Error creating release note for user %d: %v", userID, err)
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": fmt.Sprintf("Release notes created for %d users", len(userIDs)),
+	})
+}
+
 // Create a new game with grid cells
 func createGame(w http.ResponseWriter, r *http.Request) {
 	claims, err := getUserFromToken(r)
@@ -5034,6 +5199,9 @@ func main() {
 	api.HandleFunc("/notifications/{id}/read", markNotificationRead).Methods("PUT")
 	api.HandleFunc("/notifications/admin/all", getAllNotifications).Methods("GET")
 	api.HandleFunc("/notifications/{id}", deleteNotification).Methods("DELETE")
+	api.HandleFunc("/release-notes/unread", getUnreadReleaseNotes).Methods("GET")
+	api.HandleFunc("/release-notes/{id}/read", markReleaseNoteRead).Methods("PUT")
+	api.HandleFunc("/release-notes/create", createReleaseNotes).Methods("POST")
 	api.HandleFunc("/streak/{userId}", getStreak).Methods("GET")
 	api.HandleFunc("/streak/claim-reward", claimStreakReward).Methods("POST")
 	api.HandleFunc("/assignments", getAssignments).Methods("GET")

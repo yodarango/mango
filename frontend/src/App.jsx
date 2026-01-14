@@ -17,6 +17,7 @@ import { IIDailyVocab } from "./pages/IIDailyVocab";
 import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import CreateNotifications from "./pages/CreateNotifications";
+import CreateReleaseNotes from "./pages/CreateReleaseNotes";
 import CreateAssignment from "./pages/CreateAssignment";
 import AdminAssignments from "./pages/AdminAssignments";
 import ViewAssignment from "./pages/ViewAssignment";
@@ -209,6 +210,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/admin/create-release-notes'
+            element={
+              <ProtectedRoute>
+                <CreateReleaseNotes />
               </ProtectedRoute>
             }
           />
