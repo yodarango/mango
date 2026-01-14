@@ -11,10 +11,12 @@ function StoreItemCard({
   onPurchase,
   alwasyActive,
   canTrain,
+  onRevive,
 }) {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
   const [requesting, setRequesting] = useState(false);
+  const [reviving, setReviving] = useState(false);
 
   const canAfford = userCoins >= item.cost || alwasyActive;
   const meetsLevelRequirement = userLevel >= item.requiredLevel;
@@ -29,8 +31,12 @@ function StoreItemCard({
   const isUnlockedForUser = item.isUnlockedFor === userAvatarId;
 
   const handleCardClick = (e) => {
-    // Don't open popup if clicking the purchase button
-    if (e.target.closest(".purchase-btn") || e.target.closest(".request-btn")) {
+    // Don't open popup if clicking the purchase, request, or revive button
+    if (
+      e.target.closest(".purchase-btn") ||
+      e.target.closest(".request-btn") ||
+      e.target.closest(".revive-btn")
+    ) {
       return;
     }
     setShowDetails(true);
@@ -75,6 +81,39 @@ function StoreItemCard({
       alert("Error requesting access");
     } finally {
       setRequesting(false);
+    }
+  };
+
+  const handleRevive = async (e) => {
+    e.stopPropagation();
+    setReviving(true);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const reviveResponse = await fetch(`/api/warriors/${item.id}/revive`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await reviveResponse.json();
+
+      if (reviveResponse.ok && data.success) {
+        alert(data.message || "Warrior successfully revived!");
+        if (onRevive) {
+          onRevive(data.coins);
+        }
+      } else {
+        alert(data.message || "Failed to revive warrior");
+      }
+    } catch (error) {
+      console.error("Error reviving warrior:", error);
+      alert("Error reviving warrior");
+    } finally {
+      setReviving(false);
     }
   };
 
@@ -128,7 +167,28 @@ function StoreItemCard({
             )}
           </div>
 
-          {onPurchase && (
+          {item.status === "rip" && onRevive && (
+            <div className='store-item-footer'>
+              <button
+                className='revive-btn'
+                onClick={handleRevive}
+                disabled={reviving || userCoins < item.cost}
+              >
+                {reviving ? (
+                  <>
+                    <i className='fa-solid fa-spinner fa-spin'></i> Reviving...
+                  </>
+                ) : (
+                  <>
+                    <i className='fa-solid fa-heart-pulse'></i> Revive (
+                    {item.cost} coins)
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          {onPurchase && item.status !== "rip" && (
             <div className='store-item-footer'>
               {isLockedByOther && !isUnlockedForUser ? (
                 <button
@@ -307,7 +367,7 @@ function StoreItemCard({
                 </div>
               )}
 
-              {canTrain && (
+              {canTrain && item.status !== "rip" && (
                 <div className='popup-footer'>
                   <button
                     className='train-btn'
@@ -322,7 +382,34 @@ function StoreItemCard({
                 </div>
               )}
 
-              {onPurchase && (
+              {item.status === "rip" && onRevive && (
+                <div className='popup-footer'>
+                  <div className='item-price'>
+                    <i className='fa-solid fa-coins'></i>
+                    <span className='price-amount'>{item.cost}</span>
+                    <span className='price-label'>coins to revive</span>
+                  </div>
+                  <button
+                    className='revive-btn'
+                    onClick={handleRevive}
+                    disabled={reviving || userCoins < item.cost}
+                  >
+                    {reviving ? (
+                      <>
+                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                        Reviving...
+                      </>
+                    ) : (
+                      <>
+                        <i className='fa-solid fa-heart-pulse'></i> Revive
+                        Warrior
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {onPurchase && item.status !== "rip" && (
                 <div className='popup-footer'>
                   <div className='item-stock'>
                     <i className='fa-solid fa-box'></i>

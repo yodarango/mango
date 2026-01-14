@@ -11,6 +11,7 @@ function StoreGrid({
   onPurchase,
   alwasyActive,
   canTrain,
+  onRevive,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterLevel, setFilterLevel] = useState("all");
@@ -175,6 +176,7 @@ function StoreGrid({
               purchasing={purchasing}
               onPurchase={onPurchase}
               canTrain={canTrain}
+              onRevive={onRevive}
             />
           ))}
         </div>

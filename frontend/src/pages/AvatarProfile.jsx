@@ -133,6 +133,13 @@ function AvatarProfile() {
     }
   };
 
+  const handleRevive = (newCoins) => {
+    // Update avatar coins after revive
+    setAvatar((prev) => ({ ...prev, coins: newCoins }));
+    // Refresh avatar data to get updated warrior status
+    fetchAvatarData();
+  };
+
   if (loading) {
     return (
       <div className='page'>
@@ -433,6 +440,7 @@ function AvatarProfile() {
                   userLevel={avatar.level}
                   canTrain
                   alwasyActive
+                  onRevive={handleRevive}
                 />
               </div>
             )}

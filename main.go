@@ -4025,6 +4025,110 @@ func depleteWarrior(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
+// Revive warrior - change status from "rip" back to "warrior" by paying the cost
+func reviveWarrior(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	vars := mux.Vars(r)
+	warriorID := vars["id"]
+
+	// Start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer tx.Rollback()
+
+	// Get warrior details and verify it belongs to the user
+	var avatarID int
+	var status string
+	var cost int
+	err = tx.QueryRow("SELECT avatar_id, status, cost FROM assets WHERE id = ?", warriorID).Scan(&avatarID, &status, &cost)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Warrior not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Verify the warrior belongs to this user's avatar
+	var userID int
+	err = tx.QueryRow("SELECT user_id FROM avatars WHERE id = ?", avatarID).Scan(&userID)
+	if err != nil {
+		http.Error(w, "Avatar not found", http.StatusNotFound)
+		return
+	}
+
+	if userID != claims.UserID {
+		http.Error(w, "This warrior does not belong to you", http.StatusForbidden)
+		return
+	}
+
+	// Verify the warrior is actually dead (status = "rip")
+	if status != "rip" {
+		http.Error(w, "This warrior is not dead and cannot be revived", http.StatusBadRequest)
+		return
+	}
+
+	// Get user's current coins
+	var coins int
+	err = tx.QueryRow("SELECT coins FROM avatars WHERE id = ?", avatarID).Scan(&coins)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Check if user has enough coins
+	if coins < cost {
+		response := map[string]interface{}{
+			"success": false,
+			"message": "Not enough coins to revive this warrior",
+			"coins":   coins,
+			"cost":    cost,
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	// Deduct coins
+	newCoins := coins - cost
+	_, err = tx.Exec("UPDATE avatars SET coins = ? WHERE id = ?", newCoins, avatarID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Revive the warrior: change status from "rip" to "warrior" and restore health and stamina
+	_, err = tx.Exec("UPDATE assets SET status = 'warrior', health = 100, stamina = 100 WHERE id = ?", warriorID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Commit transaction
+	if err = tx.Commit(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"success": true,
+		"message": "Warrior successfully revived",
+		"coins":   newCoins,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 // Advance to next turn (automatically called when timer expires or manually by admin)
 func advanceTurn(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -5226,6 +5330,7 @@ func main() {
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
 	api.HandleFunc("/warriors/{id}/deplete", depleteWarrior).Methods("POST")
+	api.HandleFunc("/warriors/{id}/revive", reviveWarrior).Methods("POST")
 
 	// Battle routes
 	api.HandleFunc("/battles", getBattles).Methods("GET")
