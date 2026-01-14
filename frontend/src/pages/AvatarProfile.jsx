@@ -438,6 +438,7 @@ function AvatarProfile() {
                   )}
                   userCoins={avatar.coins}
                   userLevel={avatar.level}
+                  userAvatarId={avatar.id}
                   canTrain
                   alwasyActive
                   onRevive={handleRevive}

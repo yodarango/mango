@@ -167,26 +167,29 @@ function StoreItemCard({
             )}
           </div>
 
-          {item.status === "rip" && onRevive && (
-            <div className='store-item-footer'>
-              <button
-                className='revive-btn'
-                onClick={handleRevive}
-                disabled={reviving || userCoins < item.cost}
-              >
-                {reviving ? (
-                  <>
-                    <i className='fa-solid fa-spinner fa-spin'></i> Reviving...
-                  </>
-                ) : (
-                  <>
-                    <i className='fa-solid fa-heart-pulse'></i> Revive (
-                    {item.cost} coins)
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+          {item.status === "rip" &&
+            onRevive &&
+            item.avatarId === userAvatarId && (
+              <div className='store-item-footer'>
+                <button
+                  className='revive-btn'
+                  onClick={handleRevive}
+                  disabled={reviving || userCoins < item.cost}
+                >
+                  {reviving ? (
+                    <>
+                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                      Reviving...
+                    </>
+                  ) : (
+                    <>
+                      <i className='fa-solid fa-heart-pulse'></i> Revive (
+                      {item.cost} coins)
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
 
           {onPurchase && item.status !== "rip" && (
             <div className='store-item-footer'>
@@ -382,32 +385,34 @@ function StoreItemCard({
                 </div>
               )}
 
-              {item.status === "rip" && onRevive && (
-                <div className='popup-footer'>
-                  <div className='item-price'>
-                    <i className='fa-solid fa-coins'></i>
-                    <span className='price-amount'>{item.cost}</span>
-                    <span className='price-label'>coins to revive</span>
+              {item.status === "rip" &&
+                onRevive &&
+                item.avatarId === userAvatarId && (
+                  <div className='popup-footer'>
+                    <div className='item-price'>
+                      <i className='fa-solid fa-coins'></i>
+                      <span className='price-amount'>{item.cost}</span>
+                      <span className='price-label'>coins to revive</span>
+                    </div>
+                    <button
+                      className='revive-btn'
+                      onClick={handleRevive}
+                      disabled={reviving || userCoins < item.cost}
+                    >
+                      {reviving ? (
+                        <>
+                          <i className='fa-solid fa-spinner fa-spin'></i>{" "}
+                          Reviving...
+                        </>
+                      ) : (
+                        <>
+                          <i className='fa-solid fa-heart-pulse'></i> Revive
+                          Warrior
+                        </>
+                      )}
+                    </button>
                   </div>
-                  <button
-                    className='revive-btn'
-                    onClick={handleRevive}
-                    disabled={reviving || userCoins < item.cost}
-                  >
-                    {reviving ? (
-                      <>
-                        <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                        Reviving...
-                      </>
-                    ) : (
-                      <>
-                        <i className='fa-solid fa-heart-pulse'></i> Revive
-                        Warrior
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
+                )}
 
               {onPurchase && item.status !== "rip" && (
                 <div className='popup-footer'>
