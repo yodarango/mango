@@ -17,10 +17,31 @@
   padding: 2rem;
   max-width: 500px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   position: relative;
   text-align: center;
   color: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom scrollbar styling */
+.reward-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reward-modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.reward-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.reward-modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .reward-modal-close {
@@ -184,6 +205,29 @@
   font-weight: bold;
   color: #ffd700;
   margin: 0;
+}
+
+.prize-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prize-item {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 0;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.prize-item:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .asset-section {

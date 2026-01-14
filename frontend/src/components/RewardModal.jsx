@@ -13,7 +13,6 @@ export function RewardModal({
   const [currentEmoji, setCurrentEmoji] = useState("🎁");
   const [finalPrize, setFinalPrize] = useState(null);
   const [prizes, setPrizes] = useState([]);
-  console.log({ rewardAsset });
 
   // Prize generation constants
   const baseLow = 5;
@@ -174,18 +173,28 @@ export function RewardModal({
                 <div className='prize-pool-grid'>
                   <div className='prize-pool-section'>
                     <h4>⭐ XP Prizes (5)</h4>
-                    <p className='prize-range'>
-                      {baseLow * streakMilestone} - {baseHigh * streakMilestone}{" "}
-                      XP
-                    </p>
+                    <div className='prize-list'>
+                      {prizes
+                        .filter((p) => p.type === "xp")
+                        .map((prize, idx) => (
+                          <p key={idx} className='prize-item'>
+                            {prize.emoji} {prize.amount} XP
+                          </p>
+                        ))}
+                    </div>
                   </div>
 
                   <div className='prize-pool-section'>
                     <h4>💰 Coin Prizes (5)</h4>
-                    <p className='prize-range'>
-                      {coinBaseLow * streakMilestone} -{" "}
-                      {coinBaseHigh * streakMilestone} Coins
-                    </p>
+                    <div className='prize-list'>
+                      {prizes
+                        .filter((p) => p.type === "coins")
+                        .map((prize, idx) => (
+                          <p key={idx} className='prize-item'>
+                            {prize.emoji} {prize.amount} Coins
+                          </p>
+                        ))}
+                    </div>
                   </div>
 
                   {rewardAsset && (
