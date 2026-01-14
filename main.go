@@ -989,6 +989,10 @@ func generateRandomAsset(avatarID int, status string) Asset {
 	baseDefense := rand.Intn(100) + 1
 	baseHealing := rand.Intn(100) + 1
 
+	// Calculate cost based on stats: ((attack + healing + defense) / 3) * 2.5
+	avgStats := float64(baseAttack+baseDefense+baseHealing) / 3.0
+	cost := int(avgStats * 2.5)
+
 	return Asset{
 		AvatarID:    avatarID,
 		Status:      status,
@@ -1004,7 +1008,7 @@ func generateRandomAsset(avatarID int, status string) Asset {
 		Power:       rand.Intn(500) + 100,
 		Endurance:   rand.Intn(100) + 1,
 		Level:       level,
-		Cost:        (level * 10) + rand.Intn(50),
+		Cost:        cost,
 		Ability:     abilities[rand.Intn(len(abilities))],
 		Health:      maxHealth,
 		Stamina:     maxStamina,
@@ -3055,7 +3059,9 @@ func submitAssignment(w http.ResponseWriter, r *http.Request) {
 					newHealing = int(baseHealing.Int64) + maxIncrease
 				}
 
-				newCost := cost * newLevel
+				// Calculate cost based on stats: ((attack + healing + defense) / 3) * 2.5
+				avgStats := float64(newAttack+newDefense+newHealing) / 3.0
+				newCost := int(avgStats * 2.5)
 
 				// Update asset with new level and stats, and ensure base stats are saved
 				_, err = tx.Exec(`UPDATE assets SET level = ?, attack = ?, defense = ?, healing = ?, cost = ?, xp = ?, base_attack = ?, base_defense = ?, base_healing = ?
