@@ -26,9 +26,9 @@ function processFile(filePath) {
   let countNeeded = 0;
 
   if (directoryName === "II") {
-    countNeeded = 4;
+    countNeeded = 2;
   } else if (directoryName === "III") {
-    countNeeded = 6;
+    countNeeded = 3;
   } else {
     // File is not inside II or III folder → ignore
     return null;

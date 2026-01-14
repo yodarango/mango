@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "time",
+        "eng": "way",
         "gender": "masculine",
-        "index": 1,
-        "spa": "tiempo",
+        "index": 3,
+        "spa": "camino",
         "used": null
       },
       {
-        "eng": "man",
-        "gender": "masculine",
-        "index": 2,
-        "spa": "hombre",
+        "eng": "people",
+        "gender": "feminine",
+        "index": 4,
+        "spa": "gente",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to owe, must, should",
-        "index": 792,
-        "spa": "deber",
+        "eng": "to arrive, to reach",
+        "index": 1,
+        "spa": "llegar",
         "used": null
       },
       {
-        "eng": "to seem, appear",
-        "index": 793,
-        "spa": "parecer",
+        "eng": "to try, to treat",
+        "index": 2,
+        "spa": "tratar",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "time",
-        "gender": "masculine",
-        "index": 1,
-        "spa": "tiempo",
+        "eng": "people",
+        "gender": "feminine",
+        "index": 4,
+        "spa": "gente",
         "used": null
       },
       {
-        "eng": "man",
-        "gender": "masculine",
-        "index": 2,
-        "spa": "hombre",
+        "eng": "life",
+        "gender": "feminine",
+        "index": 5,
+        "spa": "vida",
         "used": null
       },
       {
-        "eng": "way",
+        "eng": "day",
         "gender": "masculine",
-        "index": 3,
-        "spa": "camino",
+        "index": 6,
+        "spa": "día",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to owe, must, should",
-        "index": 792,
-        "spa": "deber",
+        "eng": "to try, to treat",
+        "index": 2,
+        "spa": "tratar",
         "used": null
       },
       {
-        "eng": "to seem, appear",
-        "index": 793,
-        "spa": "parecer",
+        "eng": "to speak, to talk",
+        "index": 3,
+        "spa": "hablar",
         "used": null
       },
       {
-        "eng": "to arrive, to reach",
-        "index": 1,
-        "spa": "llegar",
+        "eng": "to leave, to allow, to let",
+        "index": 4,
+        "spa": "dejar",
         "used": null
       }
     ]
