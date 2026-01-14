@@ -143,3 +143,79 @@
   font-weight: bold;
   animation: pulse 1s ease-in-out infinite;
 }
+
+/* Prize Pool Styles */
+.prize-pool {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  backdrop-filter: blur(10px);
+}
+
+.prize-pool h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+
+.prize-pool-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.prize-pool-section {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.prize-pool-section h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.prize-range {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 0;
+}
+
+.asset-section {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.asset-preview {
+  margin-top: 0.5rem;
+}
+
+.asset-preview-image {
+  max-width: 120px;
+  border-radius: 8px;
+  margin: 0.5rem auto;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.asset-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 0.5rem 0 0 0;
+}
+
+@media (min-width: 600px) {
+  .prize-pool-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .asset-section {
+    grid-column: 1 / -1;
+  }
+}

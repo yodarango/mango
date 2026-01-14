@@ -13,6 +13,13 @@ export function RewardModal({
   const [currentEmoji, setCurrentEmoji] = useState("🎁");
   const [finalPrize, setFinalPrize] = useState(null);
   const [prizes, setPrizes] = useState([]);
+  console.log({ rewardAsset });
+
+  // Prize generation constants
+  const baseLow = 5;
+  const baseHigh = 10;
+  const coinBaseLow = 30;
+  const coinBaseHigh = 50;
 
   const emojis = [
     "💰",
@@ -42,10 +49,6 @@ export function RewardModal({
 
   const generatePrizes = () => {
     const newPrizes = [];
-    const baseLow = 5;
-    const baseHigh = 10;
-    const coinBaseLow = 30;
-    const coinBaseHigh = 50;
 
     // Generate 5 XP prizes
     for (let i = 0; i < 5; i++) {
@@ -164,6 +167,44 @@ export function RewardModal({
         {!finalPrize && !isSpinning && (
           <div className='reward-modal-start'>
             <div className='emoji-display'>{currentEmoji}</div>
+
+            {prizes.length > 0 && (
+              <div className='prize-pool'>
+                <h3>🎁 Prize Pool</h3>
+                <div className='prize-pool-grid'>
+                  <div className='prize-pool-section'>
+                    <h4>⭐ XP Prizes (5)</h4>
+                    <p className='prize-range'>
+                      {baseLow * streakMilestone} - {baseHigh * streakMilestone}{" "}
+                      XP
+                    </p>
+                  </div>
+
+                  <div className='prize-pool-section'>
+                    <h4>💰 Coin Prizes (5)</h4>
+                    <p className='prize-range'>
+                      {coinBaseLow * streakMilestone} -{" "}
+                      {coinBaseHigh * streakMilestone} Coins
+                    </p>
+                  </div>
+
+                  {rewardAsset && (
+                    <div className='prize-pool-section asset-section'>
+                      <h4>🏆 Warrior Prize (1)</h4>
+                      <div className='asset-preview'>
+                        <img
+                          src={rewardAsset.thumbnail}
+                          alt={rewardAsset.name}
+                          className='asset-preview-image'
+                        />
+                        <p className='asset-name'>{rewardAsset.name}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <button className='try-luck-button' onClick={startRoulette}>
               Try Your Luck!
             </button>

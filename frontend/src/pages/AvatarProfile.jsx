@@ -51,11 +51,14 @@ function AvatarProfile() {
       console.log("Streak data:", streakData);
       console.log("Parsed streak count:", streakCount);
       console.log("Last claimed:", avatarData.lastStreakRewardClaimed);
+      console.log("Store data:", storeData);
 
       // Get first reward asset (status = "reward", ordered by cost ASC)
       const rewardAssets = (storeData || [])
         .filter((item) => item.status === "reward")
         .sort((a, b) => a.cost - b.cost);
+
+      console.log("Filtered reward assets:", rewardAssets);
 
       if (rewardAssets.length > 0) {
         setRewardAsset(rewardAssets[0]);

@@ -84,6 +84,7 @@ type Asset struct {
 
 type StoreItem struct {
 	ID             int    `json:"id"`
+	Status         string `json:"status"`
 	Type           string `json:"type"`
 	Name           string `json:"name"`
 	Thumbnail      string `json:"thumbnail"`
@@ -1774,6 +1775,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(`
 		SELECT
 			MIN(id) as id,
+			status,
 			type,
 			name,
 			thumbnail,
@@ -1793,9 +1795,9 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 			MAX(is_unlocked_for) as is_unlocked_for,
 			COUNT(*) as available_units
 		FROM assets
-		WHERE status = 'store' AND avatar_id IS NULL
-		GROUP BY name
-		ORDER BY name`)
+		WHERE (status = 'store' OR status = 'reward') AND avatar_id IS NULL
+		GROUP BY name, status
+		ORDER BY status DESC, cost ASC`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -1805,7 +1807,7 @@ func getStoreItems(w http.ResponseWriter, r *http.Request) {
 	var items []StoreItem
 	for rows.Next() {
 		var item StoreItem
-		if err := rows.Scan(&item.ID, &item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
+		if err := rows.Scan(&item.ID, &item.Status, &item.Type, &item.Name, &item.Thumbnail, &item.Attack, &item.Defense, &item.Healing,
 			&item.Power, &item.Endurance, &item.Level, &item.RequiredLevel, &item.Cost, &item.Ability,
 			&item.Health, &item.Stamina, &item.IsLocked, &item.IsLockedBy, &item.IsUnlockedFor, &item.AvailableUnits); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
