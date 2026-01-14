@@ -57,4 +57,3 @@ function ReleaseNotesProvider({ children }) {
 }
 
 export default ReleaseNotesProvider;
-
