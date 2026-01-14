@@ -45,8 +45,9 @@ type Avatar struct {
 	Personality   string `json:"personality"`
 	Weakness      string `json:"weakness"`
 	AnimalAlly    string `json:"animalAlly"`
-	Mascot        string `json:"mascot"`
-	AssetCount    int    `json:"assetCount,omitempty"`
+	Mascot                  string `json:"mascot"`
+	LastStreakRewardClaimed int    `json:"lastStreakRewardClaimed"`
+	AssetCount              int    `json:"assetCount,omitempty"`
 	TotalPower    int    `json:"totalPower,omitempty"`
 	Rank          int    `json:"rank,omitempty"`
 }
@@ -564,6 +565,10 @@ func initDB() {
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add battle_id column: %v", err)
 	}
+	_, err = db.Exec(`ALTER TABLE avatars ADD COLUMN last_streak_reward_claimed INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add last_streak_reward_claimed column: %v", err)
+	}
 
 	// Create game_avatars table for turn order
 	createGameAvatarsTableSQL := `CREATE TABLE IF NOT EXISTS game_avatars (
@@ -972,7 +977,7 @@ func generateRandomAsset(avatarID int, status string) Asset {
 }
 
 func getAvatars(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
+	rows, err := db.Query(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0)
 		FROM avatars ORDER BY id`)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -985,7 +990,7 @@ func getAvatars(w http.ResponseWriter, r *http.Request) {
 		var avatar Avatar
 		if err := rows.Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
 			&avatar.SuperPower, &avatar.Personality, &avatar.Weakness,
-			&avatar.AnimalAlly, &avatar.Mascot); err != nil {
+			&avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -1040,9 +1045,9 @@ func getAvatar(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	var avatar Avatar
-	err := db.QueryRow(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot
+	err := db.QueryRow(`SELECT id, user_id, name, avatar_name, thumbnail, coins, level, element, super_power, personality, weakness, animal_ally, mascot, COALESCE(last_streak_reward_claimed, 0)
 		FROM avatars WHERE id = ?`, id).Scan(&avatar.ID, &avatar.UserID, &avatar.Name, &avatar.AvatarName, &avatar.Thumbnail, &avatar.Coins, &avatar.Level, &avatar.Element,
-		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot)
+		&avatar.SuperPower, &avatar.Personality, &avatar.Weakness, &avatar.AnimalAlly, &avatar.Mascot, &avatar.LastStreakRewardClaimed)
 
 	if err != nil {
 		if err == sql.ErrNoRows {

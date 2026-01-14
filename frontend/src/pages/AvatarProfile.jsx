@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./AvatarProfile.css";
 import StoreGrid from "../components/StoreGrid";
 import StreakBadge from "../components/StreakBadge";
+import RewardModal from "../components/RewardModal";
+import StreakNotificationModal from "../components/StreakNotificationModal";
 
 function AvatarProfile() {
   const { id } = useParams();
@@ -12,6 +14,12 @@ function AvatarProfile() {
   const [warriors, setWarriors] = useState([]);
   const [mascot, setMascot] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
+  const [showRewardModal, setShowRewardModal] = useState(false);
+  const [unclaimedMilestones, setUnclaimedMilestones] = useState([]);
+  const [currentMilestone, setCurrentMilestone] = useState(null);
+  const [rewardAsset, setRewardAsset] = useState(null);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     fetchAvatarData();
@@ -19,16 +27,57 @@ function AvatarProfile() {
 
   const fetchAvatarData = async () => {
     try {
-      const [avatarResponse, assetsResponse] = await Promise.all([
-        fetch(`/api/avatars/${id}`),
-        fetch(`/api/avatars/${id}/assets`),
-      ]);
+      const [avatarResponse, assetsResponse, streakResponse, storeResponse] =
+        await Promise.all([
+          fetch(`/api/avatars/${id}`),
+          fetch(`/api/avatars/${id}/assets`),
+          fetch(`/api/streak/${id}`),
+          fetch(`/api/store`),
+        ]);
 
       const avatarData = await avatarResponse.json();
       const assetsData = await assetsResponse.json();
+      const streakData = await streakResponse.json();
+      const storeData = await storeResponse.json();
 
       setAvatar(avatarData);
       setAssets(assetsData || []);
+
+      // Parse streak count from response (e.g., "24 assignments" -> 24)
+      const streakMatch = streakData.streak?.match(/\d+/);
+      const streakCount = streakMatch ? parseInt(streakMatch[0]) : 0;
+      setStreak(streakCount);
+
+      console.log("Streak data:", streakData);
+      console.log("Parsed streak count:", streakCount);
+      console.log("Last claimed:", avatarData.lastStreakRewardClaimed);
+
+      // Get first reward asset (status = "reward", ordered by cost ASC)
+      const rewardAssets = (storeData || [])
+        .filter((item) => item.status === "reward")
+        .sort((a, b) => a.cost - b.cost);
+
+      if (rewardAssets.length > 0) {
+        setRewardAsset(rewardAssets[0]);
+      }
+
+      // Calculate unclaimed milestones
+      const milestones = [];
+      const lastClaimed = avatarData.lastStreakRewardClaimed || 0;
+
+      for (let i = 6; i <= 108; i += 6) {
+        if (i > lastClaimed && i <= streakCount) {
+          milestones.push(i);
+        }
+      }
+
+      setUnclaimedMilestones(milestones);
+      console.log("Unclaimed milestones:", milestones);
+
+      // Show notification if there are unclaimed milestones
+      if (milestones.length > 0) {
+        setShowNotification(true);
+      }
 
       // Separate warriors and mascot
       const warriorsList = (assetsData || []).filter(
@@ -45,6 +94,39 @@ function AvatarProfile() {
     } catch (error) {
       console.error("Error fetching avatar data:", error);
       setLoading(false);
+    }
+  };
+
+  const handleClaimRewards = () => {
+    setShowNotification(false);
+    if (unclaimedMilestones.length > 0) {
+      // Start with the first unclaimed milestone
+      setCurrentMilestone(unclaimedMilestones[0]);
+      setShowRewardModal(true);
+    }
+  };
+
+  const handleRewardClaimed = (milestone) => {
+    // Update last claimed milestone
+    console.log(`Claimed reward for milestone: ${milestone}`);
+
+    // Remove this milestone from unclaimed list
+    const remaining = unclaimedMilestones.filter((m) => m !== milestone);
+    setUnclaimedMilestones(remaining);
+
+    // Close current modal
+    setShowRewardModal(false);
+
+    // If there are more milestones, show the next one after a short delay
+    if (remaining.length > 0) {
+      setTimeout(() => {
+        setCurrentMilestone(remaining[0]);
+        setShowRewardModal(true);
+      }, 500);
+    } else {
+      // All rewards claimed, update the avatar's lastStreakRewardClaimed
+      // For now just log it
+      console.log(`All rewards claimed up to milestone: ${milestone}`);
     }
   };
 
@@ -90,6 +172,21 @@ function AvatarProfile() {
 
   return (
     <div className='profile-page-fhdn10'>
+      <StreakNotificationModal
+        isOpen={showNotification}
+        onClose={() => setShowNotification(false)}
+        onClaim={handleClaimRewards}
+        milestones={unclaimedMilestones}
+      />
+
+      <RewardModal
+        isOpen={showRewardModal}
+        onClose={() => setShowRewardModal(false)}
+        streakMilestone={currentMilestone}
+        rewardAsset={rewardAsset}
+        onClaimReward={handleRewardClaimed}
+      />
+
       <div
         style={{
           marginBottom: "1rem",
@@ -209,7 +306,6 @@ function AvatarProfile() {
       </div>
 
       <div className='profile-content'>
-        {/* Mascot Section */}
         {mascot && (
           <div className='mascot-section'>
             <h2>

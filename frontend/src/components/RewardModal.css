@@ -1,0 +1,148 @@
+.reward-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.reward-modal-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.reward-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.reward-modal-close:hover {
+  opacity: 1;
+}
+
+.reward-modal-content h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.reward-modal-content p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.emoji-display {
+  font-size: 8rem;
+  margin: 2rem 0;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.emoji-display.spinning {
+  animation: spin 0.1s linear infinite;
+}
+
+.emoji-display.winner {
+  animation: bounce 0.5s ease-in-out 3;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+.try-luck-button,
+.claim-button {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.try-luck-button:hover,
+.claim-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.try-luck-button:active,
+.claim-button:active {
+  transform: translateY(0);
+}
+
+.reward-modal-result h3 {
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+.prize-text {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.prize-asset {
+  margin: 1rem 0;
+}
+
+.prize-asset-image {
+  max-width: 200px;
+  border-radius: 10px;
+  margin-top: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.reward-modal-spinning p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  animation: pulse 1s ease-in-out infinite;
+}
+
