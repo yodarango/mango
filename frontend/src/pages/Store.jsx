@@ -40,7 +40,11 @@ function Store() {
     try {
       const response = await fetch("/api/store");
       const data = await response.json();
-      setItems(data || []);
+      // Filter out reward items - only show items with status 'store'
+      const storeOnlyItems = (data || []).filter(
+        (item) => item.status === "store"
+      );
+      setItems(storeOnlyItems);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching store items:", error);
