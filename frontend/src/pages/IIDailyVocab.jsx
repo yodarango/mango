@@ -22,25 +22,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>camino</strong> (masc.) — “way, road.” Tip: think of a path
-            you walk on.
+            <strong>vida</strong> (fem.) — “life.” Tip: “¡Viva!” means alive →
+            life.
           </p>
           <ul>
-            <li>Este es el camino correcto. (This is the right way.)</li>
-            <li>
-              El camino a la escuela es corto. (The way to school is short.)
-            </li>
+            <li>La vida es bonita. (Life is beautiful.)</li>
+            <li>Mi vida es feliz. (My life is happy.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>gente</strong> (fem., singular) — “people.” Tip: singular
-            word, many people.
+            <strong>día</strong> (masc.) — “day.” Tip: looks like “day,” but
+            with an accent.
           </p>
           <ul>
-            <li>La gente es amable. (People are kind.)</li>
-            <li>Hay mucha gente aquí. (There are many people here.)</li>
+            <li>Buen día. (Good day.)</li>
+            <li>Cada día estudio. (Every day I study.)</li>
           </ul>
         </div>
       </section>
@@ -49,23 +47,22 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>llegar</strong> — “to arrive, to reach.” Tip: you arrive at
-            a place.
+            <strong>hablar</strong> — “to speak, to talk.” Tip: think “blah
+            blah.”
           </p>
           <ul>
-            <li>Llego a casa. (I arrive home.)</li>
-            <li>¿Cuándo llegas? (When do you arrive?)</li>
+            <li>Hablo español. (I speak Spanish.)</li>
+            <li>Vamos a hablar. (Let’s talk.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>tratar</strong> — “to try, to treat.” Tip:{" "}
-            <em>tratar de</em> = to try to.
+            <strong>dejar</strong> — “to leave, to let.” Tip: “let it go.”
           </p>
           <ul>
-            <li>Trato de aprender. (I try to learn.)</li>
-            <li>El doctor me trata bien. (The doctor treats me well.)</li>
+            <li>Deja el libro aquí. (Leave the book here.)</li>
+            <li>¿Me dejas entrar? (Will you let me enter?)</li>
           </ul>
         </div>
       </section>

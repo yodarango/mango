@@ -20,65 +20,67 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>gente</strong> (fem.) — “people.” Tip: always say{" "}
-            <em>la gente</em>.
+            <strong>trabajo</strong> (masc.) — “work, job.” Tip: related to{" "}
+            <em>trabajar</em>.
           </p>
           <ul>
-            <li>La gente escucha. (People listen.)</li>
-            <li>La gente habla. (People talk.)</li>
+            <li>Tengo mucho trabajo. (I have a lot of work.)</li>
+            <li>Mi trabajo es divertido. (My job is fun.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>vida</strong> (fem.) — “life.” Tip: “¡Viva!” = life.
+            <strong>llamada</strong> (fem.) — “call.” Tip: from <em>llamar</em>.
           </p>
           <ul>
-            <li>La vida es buena. (Life is good.)</li>
-            <li>Mi vida es feliz. (My life is happy.)</li>
+            <li>Recibí una llamada. (I got a call.)</li>
+            <li>Hice una llamada. (I made a call.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>día</strong> (masc.) — “day.” Tip: accent on the í.
+            <strong>noche</strong> (fem.) — “night.” Tip: think “nocturnal.”
           </p>
           <ul>
-            <li>Buen día. (Good day.)</li>
-            <li>Cada día estudio. (Every day I study.)</li>
+            <li>Buenas noches. (Good night.)</li>
+            <li>La noche es tranquila. (The night is calm.)</li>
           </ul>
         </div>
       </section>
+
       <h3>Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>tratar</strong> — “to try.” Tip: repeat helps memory.
+            <strong>pasar</strong> — “to pass, to happen, to spend (time).” Tip:
+            looks like “pass.”
           </p>
           <ul>
-            <li>Trato de ayudar. (I try to help.)</li>
-            <li>Trata de escuchar. (Try to listen.)</li>
+            <li>¿Qué pasa? (What’s happening?)</li>
+            <li>Paso tiempo con mi familia. (I spend time with my family.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>hablar</strong> — “to speak, to talk.” Tip: think “blah
-            blah.”
+            <strong>llevar</strong> — “to carry, to take, to wear.” Tip: you
+            carry what you wear.
           </p>
           <ul>
-            <li>Hablo español. (I speak Spanish.)</li>
-            <li>Vamos a hablar. (Let’s talk.)</li>
+            <li>Llevo mi mochila. (I carry my backpack.)</li>
+            <li>Lleva una chaqueta. (He/She is wearing a jacket.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>dejar</strong> — “to leave, to let.” Tip: “let it go.”
+            <strong>existir</strong> — “to exist.” Tip: same as “exist.”
           </p>
           <ul>
-            <li>Deja el libro aquí. (Leave the book here.)</li>
-            <li>¿Me dejas entrar? (Will you let me enter?)</li>
+            <li>Los animales existen. (Animals exist.)</li>
+            <li>No puede existir sin agua. (It can’t exist without water.)</li>
           </ul>
         </div>
       </section>

@@ -3,49 +3,6 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "way",
-        "gender": "masculine",
-        "index": 3,
-        "spa": "camino",
-        "used": null
-      },
-      {
-        "eng": "people",
-        "gender": "feminine",
-        "index": 4,
-        "spa": "gente",
-        "used": null
-      }
-    ]
-  },
-  {
-    "file": "II/daily_vocab_verbs.json",
-    "items": [
-      {
-        "eng": "to arrive, to reach",
-        "index": 1,
-        "spa": "llegar",
-        "used": null
-      },
-      {
-        "eng": "to try, to treat",
-        "index": 2,
-        "spa": "tratar",
-        "used": null
-      }
-    ]
-  },
-  {
-    "file": "III/daily_vocab_nouns.json",
-    "items": [
-      {
-        "eng": "people",
-        "gender": "feminine",
-        "index": 4,
-        "spa": "gente",
-        "used": null
-      },
-      {
         "eng": "life",
         "gender": "feminine",
         "index": 5,
@@ -62,14 +19,8 @@
     ]
   },
   {
-    "file": "III/daily_vocab_verbs.json",
+    "file": "II/daily_vocab_verbs.json",
     "items": [
-      {
-        "eng": "to try, to treat",
-        "index": 2,
-        "spa": "tratar",
-        "used": null
-      },
       {
         "eng": "to speak, to talk",
         "index": 3,
@@ -80,6 +31,55 @@
         "eng": "to leave, to allow, to let",
         "index": 4,
         "spa": "dejar",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_nouns.json",
+    "items": [
+      {
+        "eng": "work",
+        "gender": "masculine",
+        "index": 7,
+        "spa": "trabajo",
+        "used": null
+      },
+      {
+        "eng": "call",
+        "gender": "feminine",
+        "index": 8,
+        "spa": "llamada",
+        "used": null
+      },
+      {
+        "eng": "night",
+        "gender": "feminine",
+        "index": 9,
+        "spa": "noche",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_verbs.json",
+    "items": [
+      {
+        "eng": "to pass, to happen, to spend (time",
+        "index": 5,
+        "spa": "pasar",
+        "used": null
+      },
+      {
+        "eng": "to carry, to take, to wear",
+        "index": 6,
+        "spa": "llevar",
+        "used": null
+      },
+      {
+        "eng": "to exist",
+        "index": 917,
+        "spa": "existir",
         "used": null
       }
     ]
