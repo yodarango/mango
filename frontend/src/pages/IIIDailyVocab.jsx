@@ -20,67 +20,69 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>trabajo</strong> (masc.) — “work, job.” Tip: related to{" "}
-            <em>trabajar</em>.
+            <strong>hogar</strong> (masc.) — “home.” Tip: home as a warm family
+            place.
           </p>
           <ul>
-            <li>Tengo mucho trabajo. (I have a lot of work.)</li>
-            <li>Mi trabajo es divertido. (My job is fun.)</li>
+            <li>Mi hogar es tranquilo. (My home is calm.)</li>
+            <li>Volvemos al hogar. (We return home.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>llamada</strong> (fem.) — “call.” Tip: from <em>llamar</em>.
+            <strong>pensamiento</strong> (masc.) — “thought.” Tip: from{" "}
+            <em>pensar</em> (to think).
           </p>
           <ul>
-            <li>Recibí una llamada. (I got a call.)</li>
-            <li>Hice una llamada. (I made a call.)</li>
+            <li>Tengo un pensamiento bueno. (I have a good thought.)</li>
+            <li>Ese pensamiento es importante. (That thought is important.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>noche</strong> (fem.) — “night.” Tip: think “nocturnal.”
+            <strong>dinero</strong> (masc.) — “money.” Tip: common word used in
+            English too.
           </p>
           <ul>
-            <li>Buenas noches. (Good night.)</li>
-            <li>La noche es tranquila. (The night is calm.)</li>
+            <li>No tengo dinero. (I don’t have money.)</li>
+            <li>Ahorro dinero. (I save money.)</li>
           </ul>
         </div>
       </section>
-
       <h3>Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>pasar</strong> — “to pass, to happen, to spend (time).” Tip:
-            looks like “pass.”
+            <strong>conocer</strong> — “to know, to meet (people/places).” Tip:
+            conocer = be familiar with.
           </p>
           <ul>
-            <li>¿Qué pasa? (What’s happening?)</li>
-            <li>Paso tiempo con mi familia. (I spend time with my family.)</li>
+            <li>Quiero conocer a tu familia. (I want to meet your family.)</li>
+            <li>Conozco esta ciudad. (I know this city.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>llevar</strong> — “to carry, to take, to wear.” Tip: you
-            carry what you wear.
+            <strong>tomar</strong> — “to take, to drink.” Tip:{" "}
+            <em>tomar agua</em> = drink water.
           </p>
           <ul>
-            <li>Llevo mi mochila. (I carry my backpack.)</li>
-            <li>Lleva una chaqueta. (He/She is wearing a jacket.)</li>
+            <li>Tomo agua. (I drink water.)</li>
+            <li>Tomamos el autobús. (We take the bus.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>existir</strong> — “to exist.” Tip: same as “exist.”
+            <strong>encontrar</strong> — “to find, to encounter.” Tip: looks
+            like “encounter.”
           </p>
           <ul>
-            <li>Los animales existen. (Animals exist.)</li>
-            <li>No puede existir sin agua. (It can’t exist without water.)</li>
+            <li>Quiero encontrar mi libro. (I want to find my book.)</li>
+            <li>Encontramos la respuesta. (We found the answer.)</li>
           </ul>
         </div>
       </section>

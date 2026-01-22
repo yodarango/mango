@@ -3,42 +3,6 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "life",
-        "gender": "feminine",
-        "index": 5,
-        "spa": "vida",
-        "used": null
-      },
-      {
-        "eng": "day",
-        "gender": "masculine",
-        "index": 6,
-        "spa": "día",
-        "used": null
-      }
-    ]
-  },
-  {
-    "file": "II/daily_vocab_verbs.json",
-    "items": [
-      {
-        "eng": "to speak, to talk",
-        "index": 3,
-        "spa": "hablar",
-        "used": null
-      },
-      {
-        "eng": "to leave, to allow, to let",
-        "index": 4,
-        "spa": "dejar",
-        "used": null
-      }
-    ]
-  },
-  {
-    "file": "III/daily_vocab_nouns.json",
-    "items": [
-      {
         "eng": "work",
         "gender": "masculine",
         "index": 7,
@@ -51,18 +15,11 @@
         "index": 8,
         "spa": "llamada",
         "used": null
-      },
-      {
-        "eng": "night",
-        "gender": "feminine",
-        "index": 9,
-        "spa": "noche",
-        "used": null
       }
     ]
   },
   {
-    "file": "III/daily_vocab_verbs.json",
+    "file": "II/daily_vocab_verbs.json",
     "items": [
       {
         "eng": "to pass, to happen, to spend (time",
@@ -75,11 +32,54 @@
         "index": 6,
         "spa": "llevar",
         "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_nouns.json",
+    "items": [
+      {
+        "eng": "home",
+        "gender": "masculine",
+        "index": 10,
+        "spa": "hogar",
+        "used": null
       },
       {
-        "eng": "to exist",
-        "index": 917,
-        "spa": "existir",
+        "eng": "thought",
+        "gender": "masculine",
+        "index": 11,
+        "spa": "pensamiento",
+        "used": null
+      },
+      {
+        "eng": "money",
+        "gender": "masculine",
+        "index": 12,
+        "spa": "dinero",
+        "used": null
+      }
+    ]
+  },
+  {
+    "file": "III/daily_vocab_verbs.json",
+    "items": [
+      {
+        "eng": "to know, to meet",
+        "index": 794,
+        "spa": "conocer",
+        "used": null
+      },
+      {
+        "eng": "to take, to drink",
+        "index": 7,
+        "spa": "tomar",
+        "used": null
+      },
+      {
+        "eng": "to find, to encounter",
+        "index": 8,
+        "spa": "encontrar",
         "used": null
       }
     ]

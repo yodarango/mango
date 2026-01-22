@@ -22,23 +22,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>vida</strong> (fem.) — “life.” Tip: “¡Viva!” means alive →
-            life.
+            <strong>trabajo</strong> (masc.) — “work, job.” Tip: related to the
+            verb <em>trabajar</em>.
           </p>
           <ul>
-            <li>La vida es bonita. (Life is beautiful.)</li>
-            <li>Mi vida es feliz. (My life is happy.)</li>
+            <li>Tengo mucho trabajo. (I have a lot of work.)</li>
+            <li>Mi trabajo es importante. (My job is important.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>día</strong> (masc.) — “day.” Tip: looks like “day,” but
-            with an accent.
+            <strong>llamada</strong> (fem.) — “call.” Tip: comes from{" "}
+            <em>llamar</em> (to call).
           </p>
           <ul>
-            <li>Buen día. (Good day.)</li>
-            <li>Cada día estudio. (Every day I study.)</li>
+            <li>Recibí una llamada. (I got a call.)</li>
+            <li>Hice una llamada a mi mamá. (I made a call to my mom.)</li>
           </ul>
         </div>
       </section>
@@ -47,22 +47,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>hablar</strong> — “to speak, to talk.” Tip: think “blah
-            blah.”
+            <strong>pasar</strong> — “to pass, to happen, to spend (time).” Tip:
+            looks like “pass.”
           </p>
           <ul>
-            <li>Hablo español. (I speak Spanish.)</li>
-            <li>Vamos a hablar. (Let’s talk.)</li>
+            <li>¿Qué pasa? (What’s happening?)</li>
+            <li>Paso tiempo con mi familia. (I spend time with my family.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>dejar</strong> — “to leave, to let.” Tip: “let it go.”
+            <strong>llevar</strong> — “to carry, to take, to wear.” Tip: you
+            carry what you wear.
           </p>
           <ul>
-            <li>Deja el libro aquí. (Leave the book here.)</li>
-            <li>¿Me dejas entrar? (Will you let me enter?)</li>
+            <li>Llevo mi mochila. (I carry my backpack.)</li>
+            <li>Ella lleva un abrigo. (She is wearing a coat.)</li>
           </ul>
         </div>
       </section>
