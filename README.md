@@ -5,6 +5,11 @@
 ### Left off
 
 - on the playing graph, it is working smoothly and it is basically done. I just need the following:
+
   - when a user moves an asset over another asset, this should prompt a battle
   - decide whether the available moves by each user must show
   - decide whether to allow a user to retire an asset
+
+  ### Avatar pricing formula
+
+(((attack + healing + defense) / 3) \* 2.5)
