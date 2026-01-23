@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "work",
-        "gender": "masculine",
-        "index": 7,
-        "spa": "trabajo",
+        "eng": "night",
+        "gender": "feminine",
+        "index": 9,
+        "spa": "noche",
         "used": null
       },
       {
-        "eng": "call",
-        "gender": "feminine",
-        "index": 8,
-        "spa": "llamada",
+        "eng": "home",
+        "gender": "masculine",
+        "index": 10,
+        "spa": "hogar",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to pass, to happen, to spend (time",
-        "index": 5,
-        "spa": "pasar",
+        "eng": "to exist",
+        "index": 917,
+        "spa": "existir",
         "used": null
       },
       {
-        "eng": "to carry, to take, to wear",
-        "index": 6,
-        "spa": "llevar",
+        "eng": "to know, to meet",
+        "index": 794,
+        "spa": "conocer",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "home",
+        "eng": "name",
         "gender": "masculine",
-        "index": 10,
-        "spa": "hogar",
+        "index": 13,
+        "spa": "nombre",
         "used": null
       },
       {
-        "eng": "thought",
+        "eng": "father",
         "gender": "masculine",
-        "index": 11,
-        "spa": "pensamiento",
+        "index": 14,
+        "spa": "padre",
         "used": null
       },
       {
-        "eng": "money",
+        "eng": "guy",
         "gender": "masculine",
-        "index": 12,
-        "spa": "dinero",
+        "index": 15,
+        "spa": "chico",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to know, to meet",
-        "index": 794,
-        "spa": "conocer",
+        "eng": "to create",
+        "index": 9,
+        "spa": "crear",
         "used": null
       },
       {
-        "eng": "to take, to drink",
-        "index": 7,
-        "spa": "tomar",
+        "eng": "to avoid, to prevent",
+        "index": 10,
+        "spa": "evitar",
         "used": null
       },
       {
-        "eng": "to find, to encounter",
-        "index": 8,
-        "spa": "encontrar",
+        "eng": "to stay, to remain, to be left",
+        "index": 11,
+        "spa": "quedar",
         "used": null
       }
     ]

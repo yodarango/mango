@@ -22,48 +22,46 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>trabajo</strong> (masc.) — “work, job.” Tip: related to the
-            verb <em>trabajar</em>.
+            <strong>noche</strong> (fem.) — “night.” Tip: think “nocturnal.”
           </p>
           <ul>
-            <li>Tengo mucho trabajo. (I have a lot of work.)</li>
-            <li>Mi trabajo es importante. (My job is important.)</li>
+            <li>Buenas noches. (Good night.)</li>
+            <li>La noche es oscura. (The night is dark.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>llamada</strong> (fem.) — “call.” Tip: comes from{" "}
-            <em>llamar</em> (to call).
+            <strong>hogar</strong> (masc.) — “home.” Tip: home as a warm family
+            place.
           </p>
           <ul>
-            <li>Recibí una llamada. (I got a call.)</li>
-            <li>Hice una llamada a mi mamá. (I made a call to my mom.)</li>
+            <li>Mi hogar es tranquilo. (My home is calm.)</li>
+            <li>Regreso al hogar. (I return home.)</li>
           </ul>
         </div>
       </section>
 
-      <h3>Verbs</h3>
+      <h3> Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>pasar</strong> — “to pass, to happen, to spend (time).” Tip:
-            looks like “pass.”
+            <strong>existir</strong> — “to exist.” Tip: same as “exist.”
           </p>
           <ul>
-            <li>¿Qué pasa? (What’s happening?)</li>
-            <li>Paso tiempo con mi familia. (I spend time with my family.)</li>
+            <li>Los animales existen. (Animals exist.)</li>
+            <li>No puede existir sin agua. (It can’t exist without water.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>llevar</strong> — “to carry, to take, to wear.” Tip: you
-            carry what you wear.
+            <strong>conocer</strong> — “to know, to meet.” Tip: conocer = people
+            or places.
           </p>
           <ul>
-            <li>Llevo mi mochila. (I carry my backpack.)</li>
-            <li>Ella lleva un abrigo. (She is wearing a coat.)</li>
+            <li>Quiero conocer a tu padre. (I want to meet your father.)</li>
+            <li>Conozco esta ciudad. (I know this city.)</li>
           </ul>
         </div>
       </section>

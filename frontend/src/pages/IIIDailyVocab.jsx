@@ -16,73 +16,72 @@ export const IIIDailyVocab = () => {
         </h1>
         <p>Master these essential Spanish words with memory tricks!</p>
       </header>
+
       <h3>Nouns</h3>
       <section>
         <div>
           <p>
-            <strong>hogar</strong> (masc.) — “home.” Tip: home as a warm family
-            place.
+            <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
+            but means name.
           </p>
           <ul>
-            <li>Mi hogar es tranquilo. (My home is calm.)</li>
-            <li>Volvemos al hogar. (We return home.)</li>
+            <li>Mi nombre es Ana. (My name is Ana.)</li>
+            <li>¿Cuál es tu nombre? (What is your name?)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>pensamiento</strong> (masc.) — “thought.” Tip: from{" "}
-            <em>pensar</em> (to think).
+            <strong>padre</strong> (masc.) — “father.” Tip: formal word for dad.
           </p>
           <ul>
-            <li>Tengo un pensamiento bueno. (I have a good thought.)</li>
-            <li>Ese pensamiento es importante. (That thought is important.)</li>
+            <li>Mi padre trabaja aquí. (My father works here.)</li>
+            <li>Su padre es amable. (His/Her father is kind.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>dinero</strong> (masc.) — “money.” Tip: common word used in
-            English too.
+            <strong>chico</strong> (masc.) — “guy, boy.” Tip: chico = boy.
           </p>
           <ul>
-            <li>No tengo dinero. (I don’t have money.)</li>
-            <li>Ahorro dinero. (I save money.)</li>
+            <li>Ese chico es mi amigo. (That guy is my friend.)</li>
+            <li>El chico corre rápido. (The boy runs fast.)</li>
           </ul>
         </div>
       </section>
+
       <h3>Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>conocer</strong> — “to know, to meet (people/places).” Tip:
-            conocer = be familiar with.
+            <strong>crear</strong> — “to create.” Tip: looks like “create.”
           </p>
           <ul>
-            <li>Quiero conocer a tu familia. (I want to meet your family.)</li>
-            <li>Conozco esta ciudad. (I know this city.)</li>
+            <li>Quiero crear un dibujo. (I want to create a drawing.)</li>
+            <li>Creamos una idea. (We create an idea.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>tomar</strong> — “to take, to drink.” Tip:{" "}
-            <em>tomar agua</em> = drink water.
+            <strong>evitar</strong> — “to avoid, to prevent.” Tip: think
+            “evade.”
           </p>
           <ul>
-            <li>Tomo agua. (I drink water.)</li>
-            <li>Tomamos el autobús. (We take the bus.)</li>
+            <li>Evita correr. (Avoid running.)</li>
+            <li>Podemos evitar problemas. (We can avoid problems.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>encontrar</strong> — “to find, to encounter.” Tip: looks
-            like “encounter.”
+            <strong>quedar</strong> — “to stay, remain, be left.” Tip: stay and
+            keep.
           </p>
           <ul>
-            <li>Quiero encontrar mi libro. (I want to find my book.)</li>
-            <li>Encontramos la respuesta. (We found the answer.)</li>
+            <li>Me quiero quedar aquí. (I want to stay here.)</li>
+            <li>Solo quedan dos. (Only two are left.)</li>
           </ul>
         </div>
       </section>
