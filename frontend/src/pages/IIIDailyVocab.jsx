@@ -21,32 +21,33 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
-            but means name.
+            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
           </p>
           <ul>
-            <li>Mi nombre es Ana. (My name is Ana.)</li>
-            <li>¿Cuál es tu nombre? (What is your name?)</li>
+            <li>Este lugar es bonito. (This place is pretty.)</li>
+            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>padre</strong> (masc.) — “father.” Tip: formal word for dad.
+            <strong>sentimiento</strong> (masc.) — “feeling.” Tip: from{" "}
+            <em>sentir</em> (to feel).
           </p>
           <ul>
-            <li>Mi padre trabaja aquí. (My father works here.)</li>
-            <li>Su padre es amable. (His/Her father is kind.)</li>
+            <li>Tengo un sentimiento bueno. (I have a good feeling.)</li>
+            <li>Ese sentimiento es fuerte. (That feeling is strong.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>chico</strong> (masc.) — “guy, boy.” Tip: chico = boy.
+            <strong>chica</strong> (fem.) — “girl.” Tip: chico = boy, chica =
+            girl.
           </p>
           <ul>
-            <li>Ese chico es mi amigo. (That guy is my friend.)</li>
-            <li>El chico corre rápido. (The boy runs fast.)</li>
+            <li>La chica es simpática. (The girl is nice.)</li>
+            <li>Hay una chica nueva. (There is a new girl.)</li>
           </ul>
         </div>
       </section>
@@ -55,33 +56,35 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>crear</strong> — “to create.” Tip: looks like “create.”
+            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
+            looks like “realize,” but means accomplish.
           </p>
           <ul>
-            <li>Quiero crear un dibujo. (I want to create a drawing.)</li>
-            <li>Creamos una idea. (We create an idea.)</li>
+            <li>Quiero realizar mi meta. (I want to achieve my goal.)</li>
+            <li>Realizamos un proyecto. (We carried out a project.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>evitar</strong> — “to avoid, to prevent.” Tip: think
-            “evade.”
+            <strong>permitir</strong> — “to allow, permit.” Tip: like “permit.”
           </p>
           <ul>
-            <li>Evita correr. (Avoid running.)</li>
-            <li>Podemos evitar problemas. (We can avoid problems.)</li>
+            <li>
+              Mis padres me permiten salir. (My parents allow me to go out.)
+            </li>
+            <li>No está permitido correr. (Running is not allowed.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>quedar</strong> — “to stay, remain, be left.” Tip: stay and
-            keep.
+            <strong>resultar</strong> — “to result, turn out.” Tip: same root as
+            “result.”
           </p>
           <ul>
-            <li>Me quiero quedar aquí. (I want to stay here.)</li>
-            <li>Solo quedan dos. (Only two are left.)</li>
+            <li>Todo resultó bien. (Everything turned out well.)</li>
+            <li>El plan resultó difícil. (The plan turned out difficult.)</li>
           </ul>
         </div>
       </section>

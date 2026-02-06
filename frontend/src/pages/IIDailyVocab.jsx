@@ -22,46 +22,48 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>noche</strong> (fem.) — “night.” Tip: think “nocturnal.”
+            <strong>pensamiento</strong> (masc.) — “thought.” Tip: comes from{" "}
+            <em>pensar</em> (to think).
           </p>
           <ul>
-            <li>Buenas noches. (Good night.)</li>
-            <li>La noche es oscura. (The night is dark.)</li>
+            <li>Tengo un pensamiento bueno. (I have a good thought.)</li>
+            <li>Ese pensamiento es importante. (That thought is important.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>hogar</strong> (masc.) — “home.” Tip: home as a warm family
-            place.
+            <strong>dinero</strong> (masc.) — “money.” Tip: many people already
+            know “dinero.”
           </p>
           <ul>
-            <li>Mi hogar es tranquilo. (My home is calm.)</li>
-            <li>Regreso al hogar. (I return home.)</li>
+            <li>No tengo dinero. (I don’t have money.)</li>
+            <li>Necesito dinero. (I need money.)</li>
           </ul>
         </div>
       </section>
 
-      <h3> Verbs</h3>
+      <h3>Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>existir</strong> — “to exist.” Tip: same as “exist.”
+            <strong>tomar</strong> — “to take; to drink.” Tip:{" "}
+            <em>tomar agua</em> = drink water.
           </p>
           <ul>
-            <li>Los animales existen. (Animals exist.)</li>
-            <li>No puede existir sin agua. (It can’t exist without water.)</li>
+            <li>Tomo agua. (I drink water.)</li>
+            <li>Tomamos el autobús. (We take the bus.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>conocer</strong> — “to know, to meet.” Tip: conocer = people
-            or places.
+            <strong>encontrar</strong> — “to find; to encounter.” Tip: looks
+            like “encounter.”
           </p>
           <ul>
-            <li>Quiero conocer a tu padre. (I want to meet your father.)</li>
-            <li>Conozco esta ciudad. (I know this city.)</li>
+            <li>No puedo encontrar mi libro. (I can’t find my book.)</li>
+            <li>Encontré mi lápiz. (I found my pencil.)</li>
           </ul>
         </div>
       </section>
