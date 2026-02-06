@@ -21,7 +21,7 @@ function StoreGrid({
   const uniqueLevels = useMemo(() => {
     const levels = [
       ...new Set(
-        items.map((item) => item.requiredLevel || item.required_level)
+        items.map((item) => item.requiredLevel || item.required_level),
       ),
     ];
     return levels.filter((level) => level != null).sort((a, b) => a - b);
@@ -165,20 +165,22 @@ function StoreGrid({
         </div>
       ) : (
         <div className='store-grid'>
-          {filteredItems.map((item, index) => (
-            <StoreItemCard
-              key={item.id || `${item.type}-${item.name}-${index}`}
-              item={item}
-              userCoins={userCoins}
-              alwasyActive={alwasyActive}
-              userLevel={userLevel}
-              userAvatarId={userAvatarId}
-              purchasing={purchasing}
-              onPurchase={onPurchase}
-              canTrain={canTrain}
-              onRevive={onRevive}
-            />
-          ))}
+          {filteredItems.map((item, index) => {
+            return (
+              <StoreItemCard
+                key={item.id || `${item.type}-${item.name}-${index}`}
+                item={item}
+                userCoins={userCoins}
+                alwasyActive={alwasyActive}
+                userLevel={userLevel}
+                userAvatarId={userAvatarId}
+                purchasing={purchasing}
+                onPurchase={onPurchase}
+                canTrain={canTrain}
+                onRevive={onRevive}
+              />
+            );
+          })}
         </div>
       )}
     </div>

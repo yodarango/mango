@@ -35,20 +35,20 @@ function Avatars() {
         filteredData.map(async (avatar) => {
           try {
             const assetsResponse = await fetch(
-              `/api/avatars/${avatar.id}/assets`
+              `/api/avatars/${avatar.id}/assets`,
             );
             const assets = await assetsResponse.json();
             warriorsMap[avatar.id] = (assets || []).filter(
-              (asset) => asset.status === "warrior" || asset.status === "rip"
+              (asset) => asset.status === "warrior" || asset.status === "rip",
             );
           } catch (err) {
             console.error(
               `Error fetching warriors for avatar ${avatar.id}:`,
-              err
+              err,
             );
             warriorsMap[avatar.id] = [];
           }
-        })
+        }),
       );
 
       setAvatarWarriors(warriorsMap);
@@ -122,9 +122,9 @@ function Avatars() {
         warriors.reduce(
           (sum, warrior) =>
             sum + warrior.attack + warrior.defense + warrior.healing,
-          0
+          0,
         ) +
-          avatar.coins / 2
+          avatar.coins / 2,
       );
 
       return {
@@ -166,6 +166,10 @@ function Avatars() {
               avatarsFromFirstToLast
                 .sort((a, b) => b.totalPower - a.totalPower)
                 .map((avatar, i) => {
+                  if (avatar.id == 5) {
+                    console.log(avatar);
+                  }
+
                   return (
                     <div key={avatar.id} className='avatar-section'>
                       <p
@@ -214,39 +218,44 @@ function Avatars() {
                       <div className='avatar-main'>
                         {/* Warriors below avatar */}
                         <div className='warriors-grid'>
-                          {avatar.warriors.map((warrior) => (
-                            <div
-                              key={warrior.id}
-                              className='warrior-thumb'
-                              onClick={(e) => handleWarriorClick(warrior, e)}
-                              style={{ position: "relative" }}
-                            >
-                              {console.log(warrior.status)}
-                              <img
-                                src={warrior.thumbnail}
-                                alt={warrior.name}
-                                title={warrior.name}
-                                style={
-                                  warrior.status === "rip"
-                                    ? { filter: "grayscale(100%)" }
-                                    : {}
-                                }
-                              />
-                              {warrior.status === "rip" && (
-                                <div
-                                  style={{
-                                    position: "absolute",
-                                    top: "4px",
-                                    right: "4px",
-                                    fontSize: "20px",
-                                    lineHeight: "1",
-                                  }}
-                                >
-                                  🪦
-                                </div>
-                              )}
-                            </div>
-                          ))}
+                          {avatar.warriors.map((warrior) => {
+                            if (avatar.id == 5) {
+                              console.log(warrior);
+                            }
+
+                            return (
+                              <div
+                                key={warrior.id}
+                                className='warrior-thumb'
+                                onClick={(e) => handleWarriorClick(warrior, e)}
+                                style={{ position: "relative" }}
+                              >
+                                <img
+                                  src={warrior.thumbnail}
+                                  alt={warrior.name}
+                                  title={warrior.name}
+                                  style={
+                                    warrior.status === "rip"
+                                      ? { filter: "grayscale(100%)" }
+                                      : {}
+                                  }
+                                />
+                                {warrior.status === "rip" && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "4px",
+                                      right: "4px",
+                                      fontSize: "20px",
+                                      lineHeight: "1",
+                                    }}
+                                  >
+                                    🪦
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
@@ -322,7 +331,7 @@ function Avatars() {
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
 
       {/* Warrior Popup Portal */}
@@ -422,7 +431,7 @@ function Avatars() {
               </div>
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );
