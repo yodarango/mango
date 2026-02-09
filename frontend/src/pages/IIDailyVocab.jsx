@@ -22,23 +22,22 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>pensamiento</strong> (masc.) — “thought.” Tip: comes from{" "}
-            <em>pensar</em> (to think).
+            <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
+            but it means name.
           </p>
           <ul>
-            <li>Tengo un pensamiento bueno. (I have a good thought.)</li>
-            <li>Ese pensamiento es importante. (That thought is important.)</li>
+            <li>Mi nombre es Carlos. (My name is Carlos.)</li>
+            <li>¿Cuál es tu nombre? (What is your name?)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>dinero</strong> (masc.) — “money.” Tip: many people already
-            know “dinero.”
+            <strong>padre</strong> (masc.) — “father.” Tip: formal word for dad.
           </p>
           <ul>
-            <li>No tengo dinero. (I don’t have money.)</li>
-            <li>Necesito dinero. (I need money.)</li>
+            <li>Mi padre trabaja mucho. (My father works a lot.)</li>
+            <li>El padre de Ana es doctor. (Ana’s father is a doctor.)</li>
           </ul>
         </div>
       </section>
@@ -47,23 +46,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>tomar</strong> — “to take; to drink.” Tip:{" "}
-            <em>tomar agua</em> = drink water.
+            <strong>crear</strong> — “to create.” Tip: almost the same as
+            “create.”
           </p>
           <ul>
-            <li>Tomo agua. (I drink water.)</li>
-            <li>Tomamos el autobús. (We take the bus.)</li>
+            <li>Quiero crear un dibujo. (I want to create a drawing.)</li>
+            <li>Creamos una historia. (We create a story.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>encontrar</strong> — “to find; to encounter.” Tip: looks
-            like “encounter.”
+            <strong>evitar</strong> — “to avoid, to prevent.” Tip: think
+            “evade.”
           </p>
           <ul>
-            <li>No puedo encontrar mi libro. (I can’t find my book.)</li>
-            <li>Encontré mi lápiz. (I found my pencil.)</li>
+            <li>Evita correr. (Avoid running.)</li>
+            <li>Podemos evitar problemas. (We can avoid problems.)</li>
           </ul>
         </div>
       </section>

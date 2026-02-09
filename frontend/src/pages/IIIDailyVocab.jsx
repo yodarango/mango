@@ -21,33 +21,34 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
+            <strong>casa</strong> (fem.) — “house.” Tip: very common word;
+            picture your house.
           </p>
           <ul>
-            <li>Este lugar es bonito. (This place is pretty.)</li>
-            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
+            <li>Mi casa es blanca. (My house is white.)</li>
+            <li>Regreso a casa. (I return home.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>sentimiento</strong> (masc.) — “feeling.” Tip: from{" "}
-            <em>sentir</em> (to feel).
+            <strong>izquierda</strong> (fem.) — “left.” Tip: sounds like
+            “is-KEER-da.”
           </p>
           <ul>
-            <li>Tengo un sentimiento bueno. (I have a good feeling.)</li>
-            <li>Ese sentimiento es fuerte. (That feeling is strong.)</li>
+            <li>Gira a la izquierda. (Turn left.)</li>
+            <li>La tienda está a la izquierda. (The store is on the left.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>chica</strong> (fem.) — “girl.” Tip: chico = boy, chica =
-            girl.
+            <strong>derecha</strong> (fem.) — “right.” Tip: think “direct →
+            derecha.”
           </p>
           <ul>
-            <li>La chica es simpática. (The girl is nice.)</li>
-            <li>Hay una chica nueva. (There is a new girl.)</li>
+            <li>Gira a la derecha. (Turn right.)</li>
+            <li>Mi mano derecha. (My right hand.)</li>
           </ul>
         </div>
       </section>
@@ -56,35 +57,33 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
-            looks like “realize,” but means accomplish.
+            <strong>vivir</strong> — “to live.” Tip: looks like “vivid.”
           </p>
           <ul>
-            <li>Quiero realizar mi meta. (I want to achieve my goal.)</li>
-            <li>Realizamos un proyecto. (We carried out a project.)</li>
+            <li>Vivo en una casa. (I live in a house.)</li>
+            <li>Ella vive aquí. (She lives here.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>permitir</strong> — “to allow, permit.” Tip: like “permit.”
+            <strong>buscar</strong> — “to search, to look for.” Tip: imagine
+            looking for a bus.
           </p>
           <ul>
-            <li>
-              Mis padres me permiten salir. (My parents allow me to go out.)
-            </li>
-            <li>No está permitido correr. (Running is not allowed.)</li>
+            <li>Busco mi libro. (I’m looking for my book.)</li>
+            <li>¿Qué buscas? (What are you looking for?)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>resultar</strong> — “to result, turn out.” Tip: same root as
-            “result.”
+            <strong>entrar</strong> — “to enter, to go in.” Tip: looks like
+            “enter.”
           </p>
           <ul>
-            <li>Todo resultó bien. (Everything turned out well.)</li>
-            <li>El plan resultó difícil. (The plan turned out difficult.)</li>
+            <li>Puedes entrar. (You may enter.)</li>
+            <li>Entramos a la clase. (We go into the class.)</li>
           </ul>
         </div>
       </section>
