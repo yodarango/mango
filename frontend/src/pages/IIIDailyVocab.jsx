@@ -21,34 +21,33 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>casa</strong> (fem.) — “house.” Tip: very common word;
-            picture your house.
+            <strong>madre</strong> (fem.) — “mother.” Tip: formal word for mom.
           </p>
           <ul>
-            <li>Mi casa es blanca. (My house is white.)</li>
-            <li>Regreso a casa. (I return home.)</li>
+            <li>Mi madre es amable. (My mother is kind.)</li>
+            <li>La madre de Juan es doctora. (Juan’s mother is a doctor.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>izquierda</strong> (fem.) — “left.” Tip: sounds like
-            “is-KEER-da.”
+            <strong>curso</strong> (masc.) — “course, class.” Tip: like “course”
+            in English.
           </p>
           <ul>
-            <li>Gira a la izquierda. (Turn left.)</li>
-            <li>La tienda está a la izquierda. (The store is on the left.)</li>
+            <li>Este curso es fácil. (This course is easy.)</li>
+            <li>Tengo un curso de español. (I have a Spanish class.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>derecha</strong> (fem.) — “right.” Tip: think “direct →
-            derecha.”
+            <strong>papá</strong> (masc.) — “dad.” Tip: accent on the last
+            syllable: pa-PÁ.
           </p>
           <ul>
-            <li>Gira a la derecha. (Turn right.)</li>
-            <li>Mi mano derecha. (My right hand.)</li>
+            <li>Mi papá trabaja mucho. (My dad works a lot.)</li>
+            <li>Voy con mi papá. (I go with my dad.)</li>
           </ul>
         </div>
       </section>
@@ -57,33 +56,34 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>vivir</strong> — “to live.” Tip: looks like “vivid.”
+            <strong>considerar</strong> — “to consider.” Tip: almost the same as
+            English.
           </p>
           <ul>
-            <li>Vivo en una casa. (I live in a house.)</li>
-            <li>Ella vive aquí. (She lives here.)</li>
+            <li>Debes considerar la idea. (You should consider the idea.)</li>
+            <li>Considero tu plan. (I consider your plan.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>buscar</strong> — “to search, to look for.” Tip: imagine
-            looking for a bus.
+            <strong>señalar</strong> — “to point out, indicate.” Tip: like
+            “signal.”
           </p>
           <ul>
-            <li>Busco mi libro. (I’m looking for my book.)</li>
-            <li>¿Qué buscas? (What are you looking for?)</li>
+            <li>Señala la respuesta. (Point to the answer.)</li>
+            <li>El maestro señala el mapa. (The teacher points at the map.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>entrar</strong> — “to enter, to go in.” Tip: looks like
-            “enter.”
+            <strong>presentar</strong> — “to present, introduce.” Tip: like
+            “present.”
           </p>
           <ul>
-            <li>Puedes entrar. (You may enter.)</li>
-            <li>Entramos a la clase. (We go into the class.)</li>
+            <li>Voy a presentar a mi amigo. (I will introduce my friend.)</li>
+            <li>Presenta tu proyecto. (Present your project.)</li>
           </ul>
         </div>
       </section>

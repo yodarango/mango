@@ -22,22 +22,22 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>nombre</strong> (masc.) — “name.” Tip: sounds like “number,”
-            but it means name.
+            <strong>chico</strong> (masc.) — “guy, boy.” Tip: chico = boy, chica
+            = girl.
           </p>
           <ul>
-            <li>Mi nombre es Carlos. (My name is Carlos.)</li>
-            <li>¿Cuál es tu nombre? (What is your name?)</li>
+            <li>Ese chico es mi amigo. (That guy/boy is my friend.)</li>
+            <li>El chico está en la clase. (The boy is in the class.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>padre</strong> (masc.) — “father.” Tip: formal word for dad.
+            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
           </p>
           <ul>
-            <li>Mi padre trabaja mucho. (My father works a lot.)</li>
-            <li>El padre de Ana es doctor. (Ana’s father is a doctor.)</li>
+            <li>Este lugar es bonito. (This place is pretty.)</li>
+            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
           </ul>
         </div>
       </section>
@@ -46,23 +46,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>crear</strong> — “to create.” Tip: almost the same as
-            “create.”
+            <strong>quedar</strong> — “to stay, remain, be left.” Tip: “quedan”
+            = “are left.”
           </p>
           <ul>
-            <li>Quiero crear un dibujo. (I want to create a drawing.)</li>
-            <li>Creamos una historia. (We create a story.)</li>
+            <li>Me quiero quedar aquí. (I want to stay here.)</li>
+            <li>Solo quedan dos. (Only two are left.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>evitar</strong> — “to avoid, to prevent.” Tip: think
-            “evade.”
+            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
+            looks like “realize,” but means accomplish.
           </p>
           <ul>
-            <li>Evita correr. (Avoid running.)</li>
-            <li>Podemos evitar problemas. (We can avoid problems.)</li>
+            <li>Quiero realizar mi meta. (I want to achieve my goal.)</li>
+            <li>Realizamos un proyecto. (We carried out a project.)</li>
           </ul>
         </div>
       </section>
