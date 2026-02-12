@@ -243,7 +243,6 @@
     background: rgba(40, 40, 40, 0.9);
     border: 2px solid var(--accent-yellow);
     border-radius: 8px;
-    padding: 1.5rem;
     max-width: 400px;
     width: 90%;
     backdrop-filter: blur(10px);
@@ -304,7 +303,6 @@
     color: var(--accent-yellow);
     margin-bottom: 1rem;
     text-align: center;
-    padding-right: 80px;
   }
 
   .question-options {
