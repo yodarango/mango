@@ -24,6 +24,7 @@ function Play() {
   const [movingWarrior, setMovingWarrior] = useState(null); // {warrior, fromCell}
   const [showQRModal, setShowQRModal] = useState(false);
   const [attackTarget, setAttackTarget] = useState(null); // {cell, defenderAvatar}
+  const [rewardModal, setRewardModal] = useState(null); // {cell, warrior, coins, xp}
   const gridWrapperRef = useRef(null);
   const pollingIntervalRef = useRef(null);
 
@@ -112,11 +113,11 @@ function Play() {
       const allWarriorsPromises = avatars.map(async (avatar) => {
         try {
           const assetsResponse = await fetch(
-            `/api/avatars/${avatar.id}/assets`
+            `/api/avatars/${avatar.id}/assets`,
           );
           const assets = await assetsResponse.json();
           return (assets || []).filter(
-            (asset) => asset.status === "warrior" || asset.status === "rip"
+            (asset) => asset.status === "warrior" || asset.status === "rip",
           );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
@@ -129,13 +130,13 @@ function Play() {
 
       // Find warriors with stamina <= 0
       const depletedWarriors = allWarriorsFlat.filter(
-        (warrior) => warrior.stamina <= 0
+        (warrior) => warrior.stamina <= 0,
       );
 
       // Remove each depleted warrior from grid and mark as unavailable
       for (const warrior of depletedWarriors) {
         console.log(
-          `Removing depleted warrior ${warrior.name} (ID: ${warrior.id}) with stamina ${warrior.stamina}`
+          `Removing depleted warrior ${warrior.name} (ID: ${warrior.id}) with stamina ${warrior.stamina}`,
         );
 
         // Call API to remove warrior from grid and mark as unavailable
@@ -197,7 +198,7 @@ function Play() {
     if (turnStartTime && turnDuration && gameAvatars.length > 0) {
       // Create a unique key for this turn to prevent duplicate advances
       const turnKey = `${currentTurnIndex}-${new Date(
-        turnStartTime
+        turnStartTime,
       ).getTime()}`;
 
       // Reset zero counter when turn changes
@@ -281,6 +282,46 @@ function Play() {
     }
   };
 
+  // Function to claim cell rewards
+  const claimRewards = async () => {
+    if (!rewardModal) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/game-cells/claim-rewards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          cellId: rewardModal.cell.id,
+          warriorId: rewardModal.warrior.id,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Rewards claimed:", data);
+
+        // Close the modal
+        setRewardModal(null);
+
+        // Refresh game data to show updated rewards
+        await fetchGame();
+
+        // Advance to next turn after claiming rewards
+        await advanceTurnAPI();
+      } else {
+        const errorText = await response.text();
+        alert(`Failed to claim rewards: ${errorText}`);
+      }
+    } catch (error) {
+      console.error("Error claiming rewards:", error);
+      alert("Error claiming rewards");
+    }
+  };
+
   const fetchUserWarriors = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -311,12 +352,12 @@ function Play() {
       const allWarriorsPromises = avatars.map(async (avatar) => {
         try {
           const assetsResponse = await fetch(
-            `/api/avatars/${avatar.id}/assets`
+            `/api/avatars/${avatar.id}/assets`,
           );
           const assets = await assetsResponse.json();
           // Filter for warrior status (including "rip")
           return (assets || []).filter(
-            (asset) => asset.status === "warrior" || asset.status === "rip"
+            (asset) => asset.status === "warrior" || asset.status === "rip",
           );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
@@ -333,7 +374,7 @@ function Play() {
 
       // Get only the current user's warriors for placement (including rip)
       const userWarriorAssets = allWarriorsFlat.filter(
-        (asset) => asset.avatarId === userAvatar.id
+        (asset) => asset.avatarId === userAvatar.id,
       );
 
       console.log("All warriors (all users):", allWarriorsFlat);
@@ -443,11 +484,11 @@ function Play() {
             !isCellInRange(
               movingWarrior.fromCell,
               cell,
-              movingWarrior.warrior.level
+              movingWarrior.warrior.level,
             )
           ) {
             alert(
-              `This warrior can only attack ${movingWarrior.warrior.level} cell(s) away at level ${movingWarrior.warrior.level}!`
+              `This warrior can only attack ${movingWarrior.warrior.level} cell(s) away at level ${movingWarrior.warrior.level}!`,
             );
             return;
           }
@@ -489,11 +530,11 @@ function Play() {
         !isCellInRange(
           movingWarrior.fromCell,
           cell,
-          movingWarrior.warrior.level
+          movingWarrior.warrior.level,
         )
       ) {
         alert(
-          `This warrior can only move ${movingWarrior.warrior.level} cell(s) at level ${movingWarrior.warrior.level}!`
+          `This warrior can only move ${movingWarrior.warrior.level} cell(s) at level ${movingWarrior.warrior.level}!`,
         );
         return;
       }
@@ -517,10 +558,22 @@ function Play() {
         if (response.ok) {
           // Refresh the game data
           await fetchGame();
-          setMovingWarrior(null);
 
-          // Advance to next turn after successful move
-          await advanceTurnAPI();
+          // Check if the destination cell has rewards
+          if (cell.rewardCoins > 0 || cell.rewardXp > 0) {
+            // Show reward modal
+            setRewardModal({
+              cell: cell,
+              warrior: movingWarrior.warrior,
+              coins: cell.rewardCoins || 0,
+              xp: cell.rewardXp || 0,
+            });
+          } else {
+            // No rewards, advance turn immediately
+            await advanceTurnAPI();
+          }
+
+          setMovingWarrior(null);
         } else {
           const errorText = await response.text();
           alert(`Failed to move warrior: ${errorText}`);
@@ -559,7 +612,7 @@ function Play() {
             body: JSON.stringify({
               warriorId: selectedWarrior.id,
             }),
-          }
+          },
         );
 
         if (response.ok) {
@@ -733,7 +786,7 @@ function Play() {
                     selectedWarrior && selectedWarrior.id === warrior.id;
                   const isRip = warrior.status === "rip";
                   const isPlaced = cells.some(
-                    (cell) => cell.occupiedBy === warrior.id
+                    (cell) => cell.occupiedBy === warrior.id,
                   );
                   const isDepleted = isPlaced || isRip;
 
@@ -748,8 +801,8 @@ function Play() {
                         isRip
                           ? "Inactive (RIP)"
                           : isPlaced
-                          ? "Already placed on grid"
-                          : warrior.name
+                            ? "Already placed on grid"
+                            : warrior.name
                       }
                     >
                       <img
@@ -877,7 +930,7 @@ function Play() {
                   isPlaceable = isCellInRange(
                     movingWarrior.fromCell,
                     cell,
-                    movingWarrior.warrior.level
+                    movingWarrior.warrior.level,
                   );
                 }
 
@@ -905,7 +958,7 @@ function Play() {
                       (() => {
                         // Find the warrior asset
                         const warrior = allWarriorAssets.find(
-                          (w) => w.id === cell.occupiedBy
+                          (w) => w.id === cell.occupiedBy,
                         );
                         // Only render if warrior exists and is not "rip" status
                         if (
@@ -1187,6 +1240,58 @@ function Play() {
                   <i className='fa-solid fa-times'></i> Cancel
                 </button>
               </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Reward Modal */}
+      {rewardModal && (
+        <>
+          <div className='modal-overlay'></div>
+          <div className='reward-modal'>
+            <div className='modal-header'>
+              <h2>
+                <i className='fa-solid fa-gift'></i> Reward!
+              </h2>
+            </div>
+            <div className='modal-body'>
+              <div className='reward-content'>
+                <p className='text-white'>Treasure found! Claim your reward</p>
+                <div className='reward-items'>
+                  {rewardModal.coins > 0 && (
+                    <div className='reward-item'>
+                      <i className='fa-solid fa-coins'></i>
+                      <span className='reward-value'>{rewardModal.coins}</span>
+                      <span className='reward-label'>Coins</span>
+                    </div>
+                  )}
+                  {rewardModal.xp > 0 && (
+                    <div className='reward-item'>
+                      <i className='fa-solid fa-star'></i>
+                      <span className='reward-value'>{rewardModal.xp}</span>
+                      <span className='reward-label'>XP</span>
+                    </div>
+                  )}
+                </div>
+                {rewardModal.coins > 0 && (
+                  <p className='text-white'>
+                    <i className='fa-solid fa-info-circle'></i> You will
+                    receivethis coins once youclaim them
+                  </p>
+                )}
+                {rewardModal.xp > 0 && (
+                  <p className='text-white'>
+                    <i className='fa-solid fa-info-circle'></i>{" "}
+                    {rewardModal.warrior.name} will receive the XP
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className='modal-footer'>
+              <button className='btn-accept' onClick={claimRewards}>
+                <i className='fa-solid fa-check'></i> Accept
+              </button>
             </div>
           </div>
         </>

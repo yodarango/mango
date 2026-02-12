@@ -85,7 +85,7 @@ function EditGame() {
 
       // Filter to only fetch assets we haven't fetched before
       const newAssetIds = uniqueAssetIds.filter(
-        (id) => !fetchedAssetIdsRef.current.has(id)
+        (id) => !fetchedAssetIdsRef.current.has(id),
       );
 
       if (newAssetIds.length > 0) {
@@ -161,6 +161,8 @@ function EditGame() {
       element: cell.element || "",
       occupiedBy: cell.occupiedBy || 0,
       status: cell.status || "",
+      rewardCoins: cell.rewardCoins || 0,
+      rewardXp: cell.rewardXp || 0,
     });
   };
 
@@ -195,6 +197,8 @@ function EditGame() {
           element: editingCell.element,
           occupiedBy: editingCell.occupiedBy,
           status: editingCell.status,
+          rewardCoins: editingCell.rewardCoins,
+          rewardXp: editingCell.rewardXp,
         }),
       });
 
@@ -202,8 +206,8 @@ function EditGame() {
         // Update local state
         setCells(
           cells.map((c) =>
-            c.id === editingCell.id ? { ...c, ...editingCell } : c
-          )
+            c.id === editingCell.id ? { ...c, ...editingCell } : c,
+          ),
         );
         alert("Cell updated successfully!");
         closeModal();
@@ -617,6 +621,45 @@ function EditGame() {
                     }
                     placeholder='Cell status (max 20 chars)'
                     maxLength={20}
+                  />
+                </div>
+              </div>
+
+              {/* Rewards Section */}
+              <div className='form-row'>
+                <div className='form-group'>
+                  <label>
+                    <i className='fa-solid fa-coins'></i> Reward Coins
+                  </label>
+                  <input
+                    type='number'
+                    value={editingCell.rewardCoins}
+                    onChange={(e) =>
+                      setEditingCell({
+                        ...editingCell,
+                        rewardCoins: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    placeholder='0'
+                    min='0'
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label>
+                    <i className='fa-solid fa-star'></i> Reward XP
+                  </label>
+                  <input
+                    type='number'
+                    value={editingCell.rewardXp}
+                    onChange={(e) =>
+                      setEditingCell({
+                        ...editingCell,
+                        rewardXp: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    placeholder='0'
+                    min='0'
                   />
                 </div>
               </div>

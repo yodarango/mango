@@ -213,6 +213,8 @@ type GameCell struct {
 	Element     string `json:"element"`     // Terrain type or avatar element it belongs to
 	OccupiedBy  int    `json:"occupiedBy"`  // Avatar ID of the player occupying this cell (0 if empty)
 	Status      string `json:"status"`      // Status of the cell (max 20 chars)
+	RewardCoins int    `json:"rewardCoins"` // Coins reward for landing on this cell
+	RewardXP    int    `json:"rewardXp"`    // XP reward for landing on this cell
 }
 
 type Battle struct {
@@ -631,6 +633,8 @@ func initDB() {
 		element TEXT,
 		occupied_by INTEGER DEFAULT 0,
 		status TEXT CHECK(length(status) <= 20),
+		reward_coins INTEGER DEFAULT 0,
+		reward_xp INTEGER DEFAULT 0,
 		FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 	);`
 
@@ -742,6 +746,17 @@ func initDB() {
 	_, err = db.Exec(`ALTER TABLE battles ADD COLUMN game_id INTEGER DEFAULT NULL`)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		log.Printf("Warning: Could not add game_id column: %v", err)
+	}
+
+	// Add reward_coins and reward_xp columns to game_cells table
+	_, err = db.Exec(`ALTER TABLE game_cells ADD COLUMN reward_coins INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add reward_coins column: %v", err)
+	}
+
+	_, err = db.Exec(`ALTER TABLE game_cells ADD COLUMN reward_xp INTEGER DEFAULT 0`)
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Printf("Warning: Could not add reward_xp column: %v", err)
 	}
 
 	// Create battle_questions table
@@ -3538,7 +3553,7 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 	game.Avatars = avatars
 
 	// Get all cells for this game
-	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, occupied_by, status
+	rows, err := db.Query(`SELECT id, game_id, cell_id, name, description, background, active, element, occupied_by, status, reward_coins, reward_xp
 		FROM game_cells WHERE game_id = ? ORDER BY cell_id`, gameID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -3551,9 +3566,9 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 		var cell GameCell
 		var active int
 		var name, description, background, element, status sql.NullString
-		var occupiedBy sql.NullInt64
+		var occupiedBy, rewardCoins, rewardXP sql.NullInt64
 		if err := rows.Scan(&cell.ID, &cell.GameID, &cell.CellID, &name, &description, &background,
-			&active, &element, &occupiedBy, &status); err != nil {
+			&active, &element, &occupiedBy, &status, &rewardCoins, &rewardXP); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -3575,6 +3590,12 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 		}
 		if status.Valid {
 			cell.Status = status.String
+		}
+		if rewardCoins.Valid {
+			cell.RewardCoins = int(rewardCoins.Int64)
+		}
+		if rewardXP.Valid {
+			cell.RewardXP = int(rewardXP.Int64)
 		}
 		cells = append(cells, cell)
 	}
@@ -3761,6 +3782,8 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 		Element     string `json:"element"`
 		OccupiedBy  int    `json:"occupiedBy"`
 		Status      string `json:"status"`
+		RewardCoins int    `json:"rewardCoins"`
+		RewardXP    int    `json:"rewardXp"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -3783,9 +3806,9 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.Exec(`UPDATE game_cells
-		SET name = ?, description = ?, background = ?, active = ?, element = ?, occupied_by = ?, status = ?
+		SET name = ?, description = ?, background = ?, active = ?, element = ?, occupied_by = ?, status = ?, reward_coins = ?, reward_xp = ?
 		WHERE id = ?`,
-		req.Name, req.Description, req.Background, activeInt, req.Element, req.OccupiedBy, req.Status, cellID)
+		req.Name, req.Description, req.Background, activeInt, req.Element, req.OccupiedBy, req.Status, req.RewardCoins, req.RewardXP, cellID)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -3982,6 +4005,123 @@ func moveWarrior(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+// Claim cell rewards - add coins to avatar and XP to asset
+func claimCellRewards(w http.ResponseWriter, r *http.Request) {
+	claims, err := getUserFromToken(r)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		CellID    int `json:"cellId"`
+		WarriorID int `json:"warriorId"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Get the user's avatar
+	var avatarID int
+	err = db.QueryRow("SELECT id FROM avatars WHERE user_id = ?", claims.UserID).Scan(&avatarID)
+	if err != nil {
+		http.Error(w, "No avatar found for user", http.StatusNotFound)
+		return
+	}
+
+	// Verify the warrior belongs to this avatar
+	var warriorAvatarID int
+	err = db.QueryRow("SELECT avatar_id FROM assets WHERE id = ?", req.WarriorID).Scan(&warriorAvatarID)
+	if err != nil {
+		http.Error(w, "Warrior not found", http.StatusNotFound)
+		return
+	}
+
+	if warriorAvatarID != avatarID {
+		http.Error(w, "This warrior does not belong to you", http.StatusForbidden)
+		return
+	}
+
+	// Get cell rewards
+	var rewardCoins, rewardXP sql.NullInt64
+	err = db.QueryRow("SELECT reward_coins, reward_xp FROM game_cells WHERE id = ?", req.CellID).Scan(&rewardCoins, &rewardXP)
+	if err != nil {
+		http.Error(w, "Cell not found", http.StatusNotFound)
+		return
+	}
+
+	coins := 0
+	xp := 0
+	if rewardCoins.Valid {
+		coins = int(rewardCoins.Int64)
+	}
+	if rewardXP.Valid {
+		xp = int(rewardXP.Int64)
+	}
+
+	// Add coins to avatar if there are any
+	if coins > 0 {
+		_, err = db.Exec("UPDATE avatars SET coins = coins + ? WHERE id = ?", coins, avatarID)
+		if err != nil {
+			http.Error(w, "Failed to update avatar coins", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Add XP to warrior if there is any
+	if xp > 0 {
+		// Get current warrior stats
+		var currentXP, level, baseAttack, baseDefense, baseHealing int
+		err = db.QueryRow("SELECT xp, level, base_attack, base_defense, base_healing FROM assets WHERE id = ?", req.WarriorID).
+			Scan(&currentXP, &level, &baseAttack, &baseDefense, &baseHealing)
+		if err != nil {
+			http.Error(w, "Failed to get warrior stats", http.StatusInternalServerError)
+			return
+		}
+
+		newXP := currentXP + xp
+		newLevel := level
+
+		// Check if warrior levels up (100 XP per level)
+		if newXP >= 100 {
+			levelsGained := newXP / 100
+			newLevel = level + levelsGained
+			newXP = newXP % 100
+
+			// Increase base stats by 10% per level
+			for i := 0; i < levelsGained; i++ {
+				baseAttack = int(float64(baseAttack) * 1.1)
+				baseDefense = int(float64(baseDefense) * 1.1)
+				baseHealing = int(float64(baseHealing) * 1.1)
+			}
+		}
+
+		// Update warrior
+		_, err = db.Exec("UPDATE assets SET xp = ?, level = ?, base_attack = ?, base_defense = ?, base_healing = ? WHERE id = ?",
+			newXP, newLevel, baseAttack, baseDefense, baseHealing, req.WarriorID)
+		if err != nil {
+			http.Error(w, "Failed to update warrior XP", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Clear the rewards from the cell so they can't be claimed again
+	_, err = db.Exec("UPDATE game_cells SET reward_coins = 0, reward_xp = 0 WHERE id = ?", req.CellID)
+	if err != nil {
+		http.Error(w, "Failed to clear cell rewards", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":     true,
+		"coinsGained": coins,
+		"xpGained":    xp,
+	})
 }
 
 // Deplete warrior - remove from grid and mark as unavailable (rip status)
@@ -5335,6 +5475,7 @@ func main() {
 	api.HandleFunc("/game-cells/{id}", updateGameCell).Methods("PUT")
 	api.HandleFunc("/game-cells/{id}/place-warrior", placeWarriorOnCell).Methods("POST")
 	api.HandleFunc("/game-cells/move-warrior", moveWarrior).Methods("POST")
+	api.HandleFunc("/game-cells/claim-rewards", claimCellRewards).Methods("POST")
 	api.HandleFunc("/warriors/{id}/deplete", depleteWarrior).Methods("POST")
 	api.HandleFunc("/warriors/{id}/revive", reviveWarrior).Methods("POST")
 
