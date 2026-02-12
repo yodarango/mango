@@ -22,6 +22,7 @@ function Battle() {
   const defenderTimerRef = useRef(null);
   const hasAutoSubmittedAttacker = useRef(false);
   const hasAutoSubmittedDefender = useRef(false);
+  const battleAudioRef = useRef(null);
 
   useEffect(() => {
     fetchCurrentUser();
@@ -46,18 +47,21 @@ function Battle() {
   // Play battle music for admin users
   useEffect(() => {
     if (isAdmin) {
-      const audio = new Audio("/src/assets/tracks/battle.mp3");
-      audio.loop = true;
-      audio.play().catch((error) => {
+      battleAudioRef.current = new Audio("/src/assets/tracks/battle.mp3");
+      battleAudioRef.current.loop = true;
+      battleAudioRef.current.play().catch((error) => {
         console.log("Audio playback failed:", error);
       });
-
-      // Cleanup: stop audio when component unmounts
-      return () => {
-        audio.pause();
-        audio.currentTime = 0;
-      };
     }
+
+    // Cleanup: stop audio when component unmounts or admin leaves
+    return () => {
+      if (battleAudioRef.current) {
+        battleAudioRef.current.pause();
+        battleAudioRef.current.currentTime = 0;
+        battleAudioRef.current = null;
+      }
+    };
   }, [isAdmin]);
 
   // Timer for attacker
@@ -365,7 +369,8 @@ function Battle() {
 
       if (response.ok) {
         alert("Battle completed!");
-        fetchBattle(); // Refresh to trigger redirect
+        // Redirect admin to edit-battle page
+        navigate(`/admin/edit-battle/${id}`);
       } else {
         alert("Failed to complete battle");
       }
