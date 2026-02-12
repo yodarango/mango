@@ -397,56 +397,56 @@ function Battle() {
     const hasAnswered = question.submittedAt !== null;
 
     // If both have answered, show results
-    // if (showResults && battleResults) {
-    //   const isCorrect = isAttacker
-    //     ? battleResults.attackerCorrect
-    //     : battleResults.defenderCorrect;
-    //   const userAnswer = isAttacker
-    //     ? battleResults.attackerAnswer
-    //     : battleResults.defenderAnswer;
-    //   const correctAnswer = isAttacker
-    //     ? battleResults.attackerCorrectAnswer
-    //     : battleResults.defenderCorrectAnswer;
-    //   const questionText = isAttacker
-    //     ? battleResults.attackerQuestion
-    //     : battleResults.defenderQuestion;
+    if (showResults && battleResults) {
+      const isCorrect = isAttacker
+        ? battleResults.attackerCorrect
+        : battleResults.defenderCorrect;
+      const userAnswer = isAttacker
+        ? battleResults.attackerAnswer
+        : battleResults.defenderAnswer;
+      const correctAnswer = isAttacker
+        ? battleResults.attackerCorrectAnswer
+        : battleResults.defenderCorrectAnswer;
+      const questionText = isAttacker
+        ? battleResults.attackerQuestion
+        : battleResults.defenderQuestion;
 
-    //   return (
-    //     <div className='max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
-    //       <p className='font-serif text-sm text-[#ffd700] mb-4 text-center'>
-    //         {questionText}
-    //       </p>
-    //       <div
-    //         className={`p-4 mt-2 rounded-lg ${isCorrect ? "bg-[#2d5016]" : "bg-[#5c1a1a]"}`}
-    //       >
-    //         <p className='mb-2 font-bold'>
-    //           {isCorrect ? "✓ Correct!" : "✗ Incorrect"}
-    //         </p>
-    //         <p className='text-[0.85rem]'>
-    //           Your answer: <strong>{userAnswer}</strong>
-    //         </p>
-    //         {!isCorrect && (
-    //           <p className='text-[0.85rem] text-[#ffcc00]'>
-    //             Correct answer: <strong>{correctAnswer}</strong>
-    //           </p>
-    //         )}
-    //       </div>
-    //     </div>
-    //   );
-    // }
+      return (
+        <div className='max-w-md w-[90%] backdrop-blur-md mb-4 relative text-white'>
+          <p className='font-serif text-sm text-[#ffd700] mb-4 text-center'>
+            {questionText}
+          </p>
+          <div
+            className={`p-4 rounded-lg ${isCorrect ? "bg-[#2d5016]" : "bg-[#5c1a1a]"}`}
+          >
+            <p className='mb-2 font-bold'>
+              {isCorrect ? "✓ Correct!" : "✗ Incorrect"}
+            </p>
+            <p className='text-[0.85rem]'>
+              Your answer: <strong>{userAnswer}</strong>
+            </p>
+            {!isCorrect && (
+              <p className='text-[0.85rem] text-[#ffcc00]'>
+                Correct answer: <strong>{correctAnswer}</strong>
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    }
 
     // If answered, show status message instead of question
-    // if (hasAnswered) {
-    // return (
-    //   <div className='max-w-md w-[90%] backdrop-blur-md mb-4relative'>
-    //     <p className='font-serif text-sm text-[#00ff41] text-center mb-4 font-bold'>
-    //       {isUserQuestion
-    //         ? "You have answered the question"
-    //         : `${avatarName} has answered the question`}
-    //     </p>
-    //   </div>
-    // );
-    // }
+    if (hasAnswered) {
+      return (
+        <div className='max-w-md w-[90%] backdrop-blur-md mb-4relative'>
+          <p className='font-serif text-sm text-[#00ff41] text-center mb-4 font-bold'>
+            {isUserQuestion
+              ? "You have answered the question"
+              : `${avatarName} has answered the question`}
+          </p>
+        </div>
+      );
+    }
 
     // Check if defender should wait for attacker
     const isDefender = !isAttacker;
@@ -545,16 +545,14 @@ function Battle() {
       <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(40,40,40,1)] border-r-2 border-[#ff6b35]'>
         <div className='flex items-center gap-4 mb-4'>
           <h2 className='text-orange-500 m-0'>Attacker</h2>
-          {attackerQuestion && !attackerQuestion.submittedAt && (
-            <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
-              <i className='fas fa-clock text-[#00ff41] text-base'></i>
-              <span
-                className={`font-bold text-lg min-w-[35px] text-center ${attackerTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
-              >
-                {attackerTimer}s
-              </span>
-            </div>
-          )}
+          <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
+            <i className='fas fa-clock text-[#00ff41] text-base'></i>
+            <span
+              className={`font-bold text-lg min-w-[35px] text-center ${attackerTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
+            >
+              {attackerTimer}s
+            </span>
+          </div>
         </div>
         {attackerQuestion &&
           renderQuestion(
@@ -642,18 +640,14 @@ function Battle() {
       <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-bl from-[rgba(0,255,65,0.1)] to-[rgba(40,40,40,1)] border-l-2 border-[#00ff41]'>
         <div className='flex items-center gap-4 mb-4'>
           <h2 className='text-green-500 m-0'>Defender</h2>
-          {defenderQuestion &&
-            !defenderQuestion.submittedAt &&
-            attackerQuestion?.submittedAt && (
-              <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
-                <i className='fas fa-clock text-[#00ff41] text-base'></i>
-                <span
-                  className={`font-bold text-lg min-w-[35px] text-center ${defenderTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
-                >
-                  {defenderTimer}s
-                </span>
-              </div>
-            )}
+          <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
+            <i className='fas fa-clock text-[#00ff41] text-base'></i>
+            <span
+              className={`font-bold text-lg min-w-[35px] text-center ${defenderTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
+            >
+              {defenderTimer}s
+            </span>
+          </div>
         </div>
         {defenderQuestion &&
           renderQuestion(
