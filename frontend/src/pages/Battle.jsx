@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./Battle.css";
 
 function Battle() {
   const { id } = useParams();
@@ -49,7 +48,7 @@ function Battle() {
       "Submitted:",
       attackerQuestion?.submittedAt,
       "Auto-submitted:",
-      hasAutoSubmittedAttacker.current
+      hasAutoSubmittedAttacker.current,
     );
 
     // Only start timer if attacker hasn't answered and question exists
@@ -62,7 +61,7 @@ function Battle() {
       if (!attackerTimerRef.current) {
         console.log(
           "Starting attacker timer for question ID:",
-          attackerQuestion.id
+          attackerQuestion.id,
         );
         setAttackerTimer(20);
 
@@ -111,7 +110,7 @@ function Battle() {
       "Attacker Submitted:",
       attackerQuestion?.submittedAt,
       "Auto-submitted:",
-      hasAutoSubmittedDefender.current
+      hasAutoSubmittedDefender.current,
     );
 
     // Only start timer if defender hasn't answered, question exists, and attacker has answered
@@ -125,7 +124,7 @@ function Battle() {
       if (!defenderTimerRef.current) {
         console.log(
           "Starting defender timer for question ID:",
-          defenderQuestion.id
+          defenderQuestion.id,
         );
         setDefenderTimer(20);
 
@@ -246,7 +245,7 @@ function Battle() {
         } else if (attackerCorrect && !defenderCorrect) {
           // Attacker correct, defender wrong: Defender loses full damage
           defenderHealthLost = Math.round(
-            (data.attackerAsset.attack / data.defenderAsset.defense) * 100
+            (data.attackerAsset.attack / data.defenderAsset.defense) * 100,
           );
         } else if (!attackerCorrect && defenderCorrect) {
           // Attacker wrong, defender correct: Attacker loses 25 stamina
@@ -262,7 +261,7 @@ function Battle() {
           ...data.attackerAsset,
           stamina: Math.max(
             0,
-            data.attackerAsset.stamina - attackerStaminaLost
+            data.attackerAsset.stamina - attackerStaminaLost,
           ),
         };
 
@@ -357,21 +356,29 @@ function Battle() {
   };
 
   if (loading) {
-    return <div className='battle-loading'>Loading battle...</div>;
+    return (
+      <div className='flex items-center justify-center h-screen bg-[#282828] text-gray-300 text-2xl font-serif'>
+        Loading battle...
+      </div>
+    );
   }
 
   if (!battle) {
-    return <div className='battle-error'>Battle not found</div>;
+    return (
+      <div className='flex items-center justify-center h-screen bg-[#282828] text-gray-300 text-2xl font-serif'>
+        Battle not found
+      </div>
+    );
   }
 
   if (!attacker || !defender) {
     return (
-      <div className='battle-error'>
+      <div className='flex flex-col items-center justify-center h-screen bg-[#282828] text-gray-300 text-2xl font-serif'>
         <p>Failed to load battle participants</p>
-        <p style={{ fontSize: "0.9rem", marginTop: "1rem" }}>
+        <p className='text-sm mt-4'>
           Attacker ID: {battle.attacker || "N/A"} - {attacker ? "✓" : "✗"}
         </p>
-        <p style={{ fontSize: "0.9rem" }}>
+        <p className='text-sm'>
           Defender ID: {battle.defender || "N/A"} - {defender ? "✓" : "✗"}
         </p>
       </div>
@@ -384,62 +391,56 @@ function Battle() {
     const hasAnswered = question.submittedAt !== null;
 
     // If both have answered, show results
-    if (showResults && battleResults) {
-      const isCorrect = isAttacker
-        ? battleResults.attackerCorrect
-        : battleResults.defenderCorrect;
-      const userAnswer = isAttacker
-        ? battleResults.attackerAnswer
-        : battleResults.defenderAnswer;
-      const correctAnswer = isAttacker
-        ? battleResults.attackerCorrectAnswer
-        : battleResults.defenderCorrectAnswer;
-      const questionText = isAttacker
-        ? battleResults.attackerQuestion
-        : battleResults.defenderQuestion;
+    // if (showResults && battleResults) {
+    //   const isCorrect = isAttacker
+    //     ? battleResults.attackerCorrect
+    //     : battleResults.defenderCorrect;
+    //   const userAnswer = isAttacker
+    //     ? battleResults.attackerAnswer
+    //     : battleResults.defenderAnswer;
+    //   const correctAnswer = isAttacker
+    //     ? battleResults.attackerCorrectAnswer
+    //     : battleResults.defenderCorrectAnswer;
+    //   const questionText = isAttacker
+    //     ? battleResults.attackerQuestion
+    //     : battleResults.defenderQuestion;
 
-      return (
-        <div className='battle-question'>
-          <p className='question-text' style={{ fontSize: "0.9rem" }}>
-            {questionText}
-          </p>
-          <div
-            className='answer-result'
-            style={{
-              padding: "1rem",
-              marginTop: "0.5rem",
-              borderRadius: "8px",
-              backgroundColor: isCorrect ? "#2d5016" : "#5c1a1a",
-            }}
-          >
-            <p style={{ marginBottom: "0.5rem", fontWeight: "bold" }}>
-              {isCorrect ? "✓ Correct!" : "✗ Incorrect"}
-            </p>
-            <p style={{ fontSize: "0.85rem" }}>
-              Your answer: <strong>{userAnswer}</strong>
-            </p>
-            {!isCorrect && (
-              <p style={{ fontSize: "0.85rem", color: "#ffcc00" }}>
-                Correct answer: <strong>{correctAnswer}</strong>
-              </p>
-            )}
-          </div>
-        </div>
-      );
-    }
+    //   return (
+    //     <div className='max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
+    //       <p className='font-serif text-sm text-[#ffd700] mb-4 text-center'>
+    //         {questionText}
+    //       </p>
+    //       <div
+    //         className={`p-4 mt-2 rounded-lg ${isCorrect ? "bg-[#2d5016]" : "bg-[#5c1a1a]"}`}
+    //       >
+    //         <p className='mb-2 font-bold'>
+    //           {isCorrect ? "✓ Correct!" : "✗ Incorrect"}
+    //         </p>
+    //         <p className='text-[0.85rem]'>
+    //           Your answer: <strong>{userAnswer}</strong>
+    //         </p>
+    //         {!isCorrect && (
+    //           <p className='text-[0.85rem] text-[#ffcc00]'>
+    //             Correct answer: <strong>{correctAnswer}</strong>
+    //           </p>
+    //         )}
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     // If answered, show status message instead of question
-    if (hasAnswered) {
-      return (
-        <div className='battle-question'>
-          <p className='answered-indicator'>
-            {isUserQuestion
-              ? "You have answered the question"
-              : `${avatarName} has answered the question`}
-          </p>
-        </div>
-      );
-    }
+    // if (hasAnswered) {
+    // return (
+    //   <div className='max-w-md w-[90%] backdrop-blur-md mb-4relative'>
+    //     <p className='font-serif text-sm text-[#00ff41] text-center mb-4 font-bold'>
+    //       {isUserQuestion
+    //         ? "You have answered the question"
+    //         : `${avatarName} has answered the question`}
+    //     </p>
+    //   </div>
+    // );
+    // }
 
     // Check if defender should wait for attacker
     const isDefender = !isAttacker;
@@ -447,8 +448,10 @@ function Battle() {
 
     if (shouldWait) {
       return (
-        <div className='battle-question'>
-          <p className='question-text'>Waiting for attacker to answer...</p>
+        <div className=' max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
+          <p className='font-serif text-base text-[#ffd700] text-center animate-pulse'>
+            Waiting for attacker to answer...
+          </p>
         </div>
       );
     }
@@ -458,18 +461,24 @@ function Battle() {
       const timer = isAttacker ? attackerTimer : defenderTimer;
 
       return (
-        <div className='battle-question'>
-          <div className='timer-display'>
-            <i className='fas fa-clock'></i>
-            <span className={timer <= 5 ? "timer-warning" : ""}>{timer}s</span>
+        <div className=' max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
+          <div className='absolute top-4 right-4 flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
+            <i className='fas fa-clock text-[#00ff41] text-base'></i>
+            <span
+              className={`font-bold text-lg min-w-[35px] text-center ${timer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
+            >
+              {timer}s
+            </span>
           </div>
-          <p className='question-text'>{questionData.question}</p>
-          <ul className='question-options'>
+          <p className='font-serif text-base text-[#ffd700] mb-4 text-center'>
+            {questionData.question}
+          </p>
+          <ul className='list-none p-0 m-0'>
             {questionData.options.map((option, index) => (
               <li
                 key={index}
-                className={`question-option ${
-                  !isUserQuestion ? "disabled" : ""
+                className={`font-serif text-white p-1 my-2 bg-white/5 border border-[#00ff41] rounded cursor-pointer transition-all duration-300 hover:bg-[rgba(0,255,65,0.2)] hover:border-[#ffd700] hover:translate-x-1 ${
+                  !isUserQuestion ? "cursor-not-allowed opacity-50" : ""
                 }`}
                 onClick={() => {
                   if (isUserQuestion) {
@@ -492,8 +501,6 @@ function Battle() {
   const isAttacker = battle?.attackerAvatarId === currentUserAvatarId;
   const isDefender = battle?.defenderAvatarId === currentUserAvatarId;
 
-  console.log(battle?.defenderAvatarId, currentUserAvatarId);
-
   // Helper to parse and display question for admin
   const renderAdminQuestion = (question, label) => {
     if (!question) return <p>No question assigned</p>;
@@ -501,27 +508,29 @@ function Battle() {
     try {
       const questionData = JSON.parse(question.question);
       return (
-        <div className='admin-question-block'>
-          <h4>{label}</h4>
-          <p className='admin-question-text'>{questionData.question}</p>
-          <ul className='admin-options-list'>
+        <div className='flex-1 max-w-[500px] bg-[#282828] border-2 border-[#ff6b35] rounded-lg p-4'>
+          <h4 className='text-[#ff6b35] m-0 mb-3 text-lg'>{label}</h4>
+          <p className='text-gray-200 text-base mb-3 font-semibold'>
+            {questionData.question}
+          </p>
+          <ul className='list-none p-0 m-0 mb-4'>
             {questionData.options.map((option, index) => (
               <li
                 key={index}
-                className={option === question.answer ? "correct-answer" : ""}
+                className={`bg-[#3a3a3a] p-2 mb-2 rounded text-gray-300 border ${option === question.answer ? "border-[#00ff41] bg-[rgba(0,255,65,0.1)] text-[#00ff41] font-bold" : "border-transparent"}`}
               >
                 {option}
                 {option === question.answer && " ✓"}
               </li>
             ))}
           </ul>
-          <p className='admin-user-answer'>
+          <p className='text-gray-300 text-sm m-0'>
             User Answer:{" "}
             <span
               className={
                 question.userAnswer === question.answer
-                  ? "correct"
-                  : "incorrect"
+                  ? "text-[#00ff41] font-bold"
+                  : "text-[#ff6b35] font-bold"
               }
             >
               {question.userAnswer || "Not answered yet"}
@@ -535,132 +544,160 @@ function Battle() {
   };
 
   return (
-    <div className='battle-container-3423'>
-      <div className='battle-side attacker-side'>
-        <h2 style={{ color: "orange" }}>Attacker</h2>
+    <div className='flex'>
+      <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(40,40,40,1)] border-r-2 border-[#ff6b35]'>
+        <h2 className='text-orange-500'>Attacker</h2>
         {attackerQuestion &&
           renderQuestion(attackerQuestion, isAttacker, attacker.name, true)}
 
         {/* Health and Stamina Bars */}
-        <div className='warrior-bars'>
-          <div className='stat-bar-row'>
-            <div className='stat-bar-label'>
-              <i className='fas fa-heart'></i> Health
+        <div className='w-[90%] max-w-[500px] mb-4'>
+          <div className='flex items-center gap-3 mb-3'>
+            <div className='flex items-center gap-2 text-sm text-gray-300 font-semibold min-w-[90px]'>
+              <i className='fas fa-heart text-[0.85rem]'></i> Health
             </div>
-            <div className='stat-bar'>
+            <div className='flex-1 h-6 bg-[#282828] border-2 border-[#4a4a4a] rounded overflow-hidden block relative'>
               <div
-                className='stat-bar-fill health-bar'
+                className='h-full bg-gradient-to-r from-[#ff4444] to-[#ff6b6b] transition-all duration-300 min-w-0 max-w-full'
                 style={{
                   width: `${Math.min(Math.max(attacker.health, 0), 100)}%`,
                 }}
               ></div>
             </div>
-            <span className='stat-bar-value'>{attacker.health}</span>
+            <span className='min-w-[40px] text-right text-base font-bold text-[#ffd700] flex-shrink-0'>
+              {attacker.health}
+            </span>
           </div>
-          <div className='stat-bar-row'>
-            <div className='stat-bar-label'>
-              <i className='fas fa-bolt'></i> Stamina
+          <div className='flex items-center gap-3 mb-3'>
+            <div className='flex items-center gap-2 text-sm text-gray-300 font-semibold min-w-[90px]'>
+              <i className='fas fa-bolt text-[0.85rem]'></i> Stamina
             </div>
-            <div className='stat-bar'>
+            <div className='flex-1 h-6 bg-[#282828] border-2 border-[#4a4a4a] rounded overflow-hidden block relative'>
               <div
-                className='stat-bar-fill stamina-bar'
+                className='h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transition-all duration-300 min-w-0 max-w-full'
                 style={{
                   width: `${Math.min(Math.max(attacker.stamina, 0), 100)}%`,
                 }}
               ></div>
             </div>
-            <span className='stat-bar-value'>{attacker.stamina}</span>
+            <span className='min-w-[40px] text-right text-base font-bold text-[#ffd700] flex-shrink-0'>
+              {attacker.stamina}
+            </span>
           </div>
         </div>
 
         <img
           src={attacker.thumbnail}
           alt={attacker.name}
-          className='battle-avatar-image'
+          className='w-[80%] max-w-[600px] h-auto object-contain my-4 drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]'
         />
 
         {/* Warrior Name */}
-        <p className='warrior-name'>{attacker.name}</p>
+        <p className='font-["MedievalSharp",cursive] text-2xl font-bold text-[#ffd700] my-4 text-center uppercase tracking-[2px]'>
+          {attacker.name}
+        </p>
 
         {/* Attack and Defense Cards */}
-        <div className='warrior-combat-stats'>
-          <div className='combat-stat-card attack-card'>
-            <i className='fas fa-sword'></i>
-            <div className='stat-info'>
-              <span className='stat-label'>Attack</span>
-              <span className='stat-number'>{attacker.attack}</span>
+        <div className='flex justify-center items-center gap-4 w-[90%] max-w-[500px] mt-4'>
+          <div className='flex-1 flex items-center gap-3 p-4 rounded-lg bg-[#3a3a3a] border-2 border-[#ff6b35] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)]'>
+            <i className='fas fa-sword text-[#ff6b35] text-2xl'></i>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-300 uppercase tracking-wider font-semibold'>
+                Attack
+              </span>
+              <span className='text-2xl font-bold text-[#ffd700] font-["MedievalSharp",cursive]'>
+                {attacker.attack}
+              </span>
             </div>
           </div>
-          <div className='combat-stat-card defense-card'>
-            <i className='fas fa-shield'></i>
-            <div className='stat-info'>
-              <span className='stat-label'>Defense</span>
-              <span className='stat-number'>{attacker.defense}</span>
+          <div className='flex-1 flex items-center gap-3 p-4 rounded-lg bg-[#3a3a3a] border-2 border-[#4a9eff] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)]'>
+            <i className='fas fa-shield text-[#4a9eff] text-2xl'></i>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-300 uppercase tracking-wider font-semibold'>
+                Defense
+              </span>
+              <span className='text-2xl font-bold text-[#ffd700] font-["MedievalSharp",cursive]'>
+                {attacker.defense}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className='battle-side defender-side'>
-        <h2 style={{ color: "green" }}>Defender</h2>
+      <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-bl from-[rgba(0,255,65,0.1)] to-[rgba(40,40,40,1)] border-l-2 border-[#00ff41]'>
+        <h2 className='text-green-500'>Defender</h2>
         {defenderQuestion &&
           renderQuestion(defenderQuestion, isDefender, defender.name, false)}
 
         {/* Health and Stamina Bars */}
-        <div className='warrior-bars'>
-          <div className='stat-bar-row'>
-            <div className='stat-bar-label'>
-              <i className='fas fa-heart'></i> Health
+        <div className='w-[90%] max-w-[500px] mb-4'>
+          <div className='flex items-center gap-3 mb-3'>
+            <div className='flex items-center gap-2 text-sm text-gray-300 font-semibold min-w-[90px]'>
+              <i className='fas fa-heart text-[0.85rem]'></i> Health
             </div>
-            <div className='stat-bar'>
+            <div className='flex-1 h-6 bg-[#282828] border-2 border-[#4a4a4a] rounded overflow-hidden block relative'>
               <div
-                className='stat-bar-fill health-bar'
+                className='h-full bg-gradient-to-r from-[#ff4444] to-[#ff6b6b] transition-all duration-300 min-w-0 max-w-full'
                 style={{
                   width: `${Math.min(Math.max(defender.health, 0), 100)}%`,
                 }}
               ></div>
             </div>
-            <span className='stat-bar-value'>{defender.health}</span>
+            <span className='min-w-[40px] text-right text-base font-bold text-[#ffd700] flex-shrink-0'>
+              {defender.health}
+            </span>
           </div>
-          <div className='stat-bar-row'>
-            <div className='stat-bar-label'>
-              <i className='fas fa-bolt'></i> Stamina
+          <div className='flex items-center gap-3 mb-3'>
+            <div className='flex items-center gap-2 text-sm text-gray-300 font-semibold min-w-[90px]'>
+              <i className='fas fa-bolt text-[0.85rem]'></i> Stamina
             </div>
-            <div className='stat-bar'>
+            <div className='flex-1 h-6 bg-[#282828] border-2 border-[#4a4a4a] rounded overflow-hidden block relative'>
               <div
-                className='stat-bar-fill stamina-bar'
+                className='h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e] transition-all duration-300 min-w-0 max-w-full'
                 style={{
                   width: `${Math.min(Math.max(defender.stamina, 0), 100)}%`,
                 }}
               ></div>
             </div>
-            <span className='stat-bar-value'>{defender.stamina}</span>
+            <span className='min-w-[40px] text-right text-base font-bold text-[#ffd700] flex-shrink-0'>
+              {defender.stamina}
+            </span>
           </div>
         </div>
 
         <img
           src={defender.thumbnail}
           alt={defender.name}
-          className='battle-avatar-image'
+          className='w-[80%] max-w-[600px] h-auto object-contain my-4 drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]'
         />
 
         {/* Warrior Name */}
-        <p className='warrior-name'>{defender.name}</p>
+        <p className='font-["MedievalSharp",cursive] text-2xl font-bold text-[#ffd700] my-4 text-center uppercase tracking-[2px]'>
+          {defender.name}
+        </p>
 
         {/* Attack and Defense Cards */}
-        <div className='warrior-combat-stats'>
-          <div className='combat-stat-card attack-card'>
-            <i className='fas fa-sword'></i>
-            <div className='stat-info'>
-              <span className='stat-label'>Attack</span>
-              <span className='stat-number'>{defender.attack}</span>
+        <div className='flex justify-center items-center gap-4 w-[90%] max-w-[500px] mt-4'>
+          <div className='flex-1 flex items-center gap-3 p-4 rounded-lg bg-[#3a3a3a] border-2 border-[#ff6b35] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)]'>
+            <i className='fas fa-sword text-[#ff6b35] text-2xl'></i>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-300 uppercase tracking-wider font-semibold'>
+                Attack
+              </span>
+              <span className='text-2xl font-bold text-[#ffd700] font-["MedievalSharp",cursive]'>
+                {defender.attack}
+              </span>
             </div>
           </div>
-          <div className='combat-stat-card defense-card'>
-            <i className='fas fa-shield'></i>
-            <div className='stat-info'>
-              <span className='stat-label'>Defense</span>
-              <span className='stat-number'>{defender.defense}</span>
+          <div className='flex-1 flex items-center gap-3 p-4 rounded-lg bg-[#3a3a3a] border-2 border-[#4a9eff] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.3)]'>
+            <i className='fas fa-shield text-[#4a9eff] text-2xl'></i>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-300 uppercase tracking-wider font-semibold'>
+                Defense
+              </span>
+              <span className='text-2xl font-bold text-[#ffd700] font-["MedievalSharp",cursive]'>
+                {defender.defense}
+              </span>
             </div>
           </div>
         </div>
@@ -668,20 +705,22 @@ function Battle() {
 
       {/* Admin Panel */}
       {isAdmin && (
-        <div className='admin-battle-panel'>
-          <h3>Admin Panel</h3>
-          <div className='admin-questions-container'>
+        <div className='fixed bottom-0 left-0 right-0 bg-[#3a3a3a] border-t-[3px] border-[#ffd700] p-6 max-h-[40vh] overflow-y-auto z-[1000]'>
+          <h3 className='text-[#ffd700] m-0 mb-4 text-center text-xl'>
+            Admin Panel
+          </h3>
+          <div className='flex gap-8 mb-4 justify-center'>
             {renderAdminQuestion(
               attackerQuestion,
-              `${attacker.name}'s Question`
+              `${attacker.name}'s Question`,
             )}
             {renderAdminQuestion(
               defenderQuestion,
-              `${defender.name}'s Question`
+              `${defender.name}'s Question`,
             )}
           </div>
           <button
-            className='complete-battle-btn'
+            className='w-full max-w-[400px] mx-auto block bg-[#00ff41] text-[#282828] border-none p-4 rounded-md font-bold text-lg cursor-pointer transition-all duration-300 hover:bg-[#ffd700] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(255,215,0,0.4)]'
             onClick={handleCompleteBattle}
           >
             Complete Battle
