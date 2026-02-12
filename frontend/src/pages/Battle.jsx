@@ -27,6 +27,9 @@ function Battle() {
     fetchCurrentUser();
     fetchBattle();
 
+    // Scroll down 100px to hide header and show characters
+    window.scrollTo({ top: 100, behavior: "smooth" });
+
     // Start polling every 800ms
     pollingIntervalRef.current = setInterval(() => {
       fetchBattle();
@@ -39,6 +42,23 @@ function Battle() {
       }
     };
   }, [id]);
+
+  // Play battle music for admin users
+  useEffect(() => {
+    if (isAdmin) {
+      const audio = new Audio("/src/assets/tracks/battle.mp3");
+      audio.loop = true;
+      audio.play().catch((error) => {
+        console.log("Audio playback failed:", error);
+      });
+
+      // Cleanup: stop audio when component unmounts
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+      };
+    }
+  }, [isAdmin]);
 
   // Timer for attacker
   useEffect(() => {
