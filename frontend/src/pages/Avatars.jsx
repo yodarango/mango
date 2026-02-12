@@ -39,7 +39,10 @@ function Avatars() {
             );
             const assets = await assetsResponse.json();
             warriorsMap[avatar.id] = (assets || []).filter(
-              (asset) => asset.status === "warrior" || asset.status === "rip",
+              (asset) =>
+                asset.status === "warrior" ||
+                asset.status === "rip" ||
+                asset.status === "exhausted",
             );
           } catch (err) {
             console.error(
@@ -235,11 +238,25 @@ function Avatars() {
                                   alt={warrior.name}
                                   title={warrior.name}
                                   style={
-                                    warrior.status === "rip"
+                                    warrior.status === "rip" ||
+                                    warrior.status === "exhausted"
                                       ? { filter: "grayscale(100%)" }
                                       : {}
                                   }
                                 />
+                                {warrior.status === "exhausted" && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "4px",
+                                      right: "4px",
+                                      fontSize: "20px",
+                                      lineHeight: "1",
+                                    }}
+                                  >
+                                    😴
+                                  </div>
+                                )}
                                 {warrior.status === "rip" && (
                                   <div
                                     style={{
@@ -356,11 +373,25 @@ function Avatars() {
                       alt={selectedWarrior.name}
                       className='popup-warrior-image'
                       style={
-                        selectedWarrior.status === "rip"
+                        selectedWarrior.status === "rip" ||
+                        selectedWarrior.status === "exhausted"
                           ? { filter: "grayscale(100%)" }
                           : {}
                       }
                     />
+                    {selectedWarrior.status === "exhausted" && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "8px",
+                          right: "8px",
+                          fontSize: "32px",
+                          lineHeight: "1",
+                        }}
+                      >
+                        😴
+                      </div>
+                    )}
                     {selectedWarrior.status === "rip" && (
                       <div
                         style={{

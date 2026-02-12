@@ -4124,7 +4124,7 @@ func claimCellRewards(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Deplete warrior - remove from grid and mark as unavailable (rip status)
+// Deplete warrior - remove from grid and mark as unavailable (exhausted status)
 func depleteWarrior(w http.ResponseWriter, r *http.Request) {
 	_, err := getUserFromToken(r)
 	if err != nil {
@@ -4152,8 +4152,8 @@ func depleteWarrior(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Mark warrior as "rip" (unavailable)
-		_, err = db.Exec("UPDATE assets SET status = 'rip' WHERE id = ?", warriorID)
+		// Mark warrior as "exhausted" (unavailable due to stamina depletion)
+		_, err = db.Exec("UPDATE assets SET status = 'exhausted' WHERE id = ?", warriorID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -4252,7 +4252,7 @@ func reviveWarrior(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Revive the warrior: change status from "rip" to "warrior" and restore health and stamina
+	// Revive the warrior: change status from "exhausted" or "rip" to "warrior" and restore health and stamina
 	_, err = tx.Exec("UPDATE assets SET status = 'warrior', health = 100, stamina = 100 WHERE id = ?", warriorID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

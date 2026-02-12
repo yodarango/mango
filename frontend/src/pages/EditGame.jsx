@@ -98,8 +98,8 @@ function EditGame() {
             if (response.ok) {
               const asset = await response.json();
               fetchedAssetIdsRef.current.add(assetId); // Mark as fetched
-              // Filter out warriors with status "rip"
-              if (asset.status === "rip") {
+              // Filter out warriors with status "rip" or "exhausted"
+              if (asset.status === "rip" || asset.status === "exhausted") {
                 return null;
               }
               return {

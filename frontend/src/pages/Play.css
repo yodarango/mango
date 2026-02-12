@@ -62,7 +62,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -78,8 +78,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
+  padding: 0;
   transition: all 0.3s ease;
 }
 
@@ -106,9 +105,6 @@
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid var(--accent-green);
-  box-shadow: 0 2px 8px rgba(0, 255, 65, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -747,9 +743,6 @@
   width: 150px;
   height: 150px;
   object-fit: cover;
-  border-radius: 12px;
-  border: 3px solid var(--accent-green);
-  box-shadow: 0 4px 16px rgba(0, 255, 65, 0.4);
 }
 
 .asset-stats-grid {

@@ -117,7 +117,10 @@ function Play() {
           );
           const assets = await assetsResponse.json();
           return (assets || []).filter(
-            (asset) => asset.status === "warrior" || asset.status === "rip",
+            (asset) =>
+              asset.status === "warrior" ||
+              asset.status === "rip" ||
+              asset.status === "exhausted",
           );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
@@ -355,9 +358,12 @@ function Play() {
             `/api/avatars/${avatar.id}/assets`,
           );
           const assets = await assetsResponse.json();
-          // Filter for warrior status (including "rip")
+          // Filter for warrior status (including "rip" and "exhausted")
           return (assets || []).filter(
-            (asset) => asset.status === "warrior" || asset.status === "rip",
+            (asset) =>
+              asset.status === "warrior" ||
+              asset.status === "rip" ||
+              asset.status === "exhausted",
           );
         } catch (err) {
           console.error(`Error fetching assets for avatar ${avatar.id}:`, err);
@@ -394,8 +400,8 @@ function Play() {
       return;
     }
 
-    // Check if warrior is rip
-    if (warrior.status === "rip") {
+    // Check if warrior is rip or exhausted
+    if (warrior.status === "rip" || warrior.status === "exhausted") {
       alert("This warrior is inactive and cannot be placed!");
       return;
     }
@@ -453,8 +459,11 @@ function Play() {
       // If cell has a warrior, check if it belongs to the current user
       const warrior = allWarriorAssets.find((w) => w.id === cell.occupiedBy);
 
-      // Skip if warrior is "rip" - treat cell as empty
-      if (warrior && warrior.status === "rip") {
+      // Skip if warrior is "rip" or "exhausted" - treat cell as empty
+      if (
+        warrior &&
+        (warrior.status === "rip" || warrior.status === "exhausted")
+      ) {
         return;
       }
 
@@ -784,11 +793,12 @@ function Play() {
                 {warriors.map((warrior) => {
                   const isSelected =
                     selectedWarrior && selectedWarrior.id === warrior.id;
-                  const isRip = warrior.status === "rip";
+                  const isInactive =
+                    warrior.status === "rip" || warrior.status === "exhausted";
                   const isPlaced = cells.some(
                     (cell) => cell.occupiedBy === warrior.id,
                   );
-                  const isDepleted = isPlaced || isRip;
+                  const isDepleted = isPlaced || isInactive;
 
                   return (
                     <div
@@ -798,11 +808,13 @@ function Play() {
                       } ${isDepleted ? "depleted" : ""}`}
                       onClick={() => handleWarriorClick(warrior)}
                       title={
-                        isRip
-                          ? "Inactive (RIP)"
-                          : isPlaced
-                            ? "Already placed on grid"
-                            : warrior.name
+                        warrior.status === "exhausted"
+                          ? "Inactive (Exhausted)"
+                          : warrior.status === "rip"
+                            ? "Inactive (RIP)"
+                            : isPlaced
+                              ? "Already placed on grid"
+                              : warrior.name
                       }
                     >
                       <img
@@ -810,14 +822,22 @@ function Play() {
                         alt={warrior.name}
                         className='warrior-thumbnail'
                         style={
-                          isRip
+                          isInactive
                             ? { filter: "grayscale(100%) opacity(0.5)" }
                             : {}
                         }
                       />
-                      <span className='warrior-name'>
+                      <span className='text-small text-white'>
                         {warrior.name}
-                        {isRip && (
+                        {warrior.status === "exhausted" && (
+                          <span
+                            className='exhausted-badge'
+                            style={{ color: "#888", marginLeft: "4px" }}
+                          >
+                            😴
+                          </span>
+                        )}
+                        {warrior.status === "rip" && (
                           <span
                             className='rip-badge'
                             style={{ color: "#888", marginLeft: "4px" }}

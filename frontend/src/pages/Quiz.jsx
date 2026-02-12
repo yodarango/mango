@@ -56,21 +56,24 @@ function Quiz() {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            }
+            },
           );
 
           if (assetsResponse.ok) {
             const assetsData = await assetsResponse.json();
-            // Filter warrior status assets (owned by user) - include both alive and dead warriors
+            // Filter warrior status assets (owned by user) - include alive, dead, and exhausted warriors
             const ownedAssets = assetsData.filter(
-              (asset) => asset.status === "warrior" || asset.status === "rip"
+              (asset) =>
+                asset.status === "warrior" ||
+                asset.status === "rip" ||
+                asset.status === "exhausted",
             );
             setAssets(ownedAssets);
 
             // If warrior ID is provided in URL, auto-select that warrior
             if (warriorIdFromUrl) {
               const preselectedWarrior = ownedAssets.find(
-                (asset) => asset.id === parseInt(warriorIdFromUrl)
+                (asset) => asset.id === parseInt(warriorIdFromUrl),
               );
               if (preselectedWarrior) {
                 setSelectedAsset(preselectedWarrior);
@@ -99,7 +102,7 @@ function Quiz() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -136,7 +139,7 @@ function Quiz() {
                   // For multiple choice, find the index of the user's answer
                   const optionsList = q.options || q.answer;
                   const userAnswerIndex = optionsList.findIndex(
-                    (opt) => opt === userAnswer
+                    (opt) => opt === userAnswer,
                   );
                   isCorrect = q.correct === userAnswerIndex;
                 } else if (q.type === "typed" || q.type === "input") {
@@ -146,7 +149,7 @@ function Quiz() {
                     : [q.answer];
                   isCorrect = acceptableAnswers.some(
                     (correct) =>
-                      correct.toLowerCase() === userAnswer.toLowerCase().trim()
+                      correct.toLowerCase() === userAnswer.toLowerCase().trim(),
                   );
                 }
               }
@@ -240,8 +243,8 @@ function Quiz() {
           // Also update in the assets list
           setAssets((prevAssets) =>
             prevAssets.map((asset) =>
-              asset.id === updatedAsset.id ? updatedAsset : asset
-            )
+              asset.id === updatedAsset.id ? updatedAsset : asset,
+            ),
           );
         }
       } catch (error) {
@@ -336,7 +339,7 @@ function Quiz() {
           userAnswer = typedAnswer;
           isCorrect = acceptableAnswers.some(
             (correct) =>
-              correct.toLowerCase() === typedAnswer.toLowerCase().trim()
+              correct.toLowerCase() === typedAnswer.toLowerCase().trim(),
           );
         }
       }
@@ -412,7 +415,7 @@ function Quiz() {
         console.error(
           "Error submitting assignment:",
           response.status,
-          errorText
+          errorText,
         );
         alert(`Failed to submit assignment: ${errorText || "Unknown error"}`);
         return;
@@ -422,7 +425,7 @@ function Quiz() {
       if (data.success) {
         console.log(
           "Assignment submitted successfully. New coins:",
-          data.coins
+          data.coins,
         );
 
         // Update results with asset data if available
@@ -435,7 +438,7 @@ function Quiz() {
         }
       } else {
         alert(
-          `Failed to submit assignment: ${data.message || "Unknown error"}`
+          `Failed to submit assignment: ${data.message || "Unknown error"}`,
         );
       }
     } catch (error) {
@@ -539,7 +542,8 @@ function Quiz() {
                 </p>
                 <div className='asset-grid'>
                   {assets.map((asset) => {
-                    const isDead = asset.status === "rip";
+                    const isDead =
+                      asset.status === "rip" || asset.status === "exhausted";
                     return (
                       <div
                         key={asset.id}
@@ -604,11 +608,25 @@ function Quiz() {
                     src={selectedAsset.thumbnail}
                     alt={selectedAsset.name}
                     style={
-                      selectedAsset.status === "rip"
+                      selectedAsset.status === "rip" ||
+                      selectedAsset.status === "exhausted"
                         ? { filter: "grayscale(100%)" }
                         : {}
                     }
                   />
+                  {selectedAsset.status === "exhausted" && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "8px",
+                        right: "8px",
+                        fontSize: "24px",
+                        lineHeight: "1",
+                      }}
+                    >
+                      😴
+                    </div>
+                  )}
                   {selectedAsset.status === "rip" && (
                     <div
                       style={{
@@ -707,7 +725,7 @@ function Quiz() {
                   onChange={(e) =>
                     handleTypedAnswer(
                       questions[currentQuestion].id,
-                      e.target.value
+                      e.target.value,
                     )
                   }
                   autoFocus
