@@ -524,35 +524,41 @@ function Battle() {
 
     try {
       const questionData = JSON.parse(question.question);
+
       return (
         <div className='flex-1 max-w-[500px] bg-[#282828] border-2 border-[#ff6b35] rounded-lg p-4'>
           <h4 className='text-[#ff6b35] m-0 mb-3 text-lg'>{label}</h4>
           <p className='text-gray-200 text-base mb-3 font-semibold'>
             {questionData.question}
           </p>
-          <ul className='list-none p-0 m-0 mb-4'>
-            {questionData.options.map((option, index) => (
-              <li
-                key={index}
-                className={`bg-[#3a3a3a] p-2 mb-2 rounded text-gray-300 border ${option === question.answer ? "border-[#00ff41] bg-[rgba(0,255,65,0.1)] text-[#00ff41] font-bold" : "border-transparent"}`}
-              >
-                {option}
-                {option === question.answer && " ✓"}
-              </li>
-            ))}
-          </ul>
-          <p className='text-gray-300 text-sm m-0'>
-            User Answer:{" "}
-            <span
-              className={
-                question.userAnswer === question.answer
-                  ? "text-[#00ff41] font-bold"
-                  : "text-[#ff6b35] font-bold"
+          <ul className='list-none p-0 m-0'>
+            {questionData.options.map((option, index) => {
+              const isCorrectAnswer = option === question.answer;
+              const isUserAnswer = option === question.userAnswer;
+              const isCorrectUserAnswer = isUserAnswer && isCorrectAnswer;
+              const isIncorrectUserAnswer = isUserAnswer && !isCorrectAnswer;
+
+              let borderClass = "border-transparent";
+              if (isCorrectAnswer) {
+                borderClass = "border-[#00ff41] bg-[rgba(0,255,65,0.1)]";
               }
-            >
-              {question.userAnswer || "Not answered yet"}
-            </span>
-          </p>
+              if (isCorrectUserAnswer) {
+                borderClass = "border-[#00ff41] border-4";
+              } else if (isIncorrectUserAnswer) {
+                borderClass = "border-[#ff6b35] border-4";
+              }
+
+              return (
+                <li
+                  key={index}
+                  className={`bg-[#3a3a3a] p-2 mb-2 rounded text-gray-300 border ${borderClass} ${isCorrectAnswer ? "text-[#00ff41] font-bold" : ""}`}
+                >
+                  {option}
+                  {isCorrectAnswer && " ✓"}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       );
     } catch (error) {
