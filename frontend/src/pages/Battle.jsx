@@ -385,7 +385,13 @@ function Battle() {
     );
   }
 
-  const renderQuestion = (question, isUserQuestion, avatarName, isAttacker) => {
+  const renderQuestion = (
+    question,
+    isUserQuestion,
+    avatarName,
+    isAttacker,
+    timer,
+  ) => {
     if (!question) return null;
 
     const hasAnswered = question.submittedAt !== null;
@@ -458,18 +464,9 @@ function Battle() {
 
     try {
       const questionData = JSON.parse(question.question);
-      const timer = isAttacker ? attackerTimer : defenderTimer;
 
       return (
-        <div className=' max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
-          <div className='absolute top-4 right-4 flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
-            <i className='fas fa-clock text-[#00ff41] text-base'></i>
-            <span
-              className={`font-bold text-lg min-w-[35px] text-center ${timer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
-            >
-              {timer}s
-            </span>
-          </div>
+        <div className='max-w-md w-[90%] backdrop-blur-md mb-4 relative'>
           <p className='font-serif text-base text-[#ffd700] mb-4 text-center'>
             {questionData.question}
           </p>
@@ -546,9 +543,27 @@ function Battle() {
   return (
     <div className='flex'>
       <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(40,40,40,1)] border-r-2 border-[#ff6b35]'>
-        <h2 className='text-orange-500'>Attacker</h2>
+        <div className='flex items-center gap-4 mb-4'>
+          <h2 className='text-orange-500 m-0'>Attacker</h2>
+          {attackerQuestion && !attackerQuestion.submittedAt && (
+            <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
+              <i className='fas fa-clock text-[#00ff41] text-base'></i>
+              <span
+                className={`font-bold text-lg min-w-[35px] text-center ${attackerTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
+              >
+                {attackerTimer}s
+              </span>
+            </div>
+          )}
+        </div>
         {attackerQuestion &&
-          renderQuestion(attackerQuestion, isAttacker, attacker.name, true)}
+          renderQuestion(
+            attackerQuestion,
+            isAttacker,
+            attacker.name,
+            true,
+            attackerTimer,
+          )}
 
         {/* Health and Stamina Bars */}
         <div className='w-[90%] max-w-[500px] mb-4'>
@@ -625,9 +640,29 @@ function Battle() {
       </div>
 
       <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-bl from-[rgba(0,255,65,0.1)] to-[rgba(40,40,40,1)] border-l-2 border-[#00ff41]'>
-        <h2 className='text-green-500'>Defender</h2>
+        <div className='flex items-center gap-4 mb-4'>
+          <h2 className='text-green-500 m-0'>Defender</h2>
+          {defenderQuestion &&
+            !defenderQuestion.submittedAt &&
+            attackerQuestion?.submittedAt && (
+              <div className='flex items-center gap-2 bg-[#282828] px-4 py-2 rounded-full border-2 border-[#00ff41]'>
+                <i className='fas fa-clock text-[#00ff41] text-base'></i>
+                <span
+                  className={`font-bold text-lg min-w-[35px] text-center ${defenderTimer <= 5 ? "text-[#ff6b35] animate-pulse" : "text-[#00ff41]"}`}
+                >
+                  {defenderTimer}s
+                </span>
+              </div>
+            )}
+        </div>
         {defenderQuestion &&
-          renderQuestion(defenderQuestion, isDefender, defender.name, false)}
+          renderQuestion(
+            defenderQuestion,
+            isDefender,
+            defender.name,
+            false,
+            defenderTimer,
+          )}
 
         {/* Health and Stamina Bars */}
         <div className='w-[90%] max-w-[500px] mb-4'>
