@@ -561,7 +561,7 @@ function Battle() {
   };
 
   return (
-    <div className='flex'>
+    <div className={`flex ${isAdmin ? "pb-[500px]" : ""}`}>
       <div className='flex-1 flex flex-col items-center justify-center p-8 relative bg-gradient-to-br from-[rgba(255,107,53,0.1)] to-[rgba(40,40,40,1)] border-r-2 border-[#ff6b35]'>
         <div className='flex items-center gap-4 mb-4'>
           <h2 className='text-orange-500 m-0'>Attacker</h2>
