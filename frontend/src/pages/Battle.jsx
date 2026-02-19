@@ -369,8 +369,12 @@ function Battle() {
 
       if (response.ok) {
         alert("Battle completed!");
-        // Redirect admin to edit-battle page
-        navigate(`/admin/edit-battle/${id}`);
+        // Redirect admin to edit-game page
+        if (gameId) {
+          navigate(`/admin/edit-game/${gameId}`);
+        } else {
+          navigate(`/admin/edit-battle/${id}`);
+        }
       } else {
         alert("Failed to complete battle");
       }

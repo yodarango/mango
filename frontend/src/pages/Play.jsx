@@ -1237,8 +1237,12 @@ function Play() {
                           }),
                         });
 
-                        // Navigate to battle page with the new battle ID
-                        navigate(`/battles/${battleId}`);
+                        // Close the attack modal - the polling will automatically redirect to battle
+                        setAttackTarget(null);
+                        setMovingWarrior(null);
+
+                        // The fetchGame polling (lines 60-65) will detect the in_progress battle
+                        // and automatically navigate all users to the battle page
                       } else {
                         const errorText = await response.text();
                         alert(`Failed to create battle: ${errorText}`);
