@@ -71,23 +71,32 @@ function Play() {
       if (data.game) {
         const newTurnIndex = data.game.currentTurnIndex || 0;
         const newTurnStartTime = data.game.turnStartTime
-          ? new Date(data.game.turnStartTime)
+          ? new Date(data.game.turnStartTime + "Z") // Force UTC parsing (backend sends ISO without Z)
           : null;
+
+        console.log("Backend turnStartTime:", data.game.turnStartTime);
+        console.log("Parsed turnStartTime:", newTurnStartTime?.toISOString());
+        console.log("Current time:", new Date().toISOString());
 
         // Check if the turn has actually changed
         const turnChanged =
           newTurnIndex !== currentTurnIndex ||
           (newTurnStartTime &&
             turnStartTime &&
-            newTurnStartTime.getTime() !== turnStartTime.getTime());
+            Math.abs(newTurnStartTime.getTime() - turnStartTime.getTime()) >
+              500); // Allow 500ms tolerance for network latency
 
         if (turnChanged) {
+          console.log(
+            `Turn changed: ${currentTurnIndex} -> ${newTurnIndex} at ${newTurnStartTime?.toISOString()}`,
+          );
           // Turn has changed, reset the advancing flag immediately
           setIsAdvancingTurn(false);
           // Also reset the last turn advance ref so the new turn can be advanced when it expires
           lastTurnAdvanceRef.current = null;
         }
 
+        // Always update state to ensure sync
         setCurrentTurnIndex(newTurnIndex);
         setTurnDuration(data.game.turnDuration || 20);
         setGameAvatars(data.game.avatars || []);
@@ -172,10 +181,10 @@ function Play() {
       fetchGame();
       fetchUserWarriors();
 
-      // Start polling every 800ms
+      // Start polling every 1 second
       pollingIntervalRef.current = setInterval(() => {
         fetchGame();
-      }, 800);
+      }, 1000);
     }
 
     // Cleanup: stop polling when component unmounts
@@ -196,51 +205,66 @@ function Play() {
     }
   }, [loading, game]);
 
-  // Timer countdown effect
+  // Timer countdown effect - single source of truth from backend
   useEffect(() => {
-    if (turnStartTime && turnDuration && gameAvatars.length > 0) {
-      // Create a unique key for this turn to prevent duplicate advances
-      const turnKey = `${currentTurnIndex}-${new Date(
-        turnStartTime,
-      ).getTime()}`;
-
-      // Reset zero counter when turn changes
-      zeroTimeCountRef.current = 0;
-
-      const interval = setInterval(() => {
-        const elapsed = (Date.now() - new Date(turnStartTime).getTime()) / 1000;
-        const remaining = Math.max(0, turnDuration - elapsed);
-        setTimeRemaining(Math.ceil(remaining));
-
-        // Only track zero time and attempt advance if:
-        // 1. Not currently advancing
-        // 2. This turn hasn't been advanced yet
-        // 3. Enough time has actually elapsed (at least 95% of turn duration)
-        const shouldConsiderAdvance =
-          !isAdvancingTurn &&
-          lastTurnAdvanceRef.current !== turnKey &&
-          elapsed >= turnDuration * 0.95;
-
-        if (shouldConsiderAdvance) {
-          // Track how long we've been at 0
-          if (remaining <= 0) {
-            zeroTimeCountRef.current += 0.1; // Increment by 100ms
-          } else {
-            zeroTimeCountRef.current = 0; // Reset if not at 0
-          }
-
-          // Auto-advance turn when time runs out
-          // Force advance if stuck at 0 for more than 1 second
-          if (remaining <= 0 || zeroTimeCountRef.current > 1) {
-            lastTurnAdvanceRef.current = turnKey;
-            zeroTimeCountRef.current = 0; // Reset counter
-            advanceTurnAPI();
-          }
-        }
-      }, 100); // Update every 100ms for smooth countdown
-
-      return () => clearInterval(interval);
+    if (!turnStartTime || !turnDuration || gameAvatars.length === 0) {
+      setTimeRemaining(turnDuration || 20);
+      return;
     }
+
+    // Create a unique key for this turn to prevent duplicate advances
+    const turnKey = `${currentTurnIndex}-${turnStartTime.getTime()}`;
+
+    // Reset zero counter when turn changes
+    zeroTimeCountRef.current = 0;
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const startTime = turnStartTime.getTime();
+      const elapsed = (now - startTime) / 1000;
+      const remaining = Math.max(0, turnDuration - elapsed);
+
+      // Use floor instead of ceil to prevent skipping numbers
+      const displayTime = Math.floor(remaining);
+      setTimeRemaining(displayTime);
+
+      // Only the current turn player should attempt to advance
+      // This prevents multiple clients from racing to advance
+      const isMyTurn = gameAvatars[currentTurnIndex] === avatarId;
+
+      // Only track zero time and attempt advance if:
+      // 1. It's my turn (only current player advances)
+      // 2. Not currently advancing
+      // 3. This turn hasn't been advanced yet
+      // 4. Time has actually run out
+      const shouldConsiderAdvance =
+        isMyTurn &&
+        !isAdvancingTurn &&
+        lastTurnAdvanceRef.current !== turnKey &&
+        remaining <= 0.5; // Start considering advance at 0.5s remaining
+
+      if (shouldConsiderAdvance) {
+        // Track how long we've been at 0
+        if (remaining <= 0) {
+          zeroTimeCountRef.current += 0.1; // Increment by 100ms
+        } else {
+          zeroTimeCountRef.current = 0; // Reset if not at 0
+        }
+
+        // Auto-advance turn when time runs out
+        // Only advance once we're truly at 0
+        if (remaining <= 0 && zeroTimeCountRef.current >= 0.2) {
+          console.log(
+            `Auto-advancing turn from ${currentTurnIndex} (time expired)`,
+          );
+          lastTurnAdvanceRef.current = turnKey;
+          zeroTimeCountRef.current = 0; // Reset counter
+          advanceTurnAPI();
+        }
+      }
+    }, 100); // Update every 100ms for smooth countdown
+
+    return () => clearInterval(interval);
   }, [
     turnStartTime,
     turnDuration,

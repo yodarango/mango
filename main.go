@@ -13,12 +13,10 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -195,7 +193,8 @@ type Game struct {
 	Rows             int        `json:"rows"`
 	Columns          int        `json:"columns"`
 	CurrentTurnIndex int        `json:"currentTurnIndex"`
-	TurnStartTime    *time.Time `json:"turnStartTime,omitempty"`
+	TurnStartTime    *time.Time `json:"-"` // Don't serialize directly
+	TurnStartTimeISO *string    `json:"turnStartTime,omitempty"` // ISO 8601 format for frontend
 	TurnDuration     int        `json:"turnDuration"` // in seconds
 	BattleID         *int       `json:"battleId,omitempty"`
 	CreatedAt        time.Time  `json:"createdAt"`
@@ -254,17 +253,6 @@ type CreateGameRequest struct {
 
 var db *sql.DB
 var jwtSecret = []byte("your-secret-key-change-this-in-production")
-
-// WebSocket upgrader
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true // Allow all origins for development
-	},
-}
-
-// WebSocket clients map (userID -> connection)
-var clients = make(map[int]*websocket.Conn)
-var clientsMutex sync.RWMutex
 
 var (
 	mainPowers    = []string{"Fire 🔥", "Water 💧", "Electricity ⚡️", "Earth 🌱", "Wind 🌬️", "Time 🕥", "Light 🌞", "Metal 🪨"}
@@ -1397,12 +1385,6 @@ func requestAssetAccess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send WebSocket notification
-	notifyUser(ownerUserID, "new_notification", map[string]interface{}{
-		"title":   title,
-		"message": message,
-	})
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
@@ -1481,12 +1463,6 @@ func approveAssetAccess(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error creating notification: %v", err)
 	}
 
-	// Send WebSocket notification
-	notifyUser(req.RequesterID, "new_notification", map[string]interface{}{
-		"title":   title,
-		"message": message,
-	})
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
@@ -1549,12 +1525,6 @@ func denyAssetAccess(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error creating notification: %v", err)
 	}
-
-	// Send WebSocket notification
-	notifyUser(req.RequesterID, "new_notification", map[string]interface{}{
-		"title":   title,
-		"message": message,
-	})
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -1950,12 +1920,6 @@ func createNotifications(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
-		// Send WebSocket notification
-		notifyUser(userID, "new_notification", map[string]interface{}{
-			"title":   req.Title,
-			"message": req.Message,
-		})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -3526,6 +3490,9 @@ func getGame(w http.ResponseWriter, r *http.Request) {
 
 	if turnStartTime.Valid {
 		game.TurnStartTime = &turnStartTime.Time
+		// Format as ISO 8601 without timezone (SQLite stores in UTC)
+		isoTime := turnStartTime.Time.UTC().Format("2006-01-02T15:04:05.000")
+		game.TurnStartTimeISO = &isoTime
 	}
 
 	if battleID.Valid {
@@ -3815,9 +3782,6 @@ func updateGameCell(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Broadcast game update to all connected users
-	broadcastGameUpdate(gameID)
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
@@ -3897,9 +3861,6 @@ func placeWarriorOnCell(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// Broadcast game update to all connected users
-	broadcastGameUpdate(gameID)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
@@ -3999,9 +3960,6 @@ func moveWarrior(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// Broadcast game update to all connected users
-	broadcastGameUpdate(fromGameID)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
@@ -4159,12 +4117,6 @@ func depleteWarrior(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Get the game ID to broadcast update
-		var gameID sql.NullInt64
-		db.QueryRow("SELECT game_id FROM game_cells WHERE occupied_by = ?", warriorID).Scan(&gameID)
-		if gameID.Valid {
-			broadcastGameUpdate(int(gameID.Int64))
-		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -4328,10 +4280,6 @@ func advanceTurn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Broadcast game update
-	gameIDInt, _ := strconv.Atoi(gameID)
-	broadcastGameUpdate(gameIDInt)
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success":       true,
@@ -4384,10 +4332,6 @@ func setTurn(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// Broadcast game update
-	gameIDInt, _ := strconv.Atoi(gameID)
-	broadcastGameUpdate(gameIDInt)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -5196,89 +5140,7 @@ func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// WebSocket handler
-func handleWebSocket(w http.ResponseWriter, r *http.Request) {
-	// Get token from query parameter (WebSocket can't use Authorization header in browser)
-	tokenString := r.URL.Query().Get("token")
-	if tokenString == "" {
-		log.Println("No token provided in WebSocket connection")
-		http.Error(w, "Unauthorized: No token provided", http.StatusUnauthorized)
-		return
-	}
 
-	// Parse and validate token
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
-	})
-
-	if err != nil || !token.Valid {
-		log.Println("Invalid token in WebSocket connection:", err)
-		http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
-		return
-	}
-
-	claims, ok := token.Claims.(*Claims)
-	if !ok {
-		log.Println("Invalid claims in WebSocket token")
-		http.Error(w, "Unauthorized: Invalid claims", http.StatusUnauthorized)
-		return
-	}
-
-	// Upgrade connection
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println("WebSocket upgrade error:", err)
-		return
-	}
-
-	// Store connection
-	clientsMutex.Lock()
-	clients[claims.UserID] = conn
-	clientsMutex.Unlock()
-
-	log.Printf("WebSocket connected: User %d", claims.UserID)
-
-	// Clean up on disconnect
-	defer func() {
-		clientsMutex.Lock()
-		delete(clients, claims.UserID)
-		clientsMutex.Unlock()
-		conn.Close()
-		log.Printf("WebSocket disconnected: User %d", claims.UserID)
-	}()
-
-	// Keep connection alive
-	for {
-		_, _, err := conn.ReadMessage()
-		if err != nil {
-			break
-		}
-	}
-}
-
-// Broadcast notification to specific user
-func notifyUser(userID int, notificationType string, data interface{}) {
-	clientsMutex.RLock()
-	conn, exists := clients[userID]
-	clientsMutex.RUnlock()
-
-	if !exists {
-		return
-	}
-
-	message := map[string]interface{}{
-		"type": notificationType,
-		"data": data,
-	}
-
-	err := conn.WriteJSON(message)
-	if err != nil {
-		log.Printf("Error sending notification to user %d: %v", userID, err)
-		clientsMutex.Lock()
-		delete(clients, userID)
-		clientsMutex.Unlock()
-	}
-}
 
 // Assign question to battle
 func assignQuestionToBattle(w http.ResponseWriter, r *http.Request) {
@@ -5387,36 +5249,7 @@ func completeBattle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
-// Broadcast to multiple users
-func notifyUsers(userIDs []int, notificationType string, data interface{}) {
-	for _, userID := range userIDs {
-		notifyUser(userID, notificationType, data)
-	}
-}
 
-// Broadcast game update to all connected users
-func broadcastGameUpdate(gameID int) {
-	clientsMutex.RLock()
-	defer clientsMutex.RUnlock()
-
-	message := map[string]interface{}{
-		"type":   "game_update",
-		"gameId": gameID,
-	}
-
-	messageJSON, err := json.Marshal(message)
-	if err != nil {
-		log.Println("Error marshaling game update:", err)
-		return
-	}
-
-	for userID, conn := range clients {
-		err := conn.WriteMessage(websocket.TextMessage, messageJSON)
-		if err != nil {
-			log.Printf("Error sending game update to user %d: %v", userID, err)
-		}
-	}
-}
 
 func main() {
 	// Load environment variables from .env file
@@ -5464,7 +5297,6 @@ func main() {
 	api.HandleFunc("/assignments/bulk-update-due-dates", bulkUpdateAssignmentDueDates).Methods("PUT")
 	api.HandleFunc("/assignments/{id}", updateAssignment).Methods("PUT")
 	api.HandleFunc("/assignments/{id}", deleteAssignment).Methods("DELETE")
-	api.HandleFunc("/ws", handleWebSocket)
 	api.HandleFunc("/games", getGames).Methods("GET")
 	api.HandleFunc("/games/create", createGame).Methods("POST")
 	api.HandleFunc("/games/{id}", getGame).Methods("GET")

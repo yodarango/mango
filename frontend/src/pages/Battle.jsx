@@ -13,15 +13,9 @@ function Battle() {
   const [gameId, setGameId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [attackerTimer, setAttackerTimer] = useState(20);
-  const [defenderTimer, setDefenderTimer] = useState(20);
   const [showResults, setShowResults] = useState(false);
   const [battleResults, setBattleResults] = useState(null);
   const pollingIntervalRef = useRef(null);
-  const attackerTimerRef = useRef(null);
-  const defenderTimerRef = useRef(null);
-  const hasAutoSubmittedAttacker = useRef(false);
-  const hasAutoSubmittedDefender = useRef(false);
   const battleAudioRef = useRef(null);
 
   useEffect(() => {
@@ -31,10 +25,10 @@ function Battle() {
     // Scroll down 100px to hide header and show characters
     window.scrollTo({ top: 100, behavior: "smooth" });
 
-    // Start polling every 800ms
+    // Start polling every 1 second
     pollingIntervalRef.current = setInterval(() => {
       fetchBattle();
-    }, 800);
+    }, 1000);
 
     // Cleanup: stop polling when component unmounts
     return () => {
@@ -64,132 +58,34 @@ function Battle() {
     };
   }, [isAdmin]);
 
-  // Timer for attacker
+  // Single timer based on battle creation time
   useEffect(() => {
-    console.log(
-      "Attacker Timer Effect - Question ID:",
-      attackerQuestion?.id,
-      "Submitted:",
-      attackerQuestion?.submittedAt,
-      "Auto-submitted:",
-      hasAutoSubmittedAttacker.current,
-    );
+    if (!battle) return;
 
-    // Only start timer if attacker hasn't answered and question exists
-    if (
-      attackerQuestion &&
-      !attackerQuestion.submittedAt &&
-      !hasAutoSubmittedAttacker.current
-    ) {
-      // Only start a new timer if one isn't already running
-      if (!attackerTimerRef.current) {
-        console.log(
-          "Starting attacker timer for question ID:",
-          attackerQuestion.id,
-        );
-        setAttackerTimer(20);
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const battleStart = new Date(battle.date).getTime();
+      const elapsed = (now - battleStart) / 1000;
 
-        attackerTimerRef.current = setInterval(() => {
-          setAttackerTimer((prev) => {
-            console.log("Attacker timer tick:", prev);
-            if (prev <= 1) {
-              // Time's up - auto submit with wrong answer
-              console.log("Attacker time's up! Auto-submitting...");
-              if (!hasAutoSubmittedAttacker.current) {
-                hasAutoSubmittedAttacker.current = true;
-                handleAnswerSelect("x", attackerQuestion.id);
-              }
-              clearInterval(attackerTimerRef.current);
-              attackerTimerRef.current = null;
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+      // Auto-submit logic - only if question exists and hasn't been submitted
+      if (attackerQuestion && !attackerQuestion.submittedAt && elapsed >= 20) {
+        // Attacker time expired
+        console.log("Attacker time expired, auto-submitting");
+        handleAnswerSelect("x", attackerQuestion.id);
+      } else if (
+        attackerQuestion?.submittedAt &&
+        defenderQuestion &&
+        !defenderQuestion.submittedAt &&
+        elapsed >= 40
+      ) {
+        // Defender time expired
+        console.log("Defender time expired, auto-submitting");
+        handleAnswerSelect("x", defenderQuestion.id);
       }
-    } else {
-      // Clear timer if question is answered
-      if (attackerTimerRef.current) {
-        console.log("Clearing attacker timer");
-        clearInterval(attackerTimerRef.current);
-        attackerTimerRef.current = null;
-      }
-      if (attackerQuestion?.submittedAt) {
-        hasAutoSubmittedAttacker.current = false;
-      }
-    }
+    }, 100);
 
-    return () => {
-      // Don't clear on cleanup - let the timer run
-    };
-  }, [attackerQuestion?.id, attackerQuestion?.submittedAt]);
-
-  // Timer for defender
-  useEffect(() => {
-    console.log(
-      "Defender Timer Effect - Question ID:",
-      defenderQuestion?.id,
-      "Submitted:",
-      defenderQuestion?.submittedAt,
-      "Attacker Submitted:",
-      attackerQuestion?.submittedAt,
-      "Auto-submitted:",
-      hasAutoSubmittedDefender.current,
-    );
-
-    // Only start timer if defender hasn't answered, question exists, and attacker has answered
-    if (
-      defenderQuestion &&
-      !defenderQuestion.submittedAt &&
-      attackerQuestion?.submittedAt &&
-      !hasAutoSubmittedDefender.current
-    ) {
-      // Only start a new timer if one isn't already running
-      if (!defenderTimerRef.current) {
-        console.log(
-          "Starting defender timer for question ID:",
-          defenderQuestion.id,
-        );
-        setDefenderTimer(20);
-
-        defenderTimerRef.current = setInterval(() => {
-          setDefenderTimer((prev) => {
-            console.log("Defender timer tick:", prev);
-            if (prev <= 1) {
-              // Time's up - auto submit with wrong answer
-              console.log("Defender time's up! Auto-submitting...");
-              if (!hasAutoSubmittedDefender.current) {
-                hasAutoSubmittedDefender.current = true;
-                handleAnswerSelect("x", defenderQuestion.id);
-              }
-              clearInterval(defenderTimerRef.current);
-              defenderTimerRef.current = null;
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
-      }
-    } else {
-      // Clear timer if question is answered or waiting for attacker
-      if (defenderTimerRef.current) {
-        console.log("Clearing defender timer");
-        clearInterval(defenderTimerRef.current);
-        defenderTimerRef.current = null;
-      }
-      if (defenderQuestion?.submittedAt) {
-        hasAutoSubmittedDefender.current = false;
-      }
-    }
-
-    return () => {
-      // Don't clear on cleanup - let the timer run
-    };
-  }, [
-    defenderQuestion?.id,
-    defenderQuestion?.submittedAt,
-    attackerQuestion?.submittedAt,
-  ]);
+    return () => clearInterval(interval);
+  }, [battle, attackerQuestion, defenderQuestion]);
 
   const fetchCurrentUser = () => {
     try {
@@ -231,6 +127,10 @@ function Battle() {
       }
 
       const data = await battleResponse.json();
+
+      console.log("Battle data received:", data);
+      console.log("Attacker asset:", data.attackerAsset);
+      console.log("Defender asset:", data.defenderAsset);
 
       setBattle(data.battle);
 
@@ -369,13 +269,13 @@ function Battle() {
 
       if (response.ok) {
         alert("Battle completed!");
-        // Redirect back to the game page (same tab)
-        if (gameId) {
-          navigate(`/play/${gameId}`);
-        } else {
-          // If no gameId, go to battles list
-          navigate(`/battles`);
+
+        // Close tab for admin only
+        if (isAdmin) {
+          window.close();
         }
+        // Non-admin users will be redirected automatically by polling
+        // which checks: if (data.battle.status === "completed" && !isAdmin)
       } else {
         alert("Failed to complete battle");
       }
@@ -415,13 +315,7 @@ function Battle() {
     );
   }
 
-  const renderQuestion = (
-    question,
-    isUserQuestion,
-    avatarName,
-    isAttacker,
-    timer,
-  ) => {
+  const renderQuestion = (question, isUserQuestion, avatarName, isAttacker) => {
     if (!question) return null;
 
     const hasAnswered = question.submittedAt !== null;
@@ -528,6 +422,27 @@ function Battle() {
   const isAttacker = battle?.attackerAvatarId === currentUserAvatarId;
   const isDefender = battle?.defenderAvatarId === currentUserAvatarId;
 
+  // Calculate individual timers from single source of truth
+  const getAttackerTimer = () => {
+    if (!battle || attackerQuestion?.submittedAt) return 0;
+    const now = Date.now();
+    const battleStart = new Date(battle.date).getTime();
+    const elapsed = (now - battleStart) / 1000;
+    return Math.max(0, Math.floor(20 - elapsed));
+  };
+
+  const getDefenderTimer = () => {
+    if (!battle || defenderQuestion?.submittedAt) return 0;
+    if (!attackerQuestion?.submittedAt) return 20; // Waiting for attacker
+    const now = Date.now();
+    const battleStart = new Date(battle.date).getTime();
+    const elapsed = (now - battleStart) / 1000;
+    return Math.max(0, Math.floor(40 - elapsed));
+  };
+
+  const attackerTimer = getAttackerTimer();
+  const defenderTimer = getDefenderTimer();
+
   // Helper to parse and display question for admin
   const renderAdminQuestion = (question, label) => {
     if (!question) return <p>No question assigned</p>;
@@ -591,13 +506,7 @@ function Battle() {
           </div>
         </div>
         {attackerQuestion &&
-          renderQuestion(
-            attackerQuestion,
-            isAttacker,
-            attacker.name,
-            true,
-            attackerTimer,
-          )}
+          renderQuestion(attackerQuestion, isAttacker, attacker.name, true)}
 
         {/* Health and Stamina Bars */}
         <div className='w-[90%] max-w-[500px] mb-4'>
@@ -686,13 +595,7 @@ function Battle() {
           </div>
         </div>
         {defenderQuestion &&
-          renderQuestion(
-            defenderQuestion,
-            isDefender,
-            defender.name,
-            false,
-            defenderTimer,
-          )}
+          renderQuestion(defenderQuestion, isDefender, defender.name, false)}
 
         {/* Health and Stamina Bars */}
         <div className='w-[90%] max-w-[500px] mb-4'>
