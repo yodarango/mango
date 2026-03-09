@@ -134,7 +134,16 @@ function CreateStoreItems() {
         }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data = {};
+
+      if (responseText) {
+        try {
+          data = JSON.parse(responseText);
+        } catch {
+          data = { message: responseText };
+        }
+      }
 
       if (response.ok && data.success) {
         alert(`✅ ${data.message}\n\nStore items created successfully!`);

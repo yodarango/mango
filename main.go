@@ -30,19 +30,19 @@ type User struct {
 }
 
 type Avatar struct {
-	ID            int    `json:"id"`
-	UserID        *int   `json:"userId,omitempty"`
-	Name          string `json:"name"`
-	AvatarName    string `json:"avatarName"`
-	Thumbnail     string `json:"thumbnail"`
-	Coins         int    `json:"coins"`
-	Level         int    `json:"level"`
-	RequiredLevel int    `json:"requiredLevel"`
-	Element       string `json:"element"`
-	SuperPower    string `json:"superPower"`
-	Personality   string `json:"personality"`
-	Weakness      string `json:"weakness"`
-	AnimalAlly    string `json:"animalAlly"`
+	ID                      int    `json:"id"`
+	UserID                  *int   `json:"userId,omitempty"`
+	Name                    string `json:"name"`
+	AvatarName              string `json:"avatarName"`
+	Thumbnail               string `json:"thumbnail"`
+	Coins                   int    `json:"coins"`
+	Level                   int    `json:"level"`
+	RequiredLevel           int    `json:"requiredLevel"`
+	Element                 string `json:"element"`
+	SuperPower              string `json:"superPower"`
+	Personality             string `json:"personality"`
+	Weakness                string `json:"weakness"`
+	AnimalAlly              string `json:"animalAlly"`
 	Mascot                  string `json:"mascot"`
 	LastStreakRewardClaimed int    `json:"lastStreakRewardClaimed"`
 	XPBank                  int    `json:"xpBank"`
@@ -131,12 +131,12 @@ type PurchaseResponse struct {
 }
 
 type Notification struct {
-	ID        int       `json:"id"`
-	UserID    int       `json:"userId"`
-	Title     string    `json:"title"`
-	Message   string    `json:"message"`
-	IsRead    bool      `json:"isRead"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID        int        `json:"id"`
+	UserID    int        `json:"userId"`
+	Title     string     `json:"title"`
+	Message   string     `json:"message"`
+	IsRead    bool       `json:"isRead"`
+	CreatedAt time.Time  `json:"createdAt"`
 	ReadAt    *time.Time `json:"readAt,omitempty"`
 }
 
@@ -193,9 +193,9 @@ type Game struct {
 	Rows             int        `json:"rows"`
 	Columns          int        `json:"columns"`
 	CurrentTurnIndex int        `json:"currentTurnIndex"`
-	TurnStartTime    *time.Time `json:"-"` // Don't serialize directly
+	TurnStartTime    *time.Time `json:"-"`                       // Don't serialize directly
 	TurnStartTimeISO *string    `json:"turnStartTime,omitempty"` // ISO 8601 format for frontend
-	TurnDuration     int        `json:"turnDuration"` // in seconds
+	TurnDuration     int        `json:"turnDuration"`            // in seconds
 	BattleID         *int       `json:"battleId,omitempty"`
 	CreatedAt        time.Time  `json:"createdAt"`
 	Avatars          []int      `json:"avatars,omitempty"` // Avatar IDs in turn order
@@ -222,33 +222,33 @@ type Battle struct {
 	Reward           string    `json:"reward"`
 	Winner           *int      `json:"winner,omitempty"`
 	Date             time.Time `json:"date"`
-	Status           string    `json:"status"`              // pending, in_progress, completed
-	Attacker         *int      `json:"attacker,omitempty"`  // Asset ID of attacker
-	Defender         *int      `json:"defender,omitempty"`  // Asset ID of defender
+	Status           string    `json:"status"`                     // pending, in_progress, completed
+	Attacker         *int      `json:"attacker,omitempty"`         // Asset ID of attacker
+	Defender         *int      `json:"defender,omitempty"`         // Asset ID of defender
 	AttackerAvatarID *int      `json:"attackerAvatarId,omitempty"` // Avatar ID of attacker
 	DefenderAvatarID *int      `json:"defenderAvatarId,omitempty"` // Avatar ID of defender
-	GameID           *int      `json:"gameId,omitempty"`    // Game ID this battle belongs to
+	GameID           *int      `json:"gameId,omitempty"`           // Game ID this battle belongs to
 }
 
 type BattleQuestion struct {
-	ID             int       `json:"id"`
-	BattleID       int       `json:"battleId"`
-	Question       string    `json:"question"`       // HTML content
-	Answer         string    `json:"answer"`         // Correct answer
-	UserID         *int      `json:"userId"`         // Avatar ID assigned to this question
-	PossiblePoints int       `json:"possiblePoints"` // Maximum points for this question
-	ReceivedScore  int       `json:"receivedScore"`  // Points awarded by admin
-	Time           int       `json:"time"`           // Time to answer in seconds
-	UserAnswer     *string   `json:"userAnswer"`     // User's submitted answer
-	SubmittedAt    *string   `json:"submittedAt"`    // When user submitted
+	ID             int     `json:"id"`
+	BattleID       int     `json:"battleId"`
+	Question       string  `json:"question"`       // HTML content
+	Answer         string  `json:"answer"`         // Correct answer
+	UserID         *int    `json:"userId"`         // Avatar ID assigned to this question
+	PossiblePoints int     `json:"possiblePoints"` // Maximum points for this question
+	ReceivedScore  int     `json:"receivedScore"`  // Points awarded by admin
+	Time           int     `json:"time"`           // Time to answer in seconds
+	UserAnswer     *string `json:"userAnswer"`     // User's submitted answer
+	SubmittedAt    *string `json:"submittedAt"`    // When user submitted
 }
 
 type CreateGameRequest struct {
-	Name      string   `json:"name"`
-	Thumbnail string   `json:"thumbnail"`
-	Rows      int      `json:"rows"`
-	Columns   int      `json:"columns"`
-	AvatarIDs []int    `json:"avatarIds"` // Selected avatars for this game
+	Name      string `json:"name"`
+	Thumbnail string `json:"thumbnail"`
+	Rows      int    `json:"rows"`
+	Columns   int    `json:"columns"`
+	AvatarIDs []int  `json:"avatarIds"` // Selected avatars for this game
 }
 
 var db *sql.DB
@@ -274,7 +274,6 @@ func initDB() {
 	if dbPath == "" {
 		dbPath = "./data.db"
 	}
-
 
 	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
@@ -1282,10 +1281,10 @@ func getAssetRequest(w http.ResponseWriter, r *http.Request) {
 
 	// Determine the view type and get owner info if needed
 	type AssetRequestResponse struct {
-		Asset          Asset   `json:"asset"`
-		ViewType       string  `json:"viewType"` // "approve_deny", "owned", "unlocked"
-		OwnerName      *string `json:"ownerName,omitempty"`
-		CanApprove     bool    `json:"canApprove"`
+		Asset      Asset   `json:"asset"`
+		ViewType   string  `json:"viewType"` // "approve_deny", "owned", "unlocked"
+		OwnerName  *string `json:"ownerName,omitempty"`
+		CanApprove bool    `json:"canApprove"`
 	}
 
 	response := AssetRequestResponse{
@@ -2070,11 +2069,11 @@ func claimStreakReward(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		AvatarID        int    `json:"avatarId"`
-		Milestone       int    `json:"milestone"`
-		PrizeType       string `json:"prizeType"`
-		PrizeAmount     int    `json:"prizeAmount,omitempty"`
-		PrizeAssetID    int    `json:"prizeAssetId,omitempty"`
+		AvatarID     int    `json:"avatarId"`
+		Milestone    int    `json:"milestone"`
+		PrizeType    string `json:"prizeType"`
+		PrizeAmount  int    `json:"prizeAmount,omitempty"`
+		PrizeAssetID int    `json:"prizeAssetId,omitempty"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -2220,12 +2219,12 @@ func createAssignments(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		Coins        int      `json:"coins"`
-		AssignmentID string   `json:"assignmentId"`
-		UserIDs      []int    `json:"userIds"`
-		Name         string   `json:"name"`
-		DueDate      string   `json:"dueDate"`
-		Data         *string  `json:"data"`
+		Coins        int     `json:"coins"`
+		AssignmentID string  `json:"assignmentId"`
+		UserIDs      []int   `json:"userIds"`
+		Name         string  `json:"name"`
+		DueDate      string  `json:"dueDate"`
+		Data         *string `json:"data"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -4354,12 +4353,12 @@ func createBattle(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name             string  `json:"name"`
 		Reward           string  `json:"reward"`
-		Status           *string `json:"status"`            // Optional status (defaults to 'pending')
-		Attacker         *int    `json:"attacker"`          // Asset ID of attacker
-		Defender         *int    `json:"defender"`          // Asset ID of defender
-		AttackerAvatarID *int    `json:"attackerAvatarId"`  // Avatar ID of attacker
-		DefenderAvatarID *int    `json:"defenderAvatarId"`  // Avatar ID of defender
-		GameID           *int    `json:"gameId"`            // Optional game ID to link battle to game
+		Status           *string `json:"status"`           // Optional status (defaults to 'pending')
+		Attacker         *int    `json:"attacker"`         // Asset ID of attacker
+		Defender         *int    `json:"defender"`         // Asset ID of defender
+		AttackerAvatarID *int    `json:"attackerAvatarId"` // Avatar ID of attacker
+		DefenderAvatarID *int    `json:"defenderAvatarId"` // Avatar ID of defender
+		GameID           *int    `json:"gameId"`           // Optional game ID to link battle to game
 		Questions        []struct {
 			Question       string `json:"question"`
 			Answer         string `json:"answer"`
@@ -5072,6 +5071,30 @@ func uploadStoreImages(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Compression output: %s", string(output))
 
+	resizeCmd := exec.Command("bash", scriptPath, scriptTargetPath, "100")
+	resizeOutput, err := resizeCmd.CombinedOutput()
+	if err != nil {
+		outputText := strings.TrimSpace(string(resizeOutput))
+		log.Printf("Resize compression script error: %s\nTarget: %s\nOutput: %s", err.Error(), scriptTargetPath, outputText)
+
+		errorMessage := "Failed to create resized images"
+		if outputText != "" {
+			errorMessage = fmt.Sprintf("%s: %s", errorMessage, outputText)
+		} else {
+			errorMessage = fmt.Sprintf("%s: %s", errorMessage, err.Error())
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"message": errorMessage,
+		})
+		return
+	}
+
+	log.Printf("Resize compression output: %s", string(resizeOutput))
+
 	// Return success with saved filenames (converted to .webp)
 	webpFiles := make([]string, len(savedFiles))
 	for i, filename := range savedFiles {
@@ -5092,13 +5115,13 @@ func uploadStoreImages(w http.ResponseWriter, r *http.Request) {
 // Insert store items into database
 func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		Files     []string `json:"files"`
-		Type      string   `json:"type"`
-		Folder    string   `json:"folder"`
-		AdhFrom   int      `json:"adhFrom"`
-		AdhPlus   int      `json:"adhPlus"`
-		IsLocked  int      `json:"isLocked"`
-		Cost      int      `json:"cost"`
+		Files    []string `json:"files"`
+		Type     string   `json:"type"`
+		Folder   string   `json:"folder"`
+		AdhFrom  int      `json:"adhFrom"`
+		AdhPlus  int      `json:"adhPlus"`
+		IsLocked int      `json:"isLocked"`
+		Cost     int      `json:"cost"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -5120,42 +5143,132 @@ func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Convert files array to JSON string
-	filesJSON, err := json.Marshal(req.Files)
-	if err != nil {
-		http.Error(w, "Failed to encode files", http.StatusInternalServerError)
+	writeInsertError := func(statusCode int, message string) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"message": message,
+		})
+	}
+
+	if req.AdhFrom < 0 {
+		writeInsertError(http.StatusBadRequest, "adhFrom must be 0 or greater")
+		return
+	}
+	if req.AdhPlus <= 0 {
+		writeInsertError(http.StatusBadRequest, "adhPlus must be greater than 0")
+		return
+	}
+	if req.Cost < 0 {
+		writeInsertError(http.StatusBadRequest, "cost must be 0 or greater")
 		return
 	}
 
-	// Run insert_store_items.sh script
-	scriptPath := "./insert_store_items.sh"
-	cmd := exec.Command("bash", scriptPath,
-		"--files", string(filesJSON),
-		"--type", req.Type,
-		"--folder", req.Folder,
-		"--adh-from", fmt.Sprintf("%d", req.AdhFrom),
-		"--adh-plus", fmt.Sprintf("%d", req.AdhPlus),
-		"--is-locked", fmt.Sprintf("%d", req.IsLocked),
-		"--cost", fmt.Sprintf("%d", req.Cost),
-	)
-
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Printf("Insert script error: %s\nOutput: %s", err.Error(), string(output))
-		http.Error(w, "Failed to insert items: "+err.Error()+"\nOutput: "+string(output), http.StatusInternalServerError)
+	normalizedFolder := strings.Trim(strings.ReplaceAll(req.Folder, "\\", "/"), "/")
+	if normalizedFolder == "" {
+		writeInsertError(http.StatusBadRequest, "Folder is required")
 		return
 	}
 
-	log.Printf("Insert output: %s", string(output))
+	isLocked := 0
+	if req.IsLocked != 0 {
+		isLocked = 1
+	}
+
+	tx, err := db.Begin()
+	if err != nil {
+		writeInsertError(http.StatusInternalServerError, "Failed to start insert transaction")
+		return
+	}
+	defer tx.Rollback()
+
+	stmt, err := tx.Prepare(`INSERT INTO assets (
+		avatar_id, status, type, name, thumbnail,
+		attack, defense, healing, power, endurance, level, required_level,
+		cost, ability, health, stamina, description, xp, xp_required, is_locked,
+		base_attack, base_defense, base_healing
+	) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+	if err != nil {
+		writeInsertError(http.StatusInternalServerError, "Failed to prepare store item insert")
+		return
+	}
+	defer stmt.Close()
+
+	insertedCount := 0
+	for _, rawFile := range req.Files {
+		normalizedFile := strings.TrimSpace(strings.ReplaceAll(rawFile, "\\", "/"))
+		fileName := filepath.Base(normalizedFile)
+		if fileName == "" || fileName == "." {
+			writeInsertError(http.StatusBadRequest, "Each file must have a valid name")
+			return
+		}
+
+		baseName := strings.TrimSuffix(fileName, filepath.Ext(fileName))
+		if baseName == "" {
+			writeInsertError(http.StatusBadRequest, "Each file must have a valid base name")
+			return
+		}
+
+		webpFileName := baseName + ".webp"
+		displayName := strings.ReplaceAll(baseName, "_", " ")
+		attack := req.AdhFrom + rand.Intn(req.AdhPlus)
+		defense := req.AdhFrom + rand.Intn(req.AdhPlus)
+		healing := req.AdhFrom + rand.Intn(req.AdhPlus)
+		averageStats := float64(attack+defense+healing) / 3.0
+		calculatedCost := int(averageStats * float64(req.Cost))
+		thumbnailPath := "/src/assets/store/" + filepath.ToSlash(filepath.Join(normalizedFolder, webpFileName))
+
+		_, err = stmt.Exec(
+			nil,
+			"store",
+			req.Type,
+			displayName,
+			thumbnailPath,
+			attack,
+			defense,
+			healing,
+			0,
+			5,
+			1,
+			1,
+			calculatedCost,
+			"",
+			100,
+			100,
+			"",
+			0,
+			100,
+			isLocked,
+			attack,
+			defense,
+			healing,
+		)
+		if err != nil {
+			log.Printf("Store item insert error for %s: %v", webpFileName, err)
+			writeInsertError(http.StatusInternalServerError, fmt.Sprintf("Failed to insert store item %s", webpFileName))
+			return
+		}
+
+		insertedCount++
+	}
+
+	if insertedCount == 0 {
+		writeInsertError(http.StatusBadRequest, "No valid files were provided")
+		return
+	}
+
+	if err = tx.Commit(); err != nil {
+		writeInsertError(http.StatusInternalServerError, "Failed to commit store items")
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
-		"message": "Store items inserted successfully",
+		"message": fmt.Sprintf("%d store items inserted successfully", insertedCount),
 	})
 }
-
-
 
 // Assign question to battle
 func assignQuestionToBattle(w http.ResponseWriter, r *http.Request) {
@@ -5263,8 +5376,6 @@ func completeBattle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
-
-
 
 func main() {
 	// Load environment variables from .env file
