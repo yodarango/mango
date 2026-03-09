@@ -5120,6 +5120,7 @@ func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 		Folder   string   `json:"folder"`
 		AdhFrom  int      `json:"adhFrom"`
 		AdhPlus  int      `json:"adhPlus"`
+		Level    int      `json:"level"`
 		IsLocked int      `json:"isLocked"`
 		Cost     int      `json:"cost"`
 	}
@@ -5158,6 +5159,10 @@ func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.AdhPlus <= 0 {
 		writeInsertError(http.StatusBadRequest, "adhPlus must be greater than 0")
+		return
+	}
+	if req.Level <= 0 {
+		writeInsertError(http.StatusBadRequest, "level must be greater than 0")
 		return
 	}
 	if req.Cost < 0 {
@@ -5230,7 +5235,7 @@ func insertStoreItems(w http.ResponseWriter, r *http.Request) {
 			healing,
 			0,
 			5,
-			1,
+			req.Level,
 			1,
 			calculatedCost,
 			"",

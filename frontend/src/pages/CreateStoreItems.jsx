@@ -16,6 +16,7 @@ function CreateStoreItems() {
   const [type, setType] = useState("");
   const [adhFrom, setAdhFrom] = useState("");
   const [adhPlus, setAdhPlus] = useState("");
+  const [level, setLevel] = useState("");
   const [isLocked, setIsLocked] = useState(0);
   const [cost, setCost] = useState("");
 
@@ -99,7 +100,7 @@ function CreateStoreItems() {
       return;
     }
 
-    if (!adhFrom || !adhPlus || !cost) {
+    if (!adhFrom || !adhPlus || !level || !cost) {
       alert("Please fill in all numeric fields");
       return;
     }
@@ -129,6 +130,7 @@ function CreateStoreItems() {
           folder: folderPath,
           adhFrom: parseInt(adhFrom),
           adhPlus: parseInt(adhPlus),
+          level: parseInt(level),
           isLocked,
           cost: parseInt(cost),
         }),
@@ -158,6 +160,7 @@ function CreateStoreItems() {
         setType("");
         setAdhFrom("");
         setAdhPlus("");
+        setLevel("");
         setIsLocked(0);
         setCost("");
       } else {
@@ -331,6 +334,21 @@ function CreateStoreItems() {
                 onChange={(e) => setCost(e.target.value)}
                 placeholder='e.g., 11'
                 disabled={inserting}
+              />
+            </div>
+
+            <div className='form-group'>
+              <label htmlFor='level'>
+                <i className='fa-solid fa-layer-group'></i> Level
+              </label>
+              <input
+                id='level'
+                type='number'
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                placeholder='e.g., 1'
+                disabled={inserting}
+                min='1'
               />
             </div>
 
