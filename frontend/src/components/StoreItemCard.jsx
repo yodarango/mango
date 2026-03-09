@@ -8,6 +8,7 @@ function StoreItemCard({
   userLevel,
   userAvatarId,
   purchasing,
+  purchaseLockedForToday = false,
   onPurchase,
   alwasyActive,
   canTrain,
@@ -24,11 +25,48 @@ function StoreItemCard({
     (item.isLocked && !alwasyActive) ||
     (!meetsLevelRequirement && !alwasyActive);
   const overallPower = item.attack + item.defense + item.healing;
+  const isPurchaseDisabled =
+    isLocked ||
+    !canAfford ||
+    purchasing === item.name ||
+    purchaseLockedForToday;
 
   // Check if item is locked by someone else
   const isLockedByOther =
     item.isLockedBy && item.isLockedBy > 0 && item.isLockedBy !== userAvatarId;
   const isUnlockedForUser = item.isUnlockedFor === userAvatarId;
+
+  const renderPurchaseButtonContent = () => {
+    if (purchasing === item.name) {
+      return (
+        <>
+          <i className='fa-solid fa-spinner fa-spin'></i> Purchasing...
+        </>
+      );
+    }
+
+    if (purchaseLockedForToday) {
+      return (
+        <>
+          <i className='fa-solid fa-clock'></i> Daily Limit Reached
+        </>
+      );
+    }
+
+    if (isLocked) {
+      return (
+        <>
+          <i className='fa-solid fa-lock'></i> Level {item.requiredLevel}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <i className='fa-solid fa-cart-shopping'></i> Purchase
+      </>
+    );
+  };
 
   const handleCardClick = (e) => {
     // Don't open popup if clicking the purchase, request, or revive button
@@ -213,26 +251,14 @@ function StoreItemCard({
               ) : (
                 <button
                   className={`purchase-btn ${
-                    isLocked && canAfford ? "btn-locked-yellow" : ""
+                    isLocked && canAfford && !purchaseLockedForToday
+                      ? "btn-locked-yellow"
+                      : ""
                   }`}
                   onClick={handlePurchaseClick}
-                  disabled={isLocked || !canAfford || purchasing === item.name}
+                  disabled={isPurchaseDisabled}
                 >
-                  {purchasing === item.name ? (
-                    <>
-                      <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                      Purchasing...
-                    </>
-                  ) : isLocked ? (
-                    <>
-                      <i className='fa-solid fa-lock'></i> Level{" "}
-                      {item.requiredLevel}
-                    </>
-                  ) : (
-                    <>
-                      <i className='fa-solid fa-cart-shopping'></i> Purchase
-                    </>
-                  )}
+                  {renderPurchaseButtonContent()}
                 </button>
               )}
             </div>
@@ -376,7 +402,7 @@ function StoreItemCard({
                     className='train-btn'
                     onClick={() =>
                       navigate(
-                        `/assignments?assignment=1005&warrior=${item.id}`
+                        `/assignments?assignment=1005&warrior=${item.id}`,
                       )
                     }
                   >
@@ -447,27 +473,24 @@ function StoreItemCard({
                   ) : (
                     <button
                       className={`purchase-btn ${
-                        isLocked && canAfford ? "btn-locked-yellow" : ""
+                        isLocked && canAfford && !purchaseLockedForToday
+                          ? "btn-locked-yellow"
+                          : ""
                       }`}
                       onClick={handlePurchaseClick}
-                      disabled={
-                        isLocked || !canAfford || purchasing === item.name
-                      }
+                      disabled={isPurchaseDisabled}
                     >
                       {purchasing === item.name ? (
-                        <>
-                          <i className='fa-solid fa-spinner fa-spin'></i>{" "}
-                          Purchasing...
-                        </>
+                        renderPurchaseButtonContent()
+                      ) : purchaseLockedForToday ? (
+                        renderPurchaseButtonContent()
                       ) : isLocked ? (
                         <>
                           <i className='fa-solid fa-lock'></i> Locked until
                           level {item.requiredLevel}
                         </>
                       ) : (
-                        <>
-                          <i className='fa-solid fa-cart-shopping'></i> Purchase
-                        </>
+                        renderPurchaseButtonContent()
                       )}
                     </button>
                   )}

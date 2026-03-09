@@ -8,6 +8,7 @@ function StoreGrid({
   userLevel,
   userAvatarId,
   purchasing,
+  purchaseLockedForToday = false,
   onPurchase,
   alwasyActive,
   canTrain,
@@ -175,6 +176,7 @@ function StoreGrid({
                 userLevel={userLevel}
                 userAvatarId={userAvatarId}
                 purchasing={purchasing}
+                purchaseLockedForToday={purchaseLockedForToday}
                 onPurchase={onPurchase}
                 canTrain={canTrain}
                 onRevive={onRevive}
