@@ -22,22 +22,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>chico</strong> (masc.) — “guy, boy.” Tip: chico = boy, chica
-            = girl.
+            <strong>sentimiento</strong> (masc.) — “feeling.” Tip: from{" "}
+            <em>sentir</em> (to feel).
           </p>
           <ul>
-            <li>Ese chico es mi amigo. (That guy/boy is my friend.)</li>
-            <li>El chico está en la clase. (The boy is in the class.)</li>
+            <li>Tengo un buen sentimiento. (I have a good feeling.)</li>
+            <li>Ese sentimiento es fuerte. (That feeling is strong.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>lugar</strong> (masc.) — “place.” Tip: think “location.”
+            <strong>chica</strong> (fem.) — “girl.” Tip: chico = boy, chica =
+            girl.
           </p>
           <ul>
-            <li>Este lugar es bonito. (This place is pretty.)</li>
-            <li>Busco un lugar tranquilo. (I’m looking for a quiet place.)</li>
+            <li>La chica es simpática. (The girl is nice.)</li>
+            <li>Hay una chica en la clase. (There is a girl in the class.)</li>
           </ul>
         </div>
       </section>
@@ -46,23 +47,25 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>quedar</strong> — “to stay, remain, be left.” Tip: “quedan”
-            = “are left.”
+            <strong>permitir</strong> — “to allow, to permit.” Tip: similar to
+            “permit.”
           </p>
           <ul>
-            <li>Me quiero quedar aquí. (I want to stay here.)</li>
-            <li>Solo quedan dos. (Only two are left.)</li>
+            <li>
+              Mis padres me permiten salir. (My parents allow me to go out.)
+            </li>
+            <li>No se permite correr. (Running is not allowed.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>realizar</strong> — “to carry out, perform, achieve.” Tip:
-            looks like “realize,” but means accomplish.
+            <strong>resultar</strong> — “to result, to turn out.” Tip: same root
+            as “result.”
           </p>
           <ul>
-            <li>Quiero realizar mi meta. (I want to achieve my goal.)</li>
-            <li>Realizamos un proyecto. (We carried out a project.)</li>
+            <li>El plan resultó bien. (The plan turned out well.)</li>
+            <li>Todo resulta fácil. (Everything turns out easy.)</li>
           </ul>
         </div>
       </section>

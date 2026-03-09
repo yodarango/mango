@@ -54,13 +54,27 @@ function CreateStoreItems() {
         body: formData,
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data = {};
+
+      if (responseText) {
+        try {
+          data = JSON.parse(responseText);
+        } catch {
+          data = { message: responseText };
+        }
+      }
 
       if (response.ok && data.success) {
         // Save filenames to sessionStorage
-        sessionStorage.setItem("create_store_items", JSON.stringify(data.files));
-        
-        alert(`✅ ${data.message}\n\nImages compressed successfully! You can now proceed to Step 2.`);
+        sessionStorage.setItem(
+          "create_store_items",
+          JSON.stringify(data.files),
+        );
+
+        alert(
+          `✅ ${data.message}\n\nImages compressed successfully! You can now proceed to Step 2.`,
+        );
         setCurrentStep(2);
       } else {
         alert(`Failed to upload images: ${data.message || "Unknown error"}`);
@@ -124,10 +138,10 @@ function CreateStoreItems() {
 
       if (response.ok && data.success) {
         alert(`✅ ${data.message}\n\nStore items created successfully!`);
-        
+
         // Clear sessionStorage
         sessionStorage.removeItem("create_store_items");
-        
+
         // Reset form
         setCurrentStep(1);
         setFolderPath("");
@@ -149,86 +163,93 @@ function CreateStoreItems() {
   };
 
   return (
-    <div className="create-store-items-container">
-      <div className="header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <i className="fa-solid fa-arrow-left"></i> Back
+    <div className='create-store-items-container'>
+      <div className='header'>
+        <button className='back-btn' onClick={() => navigate(-1)}>
+          <i className='fa-solid fa-arrow-left'></i> Back
         </button>
         <h1>
-          <i className="fa-solid fa-store"></i> Create Store Items
+          <i className='fa-solid fa-store'></i> Create Store Items
         </h1>
       </div>
 
-      <div className="steps-indicator">
-        <div className={`step ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}>
-          <div className="step-number">1</div>
-          <div className="step-label">Upload Images</div>
+      <div className='steps-indicator'>
+        <div
+          className={`step ${currentStep === 1 ? "active" : currentStep > 1 ? "completed" : ""}`}
+        >
+          <div className='step-number'>1</div>
+          <div className='step-label'>Upload Images</div>
         </div>
-        <div className="step-divider"></div>
+        <div className='step-divider'></div>
         <div className={`step ${currentStep === 2 ? "active" : ""}`}>
-          <div className="step-number">2</div>
-          <div className="step-label">Insert Records</div>
+          <div className='step-number'>2</div>
+          <div className='step-label'>Insert Records</div>
         </div>
       </div>
 
       {currentStep === 1 && (
-        <div className="step-content">
+        <div className='step-content'>
           <h2>
-            <i className="fa-solid fa-upload"></i> Step 1: Upload Images
+            <i className='fa-solid fa-upload'></i> Step 1: Upload Images
           </h2>
-          <p className="step-description">
-            Upload images to the store folder. They will be automatically compressed to WebP format.
+          <p className='step-description'>
+            Upload images to the store folder. They will be automatically
+            compressed to WebP format.
           </p>
 
-          <div className="form-group">
-            <label htmlFor="folderPath">
-              <i className="fa-solid fa-folder"></i> Folder Path (relative to store/)
+          <div className='form-group'>
+            <label htmlFor='folderPath'>
+              <i className='fa-solid fa-folder'></i> Folder Path (relative to
+              store/)
             </label>
             <input
-              id="folderPath"
-              type="text"
+              id='folderPath'
+              type='text'
               value={folderPath}
               onChange={(e) => setFolderPath(e.target.value)}
-              placeholder="e.g., warriors/animals"
+              placeholder='e.g., warriors/animals'
               disabled={uploading}
             />
-            <p className="hint">
+            <p className='hint'>
               Example: <code>warriors/animals</code> will upload to{" "}
               <code>frontend/src/assets/store/warriors/animals/</code>
             </p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="images">
-              <i className="fa-solid fa-images"></i> Select Images
+          <div className='form-group'>
+            <label htmlFor='images'>
+              <i className='fa-solid fa-images'></i> Select Images
             </label>
             <input
-              id="images"
-              type="file"
+              id='images'
+              type='file'
               multiple
-              accept="image/png,image/jpeg,image/jpg,image/webp"
+              accept='image/png,image/jpeg,image/jpg,image/webp'
               onChange={handleFileChange}
               disabled={uploading}
             />
             {selectedFiles.length > 0 && (
-              <p className="file-count">
-                {selectedFiles.length} file{selectedFiles.length !== 1 ? "s" : ""} selected
+              <p className='file-count'>
+                {selectedFiles.length} file
+                {selectedFiles.length !== 1 ? "s" : ""} selected
               </p>
             )}
           </div>
 
           <button
-            className="primary-btn"
+            className='primary-btn'
             onClick={handleUploadImages}
             disabled={uploading}
           >
             {uploading ? (
               <>
-                <i className="fa-solid fa-spinner fa-spin"></i> Uploading & Compressing...
+                <i className='fa-solid fa-spinner fa-spin'></i> Uploading &
+                Compressing...
               </>
             ) : (
               <>
-                <i className="fa-solid fa-cloud-upload-alt"></i> Upload & Compress Images
+                <i className='fa-solid fa-cloud-upload-alt'></i> Upload &
+                Compress Images
               </>
             )}
           </button>
@@ -236,78 +257,80 @@ function CreateStoreItems() {
       )}
 
       {currentStep === 2 && (
-        <div className="step-content">
+        <div className='step-content'>
           <h2>
-            <i className="fa-solid fa-database"></i> Step 2: Insert Database Records
+            <i className='fa-solid fa-database'></i> Step 2: Insert Database
+            Records
           </h2>
-          <p className="step-description">
-            Configure the properties for the store items and insert them into the database.
+          <p className='step-description'>
+            Configure the properties for the store items and insert them into
+            the database.
           </p>
 
-          <div className="form-grid">
-            <div className="form-group">
-              <label htmlFor="type">
-                <i className="fa-solid fa-tag"></i> Type (max 10 chars)
+          <div className='form-grid'>
+            <div className='form-group'>
+              <label htmlFor='type'>
+                <i className='fa-solid fa-tag'></i> Type (max 10 chars)
               </label>
               <input
-                id="type"
-                type="text"
+                id='type'
+                type='text'
                 value={type}
                 onChange={(e) => setType(e.target.value)}
-                placeholder="e.g., animals"
+                placeholder='e.g., animals'
                 maxLength={10}
                 disabled={inserting}
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="adhFrom">
-                <i className="fa-solid fa-chart-line"></i> ADH From
+            <div className='form-group'>
+              <label htmlFor='adhFrom'>
+                <i className='fa-solid fa-chart-line'></i> ADH From
               </label>
               <input
-                id="adhFrom"
-                type="number"
+                id='adhFrom'
+                type='number'
                 value={adhFrom}
                 onChange={(e) => setAdhFrom(e.target.value)}
-                placeholder="e.g., 20"
+                placeholder='e.g., 20'
                 disabled={inserting}
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="adhPlus">
-                <i className="fa-solid fa-plus"></i> ADH Plus
+            <div className='form-group'>
+              <label htmlFor='adhPlus'>
+                <i className='fa-solid fa-plus'></i> ADH Plus
               </label>
               <input
-                id="adhPlus"
-                type="number"
+                id='adhPlus'
+                type='number'
                 value={adhPlus}
                 onChange={(e) => setAdhPlus(e.target.value)}
-                placeholder="e.g., 26"
+                placeholder='e.g., 26'
                 disabled={inserting}
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="cost">
-                <i className="fa-solid fa-coins"></i> Cost Multiplier
+            <div className='form-group'>
+              <label htmlFor='cost'>
+                <i className='fa-solid fa-coins'></i> Cost Multiplier
               </label>
               <input
-                id="cost"
-                type="number"
+                id='cost'
+                type='number'
                 value={cost}
                 onChange={(e) => setCost(e.target.value)}
-                placeholder="e.g., 11"
+                placeholder='e.g., 11'
                 disabled={inserting}
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="isLocked">
-                <i className="fa-solid fa-lock"></i> Is Locked
+            <div className='form-group'>
+              <label htmlFor='isLocked'>
+                <i className='fa-solid fa-lock'></i> Is Locked
               </label>
               <select
-                id="isLocked"
+                id='isLocked'
                 value={isLocked}
                 onChange={(e) => setIsLocked(parseInt(e.target.value))}
                 disabled={inserting}
@@ -318,26 +341,26 @@ function CreateStoreItems() {
             </div>
           </div>
 
-          <div className="button-group">
+          <div className='button-group'>
             <button
-              className="secondary-btn"
+              className='secondary-btn'
               onClick={() => setCurrentStep(1)}
               disabled={inserting}
             >
-              <i className="fa-solid fa-arrow-left"></i> Back to Step 1
+              <i className='fa-solid fa-arrow-left'></i> Back to Step 1
             </button>
             <button
-              className="primary-btn"
+              className='primary-btn'
               onClick={handleInsertItems}
               disabled={inserting}
             >
               {inserting ? (
                 <>
-                  <i className="fa-solid fa-spinner fa-spin"></i> Inserting...
+                  <i className='fa-solid fa-spinner fa-spin'></i> Inserting...
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-check"></i> Insert Store Items
+                  <i className='fa-solid fa-check'></i> Insert Store Items
                 </>
               )}
             </button>
@@ -349,4 +372,3 @@ function CreateStoreItems() {
 }
 
 export default CreateStoreItems;
-

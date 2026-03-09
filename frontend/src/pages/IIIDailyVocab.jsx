@@ -21,33 +21,33 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>madre</strong> (fem.) — “mother.” Tip: formal word for mom.
+            <strong>mundo</strong> (masc.) — “world.” Tip: sounds like
+            “mundo/world.”
           </p>
           <ul>
-            <li>Mi madre es amable. (My mother is kind.)</li>
-            <li>La madre de Juan es doctora. (Juan’s mother is a doctor.)</li>
+            <li>El mundo es grande. (The world is big.)</li>
+            <li>Viajo por el mundo. (I travel the world.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>curso</strong> (masc.) — “course, class.” Tip: like “course”
-            in English.
+            <strong>hijo</strong> (masc.) — “son.” Tip: pronounce “EE-ho.”
           </p>
           <ul>
-            <li>Este curso es fácil. (This course is easy.)</li>
-            <li>Tengo un curso de español. (I have a Spanish class.)</li>
+            <li>Mi hijo estudia aquí. (My son studies here.)</li>
+            <li>El hijo juega. (The son plays.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>papá</strong> (masc.) — “dad.” Tip: accent on the last
-            syllable: pa-PÁ.
+            <strong>coche</strong> (masc.) — “car.” Tip: common word for car in
+            Spain.
           </p>
           <ul>
-            <li>Mi papá trabaja mucho. (My dad works a lot.)</li>
-            <li>Voy con mi papá. (I go with my dad.)</li>
+            <li>El coche es rojo. (The car is red.)</li>
+            <li>Mi coche es nuevo. (My car is new.)</li>
           </ul>
         </div>
       </section>
@@ -56,34 +56,34 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>considerar</strong> — “to consider.” Tip: almost the same as
-            English.
+            <strong>perder</strong> — “to lose.” Tip: opposite of <em>ganar</em>{" "}
+            (to win).
           </p>
           <ul>
-            <li>Debes considerar la idea. (You should consider the idea.)</li>
-            <li>Considero tu plan. (I consider your plan.)</li>
+            <li>No quiero perder el juego. (I don’t want to lose the game.)</li>
+            <li>Perdí mi libro. (I lost my book.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>señalar</strong> — “to point out, indicate.” Tip: like
-            “signal.”
+            <strong>aparecer</strong> — “to appear, show up.” Tip: similar to
+            “appear.”
           </p>
           <ul>
-            <li>Señala la respuesta. (Point to the answer.)</li>
-            <li>El maestro señala el mapa. (The teacher points at the map.)</li>
+            <li>El gato apareció. (The cat appeared.)</li>
+            <li>Ella aparece tarde. (She shows up late.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>presentar</strong> — “to present, introduce.” Tip: like
-            “present.”
+            <strong>trabajar</strong> — “to work.” Tip: related to{" "}
+            <em>trabajo</em> (work).
           </p>
           <ul>
-            <li>Voy a presentar a mi amigo. (I will introduce my friend.)</li>
-            <li>Presenta tu proyecto. (Present your project.)</li>
+            <li>Trabajo en casa. (I work at home.)</li>
+            <li>Ella trabaja mucho. (She works a lot.)</li>
           </ul>
         </div>
       </section>

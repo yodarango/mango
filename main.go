@@ -5047,11 +5047,26 @@ func uploadStoreImages(w http.ResponseWriter, r *http.Request) {
 
 	// Run compress_images.sh script
 	scriptPath := "./compress_images.sh"
-	cmd := exec.Command("bash", scriptPath)
+	scriptTargetPath := filepath.ToSlash(filepath.Join("assets", "store", folderPath))
+	cmd := exec.Command("bash", scriptPath, scriptTargetPath)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Printf("Compression script error: %s\nOutput: %s", err.Error(), string(output))
-		http.Error(w, "Failed to compress images: "+err.Error(), http.StatusInternalServerError)
+		outputText := strings.TrimSpace(string(output))
+		log.Printf("Compression script error: %s\nTarget: %s\nOutput: %s", err.Error(), scriptTargetPath, outputText)
+
+		errorMessage := "Failed to compress images"
+		if outputText != "" {
+			errorMessage = fmt.Sprintf("%s: %s", errorMessage, outputText)
+		} else {
+			errorMessage = fmt.Sprintf("%s: %s", errorMessage, err.Error())
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"message": errorMessage,
+		})
 		return
 	}
 

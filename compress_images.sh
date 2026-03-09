@@ -34,6 +34,7 @@ process_image() {
     local dir=$(dirname "$img_file")
     local base_filename=$(basename "$img_file")
     local extension="${base_filename##*.}"
+    local normalized_extension=$(printf '%s' "$extension" | tr '[:upper:]' '[:lower:]')
     local filename="${base_filename%.*}"
 
     # Skip files that already have the _{resolution}.{extension} pattern
@@ -52,36 +53,43 @@ process_image() {
             return
         fi
 
-        ffmpeg -i "$img_file" -vf "scale=${RESIZE_DIM}:-1" -c:v libwebp -quality 85 -y "$output_file" 2>/dev/null
-
-        if [ $? -eq 0 ]; then
-            echo "✓ ${base_filename} → ${filename}_${RESIZE_DIM}.webp (original kept)"
+        if ! ffmpeg -i "$img_file" -vf "scale=${RESIZE_DIM}:-1" -c:v libwebp -quality 85 -y "$output_file" 2>/dev/null; then
+            echo "Error: Failed to resize ${base_filename}"
+            return 1
         fi
+
+        echo "✓ ${base_filename} → ${filename}_${RESIZE_DIM}.webp (original kept)"
     else
-        # When not resizing, only process PNGs and replace original
-        if [ "$extension" = "png" ]; then
-            output_file="${dir}/${filename}.webp"
-
-            # Skip if output file already exists
-            if [ -f "$output_file" ]; then
-                echo "⊘ Skipping ${base_filename} (${filename}.webp already exists)"
-                return
-            fi
-
-            ffmpeg -i "$img_file" -c:v libwebp -quality 85 -y "$output_file" 2>/dev/null
-
-            if [ $? -eq 0 ]; then
-                echo "✓ ${base_filename} → ${filename}.webp"
-                rm "$img_file"
-            fi
+        # When not resizing, convert supported image formats to webp
+        if [ "$normalized_extension" = "webp" ]; then
+            echo "⊘ Skipping ${base_filename} (already in webp format)"
+            return 0
         fi
+
+        output_file="${dir}/${filename}.webp"
+
+        # Skip if output file already exists
+        if [ -f "$output_file" ]; then
+            echo "⊘ Skipping ${base_filename} (${filename}.webp already exists)"
+            return 0
+        fi
+
+        if ! ffmpeg -i "$img_file" -c:v libwebp -quality 85 -y "$output_file" 2>/dev/null; then
+            echo "Error: Failed to convert ${base_filename}"
+            return 1
+        fi
+
+        echo "✓ ${base_filename} → ${filename}.webp"
+        rm "$img_file"
     fi
+
+    return 0
 }
 
 # Process all image files
-find "$TARGET_DIR" -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) | while read img_file; do
-    process_image "$img_file"
-done
+while IFS= read -r img_file; do
+    process_image "$img_file" || exit 1
+done < <(find "$TARGET_DIR" -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \))
 
 echo "Done!"
 
