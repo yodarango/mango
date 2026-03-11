@@ -21,27 +21,6 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>mundo</strong> (masc.) — “world.” Tip: sounds like
-            “mundo/world.”
-          </p>
-          <ul>
-            <li>El mundo es grande. (The world is big.)</li>
-            <li>Viajo por el mundo. (I travel the world.)</li>
-          </ul>
-        </div>
-
-        <div>
-          <p>
-            <strong>hijo</strong> (masc.) — “son.” Tip: pronounce “EE-ho.”
-          </p>
-          <ul>
-            <li>Mi hijo estudia aquí. (My son studies here.)</li>
-            <li>El hijo juega. (The son plays.)</li>
-          </ul>
-        </div>
-
-        <div>
-          <p>
             <strong>coche</strong> (masc.) — “car.” Tip: common word for car in
             Spain.
           </p>
@@ -50,40 +29,61 @@ export const IIIDailyVocab = () => {
             <li>Mi coche es nuevo. (My car is new.)</li>
           </ul>
         </div>
+
+        <div>
+          <p>
+            <strong>mujer</strong> (fem.) — “woman.” Tip: pronounce “moo-HER.”
+          </p>
+          <ul>
+            <li>La mujer trabaja aquí. (The woman works here.)</li>
+            <li>Esa mujer es amable. (That woman is kind.)</li>
+          </ul>
+        </div>
+
+        <div>
+          <p>
+            <strong>amigo</strong> (masc.) — “friend.” Tip: amiga = female
+            friend.
+          </p>
+          <ul>
+            <li>Mi amigo estudia mucho. (My friend studies a lot.)</li>
+            <li>Tengo un amigo nuevo. (I have a new friend.)</li>
+          </ul>
+        </div>
       </section>
 
       <h3>Verbs</h3>
       <section>
         <div>
           <p>
-            <strong>perder</strong> — “to lose.” Tip: opposite of <em>ganar</em>{" "}
-            (to win).
+            <strong>obtener</strong> — “to obtain, to get.” Tip: similar to
+            “obtain.”
           </p>
           <ul>
-            <li>No quiero perder el juego. (I don’t want to lose the game.)</li>
-            <li>Perdí mi libro. (I lost my book.)</li>
+            <li>Quiero obtener un premio. (I want to get a prize.)</li>
+            <li>Obtiene buenos resultados. (He/She gets good results.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>aparecer</strong> — “to appear, show up.” Tip: similar to
-            “appear.”
+            <strong>lograr</strong> — “to achieve, manage to.” Tip: reaching a
+            goal.
           </p>
           <ul>
-            <li>El gato apareció. (The cat appeared.)</li>
-            <li>Ella aparece tarde. (She shows up late.)</li>
+            <li>Logro terminar la tarea. (I manage to finish the homework.)</li>
+            <li>Queremos lograr la meta. (We want to achieve the goal.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>trabajar</strong> — “to work.” Tip: related to{" "}
-            <em>trabajo</em> (work).
+            <strong>esperar</strong> — “to wait, hope, expect.” Tip: same root
+            as “hope.”
           </p>
           <ul>
-            <li>Trabajo en casa. (I work at home.)</li>
-            <li>Ella trabaja mucho. (She works a lot.)</li>
+            <li>Espero el autobús. (I wait for the bus.)</li>
+            <li>Espero verte mañana. (I hope to see you tomorrow.)</li>
           </ul>
         </div>
       </section>

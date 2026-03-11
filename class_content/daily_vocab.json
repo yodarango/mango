@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "feel",
-        "gender": "masculine",
-        "index": 17,
-        "spa": "sentimiento",
+        "eng": "house",
+        "gender": "feminine",
+        "index": 19,
+        "spa": "casa",
         "used": null
       },
       {
-        "eng": "girl",
+        "eng": "left",
         "gender": "feminine",
-        "index": 18,
-        "spa": "chica",
+        "index": 20,
+        "spa": "izquierda",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to permit, allow",
-        "index": 918,
-        "spa": "permitir",
+        "eng": "to live",
+        "index": 919,
+        "spa": "vivir",
         "used": null
       },
       {
-        "eng": "to result, to turn out",
-        "index": 13,
-        "spa": "resultar",
+        "eng": "to search, to look for",
+        "index": 14,
+        "spa": "buscar",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "world",
-        "gender": "masculine",
-        "index": 25,
-        "spa": "mundo",
-        "used": null
-      },
-      {
-        "eng": "son",
-        "gender": "masculine",
-        "index": 26,
-        "spa": "hijo",
-        "used": null
-      },
-      {
         "eng": "car",
-        "gender": "masculine",
-        "index": 27,
+        "gender": "auto - masculine",
+        "index": 28,
         "spa": "coche",
+        "used": null
+      },
+      {
+        "eng": "woman",
+        "gender": "feminine",
+        "index": 28,
+        "spa": "mujer",
+        "used": null
+      },
+      {
+        "eng": "friend",
+        "gender": "masculine",
+        "index": 29,
+        "spa": "amigo",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to lose",
-        "index": 795,
-        "spa": "perder",
+        "eng": "to obtain, get",
+        "index": 797,
+        "spa": "obtener",
         "used": null
       },
       {
-        "eng": "to appear, show up",
-        "index": 796,
-        "spa": "aparecer",
+        "eng": "to achieve, to manage to",
+        "index": 20,
+        "spa": "lograr",
         "used": null
       },
       {
-        "eng": "to work",
-        "index": 19,
-        "spa": "trabajar",
+        "eng": "to wait, to hope, to expect",
+        "index": 21,
+        "spa": "esperar",
         "used": null
       }
     ]

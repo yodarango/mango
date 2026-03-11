@@ -8,6 +8,7 @@ import Store from "./pages/Store";
 import Login from "./pages/Login";
 import Messages from "./pages/Messages";
 import Assignments from "./pages/Assignments";
+import Home from "./pages/Home";
 import IIINumbers from "./pages/lessons/III_Numbers/III_Numbers";
 import IISubjectPronouns from "./pages/lessons/II_SubjectPronouns/II_SubjectPronouns";
 import IIPronounsIdentifyingThePerson from "./pages/lessons/II_PronounsIdentifyingThePerson/II_PronounsIdentifyingThePerson";
@@ -93,6 +94,14 @@ function App() {
       <main className={`main-content ${isFullWidthPage ? "full-width" : ""}`}>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route
+            path='/home'
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path='/'
             element={

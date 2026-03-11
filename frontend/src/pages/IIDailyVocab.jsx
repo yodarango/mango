@@ -22,23 +22,23 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>sentimiento</strong> (masc.) — “feeling.” Tip: from{" "}
-            <em>sentir</em> (to feel).
+            <strong>casa</strong> (fem.) — “house, home.” Tip: easy word;
+            imagine your house.
           </p>
           <ul>
-            <li>Tengo un buen sentimiento. (I have a good feeling.)</li>
-            <li>Ese sentimiento es fuerte. (That feeling is strong.)</li>
+            <li>Mi casa es grande. (My house is big.)</li>
+            <li>Voy a casa. (I go home.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>chica</strong> (fem.) — “girl.” Tip: chico = boy, chica =
-            girl.
+            <strong>izquierda</strong> (fem.) — “left.” Tip: used when giving
+            directions.
           </p>
           <ul>
-            <li>La chica es simpática. (The girl is nice.)</li>
-            <li>Hay una chica en la clase. (There is a girl in the class.)</li>
+            <li>Gira a la izquierda. (Turn left.)</li>
+            <li>La tienda está a la izquierda. (The store is on the left.)</li>
           </ul>
         </div>
       </section>
@@ -47,25 +47,22 @@ export const IIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>permitir</strong> — “to allow, to permit.” Tip: similar to
-            “permit.”
+            <strong>vivir</strong> — “to live.” Tip: looks like “vivid.”
           </p>
           <ul>
-            <li>
-              Mis padres me permiten salir. (My parents allow me to go out.)
-            </li>
-            <li>No se permite correr. (Running is not allowed.)</li>
+            <li>Vivo en una casa. (I live in a house.)</li>
+            <li>Ella vive aquí. (She lives here.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>resultar</strong> — “to result, to turn out.” Tip: same root
-            as “result.”
+            <strong>buscar</strong> — “to search, to look for.” Tip: imagine
+            looking for a bus.
           </p>
           <ul>
-            <li>El plan resultó bien. (The plan turned out well.)</li>
-            <li>Todo resulta fácil. (Everything turns out easy.)</li>
+            <li>Busco mi libro. (I look for my book.)</li>
+            <li>¿Qué buscas? (What are you looking for?)</li>
           </ul>
         </div>
       </section>
