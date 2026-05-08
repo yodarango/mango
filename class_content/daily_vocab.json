@@ -3,17 +3,17 @@
     "file": "II/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "house",
+        "eng": "right",
         "gender": "feminine",
-        "index": 19,
-        "spa": "casa",
+        "index": 21,
+        "spa": "derecha",
         "used": null
       },
       {
-        "eng": "left",
+        "eng": "mother",
         "gender": "feminine",
-        "index": 20,
-        "spa": "izquierda",
+        "index": 22,
+        "spa": "madre",
         "used": null
       }
     ]
@@ -22,15 +22,15 @@
     "file": "II/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to live",
-        "index": 919,
-        "spa": "vivir",
+        "eng": "to enter, to go in",
+        "index": 15,
+        "spa": "entrar",
         "used": null
       },
       {
-        "eng": "to search, to look for",
-        "index": 14,
-        "spa": "buscar",
+        "eng": "to consider",
+        "index": 16,
+        "spa": "considerar",
         "used": null
       }
     ]
@@ -39,24 +39,24 @@
     "file": "III/daily_vocab_nouns.json",
     "items": [
       {
-        "eng": "car",
-        "gender": "auto - masculine",
-        "index": 28,
-        "spa": "coche",
-        "used": null
-      },
-      {
-        "eng": "woman",
-        "gender": "feminine",
-        "index": 28,
-        "spa": "mujer",
-        "used": null
-      },
-      {
         "eng": "friend",
-        "gender": "masculine",
-        "index": 29,
+        "gender": "amiga - feminine",
+        "index": 30,
         "spa": "amigo",
+        "used": null
+      },
+      {
+        "eng": "mind",
+        "gender": "feminine",
+        "index": 30,
+        "spa": "mente",
+        "used": null
+      },
+      {
+        "eng": "head",
+        "gender": "feminine",
+        "index": 31,
+        "spa": "cabeza",
         "used": null
       }
     ]
@@ -65,21 +65,21 @@
     "file": "III/daily_vocab_verbs.json",
     "items": [
       {
-        "eng": "to obtain, get",
-        "index": 797,
-        "spa": "obtener",
+        "eng": "to affirm, to assert, to state",
+        "index": 22,
+        "spa": "afirmar",
         "used": null
       },
       {
-        "eng": "to achieve, to manage to",
-        "index": 20,
-        "spa": "lograr",
+        "eng": "to ask",
+        "index": 23,
+        "spa": "preguntar",
         "used": null
       },
       {
-        "eng": "to wait, to hope, to expect",
-        "index": 21,
-        "spa": "esperar",
+        "eng": "to win, to earn, to gain",
+        "index": 24,
+        "spa": "ganar",
         "used": null
       }
     ]

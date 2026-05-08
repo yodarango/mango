@@ -21,33 +21,33 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>coche</strong> (masc.) — “car.” Tip: common word for car in
-            Spain.
+            <strong>amigo</strong> (masc.; amiga = fem.) — “friend.” Tip: -o
+            boy, -a girl.
           </p>
           <ul>
-            <li>El coche es rojo. (The car is red.)</li>
-            <li>Mi coche es nuevo. (My car is new.)</li>
+            <li>Mi amigo es simpático. (My friend is nice.)</li>
+            <li>Ella es mi amiga. (She is my friend.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>mujer</strong> (fem.) — “woman.” Tip: pronounce “moo-HER.”
+            <strong>mente</strong> (fem.) — “mind.” Tip: think “mental.”
           </p>
           <ul>
-            <li>La mujer trabaja aquí. (The woman works here.)</li>
-            <li>Esa mujer es amable. (That woman is kind.)</li>
+            <li>Mi mente está cansada. (My mind is tired.)</li>
+            <li>Usa tu mente. (Use your mind.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>amigo</strong> (masc.) — “friend.” Tip: amiga = female
-            friend.
+            <strong>cabeza</strong> (fem.) — “head.” Tip: think “cap” for your
+            head.
           </p>
           <ul>
-            <li>Mi amigo estudia mucho. (My friend studies a lot.)</li>
-            <li>Tengo un amigo nuevo. (I have a new friend.)</li>
+            <li>Me duele la cabeza. (My head hurts.)</li>
+            <li>Muevo la cabeza. (I move my head.)</li>
           </ul>
         </div>
       </section>
@@ -56,34 +56,32 @@ export const IIIDailyVocab = () => {
       <section>
         <div>
           <p>
-            <strong>obtener</strong> — “to obtain, to get.” Tip: similar to
-            “obtain.”
+            <strong>afirmar</strong> — “to affirm, to state.” Tip: like
+            “affirm.”
           </p>
           <ul>
-            <li>Quiero obtener un premio. (I want to get a prize.)</li>
-            <li>Obtiene buenos resultados. (He/She gets good results.)</li>
+            <li>Afirmo que es verdad. (I state that it is true.)</li>
+            <li>Él afirma su idea. (He affirms his idea.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>lograr</strong> — “to achieve, manage to.” Tip: reaching a
-            goal.
+            <strong>preguntar</strong> — “to ask.” Tip: question → preguntar.
           </p>
           <ul>
-            <li>Logro terminar la tarea. (I manage to finish the homework.)</li>
-            <li>Queremos lograr la meta. (We want to achieve the goal.)</li>
+            <li>Quiero preguntar algo. (I want to ask something.)</li>
+            <li>Ella pregunta mucho. (She asks a lot.)</li>
           </ul>
         </div>
 
         <div>
           <p>
-            <strong>esperar</strong> — “to wait, hope, expect.” Tip: same root
-            as “hope.”
+            <strong>ganar</strong> — “to win, earn, gain.” Tip: think “gain.”
           </p>
           <ul>
-            <li>Espero el autobús. (I wait for the bus.)</li>
-            <li>Espero verte mañana. (I hope to see you tomorrow.)</li>
+            <li>Quiero ganar el juego. (I want to win the game.)</li>
+            <li>Gano dinero. (I earn money.)</li>
           </ul>
         </div>
       </section>
