@@ -1632,7 +1632,6 @@ func getUserFromToken(r *http.Request) (*Claims, error) {
 	}
 
 	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-	log.Printf("Token string (first 20 chars): %s...", tokenString[:min(20, len(tokenString))])
 
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
@@ -1644,19 +1643,11 @@ func getUserFromToken(r *http.Request) (*Claims, error) {
 	}
 
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		log.Printf("Token valid for user ID: %d", claims.UserID)
 		return claims, nil
 	}
 
 	log.Println("Invalid token claims")
 	return nil, fmt.Errorf("invalid token")
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 func purchaseAsset(w http.ResponseWriter, r *http.Request) {

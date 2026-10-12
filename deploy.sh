@@ -32,7 +32,7 @@ fi
 
 echo "Backing up db..."
 # Sync the database
-cp ./data.db > ../data.bkp.db
+cp ./data.db ../data.bkp.db
 # Copy the files to the VPS
 ssh_main "\
 cd /var/www/repos/mango/app; \

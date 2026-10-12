@@ -75,13 +75,13 @@ export const NotificationProvider = ({ children }) => {
     oscillator.stop(audioContext.currentTime + 0.5);
   };
 
-  // Fetch unread count on mount and setup polling every 1 second
+  // Fetch unread count on mount and setup polling every minute
   useEffect(() => {
     fetchUnreadCount();
 
     const interval = setInterval(() => {
       fetchUnreadCount();
-    }, 1000); // Poll every 1 second
+    }, 60000); // Poll every minute
 
     return () => clearInterval(interval);
   }, []);
