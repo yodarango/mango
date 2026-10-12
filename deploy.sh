@@ -40,10 +40,26 @@ git reset --hard origin/main; \
 git pull; \
 echo '👍 pulled changes from git and reset to origin'; \
 echo 'Current directory: '; pwd; \
-echo '🏗️ Building docker now...';\
-docker compose down
-DOCKER_BUILDKIT=1 docker compose up -d --build; \
+echo '🏗️ Building docker now...'; \
+docker compose down; \
+if ! DOCKER_BUILDKIT=1 docker compose up -d --build; then \
+  echo '❌ DEPLOYMENT FAILED: docker compose up returned an error'; \
+  exit 1; \
+fi; \
+sleep 3; \
+STATUS=\$(docker inspect -f '{{.State.Status}}' mengou 2>/dev/null); \
+if [ \"\$STATUS\" != 'running' ]; then \
+  echo '❌ DEPLOYMENT FAILED: container mengou is not running (status: '\$STATUS')'; \
+  docker inspect -f 'Error: {{.State.Error}} (exit code {{.State.ExitCode}})' mengou; \
+  docker compose logs --tail=30; \
+  exit 1; \
+fi; \
 echo '🚀🚀🚀 Deployment successful'"
 
-
-echo "⭐️🚀✅ Deployment successful"
+# Check if the remote deploy was successful
+if [ $? -eq 0 ]; then
+    echo "⭐️🚀✅ Deployment successful"
+else
+    echo "❌ Deployment failed — see output above"
+    exit 1
+fi
